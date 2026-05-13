@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-page-bg: #050505;
+  --color-page-text: #F7F7F7;
+  
+  --color-black-primary: #050505;
+  --color-black-charcoal: #111111;
+  --color-text-black: #171717;
+  --color-gray-muted: #9CA3AF;
+  --color-gray-warm: #1F2937; /* Used for subtle light borders/cards in dark mode */
+  
+  --color-orange-safety: #FF5A00;
+  --color-orange-deep: #E94F00;
+  --color-green-trust: #2E7D32;
+  
+  --font-display: "Montserrat", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-body bg-page-bg text-page-text antialiased selection:bg-orange-safety/20;
+    min-height: 100dvh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .reveal-up {
+    animation: reveal-up 1.2s var(--ease-premium) forwards;
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(0.98);
+      filter: blur(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+}
