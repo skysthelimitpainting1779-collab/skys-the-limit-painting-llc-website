@@ -41,12 +41,12 @@ export default function ServiceExterior() {
         </div>
       </section>
       
-      <div className="bg-gray-warm py-24 px-6 border-b border-gray-200">
+      <div className="bg-black-charcoal py-24 px-6 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
           <div className="flex-1">
             <FadeIn>
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">Service Scope</span>
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-black-primary mb-8 uppercase tracking-wide">What We Handle</h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-8 uppercase tracking-wide">What We Handle</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
                  {[
                   "Power washing to remove dirt and mildew",
@@ -58,28 +58,28 @@ export default function ServiceExterior() {
                  ].map((item, i) => (
                    <div key={i} className="flex items-start gap-3">
                      <CheckCircle2 className="text-orange-safety shrink-0 mt-0.5" size={20} />
-                     <span className="text-gray-800 font-medium">{item}</span>
+                     <span className="text-gray-200 font-medium">{item}</span>
                    </div>
                  ))}
               </div>
             </FadeIn>
           </div>
-          <div className="flex-1 bg-white p-8 md:p-12 rounded-sm border border-gray-200 shadow-sm relative overflow-hidden">
+          <div className="flex-1 bg-black-primary p-8 md:p-12 rounded-sm border border-gray-200 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-orange-safety opacity-10 rounded-bl-full rounded-tr-sm -z-10"></div>
             <FadeIn delay={0.2}>
               <h3 className="text-2xl font-bold font-display uppercase tracking-wide mb-6">Best For</h3>
                <ul className="space-y-4">
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Homeowners</strong>
-                   <span className="text-gray-600 text-sm">Full exterior repaints, siding maintenance, and garage updates.</span>
+                   <span className="text-gray-400 text-sm">Full exterior repaints, siding maintenance, and garage updates.</span>
                  </li>
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Property Managers</strong>
-                   <span className="text-gray-600 text-sm">Keeping multi-family units and rental exteriors looking sharp and weather-proofed.</span>
+                   <span className="text-gray-400 text-sm">Keeping multi-family units and rental exteriors looking sharp and weather-proofed.</span>
                  </li>
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Small Businesses</strong>
-                   <span className="text-gray-600 text-sm">Refreshing storefronts and exterior commercial facades.</span>
+                   <span className="text-gray-400 text-sm">Refreshing storefronts and exterior commercial facades.</span>
                  </li>
                </ul>
             </FadeIn>

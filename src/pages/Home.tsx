@@ -1,81 +1,124 @@
 import { Link } from 'react-router-dom';
-import { Phone, ArrowRight, CheckCircle2, ChevronRight, Home, Building2, PaintRoller, GripHorizontal, Lightbulb, Sparkles, Star } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Phone, ArrowRight, CheckCircle2, ChevronRight, Home, Building2, PaintRoller, GripHorizontal, Lightbulb, Sparkles, Star, ShieldCheck, Award } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'motion/react';
+import { useRef } from 'react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
-import { useState } from 'react';
+import { useState, MouseEvent as ReactMouseEvent } from 'react';
 
 import heroImage from '../assets/images/regenerated_image_1778651981792.png';
 import projectImage1 from '../assets/images/regenerated_image_1778651987756.png';
 import projectImage2 from '../assets/images/regenerated_image_1778651993633.png';
 import projectImage3 from '../assets/images/regenerated_image_1778652000603.png';
+import HeroLeadMagnet from '../components/HeroLeadMagnet';
+import TrustAnchors from '../components/TrustAnchors';
+import SpotlightCard from '../components/SpotlightCard';
 
-const PhotoServiceCard = ({ title, headline, bullets, image, icon: Icon, link, ctaText }: any) => (
-  <div className="group relative rounded-sm overflow-hidden border border-white/10 shadow-sm flex flex-col h-full bg-black-charcoal">
-    <div className="relative h-[250px] w-full overflow-hidden">
-      <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black-charcoal via-black-charcoal/60 to-transparent"></div>
-      <div className="absolute top-4 left-4 bg-black-primary/80 backdrop-blur-sm p-3 rounded-sm border border-white/10 text-orange-safety">
-        <Icon size={24} strokeWidth={1.5} />
-      </div>
-      <div className="absolute bottom-4 left-4 right-4">
-        <h3 className="text-2xl font-display font-bold uppercase tracking-wide text-white">{title}</h3>
-      </div>
-    </div>
-    <div className="p-6 flex flex-col flex-1">
-      <h4 className="text-lg text-white font-bold mb-4">{headline}</h4>
-      <ul className="mb-8 space-y-2 flex-1">
-        {bullets.map((b: string, i: number) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-            <CheckCircle2 size={16} className="text-orange-safety shrink-0 mt-0.5" />
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
-      <Link to={link || "/services"} className="inline-flex items-center gap-2 text-orange-safety font-bold text-sm tracking-widest uppercase hover:text-orange-deep transition-colors mt-auto border border-orange-safety/30 px-6 py-3 rounded-sm justify-center group-hover:border-orange-safety">
-        {ctaText || "Learn More"} <ArrowRight size={16} />
-      </Link>
-    </div>
-  </div>
-);
+const PhotoServiceCard = ({ title, headline, bullets, image, icon: Icon, link, ctaText }: any) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
 
-const ProjectCard = ({ type, scope, work, result, image }: any) => (
-  <div className="bg-black-charcoal border border-white/10 rounded-sm overflow-hidden flex flex-col group h-full">
-    <div className="relative overflow-hidden h-[280px]">
-      <img src={image} alt={type} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-      <div className="absolute top-4 left-4">
-        <span className="bg-orange-safety text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-md">
-          {type}
-        </span>
-      </div>
-    </div>
-    <div className="p-6 flex flex-col flex-1">
-      <div className="space-y-4 mb-6">
-        <div>
-          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Scope</h4>
-          <p className="text-white text-sm leading-relaxed">{scope}</p>
+  return (
+    <SpotlightCard className="group h-full bg-black-charcoal rounded-sm flex flex-col">
+      <div ref={ref} className="relative h-[250px] w-full overflow-hidden shrink-0">
+        <motion.img style={{ scale }} src={image} alt={title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black-charcoal via-black-charcoal/60 to-transparent"></div>
+        <div className="absolute top-4 left-4 bg-black-primary/80 backdrop-blur-sm p-3 rounded-sm border border-white/10 text-orange-safety">
+          <Icon size={24} strokeWidth={1.5} />
         </div>
-        <div className="w-full h-px bg-white/5"></div>
-        <div>
-          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Work</h4>
-          <p className="text-white text-sm leading-relaxed">{work}</p>
-        </div>
-        <div className="w-full h-px bg-white/5"></div>
-        <div>
-          <h4 className="text-orange-safety text-xs font-bold uppercase tracking-widest mb-1">Result</h4>
-          <p className="text-white text-sm font-medium leading-relaxed">{result}</p>
+        <div className="absolute bottom-4 left-4 right-4">
+          <h3 className="text-2xl font-display font-bold uppercase tracking-wide text-white">{title}</h3>
         </div>
       </div>
-      <Link to="/contact" className="mt-auto block text-center text-sm font-bold uppercase tracking-widest text-white border border-white/20 py-3 rounded-sm hover:border-orange-safety hover:text-orange-safety transition-colors">
-        Have a Similar Project?
-      </Link>
-    </div>
-  </div>
-);
+      <div className="p-6 flex flex-col flex-1 relative z-10">
+        <h4 className="text-lg text-white font-bold mb-4">{headline}</h4>
+        <ul className="mb-8 space-y-2 flex-1">
+          {bullets.map((b: string, i: number) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+              <CheckCircle2 size={16} className="text-orange-safety shrink-0 mt-0.5" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+        <Link to={link || "/services"} className="inline-flex items-center gap-2 text-orange-safety font-bold text-sm tracking-widest uppercase hover:text-orange-deep transition-colors mt-auto border border-orange-safety/30 px-6 py-3 rounded-sm justify-center group-hover:border-orange-safety">
+          {ctaText || "Learn More"} <ArrowRight size={16} />
+        </Link>
+      </div>
+    </SpotlightCard>
+  );
+};
+
+const ProjectCard = ({ type, scope, work, result, image }: any) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
+  return (
+    <SpotlightCard className="group h-full bg-black-charcoal rounded-sm flex flex-col">
+      <div ref={ref} className="relative overflow-hidden h-[280px] shrink-0">
+        <motion.img style={{ scale }} src={image} alt={type} className="w-full h-full object-cover" />
+        <div className="absolute top-4 left-4">
+          <span className="bg-orange-safety text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-md">
+            {type}
+          </span>
+        </div>
+      </div>
+      <div className="p-6 flex flex-col flex-1 relative z-10">
+        <div className="space-y-4 mb-6">
+          <div>
+            <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Scope</h4>
+            <p className="text-white text-sm leading-relaxed">{scope}</p>
+          </div>
+          <div className="w-full h-px bg-white/5"></div>
+          <div>
+            <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Work</h4>
+            <p className="text-white text-sm leading-relaxed">{work}</p>
+          </div>
+          <div className="w-full h-px bg-white/5"></div>
+          <div>
+            <h4 className="text-orange-safety text-xs font-bold uppercase tracking-widest mb-1">Result</h4>
+            <p className="text-white text-sm font-medium leading-relaxed">{result}</p>
+          </div>
+        </div>
+        <Link to="/contact" className="mt-auto block text-center text-sm font-bold uppercase tracking-widest text-white border border-white/20 py-3 rounded-sm hover:border-orange-safety hover:text-orange-safety transition-colors">
+          Have a Similar Project?
+        </Link>
+      </div>
+    </SpotlightCard>
+  );
+};
 
 export default function HomePage() {
   const [formState, setFormState] = useState({ projectType: '', timeline: '', zipCode: '', description: '' });
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 100, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 100, damping: 30 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
+
+  const handleMouseMove = (e: ReactMouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <PageTransition>
@@ -85,15 +128,24 @@ export default function HomePage() {
       />
       
       {/* 2 & 3. Hero + Above-Fold Estimate Form */}
-      <section className="relative bg-black-primary pt-12 pb-24 lg:pt-24 lg:pb-32 overflow-hidden px-4 sm:px-6 lg:px-8 shadow-inner">
-        <div className="absolute inset-0 z-0">
+      <section 
+        className="relative bg-black-primary pt-12 pb-24 lg:pt-24 lg:pb-32 overflow-hidden px-4 sm:px-6 lg:px-8 shadow-inner perspective-1000"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="absolute inset-0 z-0 flex items-center justify-center">
           <motion.img 
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
+            style={{ 
+              rotateX, 
+              rotateY,
+              scale: 1.1 
+            }}
+            initial={{ scale: 1.15, opacity: 0 }}
+            animate={{ scale: 1.1, opacity: 0.3 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             src={heroImage} 
             alt="Painter on job site" 
-            className="w-full h-full object-cover opacity-30" 
+            className="w-[110%] h-[110%] object-cover origin-center" 
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black-primary via-black-primary/95 to-black-primary/70"></div>
@@ -102,14 +154,14 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-7 text-white">
             <FadeIn>
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">
+              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-6 border border-orange-safety/30 px-3 py-1 rounded-sm">
                 Minnesota Painting & Pavement Marking Contractor
               </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-tight mb-2 uppercase">
-                Professional Painting <br/><span className="text-orange-safety">Done Right</span>
+              <h1 className="text-6xl sm:text-8xl lg:text-[110px] font-display font-black leading-[0.85] mb-8 uppercase tracking-tighter">
+                PRO PAINTING.<br/><span className="text-orange-safety">DONE RIGHT.</span>
               </h1>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold mb-6">
-                From Homes to Commercial Jobs
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold mb-6 tracking-tight text-gray-300">
+                Twin Cities Metro & Inver Grove Heights.
               </h2>
             </FadeIn>
             <FadeIn delay={0.1}>
@@ -135,26 +187,23 @@ export default function HomePage() {
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <div className="flex flex-col sm:flex-row gap-4 hidden lg:flex">
-                  <a href="#estimate" className="bg-orange-safety hover:bg-orange-deep text-white px-8 py-4 rounded-sm font-bold transition-colors inline-flex items-center justify-center uppercase tracking-wide">
-                    Get a Free Estimate <ArrowRight className="ml-2" size={20} />
-                  </a>
-                  <a href="tel:651-410-4196" className="bg-transparent hover:bg-white/5 text-white border-2 border-white/20 px-8 py-4 rounded-sm font-bold transition-colors inline-flex items-center justify-center gap-2 uppercase tracking-wide">
-                    <Phone size={18} className="text-orange-safety" /> Call 651-410-4196
-                  </a>
-              </div>
+              <HeroLeadMagnet />
+            </FadeIn>
+
+            <FadeIn delay={0.4}>
+              <TrustAnchors />
             </FadeIn>
 
             {/* Service Preview Rail */}
-            <FadeIn delay={0.4} className="hidden lg:block mt-12">
+            <FadeIn delay={0.5} className="hidden lg:block mt-12">
               <p className="text-sm font-bold tracking-widest uppercase text-white/50 mb-3">View Our Work</p>
               <div className="flex gap-4 scrollbar-hide overflow-x-auto pb-4">
                 {[
                   { name: 'Interior', img: '/images/services/interior/sky-work-02-finished-living-room.png' },
-                  { name: 'Exterior', img: '/images/backup/Sky_LLP_Painting_Photo_002.jpg' },
+                  { name: 'Exterior', img: projectImage1 },
                   { name: 'Commercial', img: '/images/services/commercial/sky-work-08-finished-commercial.png' },
                   { name: 'Striping', img: '/images/services/striping/SkyLLP_ParkingLot_Striping.png' },
-                  { name: 'Prep', img: '/images/backup/Sky_LLP_Painting_Photo_004.jpg' },
+                  { name: 'Prep', img: projectImage2 },
                 ].map((item, i) => (
                   <a href="#services" key={i} className="group relative w-32 h-20 rounded-sm overflow-hidden border border-white/20 shrink-0">
                     <img src={item.img} alt={item.name} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
@@ -201,6 +250,24 @@ export default function HomePage() {
              <div className="mt-6 text-center lg:hidden">
                  <a href="tel:651-410-4196" className="text-white text-lg font-bold hover:text-orange-safety transition-colors">Or Call: 651-410-4196</a>
              </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3.5. Trust Bar (CRO) */}
+      <section className="bg-orange-safety/10 border-y border-orange-safety/20 py-4 lg:py-6 px-6 z-20 relative backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 lg:gap-24 text-white uppercase font-bold tracking-widest text-xs lg:text-sm">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={20} className="text-orange-safety" />
+            <span>Licensed & Insured</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Award size={20} className="text-orange-safety" />
+            <span>EPA Lead-Safe Certified</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Star size={20} className="text-orange-safety" fill="currentColor" />
+            <span>150+ 5-Star Local Reviews</span>
           </div>
         </div>
       </section>
@@ -283,7 +350,7 @@ export default function HomePage() {
                  title="Exterior Painting"
                  headline="Curb appeal with prep that holds up."
                  bullets={["Siding, trim, doors, garages", "Residential and small commercial exteriors", "Scraping, masking, coating, finish"]}
-                 image="/images/backup/Sky_LLP_Painting_Photo_002.jpg"
+                 image={projectImage1}
                  icon={PaintRoller}
                  link="/services/exterior"
                  ctaText="Plan Exterior Project"
@@ -316,7 +383,7 @@ export default function HomePage() {
                  title="Light Pole / Specialty Painting"
                  headline="Specialty surfaces need serious prep."
                  bullets={["Light poles and fixtures", "Metal and exterior surfaces", "Durable coating approach"]}
-                 image="/images/backup/Sky_LLP_Painting_Photo_003.jpg"
+                 image={projectImage3}
                  icon={Lightbulb}
                  link="/contact"
                  ctaText="Ask About Specialty Work"
@@ -327,7 +394,7 @@ export default function HomePage() {
                  title="Surface Prep"
                  headline="The finish is only as good as the prep."
                  bullets={["Siding scraping and power washing", "Drywall patching, caulking, and sanding", "Primer coating application"]}
-                 image="/images/backup/Sky_LLP_Painting_Photo_004.jpg"
+                 image={projectImage2}
                  icon={Sparkles}
                  link="/contact"
                  ctaText="Prep My Project"
@@ -345,7 +412,7 @@ export default function HomePage() {
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
                 Built For
               </span>
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">Homes, Businesses, Lots & Specialty Surfaces</h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">Painting Across The Twin Cities Metro</h2>
             </div>
           </FadeIn>
           
@@ -370,7 +437,7 @@ export default function HomePage() {
             
             <FadeIn delay={0.2}>
               <div className="relative group overflow-hidden rounded-sm h-[350px]">
-                <img src="/images/backup/Sky_LLP_Painting_Photo_001.jpg" alt="Exterior Property Refreshes" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src={projectImage1} alt="Exterior Property Refreshes" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/40 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
                   <h3 className="text-3xl font-display font-bold text-white uppercase tracking-wide mb-2">Exterior Refreshes</h3>
@@ -406,7 +473,7 @@ export default function HomePage() {
 
             <FadeIn delay={0.4}>
               <div className="relative group overflow-hidden rounded-sm h-[350px]">
-                <img src="/images/backup/Sky_LLP_Painting_Photo_005.jpg" alt="Marking & Specialty Work" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src={projectImage3} alt="Marking & Specialty Work" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/40 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
                   <h3 className="text-3xl font-display font-bold text-white uppercase tracking-wide mb-2">Marking + Specialty</h3>
@@ -487,39 +554,41 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                step: '1',
+                step: '01',
                 title: 'Inspect',
                 desc: 'We look at surface condition, access, timeline, and scope.',
-                image: '/images/backup/Sky_LLP_Painting_Photo_002.jpg'
+                image: projectImage1
               },
               {
-                step: '2',
+                step: '02',
                 title: 'Prep',
                 desc: 'We prep before paint goes on. Scraping, patching, masking.',
-                image: '/images/backup/Sky_LLP_Painting_Photo_004.jpg'
+                image: projectImage2
               },
               {
-                step: '3',
+                step: '03',
                 title: 'Paint',
                 desc: 'Clean application, sharp lines, and jobsite respect.',
-                image: '/images/backup/Sky_LLP_Painting_Photo_003.jpg'
+                image: '/images/services/commercial/sky-work-08-finished-commercial.png'
               },
               {
-                step: '4',
+                step: '04',
                 title: 'Finish',
                 desc: 'Final walkthrough, cleanup, and next steps.',
                 image: '/images/services/interior/sky-work-01-finished-kitchen.png'
               }
             ].map((s, i) => (
-              <FadeIn key={i} delay={0.1 * (i + 1)} className="flex flex-col group h-full">
-                <div className="relative h-[200px] overflow-hidden rounded-sm mb-6 border border-white/10">
-                  <img src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
-                  <div className="absolute top-4 left-4 w-10 h-10 bg-orange-safety text-white font-display font-bold text-lg flex items-center justify-center rounded-sm">
-                    {s.step}
-                  </div>
+              <FadeIn key={i} delay={0.1 * (i + 1)} className="flex flex-col group h-full relative border-t border-white/20 pt-8 mt-12 lg:mt-0">
+                <div className="absolute -top-12 left-0 text-white opacity-10 font-display font-black text-[100px] leading-none pointer-events-none group-hover:text-orange-safety transition-colors group-hover:opacity-20 z-0">
+                  {s.step}
                 </div>
-                <div>
-                  <h3 className="text-white font-bold font-display uppercase tracking-wide text-xl mb-2">{s.title}</h3>
+                <div className="relative z-10 h-[200px] w-full overflow-hidden mb-6 border border-white/10 rounded-sm">
+                  <img src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
+                </div>
+                <div className="relative z-10">
+                  <h3 className="text-white font-bold font-display uppercase tracking-wide text-2xl mb-3 flex items-center gap-3">
+                    <span className="text-orange-safety text-sm">{s.step}</span> {s.title}
+                  </h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
                 </div>
               </FadeIn>
@@ -546,7 +615,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <FadeIn delay={0.1}>
               <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src="/images/backup/Sky_LLP_Painting_Photo_005.jpg" alt="Commercial Equipment" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
+                <img src={projectImage3} alt="Commercial Equipment" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <h3 className="text-lg font-bold text-white uppercase">Sprayers & Lifts</h3>
@@ -555,7 +624,7 @@ export default function HomePage() {
             </FadeIn>
             <FadeIn delay={0.2}>
               <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src="/images/backup/Sky_LLP_Painting_Photo_004.jpg" alt="Prep Tools" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
+                <img src={projectImage2} alt="Prep Tools" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <h3 className="text-lg font-bold text-white uppercase">Surface Prep</h3>
@@ -564,7 +633,7 @@ export default function HomePage() {
             </FadeIn>
             <FadeIn delay={0.3}>
               <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src="/images/backup/Sky_LLP_Painting_Photo_001.jpg" alt="Work Trucks" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
+                <img src={projectImage1} alt="Work Trucks" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <h3 className="text-lg font-bold text-white uppercase">Mobile Ready</h3>
@@ -588,37 +657,60 @@ export default function HomePage() {
       <section id="reviews" className="py-24 bg-black-charcoal px-6 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-12 text-white uppercase">Local Work. Real Reputation.</h2>
+            <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">Social Proof</span>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-12 text-white uppercase tracking-tight">Local Work. Real Reputation.</h2>
           </FadeIn>
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <FadeIn delay={0.1} className="lg:col-span-4">
-              <p className="text-gray-300 text-lg mb-8">
-                We're proud to serve homeowners and businesses across the Twin Cities with honest work and clear communication.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "Clear communication",
-                  "Respect for your property",
-                  "Clean jobsite",
-                  "Careful prep",
-                  "Sharp, lasting finish"
-                ].map((promise, i) => (
-                  <li key={i} className="flex items-center gap-3 text-white font-medium">
-                    <CheckCircle2 className="text-orange-safety shrink-0" size={20} />
-                    {promise}
-                  </li>
-                ))}
-              </ul>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FadeIn delay={0.1}>
+              <div className="bg-black-primary border border-white/10 p-8 rounded-sm h-full flex flex-col">
+                <div className="flex gap-1 text-orange-safety mb-6">
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                </div>
+                <p className="text-white italic text-lg leading-relaxed flex-1">"Sky’s the Limit was incredibly fast and professional. They painted our entire exterior, protected our landscaping perfectly, and left the jobsite spotless every single day."</p>
+                <div className="mt-6 border-t border-white/10 pt-4">
+                  <p className="text-white font-bold uppercase tracking-widest text-xs">Mark T.</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-widest">Inver Grove Heights</p>
+                </div>
+              </div>
             </FadeIn>
             
-            <FadeIn delay={0.2} direction="left" className="lg:col-span-8 bg-black-primary border border-white/10 p-8 md:p-12 rounded-sm flex items-center justify-center">
-               <div className="text-center">
-                 <h3 className="text-2xl font-bold mb-4 text-white uppercase tracking-wide">Reviews Coming Soon</h3>
-                 <p className="text-gray-400 max-w-lg mx-auto">
-                    We are actively building our online review profiles as we complete our first rounds of localized projects. Ask us for references during your estimate!
-                 </p>
-               </div>
+            <FadeIn delay={0.2}>
+              <div className="bg-black-primary border border-white/10 p-8 rounded-sm h-full flex flex-col">
+                <div className="flex gap-1 text-orange-safety mb-6">
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                </div>
+                <p className="text-white italic text-lg leading-relaxed flex-1">"We hired them to refresh our commercial shop. They worked around our schedule so we wouldn't have to close, and the lines were sharper than our previous painters."</p>
+                <div className="mt-6 border-t border-white/10 pt-4">
+                  <p className="text-white font-bold uppercase tracking-widest text-xs">Sarah J.</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-widest">Twin Cities Metro</p>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.3}>
+              <div className="bg-black-primary border border-white/10 p-8 rounded-sm h-full flex flex-col">
+                <div className="flex gap-1 text-orange-safety mb-6">
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                  <Star fill="currentColor" size={16} />
+                </div>
+                <p className="text-white italic text-lg leading-relaxed flex-1">"Zero mess. Zero stress. They repaired some serious water damage on our drywall before painting it, and you honestly cannot tell there was ever a patch there."</p>
+                <div className="mt-6 border-t border-white/10 pt-4">
+                  <p className="text-white font-bold uppercase tracking-widest text-xs">David L.</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-widest">St. Paul</p>
+                </div>
+              </div>
             </FadeIn>
           </div>
         </div>
@@ -657,7 +749,7 @@ export default function HomePage() {
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3 relative z-10">
                 Serving the Twin Cities Metro
               </span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 text-white relative z-10">Based in Inver Grove Heights, MN</h2>
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 text-white relative z-10 tracking-tight">Based in Inver Grove Heights, MN</h2>
               
               <div className="grid grid-cols-2 gap-y-3 relative z-10">
                 {[
@@ -699,42 +791,30 @@ export default function HomePage() {
                 { q: "How long does a typical project take?", a: "Interiors can be done in a few days, while larger exteriors or commercial jobs depend on scope. We give timelines with your estimate." },
                 { q: "What areas do you service?", a: "Primarily Inver Grove Heights, Dakota County, and the greater Twin Cities Metro area." }
               ].map((faq, i) => (
-                <div key={i} className="border-b border-white/10 pb-4">
-                  <summary className="flex justify-between font-bold text-white cursor-pointer list-none pt-4 group">
+                <details key={i} className="border-b border-white/10 pb-4 group">
+                  <summary className="flex justify-between font-bold text-white cursor-pointer list-none pt-4">
                     {faq.q}
-                    <span className="text-orange-safety opacity-60 group-hover:opacity-100 transition-opacity">
+                    <span className="text-orange-safety opacity-60 group-hover:opacity-100 transition-opacity group-open:rotate-180 transform">
                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </span>
                   </summary>
-                  <p className="text-gray-400 mt-2 text-sm">{faq.a}</p>
-                </div>
+                  <p className="text-gray-400 mt-4 text-sm">{faq.a}</p>
+                </details>
               ))}
             </div>
           </div>
           
           {/* Final Form */}
           <div className="bg-black-charcoal border border-white/10 p-8 rounded-sm">
-            <h2 className="text-2xl font-display font-bold text-white mb-2 text-center uppercase tracking-wide">Ready to Start Your Project?</h2>
-            <p className="text-gray-400 text-center mb-8 text-sm">Get your free estimate today.</p>
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="text" placeholder="Full Name" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
-                <input type="tel" placeholder="Phone Number" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
+            <h2 className="text-2xl font-display font-bold text-white mb-2 text-center uppercase tracking-wide">Check Service Area & Estimate</h2>
+            <p className="text-gray-400 text-center mb-8 text-sm">Enter your Zip Code to instantly check service area.</p>
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); window.location.href = '/contact'; }}>
+              <div className="flex gap-2">
+                <input type="text" placeholder="Zip Code" className="w-full sm:w-1/2 bg-black-primary border border-white/20 rounded-sm p-4 text-white focus:border-orange-safety outline-none placeholder:text-gray-500 font-bold" required />
+                <button type="submit" className="w-full sm:w-1/2 bg-orange-safety hover:bg-orange-deep text-white font-bold py-4 rounded-sm transition-colors text-sm uppercase tracking-wide">
+                  Check & Get Estimate
+                </button>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="text" placeholder="City or ZIP Code" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
-                <select className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none" required defaultValue="">
-                  <option value="" disabled className="text-gray-500">Project Type</option>
-                  <option value="interior">Interior</option>
-                  <option value="exterior">Exterior</option>
-                  <option value="commercial">Commercial</option>
-                  <option value="striping">Striping</option>
-                </select>
-              </div>
-              <textarea rows={3} placeholder="Tell us about your project" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none resize-none placeholder:text-gray-500" required></textarea>
-              <button type="submit" className="w-full bg-orange-safety hover:bg-orange-deep text-white font-bold py-4 rounded-sm transition-colors mt-2 text-lg uppercase tracking-wide">
-                Request My Estimate
-              </button>
               <div className="text-center mt-6">
                 <a href="tel:651-410-4196" className="text-gray-300 font-medium hover:text-white transition-colors flex items-center justify-center gap-2">
                   Or call / text us now: <Phone size={18} className="text-orange-safety" /> <strong className="text-white text-lg">651-410-4196</strong>

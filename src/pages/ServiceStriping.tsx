@@ -41,12 +41,12 @@ export default function ServiceStriping() {
         </div>
       </section>
       
-      <div className="bg-gray-warm py-24 px-6 border-b border-gray-200">
+      <div className="bg-black-charcoal py-24 px-6 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
           <div className="flex-1">
             <FadeIn>
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">Service Scope</span>
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-black-primary mb-8 uppercase tracking-wide">What We Handle</h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-8 uppercase tracking-wide">What We Handle</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
                  {[
                   "Surface clearing and basic prep for strong adhesion",
@@ -58,28 +58,28 @@ export default function ServiceStriping() {
                  ].map((item, i) => (
                    <div key={i} className="flex items-start gap-3">
                      <CheckCircle2 className="text-orange-safety shrink-0 mt-0.5" size={20} />
-                     <span className="text-gray-800 font-medium">{item}</span>
+                     <span className="text-gray-200 font-medium">{item}</span>
                    </div>
                  ))}
               </div>
             </FadeIn>
           </div>
-          <div className="flex-1 bg-white p-8 md:p-12 rounded-sm border border-gray-200 shadow-sm relative overflow-hidden">
+          <div className="flex-1 bg-black-primary p-8 md:p-12 rounded-sm border border-gray-200 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-orange-safety opacity-10 rounded-bl-full rounded-tr-sm -z-10"></div>
             <FadeIn delay={0.2}>
               <h3 className="text-2xl font-bold font-display uppercase tracking-wide mb-6">Best For</h3>
                <ul className="space-y-4">
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Small to Medium Lots</strong>
-                   <span className="text-gray-600 text-sm">Retail shops, restaurants, and strip malls needing a refresh.</span>
+                   <span className="text-gray-400 text-sm">Retail shops, restaurants, and strip malls needing a refresh.</span>
                  </li>
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Churches & Clinics</strong>
-                   <span className="text-gray-600 text-sm">Clear parking guidance and updated handicap markers.</span>
+                   <span className="text-gray-400 text-sm">Clear parking guidance and updated handicap markers.</span>
                  </li>
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Property Management</strong>
-                   <span className="text-gray-600 text-sm">Maintaining compliant, attractive rental complexes.</span>
+                   <span className="text-gray-400 text-sm">Maintaining compliant, attractive rental complexes.</span>
                  </li>
                </ul>
             </FadeIn>

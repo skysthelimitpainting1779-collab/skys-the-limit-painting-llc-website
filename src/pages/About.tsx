@@ -24,10 +24,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div className="bg-gray-warm py-24 px-6">
+      <div className="bg-black-charcoal py-24 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <FadeIn delay={0.1} direction="right">
-            <div className="relative group overflow-hidden rounded-sm border border-gray-300 shadow-md">
+            <div className="relative group overflow-hidden rounded-sm border border-white/20 shadow-md">
               {/* Fallback image as we don't have owner photo in public dir yet */}
               <img src="/images/services/interior/sky-work-real-04-before-after-bedroom.png" alt="Owner working" className="w-full aspect-square object-cover" />
               <div className="absolute inset-0 bg-black-primary/10"></div>

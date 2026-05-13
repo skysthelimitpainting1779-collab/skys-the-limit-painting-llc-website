@@ -15,10 +15,10 @@ export default function FadeIn({ children, delay = 0, direction = 'up', fullWidt
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
 
   const directionOffset = {
-    up: 40,
-    down: -40,
-    left: 40,
-    right: -40,
+    up: 20,
+    down: -20,
+    left: 20,
+    right: -20,
     none: 0,
   };
 
@@ -30,7 +30,7 @@ export default function FadeIn({ children, delay = 0, direction = 'up', fullWidt
       ref={ref}
       initial={{ opacity: 0, x: xOffset, y: yOffset }}
       animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: xOffset, y: yOffset }}
-      transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      transition={{ type: "spring", stiffness: 120, damping: 20, delay }}
       className={`${fullWidth ? 'w-full' : ''} ${className}`}
     >
       {children}

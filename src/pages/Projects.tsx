@@ -1,36 +1,55 @@
+import React from 'react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import BeforeAfterSlider from '../components/BeforeAfterSlider';
 
-const ProjectCard = ({ type, location, problem, work, result, image }: any) => (
-  <div className="bg-black-charcoal rounded-sm overflow-hidden border border-white/10 shadow-sm flex flex-col group h-full">
-    <div className="relative overflow-hidden h-[300px]">
-      <img src={image} alt={`${type} in ${location}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-      <div className="absolute top-4 left-4">
+const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-sm uppercase tracking-wider">
+    <CheckCircle2 size={12} className="text-orange-safety" />
+    {children}
+  </span>
+);
+
+const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeImage, afterImage }: any) => (
+  <div className="bg-black-charcoal rounded-sm overflow-hidden border border-white/10 shadow-sm flex flex-col group h-full mb-12">
+    <div className="relative overflow-hidden">
+      {beforeImage && afterImage ? (
+        <BeforeAfterSlider beforeImage={beforeImage} afterImage={afterImage} beforeLabel="The Challenge" afterLabel="The Result" />
+      ) : (
+        <div className="h-[350px] relative">
+          <img src={image} alt={`${type} in ${location}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-sm">
+            {location}
+          </div>
+        </div>
+      )}
+      <div className="absolute top-4 left-4 z-10 pointer-events-none">
         <span className="bg-orange-safety text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-md">
           {type}
         </span>
-      </div>
-       <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-sm">
-        {location}
       </div>
     </div>
     <div className="p-8 flex flex-col flex-1">
       <div className="space-y-6 mb-8 flex-grow">
         <div>
-          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Scope</h4>
+          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500"></span> The Challenge</h4>
           <p className="text-white text-sm leading-relaxed">{problem}</p>
         </div>
         <div className="w-full h-px bg-white/5"></div>
         <div>
-          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Work</h4>
-          <p className="text-white text-sm leading-relaxed">{work}</p>
+          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-yellow-500"></span> The Prep</h4>
+          <div className="flex flex-wrap gap-2">
+            {prep.map((tag: string, i: number) => (
+              <ProcessTag key={i}>{tag}</ProcessTag>
+            ))}
+          </div>
         </div>
         <div className="w-full h-px bg-white/5"></div>
         <div>
-          <h4 className="text-orange-safety text-xs font-bold uppercase tracking-widest mb-2">Result</h4>
+          <h4 className="text-orange-safety text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-orange-safety"></span> The Result</h4>
           <p className="text-white text-sm font-medium leading-relaxed">{result}</p>
         </div>
       </div>
@@ -58,46 +77,48 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <div className="bg-gray-warm py-24 px-6">
+      <div className="bg-black-charcoal py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
              <FadeIn delay={0.1}>
-               <ProjectCard 
+               <CaseStudyCard 
                 type="Commercial Interior Refresh"
                 location="Inver Grove Heights, MN"
-                problem="Client needed a dark, modern look for a smoke shop storefront without replacing the existing ceiling grid."
-                work="Surface prep, cleaning, and two coats of premium black finish applied to the entire ceiling grid and aluminum tracking."
-                result="Darker, cleaner, more finished commercial interior that completely transformed the space."
-                image="/images/services/commercial/sky-work-08-finished-commercial.png"
+                problem="Client needed a dark, modern look for a smoke shop storefront without replacing the existing ceiling grid, which was stained and discolored."
+                prep={["Grid cleaning", "Floor protection", "Masking fixtures", "Adhesion primer"]}
+                result="Darker, cleaner, more finished commercial interior that completely transformed the space and saved thousands on ceiling replacement."
+                beforeImage="/images/backup/Sky_LLP_Painting_Photo_004.jpg" 
+                afterImage="/images/services/commercial/sky-work-08-finished-commercial.png"
               />
              </FadeIn>
              <FadeIn delay={0.2}>
-               <ProjectCard 
+               <CaseStudyCard 
                 type="Interior Residential Repaint"
                 location="Twin Cities Metro"
-                problem="Bedroom walls, trim, and doors requiring a fresh start and careful attention to detail."
-                work="Patched drywall, sanded rough areas, masked trim, and applied two seamless finish coats."
-                result="A clean, modernized bedroom with sharp lines and even coverage."
-                image="/images/services/interior/sky-work-real-04-before-after-bedroom.png"
+                problem="Bedroom walls, trim, and doors had heavy scuffs, dated colors, and water stains from a prior leak."
+                prep={["Drywall patching", "Stain-blocking primer", "Trim sanding", "Dust containment"]}
+                result="A clean, modernized bedroom with sharp lines, zero bleed on the trim, and perfectly even coverage."
+                beforeImage="/images/backup/Sky_LLP_Painting_Photo_003.jpg"
+                afterImage="/images/services/interior/sky-work-real-04-before-after-bedroom.png"
               />
              </FadeIn>
              <FadeIn delay={0.3}>
-               <ProjectCard 
+               <CaseStudyCard 
                 type="Pavement Marking / Striping"
                 location="Dakota County, MN"
-                problem="Faded lot lines causing parking confusion and safety concerns in a commercial lot."
-                work="Cleaned the surface and restriped stalls and safety markings with high-grade traffic paint."
-                result="Clear, bright, and compliant parking lot markings providing a sharp first impression."
+                problem="Faded, peeling lot lines causing parking confusion and failing to meet current safety and accessibility standards."
+                prep={["Power washing", "Debris clearing", "Chalk lining", "Layout adjustment"]}
+                result="Clear, bright, and compliant parking lot markings providing a sharp first impression for the business."
                 image="/images/services/striping/SkyLLP_ParkingLot_Striping.png"
               />
              </FadeIn>
              <FadeIn delay={0.4}>
-               <ProjectCard 
+               <CaseStudyCard 
                 type="Interior Trim & Wall Finishing"
                 location="St. Paul Metro"
-                problem="Living room walls and trim needing an update to brighten the space."
-                work="Comprehensive room protection, precise cut-ins, and smooth application on walls."
-                result="A flawless finish that brings a fresh, clean feeling back to the room."
+                problem="Living room walls and trim needing an update to brighten the space after years of fading and minor structural settling."
+                prep={["Caulking baseboards", "Putty filling", "Spot priming", "Masking windows"]}
+                result="A flawless finish that brings a fresh, clean feeling back to the room with highly durable, washable paint."
                 image="/images/services/interior/sky-work-02-finished-living-room.png"
               />
              </FadeIn>

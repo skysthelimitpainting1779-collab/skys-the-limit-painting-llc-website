@@ -30,7 +30,7 @@ export default function ServiceAreaPage() {
         </div>
       </section>
 
-      <div className="bg-gray-warm py-24 px-6 min-h-screen">
+      <div className="bg-black-charcoal py-24 px-6 min-h-screen">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <FadeIn delay={0.1}>
             <div>
@@ -55,7 +55,7 @@ export default function ServiceAreaPage() {
           </FadeIn>
           
           <FadeIn delay={0.2}>
-            <div className="bg-white p-8 md:p-12 rounded-sm border border-gray-200 shadow-sm relative overflow-hidden">
+            <div className="bg-black-primary p-8 md:p-12 rounded-sm border border-white/10 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-safety opacity-10 rounded-bl-full rounded-tr-sm -z-10"></div>
               
               <div className="flex items-center gap-3 mb-8">
@@ -65,7 +65,7 @@ export default function ServiceAreaPage() {
               
               <div className="flex flex-wrap gap-3">
                 {areas.map((loc, i) => (
-                  <span key={i} className="bg-gray-50 border border-gray-200 text-black-primary font-bold tracking-wide uppercase text-sm px-4 py-2 rounded-sm">
+                  <span key={i} className="bg-white/5 border border-white/10 text-white font-bold tracking-wide uppercase text-sm px-4 py-2 rounded-sm">
                     {loc}
                   </span>
                 ))}
