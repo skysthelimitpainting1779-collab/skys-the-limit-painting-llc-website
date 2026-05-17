@@ -3,7 +3,7 @@ import { motion, useMotionValue, useSpring } from 'motion/react';
 
 export default function CustomCursor() {
   // Use MotionValues instead of React state to completely bypass React's render cycle 
-  // on every mouse movement. This guarantees flawless 60fps performance.
+  // on every mouse movement. This keeps pointer animation smooth.
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const cursorSize = useMotionValue(16);

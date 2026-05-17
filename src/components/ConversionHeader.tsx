@@ -2,6 +2,7 @@ import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { trackEvent } from '../lib/analytics';
 
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
     <div className="relative group flex items-center">
       <Link 
         to={to} 
+        onClick={() => trackEvent('nav_click', { path: to, label: String(children) })}
         className={`relative text-xs font-bold uppercase tracking-widest transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
       >
         {children}
@@ -74,8 +76,8 @@ export default function ConversionHeader() {
 
             {/* Desktop Actions - Conversion Anchor */}
             <div className="hidden items-center md:flex">
-              <a href="tel:651-410-4196" className="group flex flex-col items-end gap-0">
-                <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">FREE QUOTE:</span>
+              <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'header' })} className="group flex flex-col items-end gap-0">
+                <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
                 <span className="text-xl sm:text-3xl font-black text-orange-safety tracking-normal leading-none group-hover:text-white transition-colors mt-0.5">651-410-4196</span>
               </a>
             </div>
@@ -110,8 +112,8 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <a href="tel:651-410-4196" className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
-                Call 651-410-4196
+              <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+                Call / Text 651-410-4196
               </a>
             </div>
           </motion.div>

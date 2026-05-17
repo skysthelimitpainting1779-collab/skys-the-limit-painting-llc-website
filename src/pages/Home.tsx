@@ -1,4 +1,3 @@
-import { FormEvent, useState } from 'react';
 import type { Key } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -13,15 +12,18 @@ import {
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import BookingCta from '../components/BookingCta';
+import LeadForm from '../components/LeadForm';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
-import { openEstimateEmail } from '../lib/contact';
+import { businessSchema } from '../lib/seo';
+import { trackEvent } from '../lib/analytics';
 
 const corePositioningLine = 'Residential detail. Commercial discipline. Public-sector ready.';
 
 const coverageItems = [
-  'General liability coverage in place',
-  'Commercial auto + tools/equipment coverage',
-  'COI available for qualified commercial/public-sector opportunities',
+  ['General liability coverage in place', 'General liability coverage in place'],
+  ['Commercial auto + tools coverage', 'Commercial auto + tools/equipment coverage'],
+  ['COI available for qualified opportunities', 'COI available for qualified commercial/public-sector opportunities'],
 ];
 
 const marketMedia: Record<MarketSlug, { video: string; poster: string; label: string; accent: string }> = {
@@ -130,30 +132,13 @@ const ProcessStep = ({ step, title, body }: { step: string; title: string; body:
 );
 
 export default function HomePage() {
-  const [heroFormStatus, setHeroFormStatus] = useState<'idle' | 'opened'>('idle');
-
-  const handleHeroEstimateSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    openEstimateEmail({
-      Source: 'Homepage three-market estimate form',
-      'Full name': String(formData.get('fullName') || ''),
-      Phone: String(formData.get('phone') || ''),
-      Email: String(formData.get('email') || ''),
-      'Project lane': String(formData.get('projectLane') || ''),
-      'City or ZIP': String(formData.get('location') || ''),
-      'Project details': String(formData.get('description') || ''),
-    });
-
-    setHeroFormStatus('opened');
-  };
-
   return (
     <PageTransition>
       <PageMeta
         title="Sky's the Limit Painting LLC | Minnesota Painting Contractor"
         description="Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for residential painting, commercial work, and public-sector opportunities."
+        path="/"
+        schema={businessSchema}
       />
 
       <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706]">
@@ -185,22 +170,29 @@ export default function HomePage() {
               <span className="block text-[#f2d9bf]">Commercial discipline.</span>
               <span className="block text-[#f0c067]">Public-sector ready.</span>
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-[#e7dfd2] md:text-xl">
-              Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for careful residential painting, reliable commercial work, and city, county, and state opportunities.
+            <p className="mt-7 max-w-2xl text-base leading-relaxed text-[#e7dfd2] sm:text-lg md:text-xl">
+              <span className="sm:hidden">
+                Owner-operated and insured in Minnesota for homes, businesses, and public-sector opportunities.
+              </span>
+              <span className="hidden sm:inline">
+                Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for careful residential painting, reliable commercial work, and city, county, and state opportunities.
+              </span>
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link to="/contact" className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
+              <Link to="/contact" onClick={() => trackEvent('cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
                 Request an Estimate <ArrowRight size={18} />
               </Link>
-              <a href="tel:651-410-4196" className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Phone size={18} /> Call or Text Anthony
               </a>
+              <BookingCta className="sm:hidden" />
             </div>
             <div className="mt-8 flex max-w-3xl flex-col gap-3 text-sm font-semibold text-[#d8c7aa] md:flex-row md:flex-wrap md:items-center">
-              {coverageItems.map((item) => (
-                <span key={item} className="flex min-w-0 items-start gap-2">
+              {coverageItems.map(([mobile, desktop]) => (
+                <span key={desktop} className="flex min-w-0 items-start gap-2">
                   <CheckCircle2 className="shrink-0 text-[#f0c067]" size={16} />
-                  <span className="break-words">{item}</span>
+                  <span className="break-words sm:hidden">{mobile}</span>
+                  <span className="hidden break-words sm:inline">{desktop}</span>
                 </span>
               ))}
             </div>
@@ -234,7 +226,7 @@ export default function HomePage() {
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="text-lg leading-relaxed text-[#3f3a33]">
-              The site is organized around how buyers actually evaluate painting work: a homeowner wants care and protection, a commercial client wants reliable execution, and a public-sector buyer wants clarity, documentation, and follow-through.
+              Different projects demand different standards: a homeowner needs care and protection, a commercial client needs reliable execution, and a public-sector buyer needs clarity, documentation, and follow-through.
             </p>
           </FadeIn>
         </div>
@@ -350,28 +342,9 @@ export default function HomePage() {
               <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
                 Request an estimate for a home, property, facility, or public-sector opportunity.
               </h2>
-              <form className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleHeroEstimateSubmit}>
-                <input name="fullName" type="text" placeholder="Full Name" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-                <input name="phone" type="tel" placeholder="Phone Number" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-                <input name="email" type="email" placeholder="Email Address" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-                <select name="projectLane" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
-                  <option value="" disabled>Project Lane</option>
-                  <option value="residential">Residential</option>
-                  <option value="commercial">Commercial</option>
-                  <option value="public-sector">Public Sector / Municipal Opportunity</option>
-                </select>
-                <input name="location" type="text" placeholder="City or ZIP Code" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] md:col-span-2" required />
-                <textarea name="description" rows={4} placeholder="Project details, surfaces, timeline, or COI needs" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] md:col-span-2" required></textarea>
-                <button type="submit" className="bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] md:col-span-2">
-                  Open Estimate Email
-                </button>
-              </form>
-              <p className="mt-5 flex items-start gap-2 text-sm font-semibold text-[#4c453d]" aria-live="polite">
-                <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#bf6f2f]" />
-                {heroFormStatus === 'opened'
-                  ? 'Email draft opened. You can also call or text 651-410-4196 for the fastest response.'
-                  : 'Free estimate requests open a prefilled email draft. Call or text 651-410-4196 for fastest response.'}
-              </p>
+              <div className="mt-10">
+                <LeadForm source="Homepage three-market estimate form" compact />
+              </div>
             </FadeIn>
           </div>
         </div>

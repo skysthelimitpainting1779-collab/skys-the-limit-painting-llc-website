@@ -19,7 +19,7 @@ export default function ServiceStriping() {
           <div className="flex-1">
             <FadeIn>
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Line Striping Services</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Clear Lines.<br/>Compliant Lots.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Clear Lines.<br/>Sharper Lots.</h1>
               <p className="text-xl text-gray-300 max-w-xl mb-8">
                 A clean, clearly marked parking lot is the first impression customers have of your business. We provide sharp, durable pavement marking.
               </p>
@@ -51,7 +51,7 @@ export default function ServiceStriping() {
                  {[
                   "Surface clearing and basic prep for strong adhesion",
                   "Restriping existing faded lines",
-                  "ADA compliant handicap stall markings",
+                  "Accessible stall layout and marking refreshes",
                   "Directional arrows and crosswalks",
                   "Fire lane and no-parking zone stenciling",
                   "Application using high-grade, traffic-ready paints"
@@ -79,7 +79,7 @@ export default function ServiceStriping() {
                  </li>
                  <li className="flex flex-col">
                    <strong className="text-black-primary uppercase text-sm tracking-wider">Property Management</strong>
-                   <span className="text-gray-400 text-sm">Maintaining compliant, attractive rental complexes.</span>
+                   <span className="text-gray-400 text-sm">Maintaining clearer, more attractive rental complexes.</span>
                  </li>
                </ul>
             </FadeIn>

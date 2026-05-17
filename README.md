@@ -50,7 +50,7 @@ This project is Vercel-ready and Netlify-ready.
 
 - The site now uses the verified safe service images in `public/images/services` plus generated support images in `src/assets/images`.
 - Public backup image scans were removed from the deployable site because they were not verified marketing assets.
-- **Replacing placeholders**: Place actual marketing images in the `public` folder and reference them directly in the React components (e.g., `<img src="/images/exterior-hero.jpg" />`).
+- **Replacing draft media**: Place actual marketing images in the `public` folder and reference them directly in the React components (e.g., `<img src="/images/exterior-hero.jpg" />`).
 
 ## Missing Asset List
 

@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import FadeIn from './animations/FadeIn';
 import PageMeta from './PageMeta';
 import PageTransition from './PageTransition';
+import BookingCta from './BookingCta';
 import { Market } from '../data/markets';
+import { breadcrumbSchema, serviceSchema } from '../lib/seo';
+import { trackEvent } from '../lib/analytics';
 
 interface MarketPageProps {
   market: Market;
@@ -14,7 +17,18 @@ export default function MarketPage({ market }: MarketPageProps) {
 
   return (
     <PageTransition>
-      <PageMeta title={market.metaTitle} description={market.metaDescription} />
+      <PageMeta
+        title={market.metaTitle}
+        description={market.metaDescription}
+        path={`/${market.slug}`}
+        schema={[
+          serviceSchema(market.title, market.metaDescription, `/${market.slug}`),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: market.navLabel, path: `/${market.slug}` },
+          ]),
+        ]}
+      />
 
       <section className="relative overflow-hidden bg-black-primary px-6 py-20 md:py-28">
         <div className="blueprint-grid absolute inset-0 opacity-30"></div>
@@ -112,9 +126,10 @@ export default function MarketPage({ market }: MarketPageProps) {
                   <p className="text-sm font-semibold uppercase tracking-wider text-white">{item}</p>
                 </div>
               ))}
-              <Link to="/contact" className="mt-8 inline-flex w-full items-center justify-center gap-2 bg-orange-safety px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
+              <Link to="/contact" onClick={() => trackEvent('cta_click', { label: market.cta, source: market.slug })} className="mt-8 inline-flex w-full items-center justify-center gap-2 bg-orange-safety px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
                 {market.cta} <ArrowRight size={18} />
               </Link>
+              <BookingCta audience={market.slug === 'residential' ? 'homeowner' : market.slug} className="mt-3 w-full" />
             </div>
           </FadeIn>
         </div>

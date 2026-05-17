@@ -3,11 +3,20 @@ import { ArrowRight } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import { breadcrumbSchema } from '../lib/seo';
 
 export default function AboutPage() {
   return (
     <PageTransition>
-      <PageMeta title="About Us | Sky's the Limit Painting LLC" description="Built by a Painter, Not a Sales Office. Learn about Anthony Briseno and Sky's the Limit Painting LLC based in Inver Grove Heights, MN." />
+      <PageMeta
+        title="About Anthony Briseno | Sky's the Limit Painting LLC"
+        description="Learn about Anthony Briseno and Sky’s the Limit Painting LLC, an owner-operated Minnesota painting contractor based in Inver Grove Heights."
+        path="/about"
+        schema={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+        ])}
+      />
       
       {/* Hero */}
       <section className="bg-black-primary py-24 px-6 border-b border-white/10">
@@ -43,7 +52,7 @@ export default function AboutPage() {
                   Sky’s the Limit Painting LLC is a Minnesota painting company based in Inver Grove Heights and led by Anthony Briseno.
                 </p>
                 <p>
-                  After more than a decade in the trade and completing a Minnesota Journeyworker Painter & Decorator apprenticeship, Anthony started Sky’s the Limit to bring dependable, skilled painting work to homeowners, businesses, and public/private job sites across the Twin Cities area.
+                  After completing a Minnesota Journeyworker Painter & Decorator apprenticeship, Anthony started Sky’s the Limit to bring dependable, skilled painting work to homeowners, businesses, and qualified opportunities across the Twin Cities area.
                 </p>
                 <p>
                   We stand against the "fast and cheap" model. We believe in taking the time for thorough surface preparation because we know it’s the only way a paint job truly lasts. We are owner-operated, ensuring clear communication throughout your project.

@@ -3,27 +3,70 @@ import { useEffect } from 'react';
 interface PageMetaProps {
   title: string;
   description: string;
+  path?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-export default function PageMeta({ title, description }: PageMetaProps) {
+const defaultImage = '/brand/remotion/sky-premium-market-hero-v2.png';
+
+const siteUrl = (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/$/, '');
+
+function upsertMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
+  let tag = document.querySelector(selector);
+  if (!tag) {
+    tag = document.createElement('meta');
+    tag.setAttribute(attribute, key);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute('content', content);
+}
+
+function upsertLink(rel: string, href: string) {
+  let tag = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+  if (!tag) {
+    tag = document.createElement('link');
+    tag.setAttribute('rel', rel);
+    document.head.appendChild(tag);
+  }
+  tag.href = href;
+}
+
+export default function PageMeta({ title, description, path, image = defaultImage, type = 'website', schema }: PageMetaProps) {
   useEffect(() => {
+    const pagePath = path || window.location.pathname;
+    const canonicalUrl = `${siteUrl}${pagePath === '/' ? '' : pagePath}`;
+    const imageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
     document.title = title;
-    
-    // Update meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
+
+    upsertMeta('meta[name="description"]', 'name', 'description', description);
+    upsertMeta('meta[property="og:title"]', 'property', 'og:title', title);
+    upsertMeta('meta[property="og:description"]', 'property', 'og:description', description);
+    upsertMeta('meta[property="og:type"]', 'property', 'og:type', type);
+    upsertMeta('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
+    upsertMeta('meta[property="og:image"]', 'property', 'og:image', imageUrl);
+    upsertMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
+    upsertMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
+    upsertMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
+    upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
+    upsertLink('canonical', canonicalUrl);
+
+    const existingSchema = document.getElementById('page-schema');
+    existingSchema?.remove();
+    if (schema) {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = 'page-schema';
+      script.textContent = JSON.stringify(schema);
+      document.head.appendChild(script);
     }
-    metaDescription.setAttribute('content', description);
-    
-    // Cleanup if needed, but not strictly necessary for an SPA 
-    // where every page will set its own meta.
+
     return () => {
-      // Optional: Revert to default title/desc if desired
+      document.getElementById('page-schema')?.remove();
     };
-  }, [title, description]);
+  }, [description, image, path, schema, title, type]);
 
   return null;
 }
