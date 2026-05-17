@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const siteUrl = (process.env.VITE_SITE_URL || 'https://skysthelimitpaintingllc.com').replace(/\/$/, '');
+const siteUrl = (process.env.VITE_SITE_URL || 'https://www.skysthelimitpaintingllc.com').replace(/\/$/, '');
 const defaultImage = '/brand/remotion/sky-premium-market-hero-v2.png';
 
 const businessSchema = {

@@ -12,7 +12,7 @@ interface PageMetaProps {
 const defaultImage = '/brand/remotion/sky-premium-market-hero-v2.png';
 
 function getSiteUrl() {
-  const fallback = typeof window === 'undefined' ? 'https://skysthelimitpaintingllc.com' : window.location.origin;
+  const fallback = typeof window === 'undefined' ? 'https://www.skysthelimitpaintingllc.com' : window.location.origin;
   return (import.meta.env.VITE_SITE_URL || fallback).replace(/\/$/, '');
 }
 

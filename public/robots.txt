@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://skysthelimitpaintingllc.com/sitemap.xml
+Sitemap: https://www.skysthelimitpaintingllc.com/sitemap.xml
