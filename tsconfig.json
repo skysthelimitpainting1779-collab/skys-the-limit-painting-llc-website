@@ -22,5 +22,20 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "include": [
+    "api",
+    "remotion",
+    "src",
+    "tests",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "tmp",
+    ".agents",
+    "agent-skills-main",
+    "references"
+  ]
 }
