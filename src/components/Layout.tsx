@@ -20,12 +20,12 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Mobile Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex gap-2">
-        <a href="tel:651-410-4196" className="flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs sm:text-sm">
+        <a href="tel:651-410-4196" className="min-w-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
           <Phone size={16} className="text-orange-safety shrink-0" />
           651-410-4196
         </a>
-        <Link to="/contact" className="flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs sm:text-sm tracking-wide whitespace-nowrap">
-          Get An Estimate
+        <Link to="/contact" className="min-w-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+          Estimate
         </Link>
       </div>
 

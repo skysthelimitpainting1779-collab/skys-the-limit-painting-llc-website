@@ -175,9 +175,10 @@ export default function HomePage() {
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
           <FadeIn className="max-w-4xl pt-6 md:pt-12">
-            <div className="mb-7 inline-flex items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/55 px-4 py-3 text-[11px] font-black uppercase tracking-[0.24em] text-[#f0c067] backdrop-blur">
+            <div className="mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/55 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067] backdrop-blur sm:text-[11px] sm:tracking-[0.24em]">
               <ShieldCheck size={16} />
-              Insured Minnesota Painting Contractor
+              <span className="sm:hidden">Insured MN Contractor</span>
+              <span className="hidden sm:inline">Insured Minnesota Painting Contractor</span>
             </div>
             <h1 aria-label={corePositioningLine} className="max-w-4xl text-5xl font-black leading-[0.95] text-white sm:text-6xl lg:text-7xl xl:text-8xl">
               <span className="block">Residential detail.</span>
@@ -197,9 +198,9 @@ export default function HomePage() {
             </div>
             <div className="mt-8 flex max-w-3xl flex-col gap-3 text-sm font-semibold text-[#d8c7aa] md:flex-row md:flex-wrap md:items-center">
               {coverageItems.map((item) => (
-                <span key={item} className="flex items-center gap-2">
+                <span key={item} className="flex min-w-0 items-start gap-2">
                   <CheckCircle2 className="shrink-0 text-[#f0c067]" size={16} />
-                  {item}
+                  <span className="break-words">{item}</span>
                 </span>
               ))}
             </div>
