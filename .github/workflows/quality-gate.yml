@@ -8,6 +8,11 @@ permissions:
   contents: read
   pull-requests: read
 
+env:
+  VITE_SITE_URL: https://skysthelimitpaintingllc.com
+  LEAD_TO_EMAIL: skysthelimitpainting1779@gmail.com
+  LEAD_FROM_EMAIL: Sky Leads <onboarding@resend.dev>
+
 jobs:
   quality:
     name: PR Quality
