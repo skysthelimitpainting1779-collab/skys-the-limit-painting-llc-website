@@ -1,32 +1,35 @@
 ---
-name: Bug Report
-about: Report a bug to help us improve
-title: '[BUG] '
-labels: 'bug'
-assignees: ''
+name: Bug report
+about: Report something that is broken or confusing
+title: "[Bug] "
+labels: bug
+assignees: ""
 ---
 
-## 🐛 Bug Description
-A clear description of what the bug is.
+## What Happened
 
-## 📍 Steps to Reproduce
-1. Step 1
-2. Step 2
-3. Step 3
+Describe the issue clearly.
 
-## 🔍 Expected Behavior
-What should happen?
+## Steps to Reproduce
 
-## ❌ Actual Behavior
-What actually happens?
+1. Go to ...
+2. Click ...
+3. See ...
 
-## 📸 Screenshots
-If applicable, add screenshots.
+## Expected Result
 
-## 💻 Environment
-- OS: [e.g. macOS, Windows, Linux]
-- Node Version: [e.g. 18.x, 20.x]
-- npm Version: [output of `npm --version`]
+What should have happened?
 
-## 📝 Additional Context
-Any other context about the problem.
+## Actual Result
+
+What happened instead?
+
+## Environment
+
+- Browser:
+- Device:
+- Page or URL:
+
+## Screenshots or Notes
+
+Add anything that helps explain the issue.
