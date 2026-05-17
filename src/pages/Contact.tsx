@@ -33,11 +33,11 @@ export default function ContactPage() {
               Send the project details Anthony needs to understand the surface, schedule, location, and next step. For the fastest response, call or text directly.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={`tel:${businessPhone}`} onClick={() => trackEvent('click_call', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#15110a] transition-colors hover:bg-white">
+              <a href={`tel:${businessPhone}`} onClick={() => trackEvent('call_click', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#15110a] transition-colors hover:bg-white">
                 <Phone size={18} />
                 Call Anthony
               </a>
-              <a href={`sms:${smsPhone}`} onClick={() => trackEvent('click_text', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <a href={`sms:${smsPhone}`} onClick={() => trackEvent('text_click', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <MessageSquareText size={18} />
                 Text Anthony
               </a>
@@ -48,11 +48,11 @@ export default function ContactPage() {
           <FadeIn delay={0.1} className="lg:col-span-5">
             <div className="border border-[#d8c7aa]/15 bg-[#11100d] p-6">
               <div className="space-y-6">
-                <a href={`tel:${businessPhone}`} onClick={() => trackEvent('click_call', { source: 'contact_panel' })} className="flex items-center gap-4 text-lg font-black text-white transition-colors hover:text-[#f0c067]">
+                <a href={`tel:${businessPhone}`} onClick={() => trackEvent('call_click', { source: 'contact_panel' })} className="flex items-center gap-4 text-lg font-black text-white transition-colors hover:text-[#f0c067]">
                   <span className="grid h-12 w-12 place-items-center border border-white/10 bg-white/5"><Phone size={21} /></span>
                   {businessPhone}
                 </a>
-                <a href={`mailto:${businessEmail}`} onClick={() => trackEvent('click_email', { source: 'contact_panel' })} className="flex items-center gap-4 break-all text-base font-bold text-[#d8d0c2] transition-colors hover:text-[#f0c067]">
+                <a href={`mailto:${businessEmail}`} onClick={() => trackEvent('lead_mailto_fallback_opened', { source: 'contact_panel' })} className="flex items-center gap-4 break-all text-base font-bold text-[#d8d0c2] transition-colors hover:text-[#f0c067]">
                   <span className="grid h-12 w-12 shrink-0 place-items-center border border-white/10 bg-white/5"><Mail size={21} /></span>
                   {businessEmail}
                 </a>

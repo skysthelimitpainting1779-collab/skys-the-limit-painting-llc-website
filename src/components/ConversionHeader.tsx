@@ -76,7 +76,7 @@ export default function ConversionHeader() {
 
             {/* Desktop Actions - Conversion Anchor */}
             <div className="hidden items-center md:flex">
-              <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'header' })} className="group flex flex-col items-end gap-0">
+              <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'header' })} className="group flex flex-col items-end gap-0">
                 <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
                 <span className="text-xl sm:text-3xl font-black text-orange-safety tracking-normal leading-none group-hover:text-white transition-colors mt-0.5">651-410-4196</span>
               </a>
@@ -112,7 +112,7 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+              <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
                 Call / Text 651-410-4196
               </a>
             </div>

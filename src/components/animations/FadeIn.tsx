@@ -1,4 +1,4 @@
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, useReducedMotion } from 'motion/react';
 import { useRef, ReactNode, Key } from 'react';
 
 interface FadeInProps {
@@ -13,6 +13,7 @@ interface FadeInProps {
 export default function FadeIn({ children, delay = 0, direction = 'up', fullWidth = false, className = '' }: FadeInProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const prefersReducedMotion = useReducedMotion();
 
   const directionOffset = {
     up: 20,
@@ -28,9 +29,9 @@ export default function FadeIn({ children, delay = 0, direction = 'up', fullWidt
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: xOffset, y: yOffset }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: xOffset, y: yOffset }}
-      transition={{ type: "spring", stiffness: 120, damping: 20, delay }}
+      initial={prefersReducedMotion ? false : { opacity: 0, x: xOffset, y: yOffset }}
+      animate={prefersReducedMotion || isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: xOffset, y: yOffset }}
+      transition={prefersReducedMotion ? { duration: 0 } : { type: "spring", stiffness: 120, damping: 20, delay }}
       className={`${fullWidth ? 'w-full' : ''} ${className}`}
     >
       {children}

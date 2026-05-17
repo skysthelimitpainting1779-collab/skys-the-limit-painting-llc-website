@@ -33,3 +33,47 @@ test('homepage states the approved positioning and avoids forbidden claims', () 
   assert.doesNotMatch(home, /Public-work ambition/i);
   assert.doesNotMatch(home, /Licensed|Bonded|MnDOT-approved|Government-certified|DBE certified|TGB certified|Trusted by government agencies|Awarded public contracts|Workers comp/i);
 });
+
+test('remediation guardrails cover secrets, headers, prerendering, and accessible interactions', () => {
+  const viteConfig = read('vite.config.ts');
+  const packageJson = read('package.json');
+  const vercelConfig = JSON.parse(read('vercel.json'));
+  const prerender = read('scripts/prerender.mjs');
+  const slider = read('src/components/BeforeAfterSlider.tsx');
+  const leadForm = read('src/components/LeadForm.tsx');
+  const leadsApi = read('api/leads.ts');
+
+  assert.doesNotMatch(viteConfig, /GEMINI_API_KEY|VITE_GEMINI_API_KEY/);
+  assert.doesNotMatch(packageJson, /@google\/genai/);
+  assert.match(leadsApi, /function escapeHtml/);
+  assert.match(leadsApi, /escapeHtml\(key\)/);
+  assert.match(leadsApi, /escapeHtml\(value\)/);
+
+  const headerKeys = vercelConfig.headers?.[0]?.headers?.map((header) => header.key) || [];
+  for (const key of [
+    'X-Content-Type-Options',
+    'X-Frame-Options',
+    'Referrer-Policy',
+    'Permissions-Policy',
+    'Strict-Transport-Security',
+    'Content-Security-Policy',
+  ]) {
+    assert.ok(headerKeys.includes(key), `${key} header is missing`);
+  }
+  assert.equal(vercelConfig.rewrites, undefined);
+
+  for (const route of ['/', '/residential', '/commercial', '/public-sector', '/projects', '/about', '/contact', '/404']) {
+    assert.match(prerender, new RegExp(`path: '${route.replace('/', '\\/')}'`));
+  }
+  assert.match(prerender, /404\.html/);
+  assert.match(prerender, /application\/ld\+json/);
+  assert.match(prerender, /fallbackContent/);
+
+  assert.match(slider, /type="range"/);
+  assert.match(slider, /aria-valuetext/);
+  assert.match(slider, /onKeyDown/);
+
+  for (const label of ['Full name', 'Phone', 'Email', 'City', 'Market', 'Project type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project details']) {
+    assert.match(leadForm, new RegExp(`aria-label="${label}"`));
+  }
+});

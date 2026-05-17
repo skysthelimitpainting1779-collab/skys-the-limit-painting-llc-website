@@ -14,6 +14,7 @@ import PublicSectorPage from './pages/PublicSector';
 import ProjectsPage from './pages/Projects';
 import AboutPage from './pages/About';
 import ContactPage from './pages/Contact';
+import NotFoundPage from './pages/NotFound';
 import ScrollToTop from './components/ScrollToTop';
 import { trackEvent } from './lib/analytics';
 
@@ -66,7 +67,7 @@ function AnimatedRoutes() {
         <Route path="/services/striping" element={<Navigate to="/public-sector" replace />} />
         <Route path="/services/pavement-marking" element={<Navigate to="/public-sector" replace />} />
         <Route path="/service-area" element={<Navigate to="/public-sector" replace />} />
-        <Route path="*" element={<Navigate to="/contact" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>
   );

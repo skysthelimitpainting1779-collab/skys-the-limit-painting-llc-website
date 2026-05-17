@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -7,12 +7,14 @@ interface PageTransitionProps {
 }
 
 export default function PageTransition({ children, className = '' }: PageTransitionProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={prefersReducedMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeInOut" }}
+      exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: "easeInOut" }}
       className={className}
     >
       {children}

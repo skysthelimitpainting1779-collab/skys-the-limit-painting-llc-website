@@ -6,6 +6,15 @@ function asText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function escapeHtml(value: unknown) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function validate(payload: Record<string, unknown>) {
   const missing = requiredFields.filter((field) => !asText(payload[field]));
   if (missing.length > 0) {
@@ -26,7 +35,7 @@ function validate(payload: Record<string, unknown>) {
 function buildLeadHtml(payload: Record<string, unknown>) {
   const rows = Object.entries(payload)
     .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(([key, value]) => `<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">${key}</td><td style="padding:6px 10px;border:1px solid #ddd;">${String(value)}</td></tr>`)
+    .map(([key, value]) => `<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">${escapeHtml(key)}</td><td style="padding:6px 10px;border:1px solid #ddd;">${escapeHtml(value)}</td></tr>`)
     .join('');
 
   return `<h1>New Sky's the Limit Painting lead</h1><table style="border-collapse:collapse;">${rows}</table>`;

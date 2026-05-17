@@ -4,6 +4,7 @@ import FadeIn from './animations/FadeIn';
 import PageMeta from './PageMeta';
 import PageTransition from './PageTransition';
 import BookingCta from './BookingCta';
+import ResponsiveImage from './ResponsiveImage';
 import { Market } from '../data/markets';
 import { breadcrumbSchema, serviceSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -56,7 +57,7 @@ export default function MarketPage({ market }: MarketPageProps) {
 
           <FadeIn delay={0.15} direction="left" className="lg:col-span-5">
             <div className="relative overflow-hidden border border-white/15 bg-black-charcoal">
-              <img src={market.image} alt={`${market.title} work example`} className="h-[360px] w-full object-cover opacity-85" />
+              <ResponsiveImage src={market.image} alt={`${market.title} work example`} width={1600} height={900} loading="eager" fetchPriority="high" className="h-[360px] w-full object-cover opacity-85" />
               <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/25 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <p className="max-w-md text-lg font-semibold leading-relaxed text-white">{market.summary}</p>
@@ -126,7 +127,7 @@ export default function MarketPage({ market }: MarketPageProps) {
                   <p className="text-sm font-semibold uppercase tracking-wider text-white">{item}</p>
                 </div>
               ))}
-              <Link to="/contact" onClick={() => trackEvent('cta_click', { label: market.cta, source: market.slug })} className="mt-8 inline-flex w-full items-center justify-center gap-2 bg-orange-safety px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
+              <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: market.cta, source: market.slug })} className="mt-8 inline-flex w-full items-center justify-center gap-2 bg-orange-safety px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
                 {market.cta} <ArrowRight size={18} />
               </Link>
               <BookingCta audience={market.slug === 'residential' ? 'homeowner' : market.slug} className="mt-3 w-full" />

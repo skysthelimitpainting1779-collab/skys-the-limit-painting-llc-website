@@ -14,6 +14,7 @@ import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
 import BookingCta from '../components/BookingCta';
 import LeadForm from '../components/LeadForm';
+import ResponsiveImage from '../components/ResponsiveImage';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { businessSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -112,7 +113,7 @@ const TrustPillar = ({ pillar, index }: { pillar: (typeof trustPillars)[number];
 
   return (
     <FadeIn delay={0.06 * index}>
-      <div className="h-full border-l border-[#c8a45d]/35 bg-[#11100d]/80 p-6">
+      <div className="h-full border-l border-[#c8a45d]/35 bg-[#11100d]/80 p-6" onMouseEnter={() => trackEvent('proof_block_view', { title: pillar.title })}>
         <Icon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
         <h3 className="text-lg font-black leading-tight text-white">{pillar.title}</h3>
         <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{pillar.body}</p>
@@ -179,10 +180,10 @@ export default function HomePage() {
               </span>
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link to="/contact" onClick={() => trackEvent('cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
+              <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
                 Request an Estimate <ArrowRight size={18} />
               </Link>
-              <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Phone size={18} /> Call or Text Anthony
               </a>
               <BookingCta className="sm:hidden" />
@@ -333,7 +334,7 @@ export default function HomePage() {
       <section className="bg-[#e6dfd2] px-4 py-24 text-[#171512] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden border border-[#171512]/15 bg-[#f5f0e7] lg:grid-cols-12">
           <div className="relative min-h-[420px] lg:col-span-5">
-            <img src={supportingImages.commercialReal} alt="Owner-led commercial painting work" className="absolute inset-0 h-full w-full object-cover opacity-90" />
+            <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,21,18,0.72),rgba(23,21,18,0.05))]"></div>
           </div>
           <div className="p-7 md:p-10 lg:col-span-7 lg:p-12">

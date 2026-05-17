@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
 
 export default function CustomCursor() {
+  const prefersReducedMotion = useReducedMotion();
+
   // Use MotionValues instead of React state to completely bypass React's render cycle 
   // on every mouse movement. This keeps pointer animation smooth.
   const cursorX = useMotionValue(-100);
@@ -51,24 +53,20 @@ export default function CustomCursor() {
     };
   }, [cursorX, cursorY, cursorSize]);
 
+  if (prefersReducedMotion) {
+    return null;
+  }
+
   return (
-    <>
-      <style>{`
-        @media (pointer: fine) {
-          body, body * {
-            cursor: none !important;
-          }
-        }
-      `}</style>
-      <motion.div
-        className="hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white will-change-transform"
-        style={{
-          x: smoothX,
-          y: smoothY,
-          width: smoothSize,
-          height: smoothSize,
-        }}
-      />
-    </>
+    <motion.div
+      className="hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white/80 will-change-transform"
+      aria-hidden="true"
+      style={{
+        x: smoothX,
+        y: smoothY,
+        width: smoothSize,
+        height: smoothSize,
+      }}
+    />
   );
 }

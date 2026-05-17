@@ -48,7 +48,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     }
 
     setStatus('submitting');
-    trackEvent('form_start', { source, market: payload.market });
+    trackEvent('lead_form_start', { source, market: payload.market });
 
     try {
       const response = await fetch('/api/leads', {
@@ -62,7 +62,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       if (response.ok && result?.ok === true) {
         setStatus('sent');
         setMessage('Your request was sent. Anthony can follow up by your preferred contact method.');
-        trackEvent('form_submit_success', { source, market: payload.market });
+        trackEvent('lead_form_submit_success', { source, market: payload.market });
         form.reset();
         return;
       }
@@ -70,7 +70,8 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       if (response.status === 501 || result?.fallback === 'email') {
         setStatus('fallback');
         setMessage('Email delivery needs provider setup. Open the prepared email draft to send your request now.');
-        trackEvent('form_submit_error', { source, market: payload.market, reason: 'email_provider_missing' });
+        trackEvent('lead_form_submit_error', { source, market: payload.market, reason: 'email_provider_missing' });
+        trackEvent('lead_mailto_fallback_opened', { source, market: payload.market, reason: 'email_provider_missing' });
         window.location.href = buildEstimateMailto({
           Source: source,
           Name: payload.name,
@@ -90,7 +91,8 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       if (response.ok && result?.ok !== true) {
         setStatus('fallback');
         setMessage('Lead delivery is not available in this environment. Open the prepared email draft to send your request now.');
-        trackEvent('form_submit_error', { source, market: payload.market, reason: 'lead_endpoint_unavailable' });
+        trackEvent('lead_form_submit_error', { source, market: payload.market, reason: 'lead_endpoint_unavailable' });
+        trackEvent('lead_mailto_fallback_opened', { source, market: payload.market, reason: 'lead_endpoint_unavailable' });
         window.location.href = buildEstimateMailto({
           Source: source,
           Name: payload.name,
@@ -109,11 +111,12 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
       setStatus('error');
       setMessage(result?.error || 'The request could not be sent. Please call, text, or email Anthony directly.');
-      trackEvent('form_submit_error', { source, market: payload.market, status: response.status });
+      trackEvent('lead_form_submit_error', { source, market: payload.market, status: response.status });
     } catch {
       setStatus('fallback');
       setMessage('The lead endpoint did not respond. Open the prepared email draft or call/text Anthony directly.');
-      trackEvent('form_submit_error', { source, reason: 'network' });
+      trackEvent('lead_form_submit_error', { source, reason: 'network' });
+      trackEvent('lead_mailto_fallback_opened', { source, reason: 'network' });
       window.location.href = buildEstimateMailto({
         Source: source,
         Name: payload.name,
@@ -130,34 +133,34 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
   return (
     <form className={`grid grid-cols-1 gap-4 ${compact ? 'md:grid-cols-2' : ''}`} onSubmit={handleSubmit}>
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      <input name="name" type="text" placeholder="Full name" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="phone" type="tel" placeholder="Phone" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="email" type="email" placeholder="Email" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="city" type="text" placeholder="City" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <select name="market" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue={defaultMarket}>
+      <input name="name" type="text" placeholder="Full name" aria-label="Full name" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+      <input name="phone" type="tel" placeholder="Phone" aria-label="Phone" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+      <input name="email" type="email" placeholder="Email" aria-label="Email" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+      <input name="city" type="text" placeholder="City" aria-label="City" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+      <select name="market" aria-label="Market" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue={defaultMarket}>
         <option>Residential</option>
         <option>Commercial</option>
         <option>Public Sector</option>
       </select>
-      <select name="projectType" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+      <select name="projectType" aria-label="Project type" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
         <option value="" disabled>Project type</option>
         {projectOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="timeline" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+      <select name="timeline" aria-label="Timeline" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
         <option value="" disabled>Timeline</option>
         {timelineOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="budget" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" defaultValue="">
+      <select name="budget" aria-label="Budget range" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" defaultValue="">
         <option value="" disabled>Budget range</option>
         {budgetOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="contactMethod" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+      <select name="contactMethod" aria-label="Preferred contact method" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
         <option value="" disabled>Preferred contact</option>
         <option>Call</option>
         <option>Text</option>
         <option>Email</option>
       </select>
-      <textarea name="notes" rows={5} placeholder="Project details, surfaces, timeline, COI needs, or photo link" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} required />
+      <textarea name="notes" rows={5} placeholder="Project details, surfaces, timeline, COI needs, or photo link" aria-label="Project details" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} required />
       <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
         {status === 'submitting' ? 'Sending...' : 'Send Project Details'} <ArrowRight size={18} />
       </button>

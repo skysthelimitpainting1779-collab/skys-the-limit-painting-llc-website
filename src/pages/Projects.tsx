@@ -5,8 +5,10 @@ import FadeIn from '../components/animations/FadeIn';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
+import ResponsiveImage from '../components/ResponsiveImage';
 import commercialBeforeImage from '../assets/images/regenerated_image_1778652000603.png';
 import { breadcrumbSchema } from '../lib/seo';
+import { trackEvent } from '../lib/analytics';
 
 const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-sm uppercase tracking-wider">
@@ -22,7 +24,7 @@ const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeIma
         <BeforeAfterSlider beforeImage={beforeImage} afterImage={afterImage} beforeLabel="The Challenge" afterLabel="The Result" />
       ) : (
         <div className="h-[350px] relative">
-          <img src={image} alt={`${type} in ${location}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <ResponsiveImage src={image} alt={`${type} in ${location}`} width={1200} height={700} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-sm">
             {location}
           </div>
@@ -143,7 +145,7 @@ export default function ProjectsPage() {
              <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
                We're ready to put the same level of care into your next project. Contact us today for a free estimate.
              </p>
-             <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-white px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
+             <Link to="/contact" onClick={() => trackEvent('projects_interaction', { action: 'estimate_cta' })} className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-white px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
                 Get Your Free Estimate <ArrowRight size={18} />
              </Link>
            </FadeIn>

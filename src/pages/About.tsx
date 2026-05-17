@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import ResponsiveImage from '../components/ResponsiveImage';
 import { breadcrumbSchema } from '../lib/seo';
 
 export default function AboutPage() {
@@ -38,7 +39,7 @@ export default function AboutPage() {
           <FadeIn delay={0.1} direction="right">
             <div className="relative group overflow-hidden rounded-sm border border-white/20 shadow-md">
               {/* Fallback image as we don't have owner photo in public dir yet */}
-              <img src="/images/services/interior/sky-work-real-04-before-after-bedroom.png" alt="Owner working" className="w-full aspect-square object-cover" />
+              <ResponsiveImage src="/images/services/interior/sky-work-real-04-before-after-bedroom.png" alt="Owner working" width={900} height={900} className="w-full aspect-square object-cover" />
               <div className="absolute inset-0 bg-black-primary/10"></div>
             </div>
           </FadeIn>

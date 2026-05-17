@@ -11,7 +11,10 @@ interface PageMetaProps {
 
 const defaultImage = '/brand/remotion/sky-premium-market-hero-v2.png';
 
-const siteUrl = (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/$/, '');
+function getSiteUrl() {
+  const fallback = typeof window === 'undefined' ? 'https://skysthelimitpaintingllc.com' : window.location.origin;
+  return (import.meta.env.VITE_SITE_URL || fallback).replace(/\/$/, '');
+}
 
 function upsertMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
   let tag = document.querySelector(selector);
@@ -35,6 +38,7 @@ function upsertLink(rel: string, href: string) {
 
 export default function PageMeta({ title, description, path, image = defaultImage, type = 'website', schema }: PageMetaProps) {
   useEffect(() => {
+    const siteUrl = getSiteUrl();
     const pagePath = path || window.location.pathname;
     const canonicalUrl = `${siteUrl}${pagePath === '/' ? '' : pagePath}`;
     const imageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;

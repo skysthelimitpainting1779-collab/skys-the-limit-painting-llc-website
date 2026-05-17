@@ -22,11 +22,11 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Mobile Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex gap-2">
-        <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'mobile_sticky' })} className="min-w-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
+        <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'mobile_sticky' })} className="min-w-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
           <Phone size={16} className="text-orange-safety shrink-0" />
           Call/Text
         </a>
-        <Link to="/contact" onClick={() => trackEvent('cta_click', { source: 'mobile_sticky', label: 'Estimate' })} className="min-w-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+        <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Estimate' })} className="min-w-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
           Estimate
         </Link>
       </div>
@@ -42,8 +42,8 @@ export default function Layout({ children }: LayoutProps) {
               An insured, owner-operated Minnesota painting contractor serving residential, commercial, and public-sector opportunities from Inver Grove Heights across the Twin Cities area.
             </p>
             <div className="mt-8">
-               <a href="tel:651-410-4196" onClick={() => trackEvent('click_call', { source: 'footer' })} className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
-               <a href="mailto:skysthelimitpainting1779@gmail.com" onClick={() => trackEvent('click_email', { source: 'footer' })} className="text-gray-400 hover:text-white transition-colors">skysthelimitpainting1779@gmail.com</a>
+               <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'footer' })} className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
+               <a href="mailto:skysthelimitpainting1779@gmail.com" onClick={() => trackEvent('lead_mailto_fallback_opened', { source: 'footer' })} className="text-gray-400 hover:text-white transition-colors">skysthelimitpainting1779@gmail.com</a>
             </div>
             <SocialLinks />
           </div>
