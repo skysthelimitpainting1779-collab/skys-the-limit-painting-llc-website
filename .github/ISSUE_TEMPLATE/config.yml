@@ -1,8 +1,5 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: Documentation
+  - name: Repository
     url: https://github.com/skysthelimitpainting1779-collab/website
-    about: Read our documentation
-  - name: Discussions
-    url: https://github.com/skysthelimitpainting1779-collab/website/discussions
-    about: Join our community discussions
+    about: View the website repository.
