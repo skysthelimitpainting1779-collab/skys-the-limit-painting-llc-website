@@ -1,0 +1,167 @@
+import { Building2, ClipboardCheck, Home, Landmark, LucideIcon, PaintRoller, Ruler, ShieldCheck, TrafficCone } from 'lucide-react';
+import exteriorImage from '../assets/images/regenerated_image_1778651987756.png';
+import prepImage from '../assets/images/regenerated_image_1778652000603.png';
+
+export type MarketSlug = 'residential' | 'commercial' | 'public-sector';
+
+export interface MarketCapability {
+  title: string;
+  body: string;
+}
+
+export interface Market {
+  slug: MarketSlug;
+  navLabel: string;
+  number: string;
+  title: string;
+  headline: string;
+  summary: string;
+  description: string;
+  image: string;
+  icon: LucideIcon;
+  accent: string;
+  proof: string[];
+  capabilities: MarketCapability[];
+  process: MarketCapability[];
+  cta: string;
+  metaTitle: string;
+  metaDescription: string;
+}
+
+export const markets: Market[] = [
+  {
+    slug: 'residential',
+    navLabel: 'Residential',
+    number: '01',
+    title: 'Residential Painting',
+    headline: 'Careful painting for homes that deserve clean prep and a better finish.',
+    summary: 'Clean prep, careful protection, sharp lines, and finishes that respect the home.',
+    description:
+      'Residential work is where trust matters most. Sky’s the Limit Painting brings owner-led accountability, clean communication, surface prep, careful protection, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
+    image: '/images/services/interior/sky-work-02-finished-living-room.png',
+    icon: Home,
+    accent: 'Warm detail',
+    proof: ['Interior and exterior repainting', 'Trim, doors, walls, ceilings, and prep', 'Clean protection and final walkthrough'],
+    capabilities: [
+      {
+        title: 'Interior Finish Work',
+        body: 'Walls, ceilings, trim, doors, and detail areas painted with careful masking, clean lines, and respect for the space.',
+      },
+      {
+        title: 'Exterior Refreshes',
+        body: 'Exterior surfaces approached with prep-first thinking, weather awareness, and attention to curb appeal.',
+      },
+      {
+        title: 'Prep And Protection',
+        body: 'Patching, sanding, caulking, masking, covering, and cleanup treated as part of the job, not an afterthought.',
+      },
+    ],
+    process: [
+      { title: 'Walk The Space', body: 'Confirm rooms, surfaces, access, protection needs, finish expectations, and timeline.' },
+      { title: 'Protect And Prep', body: 'Cover surfaces, patch problem areas, sand, caulk, mask, and prime where needed.' },
+      { title: 'Paint With Control', body: 'Apply clean coats with attention to lines, coverage, sheen, and the feel of the finished room.' },
+      { title: 'Review And Clean', body: 'Walk the work, clean the area, and confirm the details before wrapping the job.' },
+    ],
+    cta: 'Plan A Residential Project',
+    metaTitle: 'Residential Painting | Sky’s the Limit Painting LLC',
+    metaDescription:
+      'Residential painting in Inver Grove Heights and the Twin Cities Metro with clean prep, careful protection, owner accountability, and sharp finish work.',
+  },
+  {
+    slug: 'commercial',
+    navLabel: 'Commercial',
+    number: '02',
+    title: 'Commercial Painting',
+    headline: 'Reliable commercial painting for properties where presentation and schedule matter.',
+    summary:
+      'Professional painting for businesses, shops, offices, facilities, and properties where presentation and reliability matter.',
+    description:
+      'Commercial projects need more than paint on walls. They need a contractor who communicates clearly, respects occupied spaces, keeps the jobsite organized, and understands that the finished property has to look ready for customers, tenants, staff, and ownership.',
+    image: '/images/services/commercial/sky-work-08-finished-commercial.png',
+    icon: Building2,
+    accent: 'Commercial discipline',
+    proof: ['Commercial interiors and exteriors', 'Retail, office, shop, and facility repainting', 'Schedule-aware communication'],
+    capabilities: [
+      {
+        title: 'Business Interiors',
+        body: 'Interior repainting for shops, offices, retail spaces, workrooms, and commercial areas that need a sharper presentation.',
+      },
+      {
+        title: 'Property Refreshes',
+        body: 'Commercial exterior and common-area painting with a focus on curb appeal, durability, and clean execution.',
+      },
+      {
+        title: 'Occupied-Space Awareness',
+        body: 'Communication around access, timing, protection, and cleanup so the work fits the business environment.',
+      },
+    ],
+    process: [
+      { title: 'Define The Scope', body: 'Clarify surfaces, access, schedule windows, disruption risks, materials, and finish expectations.' },
+      { title: 'Prep The Property', body: 'Protect floors, fixtures, merchandise, office areas, and surrounding surfaces before coating starts.' },
+      { title: 'Execute Cleanly', body: 'Work with steady communication, organized staging, and a finish that improves the property.' },
+      { title: 'Close The Loop', body: 'Review completion items, cleanup, touchups, and any documentation needed for the job record.' },
+    ],
+    cta: 'Discuss A Commercial Job',
+    metaTitle: 'Commercial Painting | Sky’s the Limit Painting LLC',
+    metaDescription:
+      'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized communication, clean execution, and durable finishes.',
+  },
+  {
+    slug: 'public-sector',
+    navLabel: 'Public Sector',
+    number: '03',
+    title: 'Public Sector Opportunities',
+    headline: 'Built for city, county, and state painting opportunities as the company grows.',
+    summary:
+      'Built with a long-term focus on city, county, and state painting opportunities, including facility repainting, pavement marking, striping, light poles, guardrails, and public-space work.',
+    description:
+      'Sky’s the Limit Painting is preparing to compete for public-sector painting, facility, and pavement-marking work across Minnesota. The focus is documentation, scope clarity, safety awareness, follow-through, and the trade discipline public work requires.',
+    image: '/images/services/striping/SkyLLP_ParkingLot_Striping.png',
+    icon: Landmark,
+    accent: 'Public-sector ready',
+    proof: ['COI available for qualified opportunities', 'General liability coverage in place', 'Commercial auto and tools/equipment coverage in place'],
+    capabilities: [
+      {
+        title: 'Facilities And Public Spaces',
+        body: 'Facility repainting, public-building surfaces, interior and exterior maintenance painting, and public-facing property refreshes.',
+      },
+      {
+        title: 'Marking And Striping',
+        body: 'Pavement marking, parking-lot striping, road-striping opportunities, traffic-flow markings, and safety visibility work where appropriate.',
+      },
+      {
+        title: 'Infrastructure Surfaces',
+        body: 'Light pole painting, guardrail painting, sign painting, and exterior specialty surfaces approached as capability and readiness targets.',
+      },
+    ],
+    process: [
+      { title: 'Document The Scope', body: 'Clarify surfaces, quantities, access, requirements, schedule, safety notes, and submission expectations.' },
+      { title: 'Prepare The Work', body: 'Plan prep, protection, materials, equipment, traffic or access considerations, and communication checkpoints.' },
+      { title: 'Execute To Spec', body: 'Work toward clear scope requirements, clean staging, surface prep, coating quality, and jobsite follow-through.' },
+      { title: 'Verify Completion', body: 'Confirm visible finish, cleanup, punch items, photos, and documentation requested for qualified opportunities.' },
+    ],
+    cta: 'Discuss Public-Sector Readiness',
+    metaTitle: 'Public Sector Painting Opportunities | Sky’s the Limit Painting LLC',
+    metaDescription:
+      'Sky’s the Limit Painting is preparing to compete for Minnesota city, county, and state painting, facility, striping, and pavement-marking opportunities.',
+  },
+];
+
+export const marketBySlug = markets.reduce<Record<MarketSlug, Market>>((acc, market) => {
+  acc[market.slug] = market;
+  return acc;
+}, {} as Record<MarketSlug, Market>);
+
+export const trustPillars = [
+  { title: 'Insured Minnesota Painting Contractor', body: 'General liability coverage in place.', icon: ShieldCheck },
+  { title: 'Owner-Operated And Trade-Built', body: 'Led by Anthony Briseno with Journeyworker Painter & Decorator apprenticeship background.', icon: PaintRoller },
+  { title: 'Commercial Auto And Tools Coverage', body: 'Coverage in place for serious residential, commercial, and qualified public-sector opportunities.', icon: ClipboardCheck },
+  { title: 'Scope Clarity And Follow-Through', body: 'Built around clear communication, prepared surfaces, clean execution, and a finished record.', icon: Ruler },
+];
+
+export const supportingImages = {
+  exterior: exteriorImage,
+  prep: prepImage,
+  commercialReal: '/images/services/commercial/sky-work-real-08-commercial.png',
+  interiorBeforeAfter: '/images/services/interior/sky-work-real-04-before-after-bedroom.png',
+};

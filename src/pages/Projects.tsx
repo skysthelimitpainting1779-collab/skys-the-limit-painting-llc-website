@@ -5,6 +5,7 @@ import FadeIn from '../components/animations/FadeIn';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
+import commercialBeforeImage from '../assets/images/regenerated_image_1778652000603.png';
 
 const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-sm uppercase tracking-wider">
@@ -68,7 +69,7 @@ export default function ProjectsPage() {
           <FadeIn>
             <div className="max-w-3xl">
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Our Work</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Real Surfaces.<br/>Real Finish.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Real Surfaces.<br/>Real Finish.</h1>
               <p className="text-xl text-gray-300 max-w-xl">
                 Take a look at some of our recent verifiable interior, exterior, and commercial painting projects across the Twin Cities.
               </p>
@@ -87,7 +88,7 @@ export default function ProjectsPage() {
                 problem="Client needed a dark, modern look for a smoke shop storefront without replacing the existing ceiling grid, which was stained and discolored."
                 prep={["Grid cleaning", "Floor protection", "Masking fixtures", "Adhesion primer"]}
                 result="Darker, cleaner, more finished commercial interior that completely transformed the space and saved thousands on ceiling replacement."
-                beforeImage="/images/backup/Sky_LLP_Painting_Photo_004.jpg" 
+                beforeImage={commercialBeforeImage} 
                 afterImage="/images/services/commercial/sky-work-08-finished-commercial.png"
               />
              </FadeIn>
@@ -98,7 +99,7 @@ export default function ProjectsPage() {
                 problem="Bedroom walls, trim, and doors had heavy scuffs, dated colors, and water stains from a prior leak."
                 prep={["Drywall patching", "Stain-blocking primer", "Trim sanding", "Dust containment"]}
                 result="A clean, modernized bedroom with sharp lines, zero bleed on the trim, and perfectly even coverage."
-                beforeImage="/images/backup/Sky_LLP_Painting_Photo_003.jpg"
+                beforeImage="/images/services/interior/sky-work-01-finished-kitchen.png"
                 afterImage="/images/services/interior/sky-work-real-04-before-after-bedroom.png"
               />
              </FadeIn>

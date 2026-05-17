@@ -26,11 +26,11 @@ export default function HeroLeadMagnet() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 text-xs font-bold uppercase tracking-widest text-gray-300">
         <div className="flex items-center gap-2">
           <Star size={16} className="text-orange-safety" fill="currentColor" />
-          <span>5-Star Local Ratings</span>
+          <span>Project Photos First</span>
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck size={16} className="text-orange-safety" />
-          <span>Licensed & Insured</span>
+          <span>Free Estimates</span>
         </div>
         <div className="flex items-center gap-2">
           <CheckCircle2 size={16} className="text-orange-safety" />

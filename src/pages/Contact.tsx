@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import { openEstimateEmail } from '../lib/contact';
 
 export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
@@ -12,10 +13,20 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('submitting');
-    // Simulate API call
-    setTimeout(() => {
-      setFormStatus('success');
-    }, 1500);
+
+    const requestData = new FormData(e.currentTarget as HTMLFormElement);
+    openEstimateEmail({
+      Source: 'Contact estimate wizard',
+      'Project type': formData.projectType,
+      Timeline: formData.timeline,
+      'Full name': String(requestData.get('fullName') || ''),
+      Phone: String(requestData.get('phone') || ''),
+      Email: String(requestData.get('email') || ''),
+      'ZIP code': String(requestData.get('zipCode') || ''),
+      'Project details': String(requestData.get('projectDetails') || ''),
+    });
+
+    setFormStatus('success');
   };
 
   return (
@@ -28,7 +39,7 @@ export default function ContactPage() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Contact Us</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Get A Clear<br/>Estimate.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Get A Clear<br/>Estimate.</h1>
               <p className="text-xl text-gray-300 max-w-xl mx-auto">
                 No hidden fees. Just an honest assessment for your next painting or striping project.
               </p>
@@ -84,8 +95,8 @@ export default function ContactPage() {
                 <div className="w-20 h-20 bg-green-900/40 text-green-500 rounded-full flex items-center justify-center border border-green-500/20">
                   <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
-                <h3 className="text-3xl font-bold font-display uppercase tracking-wide text-white">Request Sent</h3>
-                <p className="text-gray-300 text-lg">Thank you. We've received your request and will be in touch shortly.</p>
+                <h3 className="text-3xl font-bold font-display uppercase tracking-wide text-white">Email Draft Opened</h3>
+                <p className="text-gray-300 text-lg">Send the draft from your email app, or call/text 651-410-4196 for the fastest response.</p>
                 <button onClick={() => {setFormStatus('idle'); setStep(1);}} className="mt-4 bg-black-primary hover:bg-black-primary/80 border border-white/20 text-white font-bold uppercase tracking-widest text-sm py-4 px-8 rounded-sm transition-colors">
                   Send Another Request
                 </button>
@@ -184,20 +195,21 @@ export default function ContactPage() {
                       <label className="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Step 3: Contact Details</label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div>
-                            <input type="text" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Full Name" />
+                            <input name="fullName" type="text" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Full Name" />
                           </div>
                           <div>
-                            <input type="tel" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Phone Number" />
+                            <input name="phone" type="tel" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Phone Number" />
                           </div>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                          <input type="email" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Email Address" />
+                          <input name="email" type="email" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Email Address" />
                         </div>
                         <div>
-                          <input type="text" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Zip Code" />
+                          <input name="zipCode" type="text" className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium" required disabled={formStatus === 'submitting'} placeholder="Zip Code" />
                         </div>
                       </div>
+                      <textarea name="projectDetails" rows={4} className="w-full border-b border-white/20 bg-black-primary p-3 outline-none focus:border-orange-safety transition-colors text-white placeholder-gray-600 font-medium resize-none" required disabled={formStatus === 'submitting'} placeholder="Tell us about the surface, rooms, timeline, or address area"></textarea>
                       <div className="flex gap-4 mt-6">
                         <button 
                           type="button" 
@@ -211,9 +223,9 @@ export default function ContactPage() {
                           {formStatus === 'submitting' ? (
                             <>
                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                               Sending...
+                               Opening...
                             </>
-                          ) : 'Submit Request'}
+                          ) : 'Open Email Draft'}
                         </button>
                       </div>
                     </div>

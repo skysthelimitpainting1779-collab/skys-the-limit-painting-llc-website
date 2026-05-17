@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Paintbrush } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
@@ -39,13 +39,13 @@ export default function ConversionHeader() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/70 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]'}`}>
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/78 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}>
         
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto w-full flex justify-between items-center text-[10px] md:text-[11px] uppercase tracking-widest text-white/70 font-bold">
-            <span>Serving the Twin Cities Metro</span>
-            <span>Licensed, Bonded, Insured.</span>
+          <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[10px] md:text-[11px] uppercase tracking-widest text-white/70 font-bold">
+            <span className="truncate">Insured Minnesota Painting Contractor</span>
+            <span className="hidden sm:inline truncate">Owner-operated in Inver Grove Heights.</span>
           </div>
         </div>
 
@@ -53,26 +53,30 @@ export default function ConversionHeader() {
         <div className={`py-4`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white flex items-center justify-center rounded-sm">
-                <Paintbrush size={28} className="text-[#050505]" />
+              <div className="grid h-14 w-14 place-items-center overflow-hidden border border-white/12 bg-white p-1.5">
+                <img src="/brand/SkyLLP_BrandLogo.svg" alt="Sky's the Limit Painting LLC" className="h-full w-full object-contain" />
               </div>
-              <span className="font-display font-bold text-2xl tracking-tight hidden sm:block text-white leading-none">SKY'S<br/><span className="text-sm uppercase tracking-widest text-orange-safety">THE LIMIT</span></span>
+              <span className="font-display hidden text-xl font-black leading-none tracking-normal text-white sm:block">
+                SKY'S THE LIMIT
+                <span className="mt-1 block text-[10px] uppercase tracking-[0.28em] text-[#f0c067]">Painting LLC</span>
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8">
-              <NavLink to="/services">Services</NavLink>
+              <NavLink to="/residential">Residential</NavLink>
+              <NavLink to="/commercial">Commercial</NavLink>
+              <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
-              <NavLink to="/#reviews">Reviews</NavLink>
-              <NavLink to="/service-area">Service Area</NavLink>
+              <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </nav>
 
             {/* Desktop Actions - Conversion Anchor */}
-            <div className="flex items-center">
+            <div className="hidden items-center md:flex">
               <a href="tel:651-410-4196" className="group flex flex-col items-end gap-0">
                 <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">FREE QUOTE:</span>
-                <span className="text-xl sm:text-3xl font-black text-orange-safety tracking-tighter leading-none group-hover:text-white transition-colors mt-0.5">651-410-4196</span>
+                <span className="text-xl sm:text-3xl font-black text-orange-safety tracking-normal leading-none group-hover:text-white transition-colors mt-0.5">651-410-4196</span>
               </a>
             </div>
 
@@ -98,10 +102,11 @@ export default function ConversionHeader() {
           >
             <nav className="flex flex-col gap-6 text-xl">
               <NavLink to="/">Home</NavLink>
-              <NavLink to="/services">Services</NavLink>
+              <NavLink to="/residential">Residential</NavLink>
+              <NavLink to="/commercial">Commercial</NavLink>
+              <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
-              <NavLink to="/#reviews">Reviews</NavLink>
-              <NavLink to="/service-area">Service Area</NavLink>
+              <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">

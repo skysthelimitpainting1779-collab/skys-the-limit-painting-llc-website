@@ -51,11 +51,12 @@
 - Recommended use: Striping Service Card, Offer Wall
 - Alt text: "Crisp safety yellow parking lot striping lines."
 
-## Unsorted / Base Assets
-`Sky_LLP_Painting_Photo_001.jpg` to `Sky_LLP_Painting_Photo_005.jpg`
-- General painting photos. Can be used for Exterior, Light pole, and surface prep categories by semantic mapping until specific photos are known.
+## Removed / Not For Public Use
+`public/images/backup/Sky_LLP_Painting_Photo_001.jpg` to `Sky_LLP_Painting_Photo_005.jpg`
+- Removed from the public website asset path.
+- These were not verified marketing photos and should not be published or referenced by the site.
 
-## Backup / Generated Placeholders
+## Generated Support Images
 `src/assets/images/regenerated_image_...png` files
-- To be used as backup placeholders for missing specific services like Light Pole or Surface Prep, mapped semantically.
+- Use only as supporting service imagery when no verified company-owned photo exists for that surface or service.
 

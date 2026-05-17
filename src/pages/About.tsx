@@ -15,7 +15,7 @@ export default function AboutPage() {
           <FadeIn>
             <div className="max-w-3xl">
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">About Us</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Built By A Painter.<br/>Not A Sales Office.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Built By A Painter.<br/>Not A Sales Office.</h1>
               <p className="text-xl text-gray-300 max-w-xl">
                 Serving the Twin Cities with proper surface preparation and a focus on lasting results.
               </p>

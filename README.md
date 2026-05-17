@@ -31,7 +31,7 @@ This project is Vercel-ready and Netlify-ready.
 3. Use the default build settings (`npm run build` with the `dist` output directory).
 4. Deploy the application.
 
-*For Vercel:* Ensure that you enable standard Single Page App routing in `vercel.json` if necessary, though typical Vite configurations handle this automatically.
+*For Vercel:* This repo includes `vercel.json` with a Single Page App rewrite so deep links such as `/services/exterior` resolve to the React app.
 
 ## Delivered Pages
 
@@ -48,8 +48,9 @@ This project is Vercel-ready and Netlify-ready.
 
 ## Asset Usage Notes
 
-- All original logo, branding, and work photo assets were not provided in the environment. We've utilized dynamic and contextual placeholder images (via `picsum.photos`) throughout the design to indicate exactly what dimensions and visual content type should go where.
-- **Replacing placehoders**: Place your actual images in the `public` folder and reference them directly in the React components (e.g., `<img src="/images/exterior-hero.jpg" />`).
+- The site now uses the verified safe service images in `public/images/services` plus generated support images in `src/assets/images`.
+- Public backup image scans were removed from the deployable site because they were not verified marketing assets.
+- **Replacing placeholders**: Place actual marketing images in the `public` folder and reference them directly in the React components (e.g., `<img src="/images/exterior-hero.jpg" />`).
 
 ## Missing Asset List
 
@@ -57,28 +58,27 @@ This project is Vercel-ready and Netlify-ready.
 - **Hero Photography**: Need a high-resolution, un-distorted photo of the crew working or a completed premium project for the homepage.
 - **Anthony's Headshot**: Need a clear, trustworthy photo for the About section.
 - **Projects Gallery Photos**: High-quality interior/exterior before-and-after shots, including the smoke shop ceiling.
-- **Insurance Documents / Certifications**: If any exist, you can add verification badges to the Trust Strip section (`src/pages/Home.tsx`).
+- **Insurance Documents / Certifications**: If active documents exist later, add them only after verification. Until then, do not claim "licensed," "bonded," "insured," or specialty certifications.
 
 ## Claim Guardrail Checklist
 
-✅ **Insurance**: Mentioned correctly without claiming "fully insured". The FAQ copy carefully notes that insurance documentation is being finalized and available upon request.
-✅ **Local Area**: Restricted realistically to Twin Cities, Inver Grove Heights, and surrounding regions.
-✅ **Certifications**: Kept strictly to what was provided (Journeyworker Painter & Decorator apprenticeship). No fake DBE or government-approved vendor icons used.
-✅ **Owner-Operated**: Emphasized.
-✅ **Reviews**: Created a clean "Reviews coming soon" block, avoiding the use of fake star reviews to preserve 100% legal truth and trust.
+- **Insurance**: Mentioned carefully without claiming "fully insured." The FAQ says general liability is being finalized and documentation should be confirmed before jobs requiring a COI.
+- **Local Area**: Restricted realistically to Twin Cities, Inver Grove Heights, and surrounding regions.
+- **Certifications**: Kept strictly to what was provided: Journeyworker Painter & Decorator apprenticeship. No fake DBE, government-approved vendor, EPA, licensed, or bonded claims are used.
+- **Owner-Operated**: Emphasized.
+- **Reviews**: Replaced fake testimonials and inflated star counts with an honest project proof / reviews-coming-soon section.
 
-## Final QA Report
+## Verification Notes
 
-- **Mobile Completeness**: Target touch targets scaled correctly. The sticky button structure works flawlessly on `<=768px`.
-- **Accessibility**: Checked for high contrast, semantic header levels (H1 to H3 hierarchy respected), and clear ARIA affordances where possible using standard Tailwind UI constructs.
-- **Performance**: Heavy hero images use optimized layouts. Added smooth un-styled `<PageMeta />` insertion, eliminating any layout shift that usually comes from heavy client-side helmet variations.
-- **Build**: Successfully built without errors or `tsc` warnings.
+- Run `npm run build` before deploying.
+- Run `npm run lint` for TypeScript validation.
+- Browser-check the homepage, `/services`, `/projects`, and `/contact` after visual or copy changes.
 
 ## Image Usage Directory
 
-- `Home.tsx`: Hero background (1920x1080), Anthony Headshot (800x800), Smoke Shop (800x600), Exterior Placeholder (800x600), Striping Placeholder (800x600)
-- `Projects.tsx`: Smoke Shop (800x600), Exterior Placeholder (800x600), Striping Placeholder (800x600)
-- `About.tsx`: Anthony Headshot (800x800)
+- `Home.tsx`: Hero background (1920x1080), service/project proof images, striping showcase, commercial proof image
+- `Projects.tsx`: Commercial refresh, interior repaint, striping showcase, living room finish
+- `About.tsx`: Interior project image until a verified owner headshot is available
 - `ServiceInterior.tsx`: Interior Showcase (1200x600)
 - `ServiceExterior.tsx`: Exterior Showcase (1200x600)
 - `ServiceCommercial.tsx`: Commercial Showcase (1200x600)
@@ -87,6 +87,6 @@ This project is Vercel-ready and Netlify-ready.
 ## Unresolved TODOs
 
 - **Add Google Analytics / Plausible tracking snippet**: Added HTML comment locally in `/index.html`.
-- **Form Action Validation**: The `/contact` form currently mocks a successful 1.5s network delay and shows a green success tag. You must bind this via `fetch` to whatever endpoint (e.g., Formspree, Resend, etc.) you use to process emails.
-- **Swap out `picsum.photos` links**: Insert the actual directory sources once the business owner shares them.
+- **Form Backend**: Estimate forms currently open a prefilled email draft to `skysthelimitpainting1779@gmail.com`. Add a real backend later if the owner wants submissions stored or emailed automatically.
+- **Owner Headshot**: Insert a real owner photo once approved for website use.
 - **Swap out the generic icon (`<Paintbrush />`)** in the navbar for the real company `logo.svg`.

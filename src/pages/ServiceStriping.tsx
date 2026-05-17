@@ -19,7 +19,7 @@ export default function ServiceStriping() {
           <div className="flex-1">
             <FadeIn>
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Line Striping Services</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Clear Lines.<br/>Compliant Lots.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Clear Lines.<br/>Compliant Lots.</h1>
               <p className="text-xl text-gray-300 max-w-xl mb-8">
                 A clean, clearly marked parking lot is the first impression customers have of your business. We provide sharp, durable pavement marking.
               </p>
@@ -92,7 +92,7 @@ export default function ServiceStriping() {
           <FadeIn>
             <div className="text-center mb-12">
                <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">Project Proof</span>
-               <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">Recent Striping Work</h2>
+               <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-normal">Recent Striping Work</h2>
             </div>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -106,9 +106,9 @@ export default function ServiceStriping() {
              </FadeIn>
              <FadeIn delay={0.2}>
                 <div className="group rounded-sm overflow-hidden border border-white/10 relative h-[300px]">
-                  <img src="/images/backup/Sky_LLP_Painting_Photo_005.jpg" alt="Commercial Exterior Space" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                  <img src="/images/services/commercial/sky-work-real-08-commercial.png" alt="Commercial painting project proof" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black-primary/90 to-transparent p-6 pt-12">
-                    <span className="text-white font-bold uppercase tracking-wider text-sm">Specialty Lot Prep</span>
+                    <span className="text-white font-bold uppercase tracking-wider text-sm">Commercial Prep Reference</span>
                   </div>
                 </div>
              </FadeIn>

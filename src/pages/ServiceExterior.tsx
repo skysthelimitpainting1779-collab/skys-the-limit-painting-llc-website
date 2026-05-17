@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import exteriorImage from '../assets/images/regenerated_image_1778651987756.png';
 
 export default function ServiceExterior() {
   return (
@@ -12,14 +13,14 @@ export default function ServiceExterior() {
       {/* Hero */}
       <section className="relative bg-black-primary pt-24 pb-32 overflow-hidden px-6 shadow-inner border-b border-white/10">
         <div className="absolute inset-0 z-0">
-          <img src="/images/backup/Sky_LLP_Painting_Photo_002.jpg" alt="Exterior Painting" className="w-full h-full object-cover opacity-40" />
+          <img src={exteriorImage} alt="Exterior Painting" className="w-full h-full object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-r from-black-primary via-black-primary/95 to-transparent"></div>
         </div>
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
             <FadeIn>
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Exterior Painting Services</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Protection Against<br/>The Elements.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Protection Against<br/>The Elements.</h1>
               <p className="text-xl text-gray-300 max-w-xl mb-8">
                 Minnesota weather is brutal on exterior surfaces. Success outside relies 80% on preparation and 20% on application. We do not skip corners.
               </p>
@@ -35,7 +36,7 @@ export default function ServiceExterior() {
           </div>
           <div className="flex-1 hidden md:block">
             <FadeIn delay={0.2} direction="left">
-               <img src="/images/backup/Sky_LLP_Painting_Photo_002.jpg" alt="Exterior Painting Prep" className="rounded-sm border border-white/20 shadow-2xl w-full -rotate-2" />
+               <img src={exteriorImage} alt="Exterior Painting Prep" className="rounded-sm border border-white/20 shadow-2xl w-full -rotate-2" />
             </FadeIn>
           </div>
         </div>

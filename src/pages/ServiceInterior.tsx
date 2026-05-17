@@ -19,7 +19,7 @@ export default function ServiceInterior() {
           <div className="flex-1">
             <FadeIn>
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Interior Painting Services</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Clean Walls.<br/>Sharp Lines.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Clean Walls.<br/>Sharp Lines.</h1>
               <p className="text-xl text-gray-300 max-w-xl mb-8">
                 Precision interior painting that protects surfaces and makes rooms feel new again. Handled with care and careful masking from start to finish.
               </p>
@@ -94,7 +94,7 @@ export default function ServiceInterior() {
           <FadeIn>
             <div className="text-center mb-12">
                <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">Project Proof</span>
-               <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">Recent Interior Work</h2>
+               <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-normal">Recent Interior Work</h2>
             </div>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

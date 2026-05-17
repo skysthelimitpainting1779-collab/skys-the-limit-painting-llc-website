@@ -29,10 +29,11 @@
   body {
     @apply font-body bg-page-bg text-page-text antialiased selection:bg-orange-safety/20;
     min-height: 100dvh;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight;
+    @apply font-display tracking-normal;
   }
 }
 
@@ -49,6 +50,43 @@
 
   .perspective-1000 {
     perspective: 1000px;
+  }
+
+  .blueprint-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  .road-rule {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 90, 0, 0.9) 0 80px,
+      transparent 80px 112px
+    );
+  }
+
+  .measurement-rules {
+    background-image:
+      linear-gradient(90deg, rgba(240, 192, 103, 0.22) 0 1px, transparent 1px),
+      linear-gradient(rgba(216, 199, 170, 0.14) 0 1px, transparent 1px);
+    background-size: 96px 100%, 100% 96px;
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.85), transparent 75%);
+  }
+
+  .market-panel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .market-panel::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff5a00, transparent);
+    opacity: 0.65;
   }
 
   .text-balance {

@@ -35,9 +35,9 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
           <div className="col-span-1 md:col-span-2">
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
-            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 uppercase tracking-wide">Twin Cities Metro & Inver Grove Heights</h3>
+            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 uppercase tracking-wide">Residential Detail. Commercial Discipline. Public-Sector Ready.</h3>
             <p className="text-gray-400 max-w-md text-lg">
-              Professional painting done right for homes, businesses, and specialty surfaces. We are proudly based in Inver Grove Heights and serve the entire Twin Cities area.
+              An insured, owner-operated Minnesota painting contractor serving residential, commercial, and public-sector opportunities from Inver Grove Heights across the Twin Cities area.
             </p>
             <div className="mt-8">
                <a href="tel:651-410-4196" className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
@@ -46,13 +46,12 @@ export default function Layout({ children }: LayoutProps) {
           </div>
           
           <div>
-            <h4 className="font-bold mb-6 text-lg">Services</h4>
+            <h4 className="font-bold mb-6 text-lg">Markets</h4>
             <nav className="flex flex-col gap-4 text-gray-400">
-              <Link to="/services/interior" className="hover:text-orange-safety transition-colors">Interior Painting</Link>
-              <Link to="/services/exterior" className="hover:text-orange-safety transition-colors">Exterior Painting</Link>
-              <Link to="/services/commercial" className="hover:text-orange-safety transition-colors">Commercial Painting</Link>
-              <Link to="/services/striping" className="hover:text-orange-safety transition-colors">Pavement Marking</Link>
-              <Link to="/contact" className="hover:text-orange-safety transition-colors">Surface Prep</Link>
+              <Link to="/residential" className="hover:text-orange-safety transition-colors">Residential</Link>
+              <Link to="/commercial" className="hover:text-orange-safety transition-colors">Commercial</Link>
+              <Link to="/public-sector" className="hover:text-orange-safety transition-colors">Public Sector</Link>
+              <Link to="/projects" className="hover:text-orange-safety transition-colors">Recent Work</Link>
             </nav>
           </div>
 
@@ -61,7 +60,6 @@ export default function Layout({ children }: LayoutProps) {
              <nav className="flex flex-col gap-4 text-gray-400">
               <Link to="/about" className="hover:text-orange-safety transition-colors">About Anthony</Link>
               <Link to="/projects" className="hover:text-orange-safety transition-colors">Recent Work</Link>
-              <Link to="/service-area" className="hover:text-orange-safety transition-colors">Service Area</Link>
               <Link to="/contact" className="hover:text-orange-safety transition-colors">Get an Estimate</Link>
             </nav>
           </div>

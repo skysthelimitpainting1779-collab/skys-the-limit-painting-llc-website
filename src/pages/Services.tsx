@@ -3,6 +3,9 @@ import { ArrowRight, CheckCircle2, Home, Building2, PaintRoller, GripHorizontal,
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import exteriorImage from '../assets/images/regenerated_image_1778651987756.png';
+import specialtyImage from '../assets/images/regenerated_image_1778651993633.png';
+import prepImage from '../assets/images/regenerated_image_1778652000603.png';
 
 const PhotoServiceCard = ({ title, headline, bullets, image, icon: Icon, link, ctaText }: any) => (
   <div className="group relative rounded-sm overflow-hidden border border-white/10 shadow-sm flex flex-col h-full bg-black-charcoal">
@@ -44,7 +47,7 @@ export default function ServicesPage() {
           <FadeIn>
             <div className="max-w-3xl">
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Our Services</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-tight leading-none">Complete Painting &<br/>Surface Solutions.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Complete Painting &<br/>Surface Solutions.</h1>
               <p className="text-xl text-gray-300 max-w-xl">
                 Professional painting and surface preparation built for real-world application. From residential interiors to high-traffic commercial environments.
               </p>
@@ -72,7 +75,7 @@ export default function ServicesPage() {
                 title="Exterior Painting"
                 headline="Curb appeal with prep that holds up."
                 bullets={["Siding, trim, doors, garages", "Residential and small commercial exteriors", "Scraping, masking, coating, finish"]}
-                image="/images/backup/Sky_LLP_Painting_Photo_002.jpg"
+                image={exteriorImage}
                 icon={PaintRoller}
                 link="/services/exterior"
                 ctaText="View Exterior Work"
@@ -105,7 +108,7 @@ export default function ServicesPage() {
                 title="Light Pole / Specialty"
                 headline="Specialty surfaces need serious prep."
                 bullets={["Light poles and fixtures", "Metal and exterior surfaces", "Durable coating approach"]}
-                image="/images/backup/Sky_LLP_Painting_Photo_003.jpg"
+                image={specialtyImage}
                 icon={Lightbulb}
                 link="/contact"
                 ctaText="Contact About Specialty"
@@ -116,7 +119,7 @@ export default function ServicesPage() {
                 title="Surface Prep"
                 headline="The finish is only as good as the prep."
                 bullets={["Siding scraping and power washing", "Drywall patching, caulking, and sanding", "Primer coating application"]}
-                image="/images/backup/Sky_LLP_Painting_Photo_004.jpg"
+                image={prepImage}
                 icon={Sparkles}
                 link="/contact"
                 ctaText="Contact About Prep"

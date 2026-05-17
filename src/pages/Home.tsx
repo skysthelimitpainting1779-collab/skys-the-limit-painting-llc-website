@@ -1,831 +1,380 @@
+import { FormEvent, useState } from 'react';
+import type { Key } from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, ArrowRight, CheckCircle2, ChevronRight, Home, Building2, PaintRoller, GripHorizontal, Lightbulb, Sparkles, Star, ShieldCheck, Award } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'motion/react';
-import { useRef } from 'react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  ClipboardCheck,
+  FileCheck2,
+  Phone,
+  Ruler,
+  ShieldCheck,
+} from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
-import { useState, MouseEvent as ReactMouseEvent } from 'react';
+import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
+import { openEstimateEmail } from '../lib/contact';
 
-import heroImage from '../assets/images/regenerated_image_1778651981792.png';
-import projectImage1 from '../assets/images/regenerated_image_1778651987756.png';
-import projectImage2 from '../assets/images/regenerated_image_1778651993633.png';
-import projectImage3 from '../assets/images/regenerated_image_1778652000603.png';
-import HeroLeadMagnet from '../components/HeroLeadMagnet';
-import TrustAnchors from '../components/TrustAnchors';
-import SpotlightCard from '../components/SpotlightCard';
+const corePositioningLine = 'Residential detail. Commercial discipline. Public-sector ready.';
 
-const PhotoServiceCard = ({ title, headline, bullets, image, icon: Icon, link, ctaText }: any) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+const coverageItems = [
+  'General liability coverage in place',
+  'Commercial auto + tools/equipment coverage',
+  'COI available for qualified commercial/public-sector opportunities',
+];
 
-  return (
-    <SpotlightCard className="group h-full bg-black-charcoal rounded-sm flex flex-col">
-      <div ref={ref} className="relative h-[250px] w-full overflow-hidden shrink-0">
-        <motion.img style={{ scale }} src={image} alt={title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black-charcoal via-black-charcoal/60 to-transparent"></div>
-        <div className="absolute top-4 left-4 bg-black-primary/80 backdrop-blur-sm p-3 rounded-sm border border-white/10 text-orange-safety">
-          <Icon size={24} strokeWidth={1.5} />
-        </div>
-        <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-2xl font-display font-bold uppercase tracking-wide text-white">{title}</h3>
-        </div>
-      </div>
-      <div className="p-6 flex flex-col flex-1 relative z-10">
-        <h4 className="text-lg text-white font-bold mb-4">{headline}</h4>
-        <ul className="mb-8 space-y-2 flex-1">
-          {bullets.map((b: string, i: number) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-              <CheckCircle2 size={16} className="text-orange-safety shrink-0 mt-0.5" />
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
-        <Link to={link || "/services"} className="inline-flex items-center gap-2 text-orange-safety font-bold text-sm tracking-widest uppercase hover:text-orange-deep transition-colors mt-auto border border-orange-safety/30 px-6 py-3 rounded-sm justify-center group-hover:border-orange-safety">
-          {ctaText || "Learn More"} <ArrowRight size={16} />
-        </Link>
-      </div>
-    </SpotlightCard>
-  );
+const marketMedia: Record<MarketSlug, { video: string; poster: string; label: string; accent: string }> = {
+  residential: {
+    video: '/videos/sky-residential-loop.mp4',
+    poster: '/brand/generated/premium-residential-finished-room.png',
+    label: 'Home finish',
+    accent: 'Warm, detailed, protected',
+  },
+  commercial: {
+    video: '/videos/sky-commercial-loop.mp4',
+    poster: '/brand/generated/premium-commercial-crew.png',
+    label: 'Property standard',
+    accent: 'Structured, reliable, clean',
+  },
+  'public-sector': {
+    video: '/videos/sky-public-sector-loop.mp4',
+    poster: '/brand/gbp/SkyGBP_Branded_Equipment.png',
+    label: 'Civic readiness',
+    accent: 'Documented, precise, infrastructure-aware',
+  },
 };
 
-const ProjectCard = ({ type, scope, work, result, image }: any) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index: number; key?: Key }) => {
+  const media = marketMedia[market.slug];
+  const Icon = market.icon;
+  const isEven = index % 2 === 0;
 
   return (
-    <SpotlightCard className="group h-full bg-black-charcoal rounded-sm flex flex-col">
-      <div ref={ref} className="relative overflow-hidden h-[280px] shrink-0">
-        <motion.img style={{ scale }} src={image} alt={type} className="w-full h-full object-cover" />
-        <div className="absolute top-4 left-4">
-          <span className="bg-orange-safety text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-md">
-            {type}
+    <FadeIn delay={0.08 * index}>
+      <Link
+        to={`/${market.slug}`}
+        className="group grid overflow-hidden border border-[#d8c7aa]/16 bg-[#11100d] transition duration-500 hover:-translate-y-1 hover:border-[#f0c067]/55 lg:grid-cols-12"
+      >
+        <div className={`relative min-h-[340px] overflow-hidden lg:col-span-7 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+          <video
+            className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
+            poster={media.poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          >
+            <source src={media.video} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-transparent"></div>
+          <div className="measurement-rules absolute inset-0 opacity-25"></div>
+          <span className="absolute left-5 top-5 border border-white/15 bg-[#080807]/75 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#f0c067] backdrop-blur">
+            {media.label}
           </span>
         </div>
-      </div>
-      <div className="p-6 flex flex-col flex-1 relative z-10">
-        <div className="space-y-4 mb-6">
+        <div className={`relative flex min-h-[340px] flex-col justify-between p-7 md:p-10 lg:col-span-5 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
           <div>
-            <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Scope</h4>
-            <p className="text-white text-sm leading-relaxed">{scope}</p>
+            <div className="mb-10 flex items-center justify-between gap-5">
+              <span className="font-display text-6xl font-black leading-none text-white/12">{market.number}</span>
+              <span className="grid h-12 w-12 place-items-center border border-white/15 bg-white/5 text-white">
+                <Icon size={24} strokeWidth={1.6} />
+              </span>
+            </div>
+            <p className="text-xs font-black uppercase tracking-[0.26em] text-[#f0c067]">{media.accent}</p>
+            <h3 className="mt-4 text-4xl font-black leading-[0.96] text-white md:text-5xl">{market.navLabel}</h3>
+            <p className="mt-5 text-base leading-relaxed text-[#e4ded2]">{market.summary}</p>
           </div>
-          <div className="w-full h-px bg-white/5"></div>
-          <div>
-            <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Work</h4>
-            <p className="text-white text-sm leading-relaxed">{work}</p>
-          </div>
-          <div className="w-full h-px bg-white/5"></div>
-          <div>
-            <h4 className="text-orange-safety text-xs font-bold uppercase tracking-widest mb-1">Result</h4>
-            <p className="text-white text-sm font-medium leading-relaxed">{result}</p>
+          <div className="mt-10">
+            <div className="grid gap-3 text-sm text-[#d8c7aa] sm:grid-cols-2">
+              {market.proof.slice(0, 2).map((item) => (
+                <div key={item} className="flex gap-3 border-t border-white/10 pt-4">
+                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#f0c067]" size={17} />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+            <span className="mt-8 inline-flex items-center gap-3 text-sm font-black uppercase tracking-[0.18em] text-white">
+              View {market.navLabel} <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+            </span>
           </div>
         </div>
-        <Link to="/contact" className="mt-auto block text-center text-sm font-bold uppercase tracking-widest text-white border border-white/20 py-3 rounded-sm hover:border-orange-safety hover:text-orange-safety transition-colors">
-          Have a Similar Project?
-        </Link>
-      </div>
-    </SpotlightCard>
+      </Link>
+    </FadeIn>
   );
 };
 
+const TrustPillar = ({ pillar, index }: { pillar: (typeof trustPillars)[number]; index: number; key?: Key }) => {
+  const Icon = pillar.icon;
+
+  return (
+    <FadeIn delay={0.06 * index}>
+      <div className="h-full border-l border-[#c8a45d]/35 bg-[#11100d]/80 p-6">
+        <Icon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
+        <h3 className="text-lg font-black leading-tight text-white">{pillar.title}</h3>
+        <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{pillar.body}</p>
+      </div>
+    </FadeIn>
+  );
+};
+
+const ProcessStep = ({ step, title, body }: { step: string; title: string; body: string }) => (
+  <div className="relative border-t border-[#d8c7aa]/20 py-8 pl-16">
+    <span className="absolute left-0 top-8 grid h-10 w-10 place-items-center border border-[#d8c7aa]/30 bg-[#0b0b0a] text-xs font-black text-[#f0c067]">
+      {step}
+    </span>
+    <h3 className="text-2xl font-black leading-tight text-white">{title}</h3>
+    <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#b9b2a6]">{body}</p>
+  </div>
+);
+
 export default function HomePage() {
-  const [formState, setFormState] = useState({ projectType: '', timeline: '', zipCode: '', description: '' });
+  const [heroFormStatus, setHeroFormStatus] = useState<'idle' | 'opened'>('idle');
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 100, damping: 30 });
-  const mouseYSpring = useSpring(y, { stiffness: 100, damping: 30 });
+  const handleHeroEstimateSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
+    openEstimateEmail({
+      Source: 'Homepage three-market estimate form',
+      'Full name': String(formData.get('fullName') || ''),
+      Phone: String(formData.get('phone') || ''),
+      Email: String(formData.get('email') || ''),
+      'Project lane': String(formData.get('projectLane') || ''),
+      'City or ZIP': String(formData.get('location') || ''),
+      'Project details': String(formData.get('description') || ''),
+    });
 
-  const handleMouseMove = (e: ReactMouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    setHeroFormStatus('opened');
   };
 
   return (
     <PageTransition>
-      <PageMeta 
-        title="Sky's the Limit Painting LLC | Inver Grove Heights Painting Contractor" 
-        description="Sky’s the Limit Painting LLC provides interior painting, exterior painting, commercial painting, pavement marking, light pole painting, and surface prep in Inver Grove Heights and the Twin Cities Metro. Request a free estimate today." 
+      <PageMeta
+        title="Sky's the Limit Painting LLC | Minnesota Painting Contractor"
+        description="Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for residential painting, commercial work, and public-sector opportunities."
       />
-      
-      {/* 2 & 3. Hero + Above-Fold Estimate Form */}
-      <section 
-        className="relative bg-black-primary pt-12 pb-24 lg:pt-24 lg:pb-32 overflow-hidden px-4 sm:px-6 lg:px-8 shadow-inner perspective-1000"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="absolute inset-0 z-0 flex items-center justify-center">
-          <motion.img 
-            style={{ 
-              rotateX, 
-              rotateY,
-              scale: 1.1 
-            }}
-            initial={{ scale: 1.15, opacity: 0 }}
-            animate={{ scale: 1.1, opacity: 0.3 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            src={heroImage} 
-            alt="Painter on job site" 
-            className="w-[110%] h-[110%] object-cover origin-center" 
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black-primary via-black-primary/95 to-black-primary/70"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-7 text-white">
-            <FadeIn>
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-6 border border-orange-safety/30 px-3 py-1 rounded-sm">
-                Minnesota Painting & Pavement Marking Contractor
-              </span>
-              <h1 className="text-6xl sm:text-8xl lg:text-[110px] font-display font-black leading-[0.85] mb-8 uppercase tracking-tighter">
-                PRO PAINTING.<br/><span className="text-orange-safety">DONE RIGHT.</span>
-              </h1>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold mb-6 tracking-tight text-gray-300">
-                Twin Cities Metro & Inver Grove Heights.
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="text-gray-300 text-lg md:text-xl mb-10 leading-relaxed max-w-2xl">
-                Sky’s the Limit Painting LLC helps homeowners, property owners, and businesses get clean, dependable painting work across Inver Grove Heights and the Twin Cities Metro. From interior and exterior painting to commercial repainting, light pole painting, and pavement marking, we bring careful prep, clean execution, and straight communication to every job.
-              </p>
-            </FadeIn>
-            
-            <FadeIn delay={0.2}>
-              <ul className="space-y-3 mb-10">
-                {[
-                  "Owner-operated local business",
-                  "Residential, commercial, and specialty painting",
-                  "Clean prep, sharp finish",
-                  "Clear communication, dependable service"
-                ].map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-3 text-lg">
-                    <CheckCircle2 className="text-orange-safety shrink-0 mt-0.5" size={24} />
-                    <span className="text-gray-200">{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </FadeIn>
 
-            <FadeIn delay={0.3}>
-              <HeroLeadMagnet />
-            </FadeIn>
+      <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706]">
+        <video
+          className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
+          poster="/brand/generated/premium-residential-spray.png"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/videos/sky-hero-cinematic.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.94)_30%,rgba(7,7,6,0.58)_62%,rgba(7,7,6,0.22)_100%)]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,#070706_0%,rgba(7,7,6,0.08)_38%,rgba(7,7,6,0.2)_100%)]"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-16"></div>
+        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
 
-            <FadeIn delay={0.4}>
-              <TrustAnchors />
-            </FadeIn>
-
-            {/* Service Preview Rail */}
-            <FadeIn delay={0.5} className="hidden lg:block mt-12">
-              <p className="text-sm font-bold tracking-widest uppercase text-white/50 mb-3">View Our Work</p>
-              <div className="flex gap-4 scrollbar-hide overflow-x-auto pb-4">
-                {[
-                  { name: 'Interior', img: '/images/services/interior/sky-work-02-finished-living-room.png' },
-                  { name: 'Exterior', img: projectImage1 },
-                  { name: 'Commercial', img: '/images/services/commercial/sky-work-08-finished-commercial.png' },
-                  { name: 'Striping', img: '/images/services/striping/SkyLLP_ParkingLot_Striping.png' },
-                  { name: 'Prep', img: projectImage2 },
-                ].map((item, i) => (
-                  <a href="#services" key={i} className="group relative w-32 h-20 rounded-sm overflow-hidden border border-white/20 shrink-0">
-                    <img src={item.img} alt={item.name} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors"></div>
-                    <span className="absolute bottom-1 left-2 text-white text-xs font-bold uppercase tracking-wider">{item.name}</span>
-                  </a>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
-
-          <div className="lg:col-span-5" id="estimate">
-            <FadeIn delay={0.5} direction="left">
-              <div className="bg-black-charcoal/80 backdrop-blur-md rounded-xl p-6 sm:p-8 shadow-2xl relative border border-white/10">
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2 text-center uppercase tracking-wide">Get Your Free Estimate</h2>
-                <p className="text-gray-300 text-center mb-6 text-sm">Fast, free, and no obligation.</p>
-                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Full Name" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
-                    <input type="tel" placeholder="Phone Number" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input type="email" placeholder="Email Address" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
-                    <select className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none" required defaultValue="">
-                      <option value="" disabled className="text-gray-500">Project Type</option>
-                      <option value="interior">Interior Painting</option>
-                      <option value="exterior">Exterior Painting</option>
-                      <option value="commercial">Commercial Painting</option>
-                      <option value="striping">Pavement Marking / Striping</option>
-                      <option value="specialty">Light Pole / Specialty</option>
-                    </select>
-                  </div>
-                  <input type="text" placeholder="City or ZIP Code" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none placeholder:text-gray-500" required />
-                  <textarea rows={3} placeholder="Tell us about your project" className="w-full bg-black-primary border border-white/20 rounded-sm p-3 text-white focus:border-orange-safety outline-none resize-none placeholder:text-gray-500" required></textarea>
-                  <button type="submit" className="w-full bg-orange-safety hover:bg-orange-deep text-white font-bold py-4 rounded-sm transition-colors mt-2 text-lg uppercase tracking-wide">
-                    Request My Estimate
-                  </button>
-                  <p className="text-center text-sm text-gray-400 mt-4 flex items-center justify-center gap-2">
-                    <CheckCircle2 size={16} className="text-orange-safety" /> 100% free. No obligation. Fast response.
-                  </p>
-                </form>
-              </div>
-            </FadeIn>
-             <div className="mt-6 text-center lg:hidden">
-                 <a href="tel:651-410-4196" className="text-white text-lg font-bold hover:text-orange-safety transition-colors">Or Call: 651-410-4196</a>
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3.5. Trust Bar (CRO) */}
-      <section className="bg-orange-safety/10 border-y border-orange-safety/20 py-4 lg:py-6 px-6 z-20 relative backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 lg:gap-24 text-white uppercase font-bold tracking-widest text-xs lg:text-sm">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={20} className="text-orange-safety" />
-            <span>Licensed & Insured</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Award size={20} className="text-orange-safety" />
-            <span>EPA Lead-Safe Certified</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Star size={20} className="text-orange-safety" fill="currentColor" />
-            <span>150+ 5-Star Local Reviews</span>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Trust Strip */}
-      <section className="bg-black-charcoal py-10 border-b border-black-primary">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              <FadeIn delay={0.1}>
-                <div className="flex items-start gap-4">
-                  <CheckCircle2 size={32} className="text-orange-safety mt-1 shrink-0" />
-                  <div>
-                    <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-1">Owner-Operated<br/>Local Business</h4>
-                    <p className="text-gray-400 text-sm">Inver Grove Heights, MN</p>
-                  </div>
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.2}>
-                <div className="flex items-start gap-4">
-                  <PaintRoller size={32} className="text-orange-safety mt-1 shrink-0" />
-                  <div>
-                    <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-1">Residential,<br/>Commercial & Specialty</h4>
-                    <p className="text-gray-400 text-sm">Interior, Exterior & More</p>
-                  </div>
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.3}>
-                <div className="flex items-start gap-4">
-                  <CheckCircle2 size={32} className="text-orange-safety mt-1 shrink-0" />
-                  <div>
-                    <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-1">Clean Prep.<br/>Sharp Finish.</h4>
-                    <p className="text-gray-400 text-sm">Quality work that lasts</p>
-                  </div>
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.4}>
-                <div className="flex items-start gap-4">
-                  <span className="text-orange-safety mt-1 shrink-0">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line></svg>
-                  </span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-1">Clear Communication.<br/>Dependable Service.</h4>
-                    <p className="text-gray-400 text-sm">We do what we say we'll do</p>
-                  </div>
-                </div>
-              </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Services Grid */}
-      <section id="services" className="py-24 bg-black-primary px-6">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn>
-            <div className="max-w-3xl mb-16 px-4">
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">
-                What We Paint, Mark, Prep & Finish
-              </span>
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 uppercase tracking-tight">Complete Painting & Surface Solutions</h2>
-              <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                From clean interior repaints to commercial refreshes, parking lot markings, specialty surfaces, and prep work, Sky’s the Limit handles the work that makes a property look sharper and function better.
-              </p>
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+          <FadeIn className="max-w-4xl pt-6 md:pt-12">
+            <div className="mb-7 inline-flex items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/55 px-4 py-3 text-[11px] font-black uppercase tracking-[0.24em] text-[#f0c067] backdrop-blur">
+              <ShieldCheck size={16} />
+              Insured Minnesota Painting Contractor
             </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <FadeIn delay={0.1}>
-              <PhotoServiceCard 
-                title="Interior Painting"
-                headline="Clean walls. Sharp lines. Better rooms."
-                bullets={["Walls, ceilings, trim, doors", "Homes, rentals, offices, refreshes", "Careful masking and cleanup"]}
-                image="/images/services/interior/sky-work-02-finished-living-room.png"
-                 icon={Home}
-                 link="/services/interior"
-                 ctaText="Plan Interior Project"
-               />
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <PhotoServiceCard 
-                 title="Exterior Painting"
-                 headline="Curb appeal with prep that holds up."
-                 bullets={["Siding, trim, doors, garages", "Residential and small commercial exteriors", "Scraping, masking, coating, finish"]}
-                 image={projectImage1}
-                 icon={PaintRoller}
-                 link="/services/exterior"
-                 ctaText="Plan Exterior Project"
-               />
-            </FadeIn>
-            <FadeIn delay={0.3}>
-               <PhotoServiceCard 
-                 title="Commercial Painting"
-                 headline="Clean work for serious business spaces."
-                 bullets={["Shops, offices, facilities", "Scheduling with less disruption", "Professional finish and cleanup"]}
-                 image="/images/services/commercial/sky-work-08-finished-commercial.png"
-                 icon={Building2}
-                 link="/services/commercial"
-                 ctaText="Discuss Commercial Job"
-               />
-            </FadeIn>
-            <FadeIn delay={0.4}>
-               <PhotoServiceCard 
-                 title="Pavement Marking / Striping"
-                 headline="Cleaner lots. Clearer traffic flow."
-                 bullets={["Parking stalls", "Directional markings", "Safety and property presentation"]}
-                 image="/images/services/striping/SkyLLP_ParkingLot_Striping.png"
-                 icon={GripHorizontal}
-                 link="/services/striping"
-                 ctaText="Get Striping Quote"
-               />
-            </FadeIn>
-            <FadeIn delay={0.5}>
-               <PhotoServiceCard 
-                 title="Light Pole / Specialty Painting"
-                 headline="Specialty surfaces need serious prep."
-                 bullets={["Light poles and fixtures", "Metal and exterior surfaces", "Durable coating approach"]}
-                 image={projectImage3}
-                 icon={Lightbulb}
-                 link="/contact"
-                 ctaText="Ask About Specialty Work"
-               />
-            </FadeIn>
-            <FadeIn delay={0.6}>
-               <PhotoServiceCard 
-                 title="Surface Prep"
-                 headline="The finish is only as good as the prep."
-                 bullets={["Siding scraping and power washing", "Drywall patching, caulking, and sanding", "Primer coating application"]}
-                 image={projectImage2}
-                 icon={Sparkles}
-                 link="/contact"
-                 ctaText="Prep My Project"
-               />
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Offer Wall / Bento Grid */}
-      <section className="py-24 bg-black-primary px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn>
-            <div className="mb-12">
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
-                Built For
-              </span>
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">Painting Across The Twin Cities Metro</h2>
-            </div>
-          </FadeIn>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FadeIn delay={0.1}>
-              <div className="relative group overflow-hidden rounded-sm h-[350px]">
-                <img src="/images/services/interior/sky-work-01-finished-kitchen.png" alt="Home Interiors" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/40 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-3xl font-display font-bold text-white uppercase tracking-wide mb-2">Home Interiors</h3>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {["Walls", "Ceilings", "Trim", "Rentals", "Refreshes"].map((tag, i) => (
-                      <span key={i} className="text-xs font-bold text-orange-safety border border-orange-safety/50 rounded-sm px-2 py-1 uppercase">{tag}</span>
-                    ))}
-                  </div>
-                  <Link to="/services/interior" className="inline-flex items-center gap-2 text-white font-bold text-sm tracking-widest uppercase hover:text-orange-safety transition-colors">
-                    View Interior Work <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </FadeIn>
-            
-            <FadeIn delay={0.2}>
-              <div className="relative group overflow-hidden rounded-sm h-[350px]">
-                <img src={projectImage1} alt="Exterior Property Refreshes" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/40 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-3xl font-display font-bold text-white uppercase tracking-wide mb-2">Exterior Refreshes</h3>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {["Siding", "Trim", "Doors", "Garages", "Curb Appeal"].map((tag, i) => (
-                      <span key={i} className="text-xs font-bold text-orange-safety border border-orange-safety/50 rounded-sm px-2 py-1 uppercase">{tag}</span>
-                    ))}
-                  </div>
-                  <Link to="/services/exterior" className="inline-flex items-center gap-2 text-white font-bold text-sm tracking-widest uppercase hover:text-orange-safety transition-colors">
-                    View Exterior Work <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <div className="relative group overflow-hidden rounded-sm h-[350px]">
-                <img src="/images/services/commercial/sky-work-real-08-commercial.png" alt="Commercial Spaces" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/40 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-3xl font-display font-bold text-white uppercase tracking-wide mb-2">Commercial Spaces</h3>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {["Shops", "Offices", "Facilities", "After-Hours Work"].map((tag, i) => (
-                      <span key={i} className="text-xs font-bold text-orange-safety border border-orange-safety/50 rounded-sm px-2 py-1 uppercase">{tag}</span>
-                    ))}
-                  </div>
-                  <Link to="/services/commercial" className="inline-flex items-center gap-2 text-white font-bold text-sm tracking-widest uppercase hover:text-orange-safety transition-colors">
-                    View Commercial Work <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.4}>
-              <div className="relative group overflow-hidden rounded-sm h-[350px]">
-                <img src={projectImage3} alt="Marking & Specialty Work" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/40 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-3xl font-display font-bold text-white uppercase tracking-wide mb-2">Marking + Specialty</h3>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {["Striping", "Light Poles", "Metal", "Surface Prep"].map((tag, i) => (
-                      <span key={i} className="text-xs font-bold text-orange-safety border border-orange-safety/50 rounded-sm px-2 py-1 uppercase">{tag}</span>
-                    ))}
-                  </div>
-                  <Link to="/contact" className="inline-flex items-center gap-2 text-white font-bold text-sm tracking-widest uppercase hover:text-orange-safety transition-colors">
-                    Contact Us For Specialty <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Project Proof Module */}
-      <section className="py-24 px-6 bg-black-charcoal border-t border-black-primary/50">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn>
-            <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
-              <div>
-                <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
-                  Real Surfaces. Real Finish.
-                </span>
-                <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tighter text-white uppercase">Project Proof</h2>
-              </div>
-              <Link to="/projects" className="font-bold text-orange-safety tracking-widest uppercase text-sm hover:text-orange-deep transition-colors flex items-center gap-2 pb-1">
-                View All Projects <ArrowRight size={16} />
+            <h1 aria-label={corePositioningLine} className="max-w-4xl text-5xl font-black leading-[0.95] text-white sm:text-6xl lg:text-7xl xl:text-8xl">
+              <span className="block">Residential detail.</span>
+              <span className="block text-[#f2d9bf]">Commercial discipline.</span>
+              <span className="block text-[#f0c067]">Public-sector ready.</span>
+            </h1>
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-[#e7dfd2] md:text-xl">
+              Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for careful residential painting, reliable commercial work, and city, county, and state opportunities.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link to="/contact" className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
+                Request an Estimate <ArrowRight size={18} />
               </Link>
+              <a href="tel:651-410-4196" className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+                <Phone size={18} /> Call or Text Anthony
+              </a>
+            </div>
+            <div className="mt-8 flex max-w-3xl flex-col gap-3 text-sm font-semibold text-[#d8c7aa] md:flex-row md:flex-wrap md:items-center">
+              {coverageItems.map((item) => (
+                <span key={item} className="flex items-center gap-2">
+                  <CheckCircle2 className="shrink-0 text-[#f0c067]" size={16} />
+                  {item}
+                </span>
+              ))}
             </div>
           </FadeIn>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             <FadeIn delay={0.1}>
-               <ProjectCard 
-                type="Commercial Interior Refresh"
-                scope="Ceiling tile and aluminum ceiling tracking/bars painted black."
-                work="Surface prep and two coats applied."
-                result="Darker, cleaner, more finished commercial interior."
-                image="/images/services/commercial/sky-work-08-finished-commercial.png"
-              />
-             </FadeIn>
-             <FadeIn delay={0.2}>
-               <ProjectCard 
-                type="Interior Residential Repaint"
-                scope="Bedroom walls, trim, and doors requiring a fresh start."
-                work="Patched drywall, masked trim, and applied two finish coats."
-                result="Clean, modernized bedroom with sharp lines."
-                image="/images/services/interior/sky-work-real-04-before-after-bedroom.png"
-              />
-             </FadeIn>
-             <FadeIn delay={0.3}>
-               <ProjectCard 
-                type="Pavement Marking / Striping"
-                scope="Faded lot lines causing parking confusion."
-                work="Cleaned surface and restriped stalls and safety markings."
-                result="Clear, bright, and compliant parking lot markings."
-                image="/images/services/striping/SkyLLP_ParkingLot_Striping.png"
-              />
-             </FadeIn>
-          </div>
+
+          <FadeIn delay={0.12} className="mt-12">
+            <div className="grid border-y border-[#d8c7aa]/20 bg-[#070706]/72 backdrop-blur md:grid-cols-3">
+              {markets.map((market) => (
+                <Link key={market.slug} to={`/${market.slug}`} className="group border-[#d8c7aa]/15 p-5 transition-colors hover:bg-white/5 md:border-r md:last:border-r-0">
+                  <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#9fa9a9]">
+                    {market.number} / {market.navLabel}
+                  </p>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#e7dfd2]">{market.summary}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#f0c067]">
+                    Enter lane <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* 8. Process Section */}
-      <section className="py-24 bg-black-primary text-white px-6">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn>
-            <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
-              The Sky Standard Process
-            </span>
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-16 uppercase tracking-tight">How We Work</h2>
+      <section className="bg-[#e6dfd2] px-4 py-20 text-[#171512] sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
+          <FadeIn className="lg:col-span-7">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Built from the trade up</p>
+            <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl">
+              A serious owner-led contractor brand, without pretending to be a giant company.
+            </h2>
           </FadeIn>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                step: '01',
-                title: 'Inspect',
-                desc: 'We look at surface condition, access, timeline, and scope.',
-                image: projectImage1
-              },
-              {
-                step: '02',
-                title: 'Prep',
-                desc: 'We prep before paint goes on. Scraping, patching, masking.',
-                image: projectImage2
-              },
-              {
-                step: '03',
-                title: 'Paint',
-                desc: 'Clean application, sharp lines, and jobsite respect.',
-                image: '/images/services/commercial/sky-work-08-finished-commercial.png'
-              },
-              {
-                step: '04',
-                title: 'Finish',
-                desc: 'Final walkthrough, cleanup, and next steps.',
-                image: '/images/services/interior/sky-work-01-finished-kitchen.png'
-              }
-            ].map((s, i) => (
-              <FadeIn key={i} delay={0.1 * (i + 1)} className="flex flex-col group h-full relative border-t border-white/20 pt-8 mt-12 lg:mt-0">
-                <div className="absolute -top-12 left-0 text-white opacity-10 font-display font-black text-[100px] leading-none pointer-events-none group-hover:text-orange-safety transition-colors group-hover:opacity-20 z-0">
-                  {s.step}
-                </div>
-                <div className="relative z-10 h-[200px] w-full overflow-hidden mb-6 border border-white/10 rounded-sm">
-                  <img src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
-                </div>
-                <div className="relative z-10">
-                  <h3 className="text-white font-bold font-display uppercase tracking-wide text-2xl mb-3 flex items-center gap-3">
-                    <span className="text-orange-safety text-sm">{s.step}</span> {s.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
-                </div>
-              </FadeIn>
+          <FadeIn delay={0.1} className="lg:col-span-5">
+            <p className="text-lg leading-relaxed text-[#3f3a33]">
+              The site is organized around how buyers actually evaluate painting work: a homeowner wants care and protection, a commercial client wants reliable execution, and a public-sector buyer wants clarity, documentation, and follow-through.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
+      <section id="markets" className="relative overflow-hidden bg-[#080807] px-4 py-24 sm:px-6 lg:px-8">
+        <div className="blueprint-grid absolute inset-0 opacity-10"></div>
+        <div className="relative mx-auto max-w-7xl">
+          <FadeIn>
+            <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-7">
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Three serious markets</p>
+                <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl">
+                  One standard, three different buyer mindsets.
+                </h2>
+              </div>
+              <p className="text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
+                Each lane gets a different visual rhythm and service story, tied together by trade discipline, clean prep, documentation, and owner accountability.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 gap-6">
+            {markets.map((market, index) => (
+              <MarketLane key={market.slug} market={market} index={index} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* 8.5 Equipment & Capabilities */}
-      <section className="py-24 bg-black-charcoal border-y border-white/5 px-6">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn>
-            <div className="max-w-3xl mb-16">
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
-                Equipment & Capabilities
-              </span>
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-tight mb-6">Built For More Than Basic Brush Work</h2>
-              <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                Sky’s the Limit is equipped for interior, exterior, commercial, and specialty painting work — including surfaces and jobs that need more prep than a basic repaint.
-              </p>
+      <section className="relative overflow-hidden border-y border-[#d8c7aa]/10 bg-[#11100d] px-4 py-24 sm:px-6 lg:px-8">
+        <div className="measurement-rules absolute inset-0 opacity-15"></div>
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
+          <FadeIn className="lg:col-span-4">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Proof without hype</p>
+            <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Verified claims, clean language.</h2>
+            <p className="mt-5 text-sm leading-relaxed text-[#b9b2a6]">
+              The site states what can be stated: insured, owner-operated, Minnesota-based, and organized for serious residential, commercial, and qualified public-sector opportunities.
+            </p>
+          </FadeIn>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-8">
+            {trustPillars.map((pillar, index) => (
+              <TrustPillar key={pillar.title} pillar={pillar} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#080807] px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-12 lg:items-start">
+          <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Scope / Prep / Execute / Verify</p>
+            <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl">
+              A process built for clean homes, active properties, and documented opportunities.
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1} className="lg:col-span-7">
+            <div className="border-l border-[#d8c7aa]/15">
+              <ProcessStep step="01" title="Scope" body="Define surfaces, access, priorities, timeline, insurance or COI needs, and the expected finish before paint starts." />
+              <ProcessStep step="02" title="Prep" body="Protect spaces, clean surfaces, patch, sand, caulk, mask, and stage the job so the finished work has a real foundation." />
+              <ProcessStep step="03" title="Execute" body="Apply the right coating approach with owner-led communication and a jobsite that stays organized." />
+              <ProcessStep step="04" title="Verify" body="Review the result, handle touchups, clean the area, and close the loop with photos or documentation when needed." />
             </div>
           </FadeIn>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <FadeIn delay={0.1}>
-              <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src={projectImage3} alt="Commercial Equipment" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-bold text-white uppercase">Sprayers & Lifts</h3>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src={projectImage2} alt="Prep Tools" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-bold text-white uppercase">Surface Prep</h3>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.3}>
-              <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src={projectImage1} alt="Work Trucks" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-bold text-white uppercase">Mobile Ready</h3>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.4}>
-              <div className="relative group overflow-hidden rounded-sm h-[250px] border border-white/10">
-                <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.png" alt="Striping Machine" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black-primary/90 via-black-primary/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-bold text-white uppercase">Pavement Marking</h3>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
         </div>
       </section>
 
-      {/* 9. Reviews / Reputation Section */}
-      <section id="reviews" className="py-24 bg-black-charcoal px-6 border-b border-white/10">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn>
-            <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">Social Proof</span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-12 text-white uppercase tracking-tight">Local Work. Real Reputation.</h2>
+      <section className="relative overflow-hidden bg-[#182023] px-4 py-24 text-white sm:px-6 lg:px-8">
+        <div className="blueprint-grid absolute inset-0 opacity-20"></div>
+        <div className="absolute inset-x-0 top-0 h-1 bg-[repeating-linear-gradient(90deg,#f0c067_0_72px,transparent_72px_112px)] opacity-80"></div>
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+          <FadeIn className="lg:col-span-6">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Public-sector readiness</p>
+            <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
+              Built for city, county, and state painting opportunities as the company grows.
+            </h2>
           </FadeIn>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FadeIn delay={0.1}>
-              <div className="bg-black-primary border border-white/10 p-8 rounded-sm h-full flex flex-col">
-                <div className="flex gap-1 text-orange-safety mb-6">
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
+          <FadeIn delay={0.1} className="lg:col-span-6">
+            <p className="text-lg leading-relaxed text-[#dce5e4]">
+              Public-sector positioning stays accurate: no invented contracts, no unsupported certifications, and no inflated status claims. The brand presents capability, documentation discipline, insurance readiness, and a serious path toward facility and pavement-marking work.
+            </p>
+          </FadeIn>
+        </div>
+        <div className="relative mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-px bg-white/15 md:grid-cols-3">
+          {[
+            [FileCheck2, 'Documentation mindset', 'Scope clarity, photos, COI requests, quantities, surfaces, timelines, and project closeout details treated seriously.'],
+            [ShieldCheck, 'Coverage language', 'General liability coverage, commercial auto coverage, and tools/equipment coverage stated carefully and truthfully.'],
+            [Ruler, 'Infrastructure lanes', 'Facility repainting, pavement marking, road striping, sign painting, light poles, guardrails, and parking-lot striping positioned as opportunities.'],
+          ].map(([Icon, title, body]) => {
+            const ReadinessIcon = Icon as typeof ClipboardCheck;
+            return (
+              <FadeIn key={title as string}>
+                <div className="min-h-[260px] bg-[#182023] p-7">
+                  <ReadinessIcon className="mb-10 text-[#f0c067]" size={30} strokeWidth={1.5} />
+                  <h3 className="text-2xl font-black leading-tight text-white">{title as string}</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-[#cbd4d3]">{body as string}</p>
                 </div>
-                <p className="text-white italic text-lg leading-relaxed flex-1">"Sky’s the Limit was incredibly fast and professional. They painted our entire exterior, protected our landscaping perfectly, and left the jobsite spotless every single day."</p>
-                <div className="mt-6 border-t border-white/10 pt-4">
-                  <p className="text-white font-bold uppercase tracking-widest text-xs">Mark T.</p>
-                  <p className="text-gray-500 text-xs uppercase tracking-widest">Inver Grove Heights</p>
-                </div>
-              </div>
-            </FadeIn>
-            
-            <FadeIn delay={0.2}>
-              <div className="bg-black-primary border border-white/10 p-8 rounded-sm h-full flex flex-col">
-                <div className="flex gap-1 text-orange-safety mb-6">
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                </div>
-                <p className="text-white italic text-lg leading-relaxed flex-1">"We hired them to refresh our commercial shop. They worked around our schedule so we wouldn't have to close, and the lines were sharper than our previous painters."</p>
-                <div className="mt-6 border-t border-white/10 pt-4">
-                  <p className="text-white font-bold uppercase tracking-widest text-xs">Sarah J.</p>
-                  <p className="text-gray-500 text-xs uppercase tracking-widest">Twin Cities Metro</p>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <div className="bg-black-primary border border-white/10 p-8 rounded-sm h-full flex flex-col">
-                <div className="flex gap-1 text-orange-safety mb-6">
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                </div>
-                <p className="text-white italic text-lg leading-relaxed flex-1">"Zero mess. Zero stress. They repaired some serious water damage on our drywall before painting it, and you honestly cannot tell there was ever a patch there."</p>
-                <div className="mt-6 border-t border-white/10 pt-4">
-                  <p className="text-white font-bold uppercase tracking-widest text-xs">David L.</p>
-                  <p className="text-gray-500 text-xs uppercase tracking-widest">St. Paul</p>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
+              </FadeIn>
+            );
+          })}
         </div>
       </section>
 
-      {/* 10 & 11. About & Service Area Split */}
-      <section className="py-24 px-6 bg-black-primary">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 rounded-sm border border-white/10 overflow-hidden">
-          {/* Left: About */}
-          <div className="bg-black-charcoal p-8 md:p-12">
+      <section className="bg-[#e6dfd2] px-4 py-24 text-[#171512] sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden border border-[#171512]/15 bg-[#f5f0e7] lg:grid-cols-12">
+          <div className="relative min-h-[420px] lg:col-span-5">
+            <img src={supportingImages.commercialReal} alt="Owner-led commercial painting work" className="absolute inset-0 h-full w-full object-cover opacity-90" />
+            <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,21,18,0.72),rgba(23,21,18,0.05))]"></div>
+          </div>
+          <div className="p-7 md:p-10 lg:col-span-7 lg:p-12">
             <FadeIn>
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
-                About Sky's the Limit Painting LLC
-              </span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-white leading-tight">Built by a Painter, Not a Sales Office</h2>
-              <div className="flex flex-col sm:flex-row gap-6">
-                <img src="https://picsum.photos/seed/owner/800/800" alt="Anthony Briseno" className="w-full sm:w-1/3 aspect-[4/3] object-cover rounded-sm border border-white/10" />
-                <div className="flex-1">
-                  <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                    Sky’s the Limit Painting LLC is a Minnesota painting company based in Inver Grove Heights and led by Anthony Briseno.
-                  </p>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                    After more than a decade in the trade and completing a Minnesota Journeyworker Painter & Decorator apprenticeship, Anthony started Sky’s the Limit to bring dependable, skilled painting work to homeowners, businesses, and specialty job sites across the Twin Cities area.
-                  </p>
-                  <Link to="/about" className="inline-flex items-center gap-2 text-orange-safety font-bold text-sm tracking-widest uppercase hover:text-orange-deep transition-colors">
-                    Learn More About Anthony <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-          
-          {/* Right: Service Area */}
-          <div className="bg-black-charcoal p-8 md:p-12 relative overflow-hidden">
-            <FadeIn delay={0.2} direction="left">
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3 relative z-10">
-                Serving the Twin Cities Metro
-              </span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 text-white relative z-10 tracking-tight">Based in Inver Grove Heights, MN</h2>
-              
-              <div className="grid grid-cols-2 gap-y-3 relative z-10">
-                {[
-                  "Inver Grove Heights", "Woodbury", "South St. Paul", "St. Paul",
-                  "West St. Paul", "Minneapolis", "Eagan", "Dakota County",
-                  "Mendota Heights", "Ramsey County", "Cottage Grove", "Washington County", "Hennepin County"
-                ].map((loc, i) => (
-                  <div key={i} className="flex items-center gap-2 text-gray-300 text-sm">
-                    <CheckCircle2 size={16} className="text-orange-safety" /> {loc}
-                  </div>
-                ))}
-              </div>
-              
-              <div className="absolute right-0 bottom-0 w-[300px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-safety/20 via-black-charcoal/0 to-transparent pointer-events-none rounded-full blur-2xl"></div>
-              
-              <div className="mt-8 relative z-10">
-                <Link to="/service-area" className="inline-flex items-center gap-2 text-orange-safety font-bold text-sm tracking-widest uppercase hover:text-orange-deep transition-colors border border-orange-safety/30 px-6 py-3 rounded-sm">
-                  View Full Service Area <ArrowRight size={16} />
-                </Link>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* 12 & 13. FAQ & Final CTA */}
-      <section className="py-24 px-6 bg-black-primary border-t border-white/5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* FAQ */}
-          <div>
-            <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-3">
-              Frequently Asked Questions
-            </span>
-            <div className="space-y-4">
-              {[
-                { q: "How much does painting cost?", a: "Costs vary depending on size, surface type, and required prep. We provide free, accurate estimates after reviewing the details." },
-                { q: "Do you offer free estimates?", a: "Yes, we provide 100% free, clear, no-obligation estimates for all projects." },
-                { q: "Are you insured?", a: "For commercial work or jobs requiring a COI, we confirm what documentation is available before scheduling." },
-                { q: "How long does a typical project take?", a: "Interiors can be done in a few days, while larger exteriors or commercial jobs depend on scope. We give timelines with your estimate." },
-                { q: "What areas do you service?", a: "Primarily Inver Grove Heights, Dakota County, and the greater Twin Cities Metro area." }
-              ].map((faq, i) => (
-                <details key={i} className="border-b border-white/10 pb-4 group">
-                  <summary className="flex justify-between font-bold text-white cursor-pointer list-none pt-4">
-                    {faq.q}
-                    <span className="text-orange-safety opacity-60 group-hover:opacity-100 transition-opacity group-open:rotate-180 transform">
-                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    </span>
-                  </summary>
-                  <p className="text-gray-400 mt-4 text-sm">{faq.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-          
-          {/* Final Form */}
-          <div className="bg-black-charcoal border border-white/10 p-8 rounded-sm">
-            <h2 className="text-2xl font-display font-bold text-white mb-2 text-center uppercase tracking-wide">Check Service Area & Estimate</h2>
-            <p className="text-gray-400 text-center mb-8 text-sm">Enter your Zip Code to instantly check service area.</p>
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); window.location.href = '/contact'; }}>
-              <div className="flex gap-2">
-                <input type="text" placeholder="Zip Code" className="w-full sm:w-1/2 bg-black-primary border border-white/20 rounded-sm p-4 text-white focus:border-orange-safety outline-none placeholder:text-gray-500 font-bold" required />
-                <button type="submit" className="w-full sm:w-1/2 bg-orange-safety hover:bg-orange-deep text-white font-bold py-4 rounded-sm transition-colors text-sm uppercase tracking-wide">
-                  Check & Get Estimate
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Start the scope</p>
+              <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
+                Request an estimate for a home, property, facility, or public-sector opportunity.
+              </h2>
+              <form className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleHeroEstimateSubmit}>
+                <input name="fullName" type="text" placeholder="Full Name" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+                <input name="phone" type="tel" placeholder="Phone Number" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+                <input name="email" type="email" placeholder="Email Address" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+                <select name="projectLane" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+                  <option value="" disabled>Project Lane</option>
+                  <option value="residential">Residential</option>
+                  <option value="commercial">Commercial</option>
+                  <option value="public-sector">Public Sector / Municipal Opportunity</option>
+                </select>
+                <input name="location" type="text" placeholder="City or ZIP Code" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] md:col-span-2" required />
+                <textarea name="description" rows={4} placeholder="Project details, surfaces, timeline, or COI needs" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] md:col-span-2" required></textarea>
+                <button type="submit" className="bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] md:col-span-2">
+                  Open Estimate Email
                 </button>
-              </div>
-              <div className="text-center mt-6">
-                <a href="tel:651-410-4196" className="text-gray-300 font-medium hover:text-white transition-colors flex items-center justify-center gap-2">
-                  Or call / text us now: <Phone size={18} className="text-orange-safety" /> <strong className="text-white text-lg">651-410-4196</strong>
-                </a>
-              </div>
-            </form>
+              </form>
+              <p className="mt-5 flex items-start gap-2 text-sm font-semibold text-[#4c453d]" aria-live="polite">
+                <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#bf6f2f]" />
+                {heroFormStatus === 'opened'
+                  ? 'Email draft opened. You can also call or text 651-410-4196 for the fastest response.'
+                  : 'Free estimate requests open a prefilled email draft. Call or text 651-410-4196 for fastest response.'}
+              </p>
+            </FadeIn>
           </div>
         </div>
       </section>
-
-
     </PageTransition>
   );
 }
