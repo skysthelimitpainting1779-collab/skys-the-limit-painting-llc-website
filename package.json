@@ -14,7 +14,7 @@
     "render:markets": "remotion render remotion/index.ts ResidentialLoop public/videos/sky-residential-loop.mp4 --codec=h264 --crf=22 --muted && remotion render remotion/index.ts CommercialLoop public/videos/sky-commercial-loop.mp4 --codec=h264 --crf=22 --muted && remotion render remotion/index.ts PublicSectorLoop public/videos/sky-public-sector-loop.mp4 --codec=h264 --crf=22 --muted"
   },
   "dependencies": {
-    "@google/genai": "^1.29.0",
+    "@google/genai": "^2.3.0",
     "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.1.14",
     "@vercel/analytics": "^2.0.1",
