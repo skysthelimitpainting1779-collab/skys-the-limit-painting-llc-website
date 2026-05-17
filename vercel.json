@@ -1,4 +1,8 @@
 {
+  "framework": "vite",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "redirects": [
     { "source": "/services", "destination": "/residential", "permanent": true },
     { "source": "/services/interior", "destination": "/residential", "permanent": true },
