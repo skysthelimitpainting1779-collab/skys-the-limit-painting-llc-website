@@ -1,0 +1,31 @@
+name: Maintenance
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark stale items
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          stale-issue-message: "This issue has been quiet for 30 days. Add a comment if it still needs attention."
+          stale-pr-message: "This pull request has been quiet for 21 days. Add a comment if it is still active."
+          close-issue-message: "Closing because there has been no follow-up after the stale notice."
+          close-pr-message: "Closing because there has been no follow-up after the stale notice."
+          days-before-issue-stale: 30
+          days-before-issue-close: 7
+          days-before-pr-stale: 21
+          days-before-pr-close: 7
+          remove-stale-when-updated: true
+          exempt-issue-labels: pinned,security
+          exempt-pr-labels: pinned,security
