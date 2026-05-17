@@ -1,0 +1,22 @@
+# Code ownership and review requirements
+
+# All files require review
+* @skysthelimitpainting1779-collab/website-maintainers
+
+# TypeScript/JavaScript files
+*.ts @skysthelimitpainting1779-collab/website-maintainers
+*.tsx @skysthelimitpainting1779-collab/website-maintainers
+*.js @skysthelimitpainting1779-collab/website-maintainers
+*.jsx @skysthelimitpainting1779-collab/website-maintainers
+
+# Configuration files
+tsconfig.json @skysthelimitpainting1779-collab/website-maintainers
+package.json @skysthelimitpainting1779-collab/website-maintainers
+.eslintrc.json @skysthelimitpainting1779-collab/website-maintainers
+vite.config.ts @skysthelimitpainting1779-collab/website-maintainers
+
+# Documentation
+*.md @skysthelimitpainting1779-collab/website-maintainers
+
+# Workflow files
+.github/workflows/ @skysthelimitpainting1779-collab/website-maintainers
