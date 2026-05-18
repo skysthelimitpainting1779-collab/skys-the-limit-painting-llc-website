@@ -66,12 +66,20 @@ test('before and after slider remains pointer-enabled and is keyboard accessible
 
 test('lead form controls have accessible names and normalized funnel events', () => {
   const leadForm = read('src/components/LeadForm.tsx');
+  const leadsApi = read('api/leads.ts');
 
-  for (const label of ['Full name', 'Phone', 'Email', 'City', 'Market', 'Project type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project details']) {
+  for (const label of ['Full name', 'Phone', 'Email', 'City', 'Project address or cross streets', 'Market', 'Project type', 'Property type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project photo link', 'Project details']) {
     assert.match(leadForm, new RegExp(`aria-label="${label}"`));
   }
 
   for (const eventName of ['lead_form_start', 'lead_form_submit_success', 'lead_form_submit_error', 'lead_mailto_fallback_opened']) {
     assert.match(leadForm, new RegExp(`'${eventName}'`));
   }
+
+  assert.match(leadForm, /photosUrl/);
+  assert.match(leadForm, /response\.status === 502/);
+  assert.match(leadsApi, /LEAD_WEBHOOK_URL/);
+  assert.match(leadsApi, /leadId/);
+  assert.match(leadsApi, /new URL\(photosUrl\)/);
+  assert.match(leadsApi, /fallback: 'email'/);
 });

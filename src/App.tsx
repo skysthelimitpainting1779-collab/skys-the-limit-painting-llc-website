@@ -15,6 +15,7 @@ import ProjectsPage from './pages/Projects';
 import AboutPage from './pages/About';
 import ContactPage from './pages/Contact';
 import NotFoundPage from './pages/NotFound';
+import LandingPageRoute from './pages/LandingPage';
 import ScrollToTop from './components/ScrollToTop';
 import { trackEvent } from './lib/analytics';
 
@@ -60,6 +61,8 @@ function AnimatedRoutes() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/service-areas/:slug" element={<LandingPageRoute kind="area" />} />
+        <Route path="/painting-services/:slug" element={<LandingPageRoute kind="service" />} />
         <Route path="/services" element={<Navigate to="/residential" replace />} />
         <Route path="/services/interior" element={<Navigate to="/residential" replace />} />
         <Route path="/services/exterior" element={<Navigate to="/residential" replace />} />

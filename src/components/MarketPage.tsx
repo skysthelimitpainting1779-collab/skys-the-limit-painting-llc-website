@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Camera, CheckCircle2, ClipboardCheck, FileCheck2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FadeIn from './animations/FadeIn';
 import PageMeta from './PageMeta';
@@ -31,39 +31,97 @@ export default function MarketPage({ market }: MarketPageProps) {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-black-primary px-6 py-20 md:py-28">
-        <div className="blueprint-grid absolute inset-0 opacity-30"></div>
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-orange-safety/70 to-transparent"></div>
-        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
-          <FadeIn className="lg:col-span-7">
+      <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <ResponsiveImage
+          src={market.heroImage}
+          alt={`${market.title} project atmosphere`}
+          width={1920}
+          height={1080}
+          loading="eager"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover opacity-56"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.95)_36%,rgba(7,7,6,0.62)_68%,rgba(7,7,6,0.28)_100%)]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,#070706_0%,rgba(7,7,6,0.08)_45%,rgba(7,7,6,0.2)_100%)]"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
+        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-75"></div>
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
+          <FadeIn className="w-full overflow-hidden lg:col-span-7">
             <div className="mb-8 flex items-center gap-4 text-orange-safety">
               <span className="font-display text-6xl font-black leading-none opacity-70">{market.number}</span>
               <div className="h-px w-24 bg-orange-safety/60"></div>
               <Icon size={34} strokeWidth={1.5} />
             </div>
             <p className="mb-5 text-sm font-bold uppercase tracking-[0.32em] text-orange-safety">{market.accent}</p>
-            <h1 className="max-w-5xl break-words text-5xl font-black uppercase leading-[0.94] tracking-normal text-white md:text-6xl lg:text-7xl">
+            <h1 className="max-w-[calc(100vw-2rem)] break-words text-[2rem] font-black leading-[1.02] tracking-normal text-white sm:max-w-5xl sm:text-5xl md:text-6xl lg:text-7xl">
               {market.title}
             </h1>
-            <p className="mt-8 max-w-3xl text-xl leading-relaxed text-gray-300 md:text-2xl">{market.headline}</p>
-            <div className="mt-8 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
+            <p className="mt-8 max-w-[calc(100vw-2rem)] text-lg leading-relaxed text-gray-300 sm:max-w-3xl md:text-2xl">{market.headline}</p>
+            <div className="mt-8 grid max-w-[calc(100vw-2rem)] grid-cols-1 gap-3 sm:max-w-3xl sm:grid-cols-3">
               {market.proof.map((item) => (
                 <div key={item} className="border-t border-white/10 pt-4">
-                  <p className="text-xs font-black uppercase leading-relaxed tracking-wider text-gray-300">{item}</p>
+                  <p className="break-words text-xs font-black uppercase leading-relaxed tracking-[0.08em] text-gray-300 sm:tracking-wider">{item}</p>
                 </div>
               ))}
             </div>
           </FadeIn>
 
-          <FadeIn delay={0.15} direction="left" className="lg:col-span-5">
-            <div className="relative overflow-hidden border border-white/15 bg-black-charcoal">
-              <ResponsiveImage src={market.image} alt={`${market.title} work example`} width={1600} height={900} loading="eager" fetchPriority="high" className="h-[360px] w-full object-cover opacity-85" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black-primary via-black-primary/25 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <p className="max-w-md text-lg font-semibold leading-relaxed text-white">{market.summary}</p>
+          <FadeIn delay={0.15} direction="left" className="w-full overflow-hidden lg:col-span-5">
+            <div className="grid w-full overflow-hidden border border-white/15 bg-[#11100d]/90 backdrop-blur">
+              <div className="relative min-h-[240px]">
+                <ResponsiveImage src={market.image} alt={`${market.title} work example`} width={1600} height={900} loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover opacity-86" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-transparent"></div>
+                <span className="absolute left-5 top-5 border border-white/15 bg-[#080807]/75 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#f0c067] backdrop-blur">
+                  {market.accent}
+                </span>
+              </div>
+              <div className="p-6">
+                <p className="max-w-full text-lg font-semibold leading-relaxed text-white sm:max-w-md">{market.summary}</p>
+                <div className="mt-6 grid gap-3 text-sm text-[#d8c7aa]">
+                  {market.proof.map((item) => (
+                    <span key={item} className="flex min-w-0 items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 shrink-0 text-[#f0c067]" size={16} />
+                      <span className="min-w-0 break-words">{item}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden border-y border-[#d8c7aa]/10 bg-[#11100d] px-4 py-20 sm:px-6 lg:px-8">
+        <div className="measurement-rules absolute inset-0 opacity-15"></div>
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch">
+          <FadeIn className="lg:col-span-5">
+            <div className="relative h-full min-h-[420px] overflow-hidden border border-white/10">
+              <ResponsiveImage src={market.heroImage} alt="" width={1600} height={1200} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.78),rgba(8,8,7,0.08))]"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-7">
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Visual proof system</p>
+                <h2 className="mt-3 text-4xl font-black leading-tight text-white">Real-work imagery, matched to the brand.</h2>
+              </div>
+            </div>
+          </FadeIn>
+          <div className="grid gap-4 lg:col-span-7 md:grid-cols-3">
+            {[
+              [Camera, 'Photo-led scope', 'Estimate requests can now carry a project photo link so Anthony can see the surface before the call.'],
+              [ClipboardCheck, 'Cleaner intake', 'Every inquiry asks for the project details needed to make the first response useful.'],
+              [FileCheck2, 'Better project record', 'Photos, scope notes, and closeout details can support a cleaner estimate and follow-up.'],
+            ].map(([Icon, title, body], index) => {
+              const ProofIcon = Icon as typeof Camera;
+              return (
+                <FadeIn key={title as string} delay={0.06 * index}>
+                  <div className="h-full border-l border-[#c8a45d]/35 bg-[#080807]/72 p-6">
+                    <ProofIcon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
+                    <h3 className="text-xl font-black leading-tight text-white">{title as string}</h3>
+                    <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{body as string}</p>
+                  </div>
+                </FadeIn>
+              );
+            })}
+          </div>
         </div>
       </section>
 

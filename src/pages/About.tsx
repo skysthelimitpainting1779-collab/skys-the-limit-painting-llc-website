@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Camera, ClipboardCheck, ShieldCheck } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
@@ -38,9 +38,12 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <FadeIn delay={0.1} direction="right">
             <div className="relative group overflow-hidden rounded-sm border border-white/20 shadow-md">
-              {/* Fallback image as we don't have owner photo in public dir yet */}
-              <ResponsiveImage src="/images/services/interior/sky-work-real-04-before-after-bedroom.png" alt="Owner working" width={900} height={900} className="w-full aspect-square object-cover" />
+              <ResponsiveImage src="/brand/generated/sky-owner-proof.webp" alt="Sky's the Limit branded equipment and owner-led proof" width={1200} height={1200} className="w-full aspect-square object-cover" />
               <div className="absolute inset-0 bg-black-primary/10"></div>
+              <div className="absolute bottom-0 left-0 right-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.92),transparent)] p-6">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-orange-safety">Real owner-led positioning</p>
+                <p className="mt-3 text-2xl font-black leading-tight text-white">Owner-operated. Trade-built. Minnesota-based.</p>
+              </div>
             </div>
           </FadeIn>
           <FadeIn delay={0.2} direction="left">
@@ -69,6 +72,27 @@ export default function AboutPage() {
           </FadeIn>
         </div>
       </div>
+
+      <section className="bg-[#080807] px-6 py-20">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-3">
+          {[
+            [ShieldCheck, 'Insured contractor language', 'The site stays inside verified claim guardrails while still presenting the company seriously.'],
+            [ClipboardCheck, 'Journeyworker background', 'Anthony’s apprenticeship background is part of the trust story without inflating unsupported credentials.'],
+            [Camera, 'Photo-led follow-up', 'Project photos help Anthony understand surfaces, access, prep needs, and the right next step sooner.'],
+          ].map(([Icon, title, body], index) => {
+            const AboutIcon = Icon as typeof ShieldCheck;
+            return (
+              <FadeIn key={title as string} delay={0.06 * index}>
+                <article className="h-full border-l border-orange-safety/40 bg-black-charcoal p-7">
+                  <AboutIcon className="mb-8 text-orange-safety" size={30} strokeWidth={1.5} />
+                  <h2 className="text-2xl font-black uppercase leading-tight text-white">{title as string}</h2>
+                  <p className="mt-5 text-sm leading-relaxed text-gray-300">{body as string}</p>
+                </article>
+              </FadeIn>
+            );
+          })}
+        </div>
+      </section>
     </PageTransition>
   );
 }

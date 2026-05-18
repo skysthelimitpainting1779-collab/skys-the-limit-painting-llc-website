@@ -9,7 +9,16 @@ export const businessSchema = {
   email: 'skysthelimitpainting1779@gmail.com',
   url: siteUrl,
   logo: `${siteUrl}/brand/SkyLLP_BrandLogo.svg`,
-  image: `${siteUrl}/brand/remotion/sky-premium-market-hero-v2.png`,
+  image: `${siteUrl}/brand/generated/sky-local-authority.webp`,
+  priceRange: '$$',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '07:00',
+      closes: '17:00',
+    },
+  ],
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Inver Grove Heights',
@@ -24,6 +33,30 @@ export const businessSchema = {
     {
       '@type': 'AdministrativeArea',
       name: 'Minnesota',
+    },
+    {
+      '@type': 'City',
+      name: 'Inver Grove Heights',
+    },
+    {
+      '@type': 'City',
+      name: 'South St. Paul',
+    },
+    {
+      '@type': 'City',
+      name: 'St. Paul',
+    },
+    {
+      '@type': 'City',
+      name: 'Eagan',
+    },
+    {
+      '@type': 'City',
+      name: 'Woodbury',
+    },
+    {
+      '@type': 'City',
+      name: 'Minneapolis',
     },
   ],
   knowsAbout: [
@@ -51,6 +84,7 @@ export function serviceSchema(name: string, description: string, path: string) {
       name: "Sky's the Limit Painting LLC",
       telephone: '+1-651-410-4196',
       email: 'skysthelimitpainting1779@gmail.com',
+      url: siteUrl,
     },
     areaServed: 'Minnesota',
     url: `${siteUrl}${path}`,

@@ -4,6 +4,7 @@ import { Phone } from 'lucide-react';
 import ConversionHeader from './ConversionHeader';
 import CustomCursor from './CustomCursor';
 import SocialLinks from './SocialLinks';
+import { areaLandingPages, serviceLandingPages, landingPagePath } from '../data/landingPages';
 import { trackEvent } from '../lib/analytics';
 
 interface LayoutProps {
@@ -21,12 +22,12 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex-grow pt-[116px] pb-20 md:pb-0">{children}</main>
 
       {/* Mobile Sticky Bottom CTA */}
-      <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex gap-2">
-        <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'mobile_sticky' })} className="min-w-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
+      <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex max-w-[calc(100vw-2rem)] gap-2 overflow-hidden">
+        <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'mobile_sticky' })} className="min-w-0 basis-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
           <Phone size={16} className="text-orange-safety shrink-0" />
           Call/Text
         </a>
-        <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Estimate' })} className="min-w-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+        <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Estimate' })} className="min-w-0 basis-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
           Estimate
         </Link>
       </div>
@@ -34,8 +35,8 @@ export default function Layout({ children }: LayoutProps) {
       {/* Footer */}
       <footer className="bg-black-primary text-white py-20 px-6 mt-12 relative overflow-hidden">
         <div className="absolute right-0 bottom-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-safety/10 via-black-charcoal/0 to-transparent pointer-events-none rounded-full blur-3xl"></div>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
-          <div className="col-span-1 md:col-span-2">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6 relative z-10">
+          <div className="col-span-1 lg:col-span-2">
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
             <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 uppercase tracking-wide">Residential Detail. Commercial Discipline. Public-Sector Ready.</h3>
             <p className="text-gray-400 max-w-md text-lg">
@@ -55,6 +56,28 @@ export default function Layout({ children }: LayoutProps) {
               <Link to="/commercial" className="hover:text-orange-safety transition-colors">Commercial</Link>
               <Link to="/public-sector" className="hover:text-orange-safety transition-colors">Public Sector</Link>
               <Link to="/projects" className="hover:text-orange-safety transition-colors">Recent Work</Link>
+            </nav>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-6 text-lg">Services</h4>
+            <nav className="flex flex-col gap-4 text-gray-400">
+              {serviceLandingPages.slice(0, 5).map((page) => (
+                <Link key={page.slug} to={landingPagePath(page)} className="hover:text-orange-safety transition-colors">
+                  {page.shortTitle}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-6 text-lg">Service Areas</h4>
+            <nav className="flex flex-col gap-4 text-gray-400">
+              {areaLandingPages.slice(0, 5).map((page) => (
+                <Link key={page.slug} to={landingPagePath(page)} className="hover:text-orange-safety transition-colors">
+                  {page.shortTitle}
+                </Link>
+              ))}
             </nav>
           </div>
 

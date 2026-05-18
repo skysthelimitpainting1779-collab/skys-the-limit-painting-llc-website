@@ -12,6 +12,7 @@ interface LeadFormProps {
 type Status = 'idle' | 'submitting' | 'sent' | 'fallback' | 'error';
 
 const projectOptions = ['Interior', 'Exterior', 'Facility', 'Striping', 'Pavement Marking', 'Other'];
+const propertyOptions = ['Single-family home', 'Townhome / condo', 'Retail / storefront', 'Office / commercial', 'Facility / public property', 'Other'];
 const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
 const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
 
@@ -31,11 +32,14 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       phone: String(data.get('phone') || ''),
       email: String(data.get('email') || ''),
       city: String(data.get('city') || ''),
+      projectAddress: String(data.get('projectAddress') || ''),
       market: String(data.get('market') || defaultMarket),
       projectType: String(data.get('projectType') || ''),
+      propertyType: String(data.get('propertyType') || ''),
       timeline: String(data.get('timeline') || ''),
       budget: String(data.get('budget') || ''),
       contactMethod: String(data.get('contactMethod') || ''),
+      photosUrl: String(data.get('photosUrl') || ''),
       notes: String(data.get('notes') || ''),
       company: String(data.get('company') || ''),
       website: String(data.get('website') || ''),
@@ -67,22 +71,25 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         return;
       }
 
-      if (response.status === 501 || result?.fallback === 'email') {
+      if (response.status === 501 || response.status === 502 || result?.fallback === 'email') {
         setStatus('fallback');
         setMessage('Email delivery needs provider setup. Open the prepared email draft to send your request now.');
-        trackEvent('lead_form_submit_error', { source, market: payload.market, reason: 'email_provider_missing' });
-        trackEvent('lead_mailto_fallback_opened', { source, market: payload.market, reason: 'email_provider_missing' });
+        trackEvent('lead_form_submit_error', { source, market: payload.market, reason: response.status === 502 ? 'lead_delivery_failed' : 'email_provider_missing' });
+        trackEvent('lead_mailto_fallback_opened', { source, market: payload.market, reason: response.status === 502 ? 'lead_delivery_failed' : 'email_provider_missing' });
         window.location.href = buildEstimateMailto({
           Source: source,
           Name: payload.name,
           Phone: payload.phone,
           Email: payload.email,
           City: payload.city,
+          'Project address': payload.projectAddress,
           Market: payload.market,
           'Project type': payload.projectType,
+          'Property type': payload.propertyType,
           Timeline: payload.timeline,
           Budget: payload.budget,
           'Preferred contact': payload.contactMethod,
+          'Photo link': payload.photosUrl,
           Notes: payload.notes,
         });
         return;
@@ -99,11 +106,14 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           Phone: payload.phone,
           Email: payload.email,
           City: payload.city,
+          'Project address': payload.projectAddress,
           Market: payload.market,
           'Project type': payload.projectType,
+          'Property type': payload.propertyType,
           Timeline: payload.timeline,
           Budget: payload.budget,
           'Preferred contact': payload.contactMethod,
+          'Photo link': payload.photosUrl,
           Notes: payload.notes,
         });
         return;
@@ -123,8 +133,11 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         Phone: payload.phone,
         Email: payload.email,
         City: payload.city,
+        'Project address': payload.projectAddress,
         Market: payload.market,
         'Project type': payload.projectType,
+        'Property type': payload.propertyType,
+        'Photo link': payload.photosUrl,
         Notes: payload.notes,
       });
     }
@@ -137,6 +150,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       <input name="phone" type="tel" placeholder="Phone" aria-label="Phone" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
       <input name="email" type="email" placeholder="Email" aria-label="Email" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
       <input name="city" type="text" placeholder="City" aria-label="City" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
+      <input name="projectAddress" type="text" placeholder="Project address or cross streets" aria-label="Project address or cross streets" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" />
       <select name="market" aria-label="Market" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue={defaultMarket}>
         <option>Residential</option>
         <option>Commercial</option>
@@ -145,6 +159,10 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       <select name="projectType" aria-label="Project type" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
         <option value="" disabled>Project type</option>
         {projectOptions.map((option) => <option key={option}>{option}</option>)}
+      </select>
+      <select name="propertyType" aria-label="Property type" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" defaultValue="">
+        <option value="" disabled>Property type</option>
+        {propertyOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
       <select name="timeline" aria-label="Timeline" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
         <option value="" disabled>Timeline</option>
@@ -160,6 +178,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         <option>Text</option>
         <option>Email</option>
       </select>
+      <input name="photosUrl" type="url" placeholder="Project photo link (Google Drive, iCloud, Dropbox)" aria-label="Project photo link" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} />
       <textarea name="notes" rows={5} placeholder="Project details, surfaces, timeline, COI needs, or photo link" aria-label="Project details" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} required />
       <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
         {status === 'submitting' ? 'Sending...' : 'Send Project Details'} <ArrowRight size={18} />

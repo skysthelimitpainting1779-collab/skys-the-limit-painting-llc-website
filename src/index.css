@@ -23,12 +23,49 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
   }
   
   body {
     @apply font-body bg-page-bg text-page-text antialiased selection:bg-orange-safety/20;
     min-height: 100dvh;
-    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  @supports not (overflow-x: clip) {
+    html,
+    body {
+      overflow-x: hidden;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  #root,
+  main,
+  section,
+  article,
+  div {
+    width: auto;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  span,
+  a {
+    overflow-wrap: anywhere;
   }
   
   h1, h2, h3, h4, h5, h6 {

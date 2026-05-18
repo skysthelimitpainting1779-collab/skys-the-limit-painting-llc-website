@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const siteUrl = (process.env.VITE_SITE_URL || 'https://www.skysthelimitpaintingllc.com').replace(/\/$/, '');
-const defaultImage = '/brand/remotion/sky-premium-market-hero-v2.png';
+const defaultImage = '/brand/generated/sky-local-authority.webp';
 
 const businessSchema = {
   '@context': 'https://schema.org',
@@ -14,6 +14,15 @@ const businessSchema = {
   url: siteUrl,
   logo: `${siteUrl}/brand/SkyLLP_BrandLogo.svg`,
   image: `${siteUrl}${defaultImage}`,
+  priceRange: '$$',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '07:00',
+      closes: '17:00',
+    },
+  ],
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Inver Grove Heights',
@@ -23,6 +32,12 @@ const businessSchema = {
   areaServed: [
     { '@type': 'Place', name: 'Twin Cities Metro' },
     { '@type': 'AdministrativeArea', name: 'Minnesota' },
+    { '@type': 'City', name: 'Inver Grove Heights' },
+    { '@type': 'City', name: 'South St. Paul' },
+    { '@type': 'City', name: 'St. Paul' },
+    { '@type': 'City', name: 'Eagan' },
+    { '@type': 'City', name: 'Woodbury' },
+    { '@type': 'City', name: 'Minneapolis' },
   ],
   knowsAbout: [
     'Residential painting',
@@ -62,11 +77,42 @@ function serviceSchema(name, description, pagePath) {
       name: "Sky's the Limit Painting LLC",
       telephone: '+1-651-410-4196',
       email: 'skysthelimitpainting1779@gmail.com',
+      url: siteUrl,
     },
     areaServed: 'Minnesota',
     url: `${siteUrl}${pagePath}`,
   };
 }
+
+const landingRoutes = [
+  ['/service-areas/inver-grove-heights', 'Inver Grove Heights Painting Contractor | Sky’s the Limit', 'Owner-operated painting contractor based in Inver Grove Heights, MN for residential painting, commercial repainting, and qualified facility opportunities.', 'Inver Grove Heights Painting Contractor'],
+  ['/service-areas/south-st-paul', 'South St. Paul Painting Contractor | Sky’s the Limit', 'Painting contractor near South St. Paul for residential interiors, exterior refreshes, commercial repainting, and facility painting inquiries.', 'South St. Paul Painting Contractor'],
+  ['/service-areas/st-paul', 'St. Paul Painting Contractor | Sky’s the Limit', 'St. Paul painting contractor for interior painting, commercial refreshes, exterior painting conversations, and prep-first project scopes.', 'St. Paul Painting Contractor'],
+  ['/service-areas/eagan', 'Eagan Painting Contractor | Sky’s the Limit', 'Eagan painting contractor for residential painting, commercial interiors, exterior refreshes, and owner-operated project communication.', 'Eagan Painting Contractor'],
+  ['/service-areas/woodbury', 'Woodbury Painting Contractor | Sky’s the Limit', 'Woodbury painting contractor for residential painting, commercial refreshes, trim work, exterior painting conversations, and project scoping.', 'Woodbury Painting Contractor'],
+  ['/service-areas/minneapolis', 'Minneapolis Painting Contractor | Sky’s the Limit', 'Minneapolis painting contractor for commercial painting, residential interiors, facility refreshes, and prep-first repainting conversations.', 'Minneapolis Painting Contractor'],
+  ['/service-areas/twin-cities', 'Twin Cities Painting Contractor | Sky’s the Limit', 'Twin Cities painting contractor for residential painting, commercial repainting, facility work, pavement marking, and project scoping.', 'Twin Cities Painting Contractor'],
+  ['/painting-services/interior-painting', 'Interior Painting in the Twin Cities | Sky’s the Limit', 'Interior painting for Twin Cities homes and properties with clean prep, careful masking, trim detail, owner communication, and final walkthroughs.', 'Interior Painting'],
+  ['/painting-services/exterior-painting', 'Exterior Painting in the Twin Cities | Sky’s the Limit', 'Exterior painting contractor for Twin Cities homes and properties with prep-first scoping, weather-aware scheduling, and owner communication.', 'Exterior Painting'],
+  ['/painting-services/commercial-painting', 'Commercial Painting in the Twin Cities | Sky’s the Limit', 'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized scope, clean execution, and owner-led follow-through.', 'Commercial Painting'],
+  ['/painting-services/cabinet-painting', 'Cabinet Painting in the Twin Cities | Sky’s the Limit', 'Cabinet painting inquiry path for Twin Cities homeowners, with prep-first scoping around adhesion, masking, finish expectations, and durability.', 'Cabinet Painting'],
+  ['/painting-services/drywall-repair', 'Paint-Ready Drywall Repair | Sky’s the Limit', 'Paint-ready drywall repair for Twin Cities repainting projects, including patching, sanding, stain-blocking primer, and finish preparation.', 'Paint-Ready Drywall Repair'],
+  ['/painting-services/deck-fence-staining', 'Deck and Fence Staining | Sky’s the Limit Painting', 'Deck and fence staining inquiry path for Twin Cities homeowners, with condition review, prep planning, weather timing, and finish expectations.', 'Deck and Fence Staining'],
+  ['/painting-services/parking-lot-striping', 'Parking Lot Striping in Minnesota | Sky’s the Limit', 'Parking lot striping inquiries for Twin Cities properties, small lots, facilities, and public-facing spaces needing clearer markings and presentation.', 'Parking Lot Striping'],
+  ['/painting-services/pavement-marking', 'Pavement Marking in Minnesota | Sky’s the Limit', 'Pavement marking inquiries for Minnesota commercial properties, facilities, parking areas, and qualified public-sector opportunities.', 'Pavement Marking'],
+].map(([path, title, description, serviceName]) => ({
+  path,
+  title,
+  description,
+  schema: [
+    serviceSchema(serviceName, description, path),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: path.startsWith('/service-areas') ? 'Service Areas' : 'Painting Services', path: path.startsWith('/service-areas') ? '/service-areas/twin-cities' : '/painting-services/interior-painting' },
+      { name: serviceName, path },
+    ]),
+  ],
+}));
 
 const routes = [
   {
@@ -127,6 +173,7 @@ const routes = [
       'Request an estimate from Sky’s the Limit Painting LLC for residential painting, commercial repainting, facility work, or public-sector opportunities in Minnesota.',
     schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }]),
   },
+  ...landingRoutes,
   {
     path: '/404',
     title: "Page Not Found | Sky's the Limit Painting LLC",

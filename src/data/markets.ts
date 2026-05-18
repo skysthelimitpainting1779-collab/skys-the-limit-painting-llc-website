@@ -18,6 +18,7 @@ export interface Market {
   summary: string;
   description: string;
   image: string;
+  heroImage: string;
   icon: LucideIcon;
   accent: string;
   proof: string[];
@@ -39,6 +40,7 @@ export const markets: Market[] = [
     description:
       'Residential work is where trust matters most. Sky’s the Limit Painting brings owner-led accountability, clean communication, surface prep, careful protection, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
     image: '/images/services/interior/sky-work-02-finished-living-room.png',
+    heroImage: '/brand/generated/sky-residential-authority.webp',
     icon: Home,
     accent: 'Warm detail',
     proof: ['Interior and exterior repainting', 'Trim, doors, walls, ceilings, and prep', 'Clean protection and final walkthrough'],
@@ -78,6 +80,7 @@ export const markets: Market[] = [
     description:
       'Commercial projects need more than paint on walls. They need a contractor who communicates clearly, respects occupied spaces, keeps the jobsite organized, and understands that the finished property has to look ready for customers, tenants, staff, and ownership.',
     image: '/images/services/commercial/sky-work-08-finished-commercial.png',
+    heroImage: '/brand/generated/sky-commercial-authority.webp',
     icon: Building2,
     accent: 'Commercial discipline',
     proof: ['Commercial interiors and exteriors', 'Retail, office, shop, and facility repainting', 'Schedule-aware communication'],
@@ -117,6 +120,7 @@ export const markets: Market[] = [
     description:
       'Sky’s the Limit Painting is preparing to compete for public-sector painting, facility, and pavement-marking work across Minnesota. The focus is documentation, scope clarity, safety awareness, follow-through, and the trade discipline public work requires.',
     image: '/images/services/striping/SkyLLP_ParkingLot_Striping.png',
+    heroImage: '/brand/generated/sky-public-authority.webp',
     icon: Landmark,
     accent: 'Public-sector ready',
     proof: ['COI available for qualified opportunities', 'General liability coverage in place', 'Commercial auto and tools/equipment coverage in place'],

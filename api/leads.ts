@@ -6,6 +6,10 @@ function asText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function isPayload(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
 function escapeHtml(value: unknown) {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -29,7 +33,25 @@ function validate(payload: Record<string, unknown>) {
     return 'Spam check failed.';
   }
 
+  const photosUrl = asText(payload.photosUrl);
+  if (photosUrl) {
+    try {
+      const url = new URL(photosUrl);
+      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname.includes('.')) {
+        return 'Enter a valid project photo link.';
+      }
+    } catch {
+      return 'Enter a valid project photo link.';
+    }
+  }
+
   return '';
+}
+
+function buildLeadId() {
+  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
+  const random = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `SKY-${stamp}-${random}`;
 }
 
 function buildLeadHtml(payload: Record<string, unknown>) {
@@ -59,7 +81,7 @@ async function sendWithResend(payload: Record<string, unknown>) {
       from: fromEmail,
       to: [leadToEmail],
       cc: process.env.LEAD_CC_EMAIL ? [process.env.LEAD_CC_EMAIL] : undefined,
-      subject: `New ${asText(payload.market)} lead - ${asText(payload.name)}`,
+      subject: `New ${asText(payload.market)} lead - ${asText(payload.name)} - ${asText(payload.leadId)}`,
       html: buildLeadHtml(payload),
       reply_to: asText(payload.email),
     }),
@@ -68,6 +90,33 @@ async function sendWithResend(payload: Record<string, unknown>) {
   if (!response.ok) {
     const body = await response.text();
     throw new Error(`Resend failed: ${response.status} ${body}`);
+  }
+
+  return { configured: true };
+}
+
+async function sendLeadWebhook(payload: Record<string, unknown>) {
+  const webhookUrl = process.env.LEAD_WEBHOOK_URL;
+
+  if (!webhookUrl) {
+    return { configured: false };
+  }
+
+  const response = await fetch(webhookUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(process.env.LEAD_WEBHOOK_SECRET ? { 'X-Sky-Lead-Secret': process.env.LEAD_WEBHOOK_SECRET } : {}),
+    },
+    body: JSON.stringify({
+      event: 'sky.lead.created',
+      lead: payload,
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Lead webhook failed: ${response.status} ${body}`);
   }
 
   return { configured: true };
@@ -85,19 +134,38 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Invalid JSON.' });
   }
 
+  if (!isPayload(payload)) {
+    return res.status(400).json({ error: 'Invalid lead payload.' });
+  }
+
   const validationError = validate(payload);
   if (validationError) {
     return res.status(400).json({ error: validationError });
   }
 
+  const lead = {
+    ...payload,
+    leadId: buildLeadId(),
+    submittedAt: new Date().toISOString(),
+    userAgent: asText(req.headers?.['user-agent']),
+    referrer: asText(req.headers?.referer || req.headers?.referrer),
+  };
+
   try {
-    const result = await sendWithResend(payload);
-    if (!result.configured) {
-      return res.status(501).json({ error: 'Email delivery is not configured yet.', fallback: 'email' });
+    const delivery = await Promise.allSettled([sendWithResend(lead), sendLeadWebhook(lead)]);
+    const configured = delivery.some((result) => result.status === 'fulfilled' && result.value.configured);
+    const failed = delivery.find((result) => result.status === 'rejected');
+
+    if (!configured && failed) {
+      throw failed.reason;
+    }
+
+    if (!configured) {
+      return res.status(501).json({ error: 'Lead delivery is not configured yet.', fallback: 'email' });
     }
   } catch (error) {
-    return res.status(502).json({ error: error instanceof Error ? error.message : 'Lead delivery failed.' });
+    return res.status(502).json({ error: error instanceof Error ? error.message : 'Lead delivery failed.', fallback: 'email' });
   }
 
-  return res.status(200).json({ ok: true });
+  return res.status(200).json({ ok: true, leadId: lead.leadId });
 }

@@ -45,6 +45,8 @@ This project is Vercel-ready and Netlify-ready.
 8. **About** (`/about`)
 9. **Service Area** (`/service-area`)
 10. **Contact / Free Estimate** (`/contact`)
+11. **Local SEO landing pages** (`/service-areas/:city`)
+12. **Service landing pages** (`/painting-services/:service`)
 
 ## Asset Usage Notes
 
@@ -55,10 +57,9 @@ This project is Vercel-ready and Netlify-ready.
 ## Missing Asset List
 
 - **Logo Files**: Required for the navigation header, website footer, and favicon.
-- **Hero Photography**: Need a high-resolution, un-distorted photo of the crew working or a completed premium project for the homepage.
-- **Anthony's Headshot**: Need a clear, trustworthy photo for the About section.
+- **Anthony's Headshot**: Need a clear, trustworthy photo for the About section when approved for website use.
 - **Projects Gallery Photos**: High-quality interior/exterior before-and-after shots, including the smoke shop ceiling.
-- **Insurance Documents / Certifications**: If active documents exist later, add them only after verification. Until then, do not claim "licensed," "bonded," "insured," or specialty certifications.
+- **Insurance Documents / Certifications**: General liability, commercial auto, and tools/equipment coverage are referenced carefully. Add document images only after approval. Do not claim "licensed," "bonded," government-certified, DBE/TGB, or other specialty credentials unless separately verified.
 
 ## Claim Guardrail Checklist
 
@@ -87,6 +88,5 @@ This project is Vercel-ready and Netlify-ready.
 ## Unresolved TODOs
 
 - **Add Google Analytics / Plausible tracking snippet**: Added HTML comment locally in `/index.html`.
-- **Form Backend**: Estimate forms currently open a prefilled email draft to `skysthelimitpainting1779@gmail.com`. Add a real backend later if the owner wants submissions stored or emailed automatically.
+- **Lead tracker**: `/api/leads` supports Resend email delivery and optional `LEAD_WEBHOOK_URL` delivery for a CRM, spreadsheet, or automation platform.
 - **Owner Headshot**: Insert a real owner photo once approved for website use.
-- **Swap out the generic icon (`<Paintbrush />`)** in the navbar for the real company `logo.svg`.

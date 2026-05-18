@@ -2,10 +2,12 @@ import type { Key } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
+  Camera,
   CheckCircle2,
   ClipboardCheck,
   FileCheck2,
   Phone,
+  UserCheck,
   Ruler,
   ShieldCheck,
 } from 'lucide-react';
@@ -150,7 +152,7 @@ export default function HomePage() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
         >
           <source src="/videos/sky-hero-cinematic.mp4" type="video/mp4" />
         </video>
@@ -229,6 +231,48 @@ export default function HomePage() {
             <p className="text-lg leading-relaxed text-[#3f3a33]">
               Different projects demand different standards: a homeowner needs care and protection, a commercial client needs reliable execution, and a public-sector buyer needs clarity, documentation, and follow-through.
             </p>
+          </FadeIn>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[#11100d] px-4 py-24 text-white sm:px-6 lg:px-8">
+        <div className="measurement-rules absolute inset-0 opacity-15"></div>
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+          <FadeIn className="lg:col-span-5">
+            <div className="relative min-h-[460px] overflow-hidden border border-white/12">
+              <ResponsiveImage src="/brand/generated/sky-owner-proof.webp" alt="Sky's the Limit branded equipment and trade proof" width={1400} height={1400} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.86),rgba(8,8,7,0.1))]"></div>
+              <div className="absolute left-0 right-0 top-0 h-1 bg-[repeating-linear-gradient(90deg,#f0c067_0_72px,transparent_72px_112px)] opacity-80"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-7">
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Owner proof</p>
+                <h2 className="mt-4 text-4xl font-black leading-tight">Anthony Briseno leads the scope.</h2>
+              </div>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.1} className="lg:col-span-7">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Bring the human trust forward</p>
+            <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
+              The real advantage is owner-led accountability, not a faceless painting brand.
+            </h2>
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c1b4]">
+              Every lead path asks for the details Anthony needs to quote intelligently: market lane, city, project type, timeline, budget range, contact preference, and a photo link when the customer has one.
+            </p>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {[
+                [UserCheck, 'Owner-led estimate', 'The copy and intake system point customers toward Anthony, not a generic office.'],
+                [Camera, 'Photo-ready leads', 'Customers can include a project photo link so the first response is more useful.'],
+                [ClipboardCheck, 'Cleaner follow-up', 'The request carries the details needed for a sharper first response.'],
+              ].map(([Icon, title, body]) => {
+                const ProofIcon = Icon as typeof UserCheck;
+                return (
+                  <div key={title as string} className="min-h-[220px] border-l border-[#f0c067]/35 bg-[#080807] p-6">
+                    <ProofIcon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
+                    <h3 className="text-xl font-black leading-tight">{title as string}</h3>
+                    <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{body as string}</p>
+                  </div>
+                );
+              })}
+            </div>
           </FadeIn>
         </div>
       </section>

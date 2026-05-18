@@ -72,7 +72,7 @@ export default function ContactPage() {
             <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Estimate request</p>
             <h2 className="mt-5 text-4xl font-black leading-tight md:text-5xl">Residential, commercial, and public-sector inquiry paths in one form.</h2>
             <p className="mt-5 text-base leading-relaxed text-[#4c453d]">
-              The form captures UTM/source data and routes through a Vercel endpoint when email delivery is configured. Without email credentials, it opens a prepared email draft.
+              Include the city, project type, timeline, preferred contact method, and a photo link if you have one. The more surface detail you send, the better the first response can be.
             </p>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-8">

@@ -75,8 +75,11 @@ export default function ProjectsPage() {
       />
       
       {/* Hero */}
-      <section className="bg-black-primary py-24 px-6 border-b border-white/10">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative overflow-hidden bg-black-primary py-24 px-6 border-b border-white/10">
+        <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-35" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.92)_44%,rgba(5,5,5,0.5)_100%)]"></div>
+        <div className="measurement-rules absolute inset-0 opacity-16"></div>
+        <div className="relative max-w-7xl mx-auto">
           <FadeIn>
             <div className="max-w-3xl">
               <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Our Work</span>

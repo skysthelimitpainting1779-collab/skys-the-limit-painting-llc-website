@@ -10,6 +10,9 @@ test('top-level routes use the three-market architecture', () => {
   for (const route of ['"/"', '"/residential"', '"/commercial"', '"/public-sector"', '"/projects"', '"/about"', '"/contact"']) {
     assert.match(app, new RegExp(route.replace('/', '\\/')));
   }
+
+  assert.match(app, /"\/service-areas\/:slug"/);
+  assert.match(app, /"\/painting-services\/:slug"/);
 });
 
 test('primary navigation leads with residential, commercial, and public sector', () => {
@@ -76,4 +79,37 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
   for (const label of ['Full name', 'Phone', 'Email', 'City', 'Market', 'Project type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project details']) {
     assert.match(leadForm, new RegExp(`aria-label="${label}"`));
   }
+});
+
+test('local SEO and service landing pages are routable, prerendered, and listed in the sitemap', () => {
+  const landingPages = read('src/data/landingPages.ts');
+  const landingRoute = read('src/pages/LandingPage.tsx');
+  const prerender = read('scripts/prerender.mjs');
+  const sitemap = read('public/sitemap.xml');
+
+  for (const slug of [
+    'inver-grove-heights',
+    'south-st-paul',
+    'st-paul',
+    'eagan',
+    'woodbury',
+    'minneapolis',
+    'twin-cities',
+    'interior-painting',
+    'exterior-painting',
+    'commercial-painting',
+    'cabinet-painting',
+    'drywall-repair',
+    'deck-fence-staining',
+    'parking-lot-striping',
+    'pavement-marking',
+  ]) {
+    assert.match(landingPages, new RegExp(`slug: '${slug}'`));
+    assert.match(prerender, new RegExp(slug));
+    assert.match(sitemap, new RegExp(slug));
+  }
+
+  assert.match(landingRoute, /LeadForm/);
+  assert.match(landingRoute, /landingPagePath/);
+  assert.match(landingRoute, /PageMeta/);
 });
