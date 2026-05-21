@@ -122,6 +122,64 @@ async function sendLeadWebhook(payload: Record<string, unknown>) {
   return { configured: true };
 }
 
+async function sendToHubspot(payload: Record<string, unknown>) {
+  const portalId = '246259637';
+  const formId = process.env.HUBSPOT_FORM_ID;
+
+  if (!formId) {
+    return { configured: false };
+  }
+
+  const fields = [
+    { name: 'firstname', value: asText(payload.name) },
+    { name: 'email', value: asText(payload.email) },
+    { name: 'phone', value: asText(payload.phone) },
+    { name: 'city', value: asText(payload.city) },
+  ];
+
+  if (payload.company) {
+    fields.push({ name: 'company', value: asText(payload.company) });
+  }
+
+  const details = [
+    `Market: ${asText(payload.market)}`,
+    `Project Type: ${asText(payload.projectType)}`,
+    `Property Type: ${asText(payload.propertyType)}`,
+    `Timeline: ${asText(payload.timeline)}`,
+    `Budget Range: ${asText(payload.budget)}`,
+    `Preferred Contact: ${asText(payload.contactMethod)}`,
+    payload.projectAddress ? `Project Address: ${asText(payload.projectAddress)}` : '',
+    payload.photosUrl ? `Photos: ${asText(payload.photosUrl)}` : '',
+    payload.notes ? `Notes:\n${asText(payload.notes)}` : '',
+  ].filter(Boolean).join('\n');
+
+  fields.push({ name: 'message', value: details });
+
+  const context = {
+    hutk: asText(payload.hubspotutk) || undefined,
+    pageUri: asText(payload.page) || undefined,
+    pageName: 'Request an Estimate - Sky\'s the Limit Painting',
+  };
+
+  const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      fields,
+      context,
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`HubSpot Forms API failed: ${response.status} ${body}`);
+  }
+
+  return { configured: true };
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -152,7 +210,11 @@ export default async function handler(req: any, res: any) {
   };
 
   try {
-    const delivery = await Promise.allSettled([sendWithResend(lead), sendLeadWebhook(lead)]);
+    const delivery = await Promise.allSettled([
+      sendWithResend(lead),
+      sendLeadWebhook(lead),
+      sendToHubspot(lead),
+    ]);
     const configured = delivery.some((result) => result.status === 'fulfilled' && result.value.configured);
     const failed = delivery.find((result) => result.status === 'rejected');
 

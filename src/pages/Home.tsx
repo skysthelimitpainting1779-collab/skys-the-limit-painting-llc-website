@@ -14,7 +14,6 @@ import {
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
-import BookingCta from '../components/BookingCta';
 import LeadForm from '../components/LeadForm';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
@@ -23,28 +22,48 @@ import { trackEvent } from '../lib/analytics';
 
 const corePositioningLine = 'Residential detail. Commercial discipline. Public-sector ready.';
 
+const customerPromise =
+  'Interior and exterior painting for homes, businesses, and facilities in Inver Grove Heights and the Twin Cities Metro.';
+const verifiedContractorLine =
+  'Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor.';
+
+const conversionSteps = [
+  {
+    step: '01',
+    title: 'Request the estimate',
+    body: 'Send your city, surfaces, timeline, and photos. The form emails Anthony the details live.',
+  },
+  {
+    step: '02',
+    title: 'Walk the scope',
+    body: 'Anthony confirms the project, answers questions, and turns the request into a clear painting scope.',
+  },
+  {
+    step: '03',
+    title: 'Approve + reserve',
+    body: 'After the estimate is approved, the job is scheduled and the deposit reserves the work window.',
+  },
+];
+
 const coverageItems = [
   ['General liability coverage in place', 'General liability coverage in place'],
   ['Commercial auto + tools coverage', 'Commercial auto + tools/equipment coverage'],
   ['COI available for qualified opportunities', 'COI available for qualified commercial/public-sector opportunities'],
 ];
 
-const marketMedia: Record<MarketSlug, { video: string; poster: string; label: string; accent: string }> = {
+const marketMedia: Record<MarketSlug, { image: string; label: string; accent: string }> = {
   residential: {
-    video: '/videos/sky-residential-loop.mp4',
-    poster: '/brand/generated/premium-residential-finished-room.png',
-    label: 'Home finish',
+    image: '/images/site/iphone-interior-painting-progress.png',
+    label: 'Real home work',
     accent: 'Warm, detailed, protected',
   },
   commercial: {
-    video: '/videos/sky-commercial-loop.mp4',
-    poster: '/brand/generated/premium-commercial-crew.png',
-    label: 'Property standard',
+    image: '/images/site/iphone-commercial-door-frame.png',
+    label: 'Real property work',
     accent: 'Structured, reliable, clean',
   },
   'public-sector': {
-    video: '/videos/sky-public-sector-loop.mp4',
-    poster: '/brand/gbp/SkyGBP_Branded_Equipment.png',
+    image: '/images/services/striping/SkyLLP_ParkingLot_Striping.png',
     label: 'Civic readiness',
     accent: 'Documented, precise, infrastructure-aware',
   },
@@ -62,17 +81,13 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
         className="group grid overflow-hidden border border-[#d8c7aa]/16 bg-[#11100d] transition duration-500 hover:-translate-y-1 hover:border-[#f0c067]/55 lg:grid-cols-12"
       >
         <div className={`relative min-h-[340px] overflow-hidden lg:col-span-7 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-          <video
+          <ResponsiveImage
+            src={media.image}
+            alt={`${market.navLabel} painting work example`}
+            width={1600}
+            height={1100}
             className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-            poster={media.poster}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src={media.video} type="video/mp4" />
-          </video>
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-transparent"></div>
           <div className="measurement-rules absolute inset-0 opacity-25"></div>
           <span className="absolute left-5 top-5 border border-white/15 bg-[#080807]/75 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#f0c067] backdrop-blur">
@@ -138,57 +153,57 @@ export default function HomePage() {
   return (
     <PageTransition>
       <PageMeta
-        title="Sky's the Limit Painting LLC | Minnesota Painting Contractor"
-        description="Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for residential painting, commercial work, and public-sector opportunities."
+        title="Sky's the Limit Painting LLC | Twin Cities Painting Contractor"
+        description="Sky’s the Limit Painting LLC provides interior and exterior painting estimates for homes, businesses, and facilities in Inver Grove Heights and the Twin Cities Metro."
         path="/"
         schema={businessSchema}
       />
 
       <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706]">
-        <video
+        <ResponsiveImage
+          src="/images/site/marketing-hero-exterior-painting.png"
+          alt="Exterior painting project with protected windows, clean drop cloths, and a painter working on trim"
+          width={1600}
+          height={900}
+          loading="eager"
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
-          poster="/brand/generated/premium-residential-spray.png"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        >
-          <source src="/videos/sky-hero-cinematic.mp4" type="video/mp4" />
-        </video>
+        />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.94)_30%,rgba(7,7,6,0.58)_62%,rgba(7,7,6,0.22)_100%)]"></div>
         <div className="absolute inset-0 bg-[linear-gradient(0deg,#070706_0%,rgba(7,7,6,0.08)_38%,rgba(7,7,6,0.2)_100%)]"></div>
         <div className="blueprint-grid absolute inset-0 opacity-16"></div>
         <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-          <FadeIn className="max-w-4xl pt-6 md:pt-12">
+          <FadeIn className="w-full max-w-[calc(100vw-2rem)] pt-6 sm:max-w-4xl md:pt-12">
             <div className="mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/55 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067] backdrop-blur sm:text-[11px] sm:tracking-[0.24em]">
               <ShieldCheck size={16} />
               <span className="sm:hidden">Insured MN Contractor</span>
               <span className="hidden sm:inline">Insured Minnesota Painting Contractor</span>
             </div>
-            <h1 aria-label={corePositioningLine} className="max-w-4xl text-5xl font-black leading-[0.95] text-white sm:text-6xl lg:text-7xl xl:text-8xl">
-              <span className="block">Residential detail.</span>
-              <span className="block text-[#f2d9bf]">Commercial discipline.</span>
-              <span className="block text-[#f0c067]">Public-sector ready.</span>
+            <h1 aria-label={`${customerPromise} ${corePositioningLine}`} className="max-w-[calc(100vw-2rem)] text-[2.45rem] font-black leading-[0.98] text-white sm:max-w-4xl sm:text-6xl lg:text-7xl xl:text-8xl">
+              <span className="block">Interior & exterior</span>
+              <span className="block text-white">painting in Inver Grove Heights</span>
+              <span className="block text-[#f0c067] sm:hidden">and the Twin</span>
+              <span className="block text-[#f0c067] sm:hidden">Cities.</span>
+              <span className="hidden text-[#f0c067] sm:block">and the Twin Cities.</span>
             </h1>
-            <p className="mt-7 max-w-2xl text-base leading-relaxed text-[#e7dfd2] sm:text-lg md:text-xl">
+            <p className="mt-7 max-w-[calc(100vw-2rem)] text-base leading-relaxed text-[#e7dfd2] sm:max-w-2xl sm:text-lg md:text-xl">
               <span className="sm:hidden">
-                Owner-operated and insured in Minnesota for homes, businesses, and public-sector opportunities.
+                Homes, businesses, and facilities. Request an estimate, approve the scope, reserve with a deposit.
               </span>
               <span className="hidden sm:inline">
-                Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for careful residential painting, reliable commercial work, and city, county, and state opportunities.
+                {customerPromise} {verifiedContractorLine} Request an estimate, approve the scope, then reserve your spot with a deposit when the job is ready to schedule.
               </span>
             </p>
+            <p className="mt-4 text-sm font-black uppercase tracking-[0.22em] text-[#f0c067]">{corePositioningLine}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
-                Request an Estimate <ArrowRight size={18} />
+                Request a Free Estimate <ArrowRight size={18} />
               </Link>
               <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Phone size={18} /> Call or Text Anthony
               </a>
-              <BookingCta className="sm:hidden" />
             </div>
             <div className="mt-8 flex max-w-3xl flex-col gap-3 text-sm font-semibold text-[#d8c7aa] md:flex-row md:flex-wrap md:items-center">
               {coverageItems.map(([mobile, desktop]) => (
@@ -203,16 +218,12 @@ export default function HomePage() {
 
           <FadeIn delay={0.12} className="mt-12">
             <div className="grid border-y border-[#d8c7aa]/20 bg-[#070706]/72 backdrop-blur md:grid-cols-3">
-              {markets.map((market) => (
-                <Link key={market.slug} to={`/${market.slug}`} className="group border-[#d8c7aa]/15 p-5 transition-colors hover:bg-white/5 md:border-r md:last:border-r-0">
-                  <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#9fa9a9]">
-                    {market.number} / {market.navLabel}
-                  </p>
-                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#e7dfd2]">{market.summary}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#f0c067]">
-                    Enter lane <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
+              {conversionSteps.map((item) => (
+                <div key={item.step} className="border-[#d8c7aa]/15 p-5 md:border-r md:last:border-r-0">
+                  <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#9fa9a9]">{item.step} / Customer path</p>
+                  <h2 className="mt-3 text-xl font-black leading-tight text-white">{item.title}</h2>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#e7dfd2]">{item.body}</p>
+                </div>
               ))}
             </div>
           </FadeIn>
@@ -224,12 +235,12 @@ export default function HomePage() {
           <FadeIn className="lg:col-span-7">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Built from the trade up</p>
             <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl">
-              A serious owner-led contractor brand, without pretending to be a giant company.
+              Customers should know the who, what, where, and next step before they scroll.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="text-lg leading-relaxed text-[#3f3a33]">
-              Different projects demand different standards: a homeowner needs care and protection, a commercial client needs reliable execution, and a public-sector buyer needs clarity, documentation, and follow-through.
+              Sky’s the Limit Painting is owner-operated, insured, based in Inver Grove Heights, and built for residential repaints, commercial refreshes, facilities, and qualified public-sector opportunities across the Twin Cities.
             </p>
           </FadeIn>
         </div>
@@ -240,35 +251,39 @@ export default function HomePage() {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-5">
             <div className="relative min-h-[460px] overflow-hidden border border-white/12">
-              <ResponsiveImage src="/brand/generated/sky-owner-proof.webp" alt="Sky's the Limit branded equipment and trade proof" width={1400} height={1400} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <ResponsiveImage src="/images/site/marketing-hero-exterior-painting.png" alt="Polished exterior painting project proof" width={1600} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.86),rgba(8,8,7,0.1))]"></div>
               <div className="absolute left-0 right-0 top-0 h-1 bg-[repeating-linear-gradient(90deg,#f0c067_0_72px,transparent_72px_112px)] opacity-80"></div>
               <div className="absolute bottom-0 left-0 right-0 p-7">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Owner proof</p>
-                <h2 className="mt-4 text-4xl font-black leading-tight">Anthony Briseno leads the scope.</h2>
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Marketing proof</p>
+                <h2 className="mt-4 text-4xl font-black leading-tight">A confident first impression for serious buyers.</h2>
               </div>
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Bring the human trust forward</p>
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Marketing polish + jobsite proof</p>
             <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
-              The real advantage is owner-led accountability, not a faceless painting brand.
+              Use polished images to build confidence, then real phone-style photos to prove the work.
             </h2>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c1b4]">
-              Every lead path asks for the details Anthony needs to quote intelligently: market lane, city, project type, timeline, budget range, contact preference, and a photo link when the customer has one.
+              The site now has both: high-impact contractor visuals for the hero and market pages, plus natural job photos for trust sections where customers want to see prep, tape, drop cloths, tools, and actual work in progress.
             </p>
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {[
-                [UserCheck, 'Owner-led estimate', 'The copy and intake system point customers toward Anthony, not a generic office.'],
-                [Camera, 'Photo-ready leads', 'Customers can include a project photo link so the first response is more useful.'],
-                [ClipboardCheck, 'Cleaner follow-up', 'The request carries the details needed for a sharper first response.'],
+                [Camera, 'Real interior prep', '/images/site/iphone-interior-painting-progress.png'],
+                [UserCheck, 'Real exterior prep', '/images/site/iphone-exterior-prep-front-entry.png'],
+                [ClipboardCheck, 'Real commercial work', '/images/site/iphone-commercial-door-frame.png'],
               ].map(([Icon, title, body]) => {
                 const ProofIcon = Icon as typeof UserCheck;
                 return (
-                  <div key={title as string} className="min-h-[220px] border-l border-[#f0c067]/35 bg-[#080807] p-6">
-                    <ProofIcon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
-                    <h3 className="text-xl font-black leading-tight">{title as string}</h3>
-                    <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{body as string}</p>
+                  <div key={title as string} className="overflow-hidden border-l border-[#f0c067]/35 bg-[#080807]">
+                    <div className="relative aspect-[4/3]">
+                      <ResponsiveImage src={body as string} alt={`${title as string} project photo`} width={1200} height={900} className="absolute inset-0 h-full w-full object-cover" />
+                    </div>
+                    <div className="p-5">
+                      <ProofIcon className="mb-5 text-[#f0c067]" size={24} strokeWidth={1.5} />
+                      <h3 className="text-lg font-black leading-tight">{title as string}</h3>
+                    </div>
                   </div>
                 );
               })}

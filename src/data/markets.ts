@@ -1,6 +1,4 @@
-import { Building2, ClipboardCheck, Home, Landmark, LucideIcon, PaintRoller, Ruler, ShieldCheck, TrafficCone } from 'lucide-react';
-import exteriorImage from '../assets/images/regenerated_image_1778651987756.png';
-import prepImage from '../assets/images/regenerated_image_1778652000603.png';
+import { Building2, ClipboardCheck, Home, Landmark, LucideIcon, PaintRoller, Ruler, ShieldCheck } from 'lucide-react';
 
 export type MarketSlug = 'residential' | 'commercial' | 'public-sector';
 
@@ -39,8 +37,8 @@ export const markets: Market[] = [
     summary: 'Clean prep, careful protection, sharp lines, and finishes that respect the home.',
     description:
       'Residential work is where trust matters most. Sky’s the Limit Painting brings owner-led accountability, clean communication, surface prep, careful protection, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
-    image: '/images/services/interior/sky-work-02-finished-living-room.png',
-    heroImage: '/brand/generated/sky-residential-authority.webp',
+    image: '/images/site/iphone-interior-painting-progress.png',
+    heroImage: '/images/site/marketing-hero-exterior-painting.png',
     icon: Home,
     accent: 'Warm detail',
     proof: ['Interior and exterior repainting', 'Trim, doors, walls, ceilings, and prep', 'Clean protection and final walkthrough'],
@@ -79,8 +77,8 @@ export const markets: Market[] = [
       'Professional painting for businesses, shops, offices, facilities, and properties where presentation and reliability matter.',
     description:
       'Commercial projects need more than paint on walls. They need a contractor who communicates clearly, respects occupied spaces, keeps the jobsite organized, and understands that the finished property has to look ready for customers, tenants, staff, and ownership.',
-    image: '/images/services/commercial/sky-work-08-finished-commercial.png',
-    heroImage: '/brand/generated/sky-commercial-authority.webp',
+    image: '/images/site/iphone-commercial-door-frame.png',
+    heroImage: '/images/site/iphone-commercial-door-frame.png',
     icon: Building2,
     accent: 'Commercial discipline',
     proof: ['Commercial interiors and exteriors', 'Retail, office, shop, and facility repainting', 'Schedule-aware communication'],
@@ -164,8 +162,8 @@ export const trustPillars = [
 ];
 
 export const supportingImages = {
-  exterior: exteriorImage,
-  prep: prepImage,
-  commercialReal: '/images/services/commercial/sky-work-real-08-commercial.png',
+  exterior: '/images/site/iphone-exterior-prep-front-entry.png',
+  prep: '/images/site/iphone-interior-painting-progress.png',
+  commercialReal: '/images/site/iphone-commercial-door-frame.png',
   interiorBeforeAfter: '/images/services/interior/sky-work-real-04-before-after-bedroom.png',
 };

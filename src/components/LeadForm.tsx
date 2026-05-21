@@ -25,6 +25,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const hubspotutk = typeof document !== 'undefined' ? document.cookie.match(/hubspotutk=([^;]+)/)?.[1] : undefined;
     const payload = {
       source,
       page: window.location.pathname,
@@ -43,6 +44,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       notes: String(data.get('notes') || ''),
       company: String(data.get('company') || ''),
       website: String(data.get('website') || ''),
+      hubspotutk,
       ...utm,
     };
 
@@ -50,7 +52,6 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       setStatus('fallback');
       return;
     }
-
     setStatus('submitting');
     trackEvent('lead_form_start', { source, market: payload.market });
 
@@ -65,7 +66,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
       if (response.ok && result?.ok === true) {
         setStatus('sent');
-        setMessage('Your request was sent. Anthony can follow up by your preferred contact method.');
+        setMessage('Your estimate request was sent to Anthony. He can follow up by your preferred contact method, confirm scope, and explain scheduling/deposit next steps.');
         trackEvent('lead_form_submit_success', { source, market: payload.market });
         form.reset();
         return;
@@ -179,13 +180,13 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         <option>Email</option>
       </select>
       <input name="photosUrl" type="url" placeholder="Project photo link (Google Drive, iCloud, Dropbox)" aria-label="Project photo link" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} />
-      <textarea name="notes" rows={5} placeholder="Project details, surfaces, timeline, COI needs, or photo link" aria-label="Project details" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} required />
+      <textarea name="notes" rows={5} placeholder="Rooms, exterior surfaces, repairs, timeline, access notes, or anything Anthony should know" aria-label="Project details" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} required />
       <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
-        {status === 'submitting' ? 'Sending...' : 'Send Project Details'} <ArrowRight size={18} />
+        {status === 'submitting' ? 'Sending...' : 'Request My Estimate'} <ArrowRight size={18} />
       </button>
       <p className={`flex items-start gap-2 text-sm font-semibold text-[#4c453d] ${compact ? 'md:col-span-2' : ''}`} aria-live="polite">
         <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#bf6f2f]" />
-        {message || 'Submissions use server-side validation. If email delivery is not configured, the form opens a prepared email draft instead of pretending it sent.'}
+        {message || 'Estimate requests are sent through the live lead endpoint when email is configured. If delivery is unavailable, the form opens a prepared email draft so the customer can still send the request.'}
       </p>
     </form>
   );

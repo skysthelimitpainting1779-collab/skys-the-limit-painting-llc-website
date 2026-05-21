@@ -13,7 +13,7 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
       <Link 
         to={to} 
         onClick={() => trackEvent('nav_click', { path: to, label: String(children) })}
-        className={`relative text-xs font-bold uppercase tracking-widest transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
+        className={`relative whitespace-nowrap text-xs font-bold uppercase tracking-widest transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
       >
         {children}
       </Link>
@@ -46,8 +46,8 @@ export default function ConversionHeader() {
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[10px] md:text-[11px] uppercase tracking-widest text-white/70 font-bold">
-            <span className="truncate">Insured Minnesota Painting Contractor</span>
-            <span className="hidden sm:inline truncate">Owner-operated in Inver Grove Heights.</span>
+            <span className="truncate">Interior + exterior painting in the Twin Cities</span>
+            <span className="hidden sm:inline truncate">Request an estimate, approve the scope, reserve the schedule.</span>
           </div>
         </div>
 
@@ -65,7 +65,7 @@ export default function ConversionHeader() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
               <NavLink to="/residential">Residential</NavLink>
               <NavLink to="/commercial">Commercial</NavLink>
               <NavLink to="/public-sector">Public Sector</NavLink>
@@ -75,10 +75,17 @@ export default function ConversionHeader() {
             </nav>
 
             {/* Desktop Actions - Conversion Anchor */}
-            <div className="hidden items-center md:flex">
+            <div className="hidden items-center gap-4 md:flex">
+              <Link
+                to="/contact"
+                onClick={() => trackEvent('hero_cta_click', { source: 'header', label: 'Get Estimate' })}
+                className="whitespace-nowrap border border-orange-safety bg-orange-safety px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white hover:border-white"
+              >
+                Get Estimate
+              </Link>
               <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'header' })} className="group flex flex-col items-end gap-0">
                 <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
-                <span className="text-xl sm:text-3xl font-black text-orange-safety tracking-normal leading-none group-hover:text-white transition-colors mt-0.5">651-410-4196</span>
+                <span className="whitespace-nowrap text-xl font-black tracking-normal leading-none text-orange-safety transition-colors group-hover:text-white xl:text-3xl">651-410-4196</span>
               </a>
             </div>
 
