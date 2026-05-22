@@ -57,6 +57,11 @@ export default function PageMeta({ title, description, path, image = defaultImag
     upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
     upsertLink('canonical', canonicalUrl);
 
+    const verification = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION;
+    if (verification) {
+      upsertMeta('meta[name="google-site-verification"]', 'name', 'google-site-verification', verification);
+    }
+
     const existingSchema = document.getElementById('page-schema');
     existingSchema?.remove();
     if (schema) {
