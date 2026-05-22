@@ -17,6 +17,7 @@ export interface LandingPage {
   scope: string[];
   process: Array<{ title: string; body: string }>;
   related: string[];
+  neighborhoods?: string[];
 }
 
 export const areaLandingPages: LandingPage[] = [
@@ -43,6 +44,7 @@ export const areaLandingPages: LandingPage[] = [
       { title: 'Owner Follow-Through', body: 'Keep the project tied to Anthony’s direct communication, photos, and jobsite accountability.' },
     ],
     related: ['residential', 'commercial', 'public-sector', 'south-st-paul'],
+    neighborhoods: ['Argenta Hills', 'South Grove', 'Cahill Avenue', 'Babcock Avenue', 'Concord Boulevard'],
   },
   {
     kind: 'area',
@@ -67,6 +69,7 @@ export const areaLandingPages: LandingPage[] = [
       { title: 'Close Cleanly', body: 'Review touchups, cleanup, and next-step documentation before the job wraps.' },
     ],
     related: ['inver-grove-heights', 'st-paul', 'interior-painting', 'commercial-painting'],
+    neighborhoods: ['Riverview', 'Kaposia', 'Southview', 'Grand Avenue'],
   },
   {
     kind: 'area',
@@ -91,6 +94,7 @@ export const areaLandingPages: LandingPage[] = [
       { title: 'Document The Result', body: 'Capture closeout notes and photos so the finished work has a usable record.' },
     ],
     related: ['commercial-painting', 'interior-painting', 'south-st-paul', 'twin-cities'],
+    neighborhoods: ['Macalester-Groveland', 'Highland Park', 'Summit Hill', 'Crocus Hill', 'Como Park'],
   },
   {
     kind: 'area',
@@ -115,6 +119,7 @@ export const areaLandingPages: LandingPage[] = [
       { title: 'Walk The Work', body: 'Review the project together and handle closeout details before calling it done.' },
     ],
     related: ['residential', 'interior-painting', 'drywall-repair', 'woodbury'],
+    neighborhoods: ['Diffley', 'Wescott', 'Yankee Doodle', 'Pilgrim', 'Lexington'],
   },
   {
     kind: 'area',
@@ -139,6 +144,7 @@ export const areaLandingPages: LandingPage[] = [
       { title: 'Finish With Accountability', body: 'Tie the final walkthrough to visible touchups, cleanup, and owner-led follow-through.' },
     ],
     related: ['eagan', 'deck-fence-staining', 'residential', 'exterior-painting'],
+    neighborhoods: ['Stonemill Farms', 'Colby Lake', 'Powers Lake', 'Bailey Lake', 'Wedgwood'],
   },
   {
     kind: 'area',
@@ -163,6 +169,7 @@ export const areaLandingPages: LandingPage[] = [
       { title: 'Deliver A Record', body: 'Use notes and photos to keep the job accountable after the first conversation.' },
     ],
     related: ['commercial-painting', 'twin-cities', 'st-paul', 'public-sector'],
+    neighborhoods: ['Linden Hills', 'North Loop', 'Uptown', 'Downtown', 'Northeast'],
   },
   {
     kind: 'area',

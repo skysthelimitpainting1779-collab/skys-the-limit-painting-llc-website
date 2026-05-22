@@ -104,3 +104,40 @@ export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
   };
 }
 
+export function localBusinessSchema(cityName: string, slug: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HousePainter',
+    name: `${cityName} Painting Contractor | Sky's the Limit Painting LLC`,
+    telephone: '+1-651-410-4196',
+    email: 'skysthelimitpainting1779@gmail.com',
+    url: `${siteUrl}/service-areas/${slug}`,
+    logo: `${siteUrl}/brand/SkyLLP_BrandLogo.svg`,
+    image: `${siteUrl}/brand/generated/sky-local-authority.webp`,
+    priceRange: '$$',
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '07:00',
+        closes: '17:00',
+      },
+    ],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: cityName,
+      addressRegion: 'MN',
+      addressCountry: 'US',
+    },
+    areaServed: [
+      {
+        '@type': 'City',
+        name: cityName,
+      },
+      {
+        '@type': 'Place',
+        name: 'Twin Cities Metro',
+      },
+    ],
+  };
+}

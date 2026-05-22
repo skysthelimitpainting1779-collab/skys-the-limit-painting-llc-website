@@ -5,7 +5,7 @@ import PageTransition from '../components/PageTransition';
 import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
 import ResponsiveImage from '../components/ResponsiveImage';
-import { breadcrumbSchema, serviceSchema } from '../lib/seo';
+import { breadcrumbSchema, localBusinessSchema, serviceSchema } from '../lib/seo';
 import { businessPhone } from '../lib/contact';
 import {
   areaLandingPages,
@@ -64,6 +64,7 @@ export default function LandingPageRoute({ kind }: LandingPageRouteProps) {
         image={page.image}
         schema={[
           serviceSchema(page.title, page.metaDescription, path),
+          ...(page.kind === 'area' ? [localBusinessSchema(page.shortTitle, page.slug)] : []),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: page.kind === 'area' ? 'Service Areas' : 'Painting Services', path: page.kind === 'area' ? '/service-areas/twin-cities' : '/painting-services/interior-painting' },
@@ -137,6 +138,18 @@ export default function LandingPageRoute({ kind }: LandingPageRouteProps) {
             <p className="mt-5 text-base leading-relaxed text-[#4c453d]">
               Start with the kind of work, where it is, what surface needs attention, and what proof or timeline matters before the first call.
             </p>
+            {page.kind === 'area' && page.neighborhoods && page.neighborhoods.length > 0 && (
+              <div className="mt-8 border-t border-[#8b4d20]/20 pt-6">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-[#8b4d20]">Neighborhoods Served</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {page.neighborhoods.map((neighborhood) => (
+                    <span key={neighborhood} className="bg-[#171512]/10 px-3 py-1.5 text-xs font-black uppercase tracking-[0.1em] text-[#171512]">
+                      {neighborhood}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </FadeIn>
           <div className="grid gap-4 sm:grid-cols-2 lg:col-span-8">
             {page.scope.map((item, index) => (

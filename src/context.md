@@ -5,10 +5,10 @@
 
 > [!NOTE]
 > ### 🧬 LLM CHEAT SHEET: CODEBASE ROOT QUICK REFERENCE
-> *   **Framework Stack:** React 18, Vite, TypeScript.
-> *   **Styling System:** Vanilla semantic CSS in `src/index.css` (Tailwind is NOT used).
+> *   **Framework Stack:** React 19, Vite, TypeScript, React Router 7.
+> *   **Styling System:** Tailwind CSS 4 Vite integration plus custom semantic CSS in `src/index.css`.
 > *   **Orchestration Coordinates:**
->     *   `App.tsx` — Master URL Router (react-router) and Transition Wrapper (framer-motion).
+>     *   `App.tsx` — Master URL Router (react-router) and Transition Wrapper (Motion for React).
 >     *   `main.tsx` — framework mounting element at DOM node `#root`.
 >     *   `types.d.ts` — Global TypeScript compile-time variables.
 > *   **Subdirectory Map:**
@@ -21,11 +21,11 @@
 
 ## 1. Functional Directory Roles
 
-This directory holds the entry points for the React 18 / TypeScript framework:
+This directory holds the entry points for the React 19 / TypeScript framework:
 
-*   **App.tsx** — Master application shell. Governs URL routing using react-router, integrates layout transitions using framer-motion, and injects pages dynamically.
+*   **App.tsx** — Master application shell. Governs URL routing using react-router, integrates layout transitions using Motion for React, and injects pages dynamically.
 *   **main.tsx** — Standard React initialization script that renders the `<App />` component into the DOM tree at the target element `#root`.
-*   **index.css** — The comprehensive custom stylesheet containing CSS custom properties (color variables, typography tokens), reset templates, scroll behaviors, animations, and typography declarations. No Tailwind is used; all controls are custom custom-designed.
+*   **index.css** — The comprehensive custom stylesheet containing CSS custom properties (color variables, typography tokens), reset templates, scroll behaviors, animations, and typography declarations, layered with Tailwind CSS 4 support from the Vite plugin.
 *   **types.d.ts** — Global TypeScript definitions ensuring type safety across component data parameters.
 
 ---

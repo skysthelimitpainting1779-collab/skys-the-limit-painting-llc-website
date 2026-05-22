@@ -1,4 +1,10 @@
-import { useState, useRef, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent, KeyboardEvent as ReactKeyboardEvent, useEffect } from 'react';
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useMotionValue } from 'motion/react';
 import ResponsiveImage from './ResponsiveImage';
 
 interface BeforeAfterSliderProps {
@@ -14,75 +20,73 @@ export default function BeforeAfterSlider({
   beforeLabel = 'Before', 
   afterLabel = 'After' 
 }: BeforeAfterSliderProps) {
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [sliderPosition, setSliderPosition] = useState(50);
+  
+  // Motion values for hardware acceleration
+  const x = useMotionValue(0);
+  
+  // Set initial position once container is measured
+  useEffect(() => {
+    if (containerRef.current) {
+      const width = containerRef.current.offsetWidth;
+      x.set(width / 2);
+    }
+  }, [x]);
 
-  const clamp = (value: number) => Math.max(0, Math.min(100, value));
-
-  const updatePosition = (value: number) => {
-    setSliderPosition(clamp(value));
-  };
-
-  const handleMove = (clientX: number) => {
+  const handleDrag = () => {
     if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = clamp((x / rect.width) * 100);
-    updatePosition(percent);
+    const width = containerRef.current.offsetWidth;
+    const currentX = x.get();
+    const percent = Math.max(0, Math.min(100, (currentX / width) * 100));
+    setSliderPosition(percent);
   };
 
-  const handleMouseMove = (e: ReactMouseEvent) => {
-    if (!isDragging) return;
-    handleMove(e.clientX);
-  };
+  // Sync width on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        x.set((sliderPosition / 100) * width);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [sliderPosition, x]);
 
-  const handleTouchMove = (e: ReactTouchEvent) => {
-    if (!isDragging) return;
-    handleMove(e.touches[0].clientX);
-  };
-
-  const handleKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const width = containerRef.current.offsetWidth;
+    let newPosition = sliderPosition;
     if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
       event.preventDefault();
-      updatePosition(sliderPosition - 5);
-    }
-    if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+      newPosition = Math.max(0, sliderPosition - 5);
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
       event.preventDefault();
-      updatePosition(sliderPosition + 5);
-    }
-    if (event.key === 'Home') {
+      newPosition = Math.min(100, sliderPosition + 5);
+    } else if (event.key === 'Home') {
       event.preventDefault();
-      updatePosition(0);
-    }
-    if (event.key === 'End') {
+      newPosition = 0;
+    } else if (event.key === 'End') {
       event.preventDefault();
-      updatePosition(100);
+      newPosition = 100;
     }
+    setSliderPosition(newPosition);
+    x.set((newPosition / 100) * width);
   };
-
-  useEffect(() => {
-    const handleMouseUp = () => setIsDragging(false);
-    if (isDragging) {
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchend', handleMouseUp);
-    }
-    return () => {
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchend', handleMouseUp);
-    };
-  }, [isDragging]);
 
   return (
     <div className="space-y-4">
       <div
         ref={containerRef}
-        className="relative h-[350px] w-full overflow-hidden rounded-sm border border-white/10 select-none cursor-ew-resize"
-        aria-label="Before and after image comparison"
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
-        onMouseDown={(e) => { setIsDragging(true); handleMove(e.clientX); }}
-        onTouchStart={(e) => { setIsDragging(true); handleMove(e.touches[0].clientX); }}
+        className="relative h-[350px] w-full overflow-hidden rounded-sm border border-white/10 select-none cursor-ew-resize focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+        role="slider"
+        aria-label="Before and after image comparison slider"
+        aria-valuenow={Math.round(sliderPosition)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
       >
         <ResponsiveImage src={afterImage} alt={afterLabel} width={1200} height={700} className="absolute inset-0 h-full w-full object-cover pointer-events-none" />
 
@@ -100,33 +104,28 @@ export default function BeforeAfterSlider({
           {afterLabel}
         </div>
 
-        <div
+        {/* Draggable Divider Handle */}
+        <motion.div
+          drag="x"
+          dragMomentum={false}
+          dragElastic={0}
+          dragConstraints={containerRef}
+          onDrag={handleDrag}
+          style={{ x }}
           className="absolute top-0 bottom-0 w-1 bg-orange-safety cursor-ew-resize z-20 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)]"
-          style={{ left: `calc(${sliderPosition}% - 2px)` }}
-          aria-hidden="true"
         >
-          <div className="w-8 h-8 bg-white border-2 border-orange-safety rounded-full shadow-lg flex items-center justify-center text-orange-safety font-black">
+          <motion.div 
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-8 h-8 bg-white border-2 border-orange-safety rounded-full shadow-lg flex items-center justify-center text-orange-safety font-black"
+          >
             <span aria-hidden="true">&lt;&gt;</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
-      <label className="block text-sm font-bold uppercase tracking-wider text-gray-300">
-        Adjust before and after comparison
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          value={sliderPosition}
-          onChange={(event) => updatePosition(Number(event.target.value))}
-          onKeyDown={handleKeyDown}
-          className="mt-2 w-full accent-orange-safety"
-          aria-valuetext={`${Math.round(sliderPosition)} percent before image visible`}
-        />
-      </label>
       <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-gray-400" aria-hidden="true">
-        <span>{beforeLabel}</span>
+        <span>{beforeLabel} (Drag slider or use Arrow keys)</span>
         <span>{afterLabel}</span>
       </div>
     </div>

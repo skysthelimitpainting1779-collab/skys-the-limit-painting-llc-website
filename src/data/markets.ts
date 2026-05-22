@@ -76,12 +76,12 @@ export const markets: Market[] = [
     summary:
       'Professional painting for businesses, shops, offices, facilities, and properties where presentation and reliability matter.',
     description:
-      'Commercial projects need more than paint on walls. They need a contractor who communicates clearly, respects occupied spaces, keeps the jobsite organized, and understands that the finished property has to look ready for customers, tenants, staff, and ownership.',
+      'Commercial projects need more than paint on walls. Registered under NAICS Code 238320 (Painting and Wall Covering Contractors) and UNSPSC Code 72151300, we provide the documentation, safety protocols, and execution that retail, office, and industrial properties require.',
     image: '/images/site/iphone-commercial-door-frame.png',
     heroImage: '/images/site/iphone-commercial-door-frame.png',
     icon: Building2,
     accent: 'Commercial discipline',
-    proof: ['Commercial interiors and exteriors', 'Retail, office, shop, and facility repainting', 'Schedule-aware communication'],
+    proof: ['Commercial interiors and exteriors', 'NAICS Code 238320 Registered', 'Schedule-aware communication'],
     capabilities: [
       {
         title: 'Business Interiors',
@@ -116,12 +116,12 @@ export const markets: Market[] = [
     summary:
       'Built with a long-term focus on city, county, and state painting opportunities, including facility repainting, pavement marking, striping, light poles, guardrails, and public-space work.',
     description:
-      'Sky’s the Limit Painting is preparing to compete for public-sector painting, facility, and pavement-marking work across Minnesota. The focus is documentation, scope clarity, safety awareness, follow-through, and the trade discipline public work requires.',
+      'Sky’s the Limit Painting is preparing to compete for public-sector painting, facility, and pavement-marking work across Minnesota. We are registered under NAICS Code 238320 (Painting and Wall Covering) and prepared for SWIFT and SAM.gov bidding opportunities, bringing the safety compliance, documentation, and trade discipline public sector work requires.',
     image: '/images/services/striping/SkyLLP_ParkingLot_Striping.png',
     heroImage: '/brand/generated/sky-public-authority.webp',
     icon: Landmark,
     accent: 'Public-sector ready',
-    proof: ['COI available for qualified opportunities', 'General liability coverage in place', 'Commercial auto and tools/equipment coverage in place'],
+    proof: ['NAICS Code 238320 & SAM.gov Active', 'General liability & auto coverage', 'Specialty DLI Contractor IR816596'],
     capabilities: [
       {
         title: 'Facilities And Public Spaces',

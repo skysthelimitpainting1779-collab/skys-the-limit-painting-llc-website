@@ -84,8 +84,10 @@ export default function Layout({ children }: LayoutProps) {
           <div>
              <h4 className="font-bold mb-6 text-lg">Company</h4>
              <nav className="flex flex-col gap-4 text-gray-400">
-              <Link to="/about" className="hover:text-orange-safety transition-colors">About Anthony</Link>
-              <Link to="/projects" className="hover:text-orange-safety transition-colors">Recent Work</Link>
+              <Link to="/about" className="hover:text-orange-safety transition-colors">About Us</Link>
+              <Link to="/capabilities" className="hover:text-orange-safety transition-colors">Capabilities Statement</Link>
+              <Link to="/estimate" className="hover:text-orange-safety transition-colors">Room Cost Calculator</Link>
+              <Link to="/review" className="hover:text-orange-safety transition-colors">Google Review Funnel</Link>
               <Link to="/contact" className="hover:text-orange-safety transition-colors">Get an Estimate</Link>
             </nav>
           </div>
@@ -93,6 +95,7 @@ export default function Layout({ children }: LayoutProps) {
         
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Sky's the Limit Painting LLC. All rights reserved.</p>
+          <p>MN Contractor ID: IR816596 | Registered Specialty Contractor (Painting) | Fully Insured</p>
           <p>Based in Inver Grove Heights, MN</p>
         </div>
       </footer>

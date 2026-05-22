@@ -11,7 +11,7 @@
 >     *   `SpotlightCard.tsx` — Premium cards with dynamic mouse spotlight gradient effects.
 >     *   `TrustAnchors.tsx` — Floating badges for contractor registration, CGL bounds, and warranties.
 >     *   `PageMeta.tsx` — Custom SEO meta wrapper handling JSON-LD schema injections and Google site verifications.
->     *   `Layout.tsx` — Frame containing `ConversionHeader.tsx`, responsive footers, and Framer Motion transitions.
+>     *   `Layout.tsx` — Frame containing `ConversionHeader.tsx`, responsive footers, and Motion for React transitions.
 
 ---
 
@@ -28,7 +28,7 @@ This folder houses the building block components of the web application. These i
 *   **LeadForm.tsx** — Multi-step high-conversion lead capture form with qualification questions and Notion pipeline integrations.
 *   **MarketPage.tsx** — Dynamically rendered city/market-specific page displaying targeted trust anchors and local portfolios.
 *   **PageMeta.tsx** — Custom dynamic SEO metadata injecter handling tags, descriptions, structural JSON-LD data, and Google Search Console site verification integration.
-*   **PageTransition.tsx** — Framer-motion wrap for smooth slide and fade transitions.
+*   **PageTransition.tsx** — Motion for React wrapper for smooth slide and fade transitions.
 *   **ResponsiveImage.tsx** — Fluid image wrapper handling sizes and aspect ratios.
 *   **ScrollToTop.tsx** — Utility component to reset page scroll position on route shifts.
 *   **SocialLinks.tsx** — Clean social media footer/sidebar link layout.

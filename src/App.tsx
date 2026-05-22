@@ -14,6 +14,9 @@ import PublicSectorPage from './pages/PublicSector';
 import ProjectsPage from './pages/Projects';
 import AboutPage from './pages/About';
 import ContactPage from './pages/Contact';
+import ReviewPage from './pages/Review';
+import EstimatePage from './pages/Estimate';
+import CapabilitiesPage from './pages/Capabilities';
 import NotFoundPage from './pages/NotFound';
 import LandingPageRoute from './pages/LandingPage';
 import ScrollToTop from './components/ScrollToTop';
@@ -61,6 +64,9 @@ function AnimatedRoutes() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/review" element={<ReviewPage />} />
+        <Route path="/estimate" element={<EstimatePage />} />
+        <Route path="/capabilities" element={<CapabilitiesPage />} />
         <Route path="/service-areas/:slug" element={<LandingPageRoute kind="area" />} />
         <Route path="/painting-services/:slug" element={<LandingPageRoute kind="service" />} />
         <Route path="/services" element={<Navigate to="/residential" replace />} />

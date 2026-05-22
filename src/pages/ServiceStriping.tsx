@@ -64,21 +64,21 @@ export default function ServiceStriping() {
               </div>
             </FadeIn>
           </div>
-          <div className="flex-1 bg-black-primary p-8 md:p-12 rounded-sm border border-gray-200 shadow-sm relative overflow-hidden">
+          <div className="flex-1 bg-black-primary p-8 md:p-12 rounded-sm border border-white/10 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-orange-safety opacity-10 rounded-bl-full rounded-tr-sm -z-10"></div>
             <FadeIn delay={0.2}>
-              <h3 className="text-2xl font-bold font-display uppercase tracking-wide mb-6">Best For</h3>
+              <h3 className="text-2xl font-bold font-display uppercase tracking-wide mb-6 text-white">Best For</h3>
                <ul className="space-y-4">
                  <li className="flex flex-col">
-                   <strong className="text-black-primary uppercase text-sm tracking-wider">Small to Medium Lots</strong>
+                   <strong className="text-orange-safety uppercase text-sm tracking-wider">Small to Medium Lots</strong>
                    <span className="text-gray-400 text-sm">Retail shops, restaurants, and strip malls needing a refresh.</span>
                  </li>
                  <li className="flex flex-col">
-                   <strong className="text-black-primary uppercase text-sm tracking-wider">Churches & Clinics</strong>
+                   <strong className="text-orange-safety uppercase text-sm tracking-wider">Churches & Clinics</strong>
                    <span className="text-gray-400 text-sm">Clear parking guidance and updated handicap markers.</span>
                  </li>
                  <li className="flex flex-col">
-                   <strong className="text-black-primary uppercase text-sm tracking-wider">Property Management</strong>
+                   <strong className="text-orange-safety uppercase text-sm tracking-wider">Property Management</strong>
                    <span className="text-gray-400 text-sm">Maintaining clearer, more attractive rental complexes.</span>
                  </li>
                </ul>

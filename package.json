@@ -1,14 +1,15 @@
 {
-  "name": "react-example",
+  "name": "skys-the-limit-painting-website",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/validate-schemas.mjs && node scripts/generate-sitemap.js && node scripts/ping-google.js",
     "preview": "vite preview",
-    "clean": "rm -rf dist",
+    "clean": "node -e \"import('node:fs').then(({ rmSync }) => rmSync('dist', { recursive: true, force: true }))\"",
     "lint": "tsc --noEmit",
+    "ci": "node scripts/ci_check.js",
     "test": "node --test tests/*.mjs",
     "remotion:studio": "remotion studio remotion/index.ts",
     "render:hero": "remotion render remotion/index.ts HeroCinematic public/videos/sky-hero-cinematic.mp4 --codec=h264 --crf=20 --muted",

@@ -173,6 +173,20 @@ const routes = [
       'Request an estimate from Sky’s the Limit Painting LLC for residential painting, commercial repainting, facility work, or public-sector opportunities in Minnesota.',
     schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }]),
   },
+  {
+    path: '/estimate',
+    title: "Smart Estimate Calculator | Sky's the Limit Painting LLC",
+    description:
+      "Calculate an instant painting, cabinet refinishing, or exterior cost range for your home in the Twin Cities using our smart estimator.",
+    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Estimate', path: '/estimate' }]),
+  },
+  {
+    path: '/review',
+    title: "Submit a Project Review | Sky's the Limit Painting LLC",
+    description:
+      "Provide feedback on your residential painting or commercial coating project completed by Anthony Briseno and Sky's the Limit.",
+    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Review', path: '/review' }]),
+  },
   ...landingRoutes,
   {
     path: '/404',

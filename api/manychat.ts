@@ -1,5 +1,3 @@
-import { buildLeadId } from './leads'; // Reuse lead ID generator if exported, or define locally
-
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
 function asText(value: unknown): string {

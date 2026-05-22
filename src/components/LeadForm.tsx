@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState, useEffect } from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { buildEstimateMailto } from '../lib/contact';
 import { readUtmParams, trackEvent } from '../lib/analytics';
@@ -21,11 +21,53 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
   const [message, setMessage] = useState('');
   const utm = useMemo(() => (typeof window === 'undefined' ? null : readUtmParams()), []);
 
+  useEffect(() => {
+    const syncOfflineLeads = async () => {
+      if (typeof window === 'undefined' || !navigator.onLine) return;
+      const pending = localStorage.getItem('pending_leads');
+      if (!pending) return;
+
+      try {
+        const leads = JSON.parse(pending);
+        if (!Array.isArray(leads) || leads.length === 0) return;
+
+        console.log(`🧬 [Offline Sync] Syncing ${leads.length} pending leads...`);
+        for (const lead of leads) {
+          await fetch('/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(lead),
+          });
+        }
+        localStorage.removeItem('pending_leads');
+        trackEvent('lead_offline_sync_success', { count: leads.length });
+      } catch (err) {
+        console.error('Failed to sync offline leads:', err);
+      }
+    };
+
+    window.addEventListener('online', syncOfflineLeads);
+    syncOfflineLeads();
+
+    return () => {
+      window.removeEventListener('online', syncOfflineLeads);
+    };
+  }, []);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
     const hubspotutk = typeof document !== 'undefined' ? document.cookie.match(/hubspotutk=([^;]+)/)?.[1] : undefined;
+    
+    const botHoneypot = String(data.get('bot_honeypot') || '');
+    if (botHoneypot) {
+      setStatus('sent');
+      setMessage('Your estimate request was sent to Anthony. He can follow up by your preferred contact method, confirm scope, and explain scheduling/deposit next steps.');
+      form.reset();
+      return;
+    }
+
     const payload = {
       source,
       page: window.location.pathname,
@@ -52,9 +94,21 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       setStatus('fallback');
       return;
     }
+
+    if (typeof window !== 'undefined' && !navigator.onLine) {
+      const pendingLeads = JSON.parse(localStorage.getItem('pending_leads') || '[]');
+      pendingLeads.push(payload);
+      localStorage.setItem('pending_leads', JSON.stringify(pendingLeads));
+
+      setStatus('fallback');
+      setMessage('Offline Mode: Your estimate request was saved locally. It will sync automatically as soon as your internet connection is restored.');
+      trackEvent('lead_offline_queued', { source, market: payload.market });
+      form.reset();
+      return;
+    }
+
     setStatus('submitting');
     trackEvent('lead_form_start', { source, market: payload.market });
-
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
@@ -146,6 +200,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
   return (
     <form className={`grid grid-cols-1 gap-4 ${compact ? 'md:grid-cols-2' : ''}`} onSubmit={handleSubmit}>
+      <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input name="name" type="text" placeholder="Full name" aria-label="Full name" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
       <input name="phone" type="tel" placeholder="Phone" aria-label="Phone" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />

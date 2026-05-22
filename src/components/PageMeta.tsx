@@ -9,7 +9,7 @@ interface PageMetaProps {
   schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const defaultImage = '/brand/remotion/sky-premium-market-hero-v2.png';
+const defaultImage = '/og-preview.svg';
 
 function getSiteUrl() {
   const fallback = typeof window === 'undefined' ? 'https://www.skysthelimitpaintingllc.com' : window.location.origin;
