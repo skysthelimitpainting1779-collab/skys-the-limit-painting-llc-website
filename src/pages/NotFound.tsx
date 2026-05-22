@@ -4,6 +4,7 @@ import PageMeta from '../components/PageMeta';
 import PageTransition from '../components/PageTransition';
 import LeadForm from '../components/LeadForm';
 import FadeIn from '../components/animations/FadeIn';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 export default function NotFoundPage() {
   return (
@@ -15,10 +16,21 @@ export default function NotFoundPage() {
       />
       
       {/* 404 Dark Section */}
-      <section className="relative overflow-hidden bg-black-primary px-6 py-24">
-        <div className="blueprint-grid absolute inset-0 opacity-10"></div>
-        <div className="relative mx-auto max-w-4xl text-center md:text-left">
-          <p className="text-sm font-black uppercase tracking-[0.28em] text-orange-safety">404 / Page not found</p>
+      <section className="relative overflow-hidden bg-[#070706] px-6 py-24">
+        <ResponsiveImage
+          src="/brand/generated/sky-service-proof.webp"
+          alt="Premium painting service proof and trade detailing"
+          width={1600}
+          height={900}
+          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070706] via-transparent to-transparent"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
+        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
+
+        <div className="relative mx-auto max-w-4xl text-center md:text-left z-10">
+          <p className="text-sm font-black uppercase tracking-[0.28em] text-[#f0c067]">404 / Page not found</p>
           <h1 className="mt-5 text-5xl font-black uppercase leading-tight text-white md:text-7xl">
             This page is not on the job board.
           </h1>
@@ -26,11 +38,11 @@ export default function NotFoundPage() {
             The link may be old, moved, or typed incorrectly. Don't worry, you can start fresh from the homepage, use the room cost calculator, or submit a request directly below.
           </p>
           <div className="mt-10 flex flex-col justify-center md:justify-start gap-3 sm:flex-row">
-            <Link to="/" className="inline-flex items-center justify-center gap-2 bg-orange-safety px-7 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
+            <Link to="/" className="inline-flex items-center justify-center gap-2 bg-[#f0c067] hover:bg-white text-[#15110a] px-7 py-4 text-sm font-black uppercase tracking-wider transition-colors">
               <Home size={18} />
               Back to Home
             </Link>
-            <Link to="/estimate" className="inline-flex items-center justify-center gap-2 border border-white/15 bg-white/5 px-7 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:border-orange-safety hover:text-orange-safety">
+            <Link to="/estimate" className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/16 bg-[#11100d]/90 px-7 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:border-[#f0c067]/45 hover:text-[#f0c067]">
               <Calculator size={18} />
               Room Cost Calculator
               <ArrowRight size={18} />
@@ -40,29 +52,29 @@ export default function NotFoundPage() {
       </section>
 
       {/* Main Pages Quick Navigation */}
-      <section className="bg-black-charcoal py-12 px-6 border-t border-white/5">
+      <section className="bg-[#11100d] py-12 px-6 border-t border-[#d8c7aa]/16">
         <div className="mx-auto max-w-4xl">
-          <p className="text-xs font-black uppercase tracking-[0.28em] text-gray-500 mb-6">Or navigate our primary painting sectors:</p>
+          <p className="text-xs font-black uppercase tracking-[0.28em] text-[#c9c1b4] mb-6">Or navigate our primary painting sectors:</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link to="/residential" className="flex items-center gap-4 p-4 border border-white/5 bg-white/5 hover:border-orange-safety transition-colors group">
-              <span className="grid h-12 w-12 place-items-center border border-white/10 bg-white/5 text-orange-safety"><PaintRoller size={20} /></span>
+            <Link to="/residential" className="flex items-center gap-4 p-4 border border-[#d8c7aa]/16 bg-[#070706]/60 hover:border-[#f0c067]/45 transition duration-500 hover:-translate-y-0.5 group shadow-sm">
+              <span className="grid h-12 w-12 place-items-center border border-[#d8c7aa]/20 bg-[#11100d] text-[#f0c067]"><PaintRoller size={20} /></span>
               <div>
-                <h4 className="font-bold text-white group-hover:text-orange-safety transition-colors">Residential</h4>
-                <p className="text-xs text-gray-400">Interior & Exterior detail</p>
+                <h4 className="font-bold text-white group-hover:text-[#f0c067] transition-colors">Residential</h4>
+                <p className="text-xs text-[#b9b2a6]">Interior & Exterior detail</p>
               </div>
             </Link>
-            <Link to="/commercial" className="flex items-center gap-4 p-4 border border-white/5 bg-white/5 hover:border-orange-safety transition-colors group">
-              <span className="grid h-12 w-12 place-items-center border border-white/10 bg-white/5 text-orange-safety"><Building2 size={20} /></span>
+            <Link to="/commercial" className="flex items-center gap-4 p-4 border border-[#d8c7aa]/16 bg-[#070706]/60 hover:border-[#f0c067]/45 transition duration-500 hover:-translate-y-0.5 group shadow-sm">
+              <span className="grid h-12 w-12 place-items-center border border-[#d8c7aa]/20 bg-[#11100d] text-[#f0c067]"><Building2 size={20} /></span>
               <div>
-                <h4 className="font-bold text-white group-hover:text-orange-safety transition-colors">Commercial</h4>
-                <p className="text-xs text-gray-400">Offices, retail, property</p>
+                <h4 className="font-bold text-white group-hover:text-[#f0c067] transition-colors">Commercial</h4>
+                <p className="text-xs text-[#b9b2a6]">Offices, retail, property</p>
               </div>
             </Link>
-            <Link to="/public-sector" className="flex items-center gap-4 p-4 border border-white/5 bg-white/5 hover:border-orange-safety transition-colors group">
-              <span className="grid h-12 w-12 place-items-center border border-white/10 bg-white/5 text-orange-safety"><Landmark size={20} /></span>
+            <Link to="/public-sector" className="flex items-center gap-4 p-4 border border-[#d8c7aa]/16 bg-[#070706]/60 hover:border-[#f0c067]/45 transition duration-500 hover:-translate-y-0.5 group shadow-sm">
+              <span className="grid h-12 w-12 place-items-center border border-[#d8c7aa]/20 bg-[#11100d] text-[#f0c067]"><Landmark size={20} /></span>
               <div>
-                <h4 className="font-bold text-white group-hover:text-orange-safety transition-colors">Public Sector</h4>
-                <p className="text-xs text-gray-400">Striping, parking lots, specs</p>
+                <h4 className="font-bold text-white group-hover:text-[#f0c067] transition-colors">Public Sector</h4>
+                <p className="text-xs text-[#b9b2a6]">Striping, parking lots, specs</p>
               </div>
             </Link>
           </div>

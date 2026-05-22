@@ -235,12 +235,12 @@ export default function HomePage() {
           <FadeIn className="lg:col-span-7">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Built from the trade up</p>
             <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl">
-              Customers should know the who, what, where, and next step before they scroll.
+              Elite craftsmanship, transparent pricing, and zero jobsite stress.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="text-lg leading-relaxed text-[#3f3a33]">
-              Sky’s the Limit Painting is owner-operated, insured, based in Inver Grove Heights, and built for residential repaints, commercial refreshes, facilities, and qualified public-sector opportunities across the Twin Cities.
+              We believe in exceptional craftsmanship from the ground up. Sky’s the Limit Painting is an owner-operated, fully insured registered MN specialty contractor based in Inver Grove Heights. We serve homeowners, business managers, and public agencies across the Twin Cities with a dedication to structural prep, neatness, and flawless execution.
             </p>
           </FadeIn>
         </div>
@@ -255,18 +255,18 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.86),rgba(8,8,7,0.1))]"></div>
               <div className="absolute left-0 right-0 top-0 h-1 bg-[repeating-linear-gradient(90deg,#f0c067_0_72px,transparent_72px_112px)] opacity-80"></div>
               <div className="absolute bottom-0 left-0 right-0 p-7">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Marketing proof</p>
-                <h2 className="mt-4 text-4xl font-black leading-tight">A confident first impression for serious buyers.</h2>
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Elite Finishes</p>
+                <h2 className="mt-4 text-4xl font-black leading-tight">Premium finishes built on absolute preparation.</h2>
               </div>
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Marketing polish + jobsite proof</p>
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Uncompromising Preparation</p>
             <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
-              Use polished images to build confidence, then real phone-style photos to prove the work.
+              Elite preparation makes the finish last.
             </h2>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c1b4]">
-              The site now has both: high-impact contractor visuals for the hero and market pages, plus natural job photos for trust sections where customers want to see prep, tape, drop cloths, tools, and actual work in progress.
+              We do not cut corners, skip prep, or leave a mess. A premium paint job is 90% preparation. That means we invest our time where it matters most: deep cleaning, scraping, sanding, priming, caulking, and meticulous masking to protect your active living or working spaces.
             </p>
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {[
@@ -298,13 +298,13 @@ export default function HomePage() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Three serious markets</p>
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Specialized Coating Divisions</p>
                 <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl">
-                  One standard, three different buyer mindsets.
+                  Tailored coating solutions for every scale.
                 </h2>
               </div>
               <p className="text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
-                Each lane gets a different visual rhythm and service story, tied together by trade discipline, clean prep, documentation, and owner accountability.
+                Whether it is a custom residential repaint, a fast-track commercial property refresh, or a municipal facility upgrade, we deliver consistent trade discipline, clean job stages, and hands-on owner accountability from start to finish.
               </p>
             </div>
           </FadeIn>
@@ -321,10 +321,10 @@ export default function HomePage() {
         <div className="measurement-rules absolute inset-0 opacity-15"></div>
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Proof without hype</p>
-            <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Verified claims, clean language.</h2>
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Verified Standards</p>
+            <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Trade discipline you can count on.</h2>
             <p className="mt-5 text-sm leading-relaxed text-[#b9b2a6]">
-              The site states what can be stated: insured, owner-operated, Minnesota-based, and organized for serious residential, commercial, and qualified public-sector opportunities.
+              We back our work with verified credentials, premium materials, clear contracts, and hands-on owner oversight. No sales gimmicks—just exceptional painting backed by general liability, commercial auto, and tools coverage.
             </p>
           </FadeIn>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-8">
@@ -361,20 +361,20 @@ export default function HomePage() {
           <FadeIn className="lg:col-span-6">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Public-sector readiness</p>
             <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
-              Built for city, county, and state painting opportunities as the company grows.
+              Ready for public bids, state contracts, and municipal work.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-6">
             <p className="text-lg leading-relaxed text-[#dce5e4]">
-              Public-sector positioning stays accurate: no invented contracts, no unsupported certifications, and no inflated status claims. The brand presents capability, documentation discipline, insurance readiness, and a serious path toward facility and pavement-marking work.
+              We maintain rigorous corporate compliance, full liability coverage, and structural documentation discipline, positioning us as a reliable partner for city, county, and state facility improvements.
             </p>
           </FadeIn>
         </div>
         <div className="relative mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-px bg-white/15 md:grid-cols-3">
           {[
-            [FileCheck2, 'Documentation mindset', 'Scope clarity, photos, COI requests, quantities, surfaces, timelines, and project closeout details treated seriously.'],
-            [ShieldCheck, 'Coverage language', 'General liability coverage, commercial auto coverage, and tools/equipment coverage stated carefully and truthfully.'],
-            [Ruler, 'Infrastructure lanes', 'Facility repainting, pavement marking, road striping, sign painting, light poles, guardrails, and parking-lot striping positioned as opportunities.'],
+            [FileCheck2, 'Detailed Documentation', 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.'],
+            [ShieldCheck, 'Comprehensive Coverage', 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.'],
+            [Ruler, 'Infrastructure Services', 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.'],
           ].map(([Icon, title, body]) => {
             const ReadinessIcon = Icon as typeof ClipboardCheck;
             return (

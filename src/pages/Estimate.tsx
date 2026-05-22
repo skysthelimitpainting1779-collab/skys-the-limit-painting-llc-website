@@ -201,8 +201,16 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
         path="/estimate"
       />
 
-      <section className="relative min-h-[calc(100svh-116px)] bg-[#070706] py-16 px-4 text-white sm:px-6 lg:px-8">
-        <div className="blueprint-grid absolute inset-0 opacity-10"></div>
+      <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706] py-16 px-4 text-white sm:px-6 lg:px-8">
+        <img
+          src="/images/site/iphone-interior-painting-progress.png"
+          alt="Interior painting progress"
+          className="absolute inset-0 h-full w-full object-cover opacity-15"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#070706] via-[#070706]/94 to-[#070706]"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
+        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
+        
         <div className="relative z-10 mx-auto max-w-3xl border border-[#d8c7aa]/16 bg-[#11100d]/95 p-6 md:p-10 backdrop-blur-md">
           
           {/* Header */}
@@ -231,7 +239,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
             </div>
             <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-orange-safety transition-all duration-300"
+                className="h-full bg-[#f0c067] transition-all duration-300"
                 style={{ width: `${(step / 4) * 100}%` }}
               ></div>
             </div>
@@ -252,7 +260,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                       onClick={() => setDimensions({ ...dimensions, roomType: type })}
                       className={`p-3 border text-sm font-bold transition-all ${
                         dimensions.roomType === type
-                          ? 'border-orange-safety bg-orange-safety/10 text-white'
+                          ? 'border-[#f0c067] bg-[#f0c067]/10 text-white'
                           : 'border-white/10 bg-[#070706] text-gray-400 hover:border-white/20'
                       }`}
                     >
@@ -275,7 +283,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={dimensions.width}
                     onChange={(e) => setDimensions({ ...dimensions, width: Number(e.target.value) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -290,7 +298,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={dimensions.length}
                     onChange={(e) => setDimensions({ ...dimensions, length: Number(e.target.value) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -305,7 +313,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={dimensions.ceilingHeight}
                     onChange={(e) => setDimensions({ ...dimensions, ceilingHeight: Number(e.target.value) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
               </div>
@@ -314,7 +322,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="inline-flex items-center gap-2 bg-orange-safety px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-white hover:text-black transition-all"
+                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white hover:text-[#15110a] transition-all"
                 >
                   Next Step <ArrowRight size={16} />
                 </button>
@@ -335,7 +343,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     onClick={() => setTrimPrep({ ...trimPrep, prepLevel: 'standard' })}
                     className={`p-4 border text-left transition-all ${
                       trimPrep.prepLevel === 'standard'
-                        ? 'border-orange-safety bg-orange-safety/10'
+                        ? 'border-[#f0c067] bg-[#f0c067]/10'
                         : 'border-white/10 bg-[#070706]'
                     }`}
                   >
@@ -347,7 +355,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     onClick={() => setTrimPrep({ ...trimPrep, prepLevel: 'premium' })}
                     className={`p-4 border text-left transition-all ${
                       trimPrep.prepLevel === 'premium'
-                        ? 'border-orange-safety bg-orange-safety/10'
+                        ? 'border-[#f0c067] bg-[#f0c067]/10'
                         : 'border-white/10 bg-[#070706]'
                     }`}
                   >
@@ -370,7 +378,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={trimPrep.doorsCount}
                     onChange={(e) => setTrimPrep({ ...trimPrep, doorsCount: Math.max(0, Number(e.target.value)) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -385,7 +393,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={trimPrep.windowsCount}
                     onChange={(e) => setTrimPrep({ ...trimPrep, windowsCount: Math.max(0, Number(e.target.value)) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -400,7 +408,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={trimPrep.trimLength}
                     onChange={(e) => setTrimPrep({ ...trimPrep, trimLength: Math.max(0, Number(e.target.value)) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
               </div>
@@ -416,7 +424,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="inline-flex items-center gap-2 bg-orange-safety px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-white hover:text-black transition-all"
+                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white hover:text-black transition-all"
                 >
                   Next Step <ArrowRight size={16} />
                 </button>
@@ -427,7 +435,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
           {/* Step 3: Cabinets */}
           {step === 3 && (
             <div className="space-y-6">
-              <div className="border-l-2 border-orange-safety bg-orange-safety/10 p-4">
+              <div className="border-l-2 border-[#f0c067] bg-[#f0c067]/10 p-4">
                 <p className="text-xs font-bold uppercase tracking-wider text-[#f0c067]">High-Margin Specialty Cabinet Painting</p>
                 <p className="text-xs text-gray-300 mt-2">Cabinet paint transformations cost significantly less than replacements while delivering stunning luxury upgrades.</p>
               </div>
@@ -445,7 +453,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={cabinets.cabinetDoors}
                     onChange={(e) => setCabinets({ ...cabinets, cabinetDoors: Math.max(0, Number(e.target.value)) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -460,7 +468,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={cabinets.cabinetDrawers}
                     onChange={(e) => setCabinets({ ...cabinets, cabinetDrawers: Math.max(0, Number(e.target.value)) })}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
               </div>
@@ -476,7 +484,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="inline-flex items-center gap-2 bg-orange-safety px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-white hover:text-black transition-all"
+                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white hover:text-black transition-all"
                 >
                   Calculate Cost <ArrowRight size={16} />
                 </button>
@@ -488,7 +496,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
           {step === 4 && (
             <div className="space-y-6">
               <div className="border border-white/10 bg-[#070706] p-6 text-center">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-orange-safety">Estimated Interior Price Range</p>
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Estimated Interior Price Range</p>
                 <p className="mt-4 font-display text-4xl font-black text-white md:text-5xl tracking-normal">
                   ${calculationResult.low.toLocaleString()} – ${calculationResult.high.toLocaleString()}
                 </p>
@@ -519,7 +527,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                       />
                     </div>
                     <div>
@@ -533,7 +541,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         placeholder="651-555-0199"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                       />
                     </div>
                   </div>
@@ -551,7 +559,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         placeholder="john@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                       />
                     </div>
                     <div>
@@ -565,7 +573,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         placeholder="Eagan"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                       />
                     </div>
                   </div>
@@ -591,13 +599,13 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                   )}
 
                   <p className="flex items-start gap-2 text-xs font-semibold text-[#b9b2a6]" aria-live="polite">
-                    <ShieldCheck size={16} className="mt-0.5 shrink-0 text-orange-safety" />
+                    <ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#f0c067]" />
                     {message || 'Your cost calculation will be locked in and routed to Anthony Briseno. Specialty Contractor registration details are fully verified.'}
                   </p>
                 </form>
               ) : (
                 <div className="text-center py-6">
-                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-orange-safety/10 text-orange-safety mb-6">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#f0c067]/10 text-[#f0c067] mb-6">
                     <CheckCircle2 size={32} />
                   </div>
                   <h3 className="text-2xl font-black text-white">Estimate Reserved!</h3>

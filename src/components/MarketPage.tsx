@@ -96,19 +96,19 @@ export default function MarketPage({ market }: MarketPageProps) {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch">
           <FadeIn className="lg:col-span-5">
             <div className="relative h-full min-h-[420px] overflow-hidden border border-white/10">
-              <ResponsiveImage src={market.heroImage} alt="" width={1600} height={1200} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <ResponsiveImage src={market.heroImage} alt={`${market.title} project showcase`} width={1600} height={1200} className="absolute inset-0 h-full w-full object-cover opacity-90" />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.78),rgba(8,8,7,0.08))]"></div>
               <div className="absolute bottom-0 left-0 right-0 p-7">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Visual proof system</p>
-                <h2 className="mt-3 text-4xl font-black leading-tight text-white">Real-work imagery, matched to the brand.</h2>
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Proven standards</p>
+                <h2 className="mt-3 text-4xl font-black leading-tight text-white">Documented project stages from start to finish.</h2>
               </div>
             </div>
           </FadeIn>
           <div className="grid gap-4 lg:col-span-7 md:grid-cols-3">
             {[
-              [Camera, 'Photo-led scope', 'Estimate requests can now carry a project photo link so Anthony can see the surface before the call.'],
-              [ClipboardCheck, 'Cleaner intake', 'Every inquiry asks for the project details needed to make the first response useful.'],
-              [FileCheck2, 'Better project record', 'Photos, scope notes, and closeout details can support a cleaner estimate and follow-up.'],
+              [Camera, 'Remote Visual Scope', 'Upload or link photos of your rooms or surfaces directly in our estimate form for a faster, more precise preliminary review.'],
+              [ClipboardCheck, 'Streamlined Intake', 'Our simple multi-step form gathers your project details so we arrive fully prepared.'],
+              [FileCheck2, 'Itemized Proposals', 'We provide highly detailed, transparent scopes specifying exact preparation, paint products, and linear measurements.'],
             ].map(([Icon, title, body], index) => {
               const ProofIcon = Icon as typeof Camera;
               return (
@@ -129,7 +129,7 @@ export default function MarketPage({ market }: MarketPageProps) {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
             <p className="text-sm font-bold uppercase tracking-[0.32em] text-orange-safety">Market Focus</p>
-            <h2 className="mt-4 text-4xl font-black uppercase leading-tight text-white">Built for the way this work is actually bought.</h2>
+            <h2 className="mt-4 text-4xl font-black uppercase leading-tight text-white">Engineered to meet the exact standards of your project.</h2>
           </FadeIn>
 
           <div className="grid gap-5 lg:col-span-8 md:grid-cols-3">

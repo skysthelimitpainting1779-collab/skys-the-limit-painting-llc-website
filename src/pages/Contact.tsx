@@ -4,6 +4,7 @@ import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
 import BookingCta from '../components/BookingCta';
+import ResponsiveImage from '../components/ResponsiveImage';
 import { businessEmail, businessPhone, smsPhone } from '../lib/contact';
 import { breadcrumbSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -22,8 +23,19 @@ export default function ContactPage() {
       />
 
       <section className="relative overflow-hidden bg-[#070706] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <ResponsiveImage
+          src="/images/site/marketing-hero-exterior-painting.png"
+          alt="Premium painting service contact background"
+          width={1600}
+          height={900}
+          className="absolute inset-0 h-full w-full object-cover opacity-25"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070706] via-transparent to-transparent"></div>
         <div className="blueprint-grid absolute inset-0 opacity-20"></div>
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
+        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
+        
+        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Contact</p>
             <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.95] text-white md:text-7xl">
@@ -37,7 +49,7 @@ export default function ContactPage() {
                 <Phone size={18} />
                 Call Anthony
               </a>
-              <a href={`sms:${smsPhone}`} onClick={() => trackEvent('text_click', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <a href={`sms:${smsPhone}`} onClick={() => trackEvent('text_click', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] backdrop-blur">
                 <MessageSquareText size={18} />
                 Text Anthony
               </a>
@@ -46,18 +58,18 @@ export default function ContactPage() {
           </FadeIn>
 
           <FadeIn delay={0.1} className="lg:col-span-5">
-            <div className="border border-[#d8c7aa]/15 bg-[#11100d] p-6">
+            <div className="border border-[#d8c7aa]/16 bg-[#11100d] p-6 hover:border-[#f0c067]/45 transition duration-500 shadow-md">
               <div className="space-y-6">
                 <a href={`tel:${businessPhone}`} onClick={() => trackEvent('call_click', { source: 'contact_panel' })} className="flex items-center gap-4 text-lg font-black text-white transition-colors hover:text-[#f0c067]">
-                  <span className="grid h-12 w-12 place-items-center border border-white/10 bg-white/5"><Phone size={21} /></span>
+                  <span className="grid h-12 w-12 place-items-center border border-[#d8c7aa]/20 bg-white/5 text-[#f0c067]"><Phone size={21} /></span>
                   {businessPhone}
                 </a>
                 <a href={`mailto:${businessEmail}`} onClick={() => trackEvent('lead_mailto_fallback_opened', { source: 'contact_panel' })} className="flex items-center gap-4 break-all text-base font-bold text-[#d8d0c2] transition-colors hover:text-[#f0c067]">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center border border-white/10 bg-white/5"><Mail size={21} /></span>
+                  <span className="grid h-12 w-12 shrink-0 place-items-center border border-[#d8c7aa]/20 bg-white/5 text-[#f0c067]"><Mail size={21} /></span>
                   {businessEmail}
                 </a>
                 <div className="flex items-center gap-4 text-base font-bold text-[#d8d0c2]">
-                  <span className="grid h-12 w-12 place-items-center border border-white/10 bg-white/5"><MapPin size={21} /></span>
+                  <span className="grid h-12 w-12 place-items-center border border-[#d8c7aa]/20 bg-white/5 text-[#f0c067]"><MapPin size={21} /></span>
                   Inver Grove Heights / Twin Cities Metro
                 </div>
               </div>
@@ -66,7 +78,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="bg-[#e6dfd2] px-4 py-20 text-[#171512] sm:px-6 lg:px-8">
+      <section className="bg-[#e6dfd2] px-4 py-20 text-[#171512] sm:px-6 lg:px-8 border-b border-[#d8c7aa]/16">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Estimate request</p>
@@ -76,7 +88,7 @@ export default function ContactPage() {
             </p>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-8">
-            <div className="border border-[#171512]/15 bg-[#f5f0e7] p-5 md:p-8">
+            <div className="border border-[#171512]/15 bg-[#f5f0e7] p-5 md:p-8 shadow-sm">
               <LeadForm source="Contact page lead form" compact />
             </div>
           </FadeIn>

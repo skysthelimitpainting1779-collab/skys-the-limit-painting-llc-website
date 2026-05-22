@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Star, MessageSquare, ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
+import ResponsiveImage from '../components/ResponsiveImage';
 import { trackEvent } from '../lib/analytics';
 
 export default function ReviewPage() {
@@ -68,9 +69,21 @@ export default function ReviewPage() {
         path="/review"
       />
 
-      <section className="relative min-h-[calc(100svh-116px)] bg-[#070706] py-16 px-4 text-white sm:px-6 lg:px-8">
-        <div className="blueprint-grid absolute inset-0 opacity-10"></div>
-        <div className="relative z-10 mx-auto max-w-2xl border border-[#d8c7aa]/16 bg-[#11100d] p-8 md:p-12">
+      <section className="relative overflow-hidden min-h-[calc(100svh-116px)] bg-[#070706] py-16 px-4 text-white sm:px-6 lg:px-8">
+        <ResponsiveImage
+          src="/brand/generated/sky-service-proof.webp"
+          alt="Premium painting service proof and trade detailing"
+          width={1600}
+          height={900}
+          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070706] via-transparent to-transparent"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
+        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
+        
+        <div className="relative z-10 mx-auto max-w-2xl border border-[#d8c7aa]/16 bg-[#11100d]/90 p-8 md:p-12 overflow-hidden shadow-xl transition duration-500 hover:border-[#f0c067]/45">
+          <div className="measurement-rules absolute inset-0 opacity-12 pointer-events-none"></div>
           
           {/* Header */}
           <div className="text-center">
@@ -173,7 +186,7 @@ export default function ReviewPage() {
                             placeholder="John Doe"
                             value={clientName}
                             onChange={(e) => setClientName(e.target.value)}
-                            className="w-full border border-[#d8c7aa]/20 bg-[#070706] p-4 text-sm text-white focus:border-[#f0c067] focus:outline-none"
+                            className="w-full border border-[#d8c7aa]/20 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:border-[#f0c067] focus:outline-none"
                           />
                         </div>
                         <div>
@@ -186,7 +199,7 @@ export default function ReviewPage() {
                             placeholder="651-555-0199"
                             value={clientPhone}
                             onChange={(e) => setClientPhone(e.target.value)}
-                            className="w-full border border-[#d8c7aa]/20 bg-[#070706] p-4 text-sm text-white focus:border-[#f0c067] focus:outline-none"
+                            className="w-full border border-[#d8c7aa]/20 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:border-[#f0c067] focus:outline-none"
                           />
                         </div>
                       </div>
@@ -201,7 +214,7 @@ export default function ReviewPage() {
                           value={privateFeedback}
                           onChange={(e) => setPrivateFeedback(e.target.value)}
                           placeholder="Please let us know where our craftsmanship or service fell short..."
-                          className="w-full border border-[#d8c7aa]/20 bg-[#070706] p-4 text-sm text-white focus:border-[#f0c067] focus:outline-none resize-none"
+                          className="w-full border border-[#d8c7aa]/20 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:border-[#f0c067] focus:outline-none resize-none"
                         ></textarea>
                       </div>
 
