@@ -90,3 +90,12 @@ This project is Vercel-ready and Netlify-ready.
 - **Add Google Analytics / Plausible tracking snippet**: Added HTML comment locally in `/index.html`.
 - **Lead tracker**: `/api/leads` supports Resend email delivery and optional `LEAD_WEBHOOK_URL` delivery for a CRM, spreadsheet, or automation platform.
 - **Owner Headshot**: Insert a real owner photo once approved for website use.
+
+## 🧬 Elite Branching & CI/CD Posture
+
+This repository is secured under an elite security configuration and branching posture:
+1. **Branching Model:** 
+   - `main`: Serves as the stable production branch.
+   - `develop`: Serves as the active preview/staging integration branch.
+2. **CI/CD Security:** All GitHub Action step dependencies are pinned to unique 40-character commit SHAs to protect against supply-chain and tag-hijacking attacks.
+3. **Branch Protection:** Pull requests require 1 approving review from codeowners (`.github/CODEOWNERS`) and must pass all validation checks (`PR Quality`, `Validate (20.x)`, `Validate (22.x)`, `npm Audit`, and `CodeQL`) before merging.
