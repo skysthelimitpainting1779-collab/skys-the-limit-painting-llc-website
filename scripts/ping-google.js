@@ -8,10 +8,16 @@ function verifySitemapIngestion() {
   console.log('Initiating Sitemap Discovery Verification... 🧬');
   console.log(`Target Sitemap: ${SITEMAP_URL}`);
   
+  const workspaceRoot = path.resolve(process.cwd());
+
   // 1. Verify sitemap.xml exists in the compiled directories
-  const distPath = path.resolve(process.cwd(), 'dist/sitemap.xml');
-  const publicPath = path.resolve(process.cwd(), 'public/sitemap.xml');
+  const distPath = path.normalize(path.resolve(workspaceRoot, 'dist/sitemap.xml'));
+  const publicPath = path.normalize(path.resolve(workspaceRoot, 'public/sitemap.xml'));
   
+  if (!distPath.startsWith(workspaceRoot) || !publicPath.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
+
   const distExists = fs.existsSync(distPath);
   const publicExists = fs.existsSync(publicPath);
   
@@ -22,7 +28,11 @@ function verifySitemapIngestion() {
   }
   
   // 2. Verify robots.txt contains the Sitemap directive
-  const robotsPath = path.resolve(process.cwd(), 'public/robots.txt');
+  const robotsPath = path.normalize(path.resolve(workspaceRoot, 'public/robots.txt'));
+  if (!robotsPath.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
+
   if (fs.existsSync(robotsPath)) {
     const robotsTxt = fs.readFileSync(robotsPath, 'utf8');
     if (robotsTxt.includes(`Sitemap: ${SITEMAP_URL}`)) {

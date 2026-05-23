@@ -1,4 +1,69 @@
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
 # Deployment
+
+> Brain routing note: durable deployment truth starts at `../AGENTS.md`, `../../AGENTS.md`, and `../../business_vault/vault_index.md`. Use this file only as the local website deployment checklist.
 
 ## Production Platform
 

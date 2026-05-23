@@ -22,6 +22,7 @@
 
 @layer base {
   html {
+    font-size: 96.875%;
     scroll-behavior: smooth;
     width: 100%;
     max-width: 100%;
@@ -70,6 +71,31 @@
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-normal;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #f0c067;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const pages = [
   { file: 'src/pages/About.tsx', title: "About Us | Sky's the Limit Painting LLC", desc: "Built by a Painter, Not a Sales Office. Learn about Anthony Briseno and Sky's the Limit Painting LLC based in Inver Grove Heights, MN." },
@@ -12,8 +13,15 @@ const pages = [
   { file: 'src/pages/ServiceStriping.tsx', title: "Pavement Marking & Striping | Sky's the Limit Painting LLC", desc: "Clean parking lot lines, safety markings, and pavement refreshes for small lots and facilities in the Twin Cities." }
 ];
 
+const workspaceRoot = path.resolve(__dirname);
+
 for (const p of pages) {
-  let content = fs.readFileSync(p.file, 'utf8');
+  const fullPath = path.normalize(path.resolve(workspaceRoot, p.file));
+  if (!fullPath.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
+
+  let content = fs.readFileSync(fullPath, 'utf8');
   
   if (!content.includes('PageMeta')) {
     content = content.replace(/(import PageTransition from '..\/components\/PageTransition';)/, "$1\nimport PageMeta from '../components/PageMeta';");
@@ -23,5 +31,5 @@ for (const p of pages) {
     content = content.replace(/<PageTransition>/, `<PageTransition>\n      <PageMeta title="${p.title}" description="${p.desc}" />`);
   }
   
-  fs.writeFileSync(p.file, content);
+  fs.writeFileSync(fullPath, content);
 }

@@ -19,8 +19,16 @@ function escapeHtml(value: unknown) {
     .replaceAll("'", '&#39;');
 }
 
+function getSafeValue(obj: Record<string, unknown>, key: string): unknown {
+  if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+    return undefined;
+  }
+  const descriptor = Object.getOwnPropertyDescriptor(obj, key);
+  return descriptor ? descriptor.value : undefined;
+}
+
 function validate(payload: Record<string, unknown>) {
-  const missing = requiredFields.filter((field) => !asText(payload[field]));
+  const missing = requiredFields.filter((field) => !asText(getSafeValue(payload, field)));
   if (missing.length > 0) {
     return `Missing required fields: ${missing.join(', ')}`;
   }
@@ -57,10 +65,10 @@ function buildLeadId() {
 function buildLeadHtml(payload: Record<string, unknown>) {
   const rows = Object.entries(payload)
     .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(([key, value]) => `<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">${escapeHtml(key)}</td><td style="padding:6px 10px;border:1px solid #ddd;">${escapeHtml(value)}</td></tr>`)
+    .map(([key, value]) => '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' + escapeHtml(key) + '</td><td style="padding:6px 10px;border:1px solid #ddd;">' + escapeHtml(value) + '</td></tr>')
     .join('');
 
-  return `<h1>New Sky's the Limit Painting lead</h1><table style="border-collapse:collapse;">${rows}</table>`;
+  return '<h1>New Sky\'s the Limit Painting lead</h1><table style="border-collapse:collapse;">' + rows + '</table>';
 }
 
 async function sendWithResend(payload: Record<string, unknown>) {

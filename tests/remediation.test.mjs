@@ -45,7 +45,7 @@ test('build pipeline prerenders public routes and static 404 metadata', () => {
   const prerender = read('scripts/prerender.mjs');
 
   assert.match(packageJson.scripts.build, /scripts\/prerender\.mjs/);
-  for (const route of ['/', '/residential', '/commercial', '/public-sector', '/projects', '/about', '/contact', '/404']) {
+  for (const route of ['/', '/residential', '/commercial', '/public-sector', '/projects', '/about', '/contact', '/capabilities', '/service-area', '/404']) {
     assert.match(prerender, new RegExp(`path: '${route.replace('/', '\\/')}'`));
   }
   assert.match(prerender, /404\.html/);
@@ -62,6 +62,21 @@ test('before and after slider remains pointer-enabled and is keyboard accessible
   assert.match(slider, /onKeyDown/);
   assert.match(slider, /onMouseDown/);
   assert.match(slider, /onTouchStart/);
+});
+
+test('service area map is fast, routable, and accessible', () => {
+  const app = read('src/App.tsx');
+  const header = read('src/components/ConversionHeader.tsx');
+  const map = read('src/components/ServiceAreaMap.tsx');
+  const sitemapGenerator = read('scripts/generate-sitemap.js');
+
+  assert.match(app, /path="\/service-area"/);
+  assert.match(header, /to="\/service-area"/);
+  assert.match(sitemapGenerator, /'\/service-area'/);
+  assert.match(map, /role="img"/);
+  assert.match(map, /aria-describedby/);
+  assert.match(map, /View \$\{pin.name\} painting service area/);
+  assert.doesNotMatch(map, /iframe/);
 });
 
 test('lead form controls have accessible names and normalized funnel events', () => {

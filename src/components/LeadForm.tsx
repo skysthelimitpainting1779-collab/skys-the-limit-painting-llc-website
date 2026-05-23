@@ -15,6 +15,8 @@ const projectOptions = ['Interior', 'Exterior', 'Facility', 'Striping', 'Pavemen
 const propertyOptions = ['Single-family home', 'Townhome / condo', 'Retail / storefront', 'Office / commercial', 'Facility / public property', 'Other'];
 const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
 const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
+const fieldClass = 'border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] transition-colors focus:border-[#bf6f2f] focus-visible:ring-2 focus-visible:ring-[#bf6f2f]/20';
+const selectClass = 'border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none transition-colors focus:border-[#bf6f2f] focus-visible:ring-2 focus-visible:ring-[#bf6f2f]/20';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
   const [status, setStatus] = useState<Status>('idle');
@@ -63,7 +65,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     const botHoneypot = String(data.get('bot_honeypot') || '');
     if (botHoneypot) {
       setStatus('sent');
-      setMessage('Your estimate request was sent to Anthony. He can follow up by your preferred contact method, confirm scope, and explain scheduling/deposit next steps.');
+      setMessage('Your estimate request was received. Sky’s the Limit can follow up by your preferred contact method, confirm scope, and walk through scheduling next steps.');
       form.reset();
       return;
     }
@@ -120,7 +122,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
       if (response.ok && result?.ok === true) {
         setStatus('sent');
-        setMessage('Your estimate request was sent to Anthony. He can follow up by your preferred contact method, confirm scope, and explain scheduling/deposit next steps.');
+        setMessage('Your estimate request was received. Sky’s the Limit can follow up by your preferred contact method, confirm scope, and walk through scheduling next steps.');
         trackEvent('lead_form_submit_success', { source, market: payload.market });
         form.reset();
         return;
@@ -199,49 +201,55 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
   };
 
   return (
-    <form className={`grid grid-cols-1 gap-4 ${compact ? 'md:grid-cols-2' : ''}`} onSubmit={handleSubmit}>
+    <form className={`grid grid-cols-1 gap-4 ${compact ? 'md:grid-cols-2' : ''}`} onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
       <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      <input name="name" type="text" placeholder="Full name" aria-label="Full name" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="phone" type="tel" placeholder="Phone" aria-label="Phone" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="email" type="email" placeholder="Email" aria-label="Email" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="city" type="text" placeholder="City" aria-label="City" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" required />
-      <input name="projectAddress" type="text" placeholder="Project address or cross streets" aria-label="Project address or cross streets" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f]" />
-      <select name="market" aria-label="Market" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue={defaultMarket}>
+      <div className={`border-l border-[#bf6f2f]/45 bg-white/70 p-4 ${compact ? 'md:col-span-2' : ''}`}>
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#8b4d20]">Fast estimate intake</p>
+        <p className="mt-2 text-sm leading-relaxed text-[#4c453d]">
+          Add the basics now. A photo link and clear surface notes make the first scope review tighter and reduce back-and-forth.
+        </p>
+      </div>
+      <input name="name" type="text" placeholder="Full name" aria-label="Full name" autoComplete="name" className={fieldClass} required />
+      <input name="phone" type="tel" placeholder="Phone" aria-label="Phone" autoComplete="tel" inputMode="tel" className={fieldClass} required />
+      <input name="email" type="email" placeholder="Email" aria-label="Email" autoComplete="email" className={fieldClass} required />
+      <input name="city" type="text" placeholder="City" aria-label="City" autoComplete="address-level2" className={fieldClass} required />
+      <input name="projectAddress" type="text" placeholder="Project address or cross streets" aria-label="Project address or cross streets" autoComplete="street-address" className={fieldClass} />
+      <select name="market" aria-label="Market" className={selectClass} required defaultValue={defaultMarket}>
         <option>Residential</option>
         <option>Commercial</option>
         <option>Public Sector</option>
       </select>
-      <select name="projectType" aria-label="Project type" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+      <select name="projectType" aria-label="Project type" className={selectClass} required defaultValue="">
         <option value="" disabled>Project type</option>
         {projectOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="propertyType" aria-label="Property type" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" defaultValue="">
+      <select name="propertyType" aria-label="Property type" className={selectClass} defaultValue="">
         <option value="" disabled>Property type</option>
         {propertyOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="timeline" aria-label="Timeline" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+      <select name="timeline" aria-label="Timeline" className={selectClass} required defaultValue="">
         <option value="" disabled>Timeline</option>
         {timelineOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="budget" aria-label="Budget range" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" defaultValue="">
+      <select name="budget" aria-label="Budget range" className={selectClass} defaultValue="">
         <option value="" disabled>Budget range</option>
         {budgetOptions.map((option) => <option key={option}>{option}</option>)}
       </select>
-      <select name="contactMethod" aria-label="Preferred contact method" className="border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none focus:border-[#bf6f2f]" required defaultValue="">
+      <select name="contactMethod" aria-label="Preferred contact method" className={selectClass} required defaultValue="">
         <option value="" disabled>Preferred contact</option>
         <option>Call</option>
         <option>Text</option>
         <option>Email</option>
       </select>
-      <input name="photosUrl" type="url" placeholder="Project photo link (Google Drive, iCloud, Dropbox)" aria-label="Project photo link" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} />
-      <textarea name="notes" rows={5} placeholder="Rooms, exterior surfaces, repairs, timeline, access notes, or anything Anthony should know" aria-label="Project details" className={`border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] focus:border-[#bf6f2f] ${compact ? 'md:col-span-2' : ''}`} required />
+      <input name="photosUrl" type="url" placeholder="Project photo link (Google Drive, iCloud, Dropbox)" aria-label="Project photo link" className={`${fieldClass} ${compact ? 'md:col-span-2' : ''}`} />
+      <textarea name="notes" rows={5} placeholder="Rooms, exterior surfaces, repairs, timeline, access notes, or anything Anthony should know" aria-label="Project details" className={`${fieldClass} ${compact ? 'md:col-span-2' : ''}`} required />
       <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
         {status === 'submitting' ? 'Sending...' : 'Request My Estimate'} <ArrowRight size={18} />
       </button>
       <p className={`flex items-start gap-2 text-sm font-semibold text-[#4c453d] ${compact ? 'md:col-span-2' : ''}`} aria-live="polite">
         <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#bf6f2f]" />
-        {message || 'Estimate requests are sent through the live lead endpoint when email is configured. If delivery is unavailable, the form opens a prepared email draft so the customer can still send the request.'}
+        {message || 'Your request routes through the live lead endpoint when available. If the provider is unavailable, the form opens a prepared email draft so your details are not lost.'}
       </p>
     </form>
   );

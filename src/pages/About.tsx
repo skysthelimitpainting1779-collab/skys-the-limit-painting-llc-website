@@ -36,7 +36,7 @@ export default function AboutPage() {
           <FadeIn>
             <div className="max-w-3xl">
               <span className="inline-block text-[#f0c067] font-black tracking-[0.24em] text-xs uppercase mb-4">About Us</span>
-              <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white uppercase tracking-normal leading-[0.96]">Built By A Painter.<br/>Not A Sales Office.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white uppercase tracking-normal leading-[0.96]">Trade-Built Painting.<br/>Owner-Led Care.</h1>
               <p className="text-xl text-gray-300 max-w-xl">
                 Serving the Twin Cities with proper surface preparation and a focus on lasting results.
               </p>
@@ -70,7 +70,7 @@ export default function AboutPage() {
                   After completing a Minnesota Journeyworker Painter & Decorator apprenticeship, Anthony started Sky’s the Limit to bring dependable, skilled painting work to homeowners, businesses, and qualified opportunities across the Twin Cities area.
                 </p>
                 <p>
-                  We stand against the "fast and cheap" model. We believe in taking the time for thorough surface preparation because we know it’s the only way a paint job truly lasts. We are owner-operated, ensuring clear communication throughout your project.
+                  We do not treat prep as an optional line item. Thorough surface preparation is the foundation of a finish that lasts, and our owner-operated structure keeps communication clear from first scope to final walkthrough.
                 </p>
               </div>
 

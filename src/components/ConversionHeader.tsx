@@ -1,7 +1,7 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Calculator, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
 
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
@@ -28,10 +28,12 @@ export default function ConversionHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -46,8 +48,8 @@ export default function ConversionHeader() {
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[10px] md:text-[11px] uppercase tracking-widest text-white/70 font-bold">
-            <span className="truncate">Interior + exterior painting in the Twin Cities</span>
-            <span className="hidden sm:inline truncate">Request an estimate, approve the scope, reserve the schedule.</span>
+            <span className="truncate">Prep-first painting across the Twin Cities</span>
+            <span className="hidden sm:inline truncate">Price range, scope review, and schedule conversation in one path.</span>
           </div>
         </div>
 
@@ -65,17 +67,26 @@ export default function ConversionHeader() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <nav className="hidden lg:flex items-center gap-5 xl:gap-6">
               <NavLink to="/residential">Residential</NavLink>
               <NavLink to="/commercial">Commercial</NavLink>
               <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
+              <NavLink to="/service-area">Areas</NavLink>
               <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </nav>
 
             {/* Desktop Actions - Conversion Anchor */}
             <div className="hidden items-center gap-4 md:flex">
+              <Link
+                to="/estimate"
+                onClick={() => trackEvent('hero_cta_click', { source: 'header', label: 'Price Range' })}
+                className="hidden items-center justify-center gap-2 border border-[#d8c7aa]/24 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] 2xl:inline-flex"
+              >
+                <Calculator size={15} />
+                Price Range
+              </Link>
               <Link
                 to="/contact"
                 onClick={() => trackEvent('hero_cta_click', { source: 'header', label: 'Get Estimate' })}
@@ -85,12 +96,14 @@ export default function ConversionHeader() {
               </Link>
               <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'header' })} className="group flex flex-col items-end gap-0">
                 <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
-                <span className="whitespace-nowrap text-xl font-black tracking-normal leading-none text-orange-safety transition-colors group-hover:text-white xl:text-3xl">651-410-4196</span>
+                <span className="whitespace-nowrap text-xl font-black tracking-normal leading-none text-orange-safety transition-colors group-hover:text-white xl:text-2xl 2xl:text-3xl">651-410-4196</span>
               </a>
             </div>
 
             {/* Mobile Menu Toggle */}
             <button 
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
               className="lg:hidden p-2 text-white"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
@@ -101,12 +114,13 @@ export default function ConversionHeader() {
       </header>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {mobileMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0, y: -16 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
             className="fixed inset-0 top-[104px] bg-[#050505] z-40 lg:hidden flex flex-col p-6 overflow-y-auto pb-32"
           >
             <nav className="flex flex-col gap-6 text-xl">
@@ -115,10 +129,14 @@ export default function ConversionHeader() {
               <NavLink to="/commercial">Commercial</NavLink>
               <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
+              <NavLink to="/service-area">Service Area</NavLink>
               <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
+              <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_menu', label: 'Price Range' })} className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+                Get A Price Range
+              </Link>
               <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
                 Call / Text 651-410-4196
               </a>

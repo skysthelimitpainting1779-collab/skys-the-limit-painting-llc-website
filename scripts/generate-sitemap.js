@@ -14,6 +14,7 @@ const staticRoutes = [
   '/review',
   '/estimate',
   '/capabilities',
+  '/service-area',
 ];
 
 const serviceAreasSlugs = [
@@ -48,51 +49,64 @@ function generateSitemap() {
   // 1. Static routes
   staticRoutes.forEach(route => {
     const priority = route === '/' ? '1.0' : '0.8';
-    xml += `  <url>\n`;
-    xml += `    <loc>${SITE_URL}${route}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>${priority}</priority>\n`;
-    xml += `  </url>\n`;
+    xml += '  <url>\n';
+    xml += '    <loc>' + SITE_URL + route + '</loc>\n';
+    xml += '    <lastmod>' + today + '</lastmod>\n';
+    xml += '    <changefreq>weekly</changefreq>\n';
+    xml += '    <priority>' + priority + '</priority>\n';
+    xml += '  </url>\n';
   });
   
   // 2. Service areas
   serviceAreasSlugs.forEach(slug => {
-    xml += `  <url>\n`;
-    xml += `    <loc>${SITE_URL}/service-areas/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.7</priority>\n`;
-    xml += `  </url>\n`;
+    xml += '  <url>\n';
+    xml += '    <loc>' + SITE_URL + '/service-areas/' + slug + '</loc>\n';
+    xml += '    <lastmod>' + today + '</lastmod>\n';
+    xml += '    <changefreq>weekly</changefreq>\n';
+    xml += '    <priority>0.7</priority>\n';
+    xml += '  </url>\n';
   });
   
   // 3. Painting services
   paintingServicesSlugs.forEach(slug => {
-    xml += `  <url>\n`;
-    xml += `    <loc>${SITE_URL}/painting-services/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.7</priority>\n`;
-    xml += `  </url>\n`;
+    xml += '  <url>\n';
+    xml += '    <loc>' + SITE_URL + '/painting-services/' + slug + '</loc>\n';
+    xml += '    <lastmod>' + today + '</lastmod>\n';
+    xml += '    <changefreq>weekly</changefreq>\n';
+    xml += '    <priority>0.7</priority>\n';
+    xml += '  </url>\n';
   });
   
   xml += '</urlset>\n';
   
   // Ensure dist directory exists
-  const distDir = path.resolve('dist');
+  const workspaceRoot = path.resolve(process.cwd());
+  const distDir = path.normalize(path.resolve(workspaceRoot, 'dist'));
+  if (!distDir.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
   }
   
   // Write sitemap.xml to dist
-  const sitemapPath = path.join(distDir, 'sitemap.xml');
+  const sitemapPath = path.normalize(path.join(distDir, 'sitemap.xml'));
+  if (!sitemapPath.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
   fs.writeFileSync(sitemapPath, xml, 'utf8');
   console.log(`Sitemap written to: ${sitemapPath} 🧬`);
   
   // Write sitemap.xml to public so it is copied in other processes
-  const publicDir = path.resolve('public');
+  const publicDir = path.normalize(path.resolve(workspaceRoot, 'public'));
+  if (!publicDir.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
   if (fs.existsSync(publicDir)) {
-    const publicSitemapPath = path.join(publicDir, 'sitemap.xml');
+    const publicSitemapPath = path.normalize(path.join(publicDir, 'sitemap.xml'));
+    if (!publicSitemapPath.startsWith(workspaceRoot)) {
+      throw new Error('Path traversal detected');
+    }
     fs.writeFileSync(publicSitemapPath, xml, 'utf8');
     console.log(`Sitemap written to: ${publicSitemapPath} 🧬`);
   }
@@ -103,12 +117,18 @@ function generateSitemap() {
   robots += `Disallow: /review\n`; // Shield the review funnel page from direct crawlers to protect user privacy
   robots += `Sitemap: ${SITE_URL}/sitemap.xml\n`;
   
-  const robotsPath = path.join(distDir, 'robots.txt');
+  const robotsPath = path.normalize(path.join(distDir, 'robots.txt'));
+  if (!robotsPath.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
   fs.writeFileSync(robotsPath, robots, 'utf8');
   console.log(`Robots.txt written to: ${robotsPath} 🧬`);
   
   if (fs.existsSync(publicDir)) {
-    const publicRobotsPath = path.join(publicDir, 'robots.txt');
+    const publicRobotsPath = path.normalize(path.join(publicDir, 'robots.txt'));
+    if (!publicRobotsPath.startsWith(workspaceRoot)) {
+      throw new Error('Path traversal detected');
+    }
     fs.writeFileSync(publicRobotsPath, robots, 'utf8');
     console.log(`Robots.txt written to: ${publicRobotsPath} 🧬`);
   }

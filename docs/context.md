@@ -61,39 +61,32 @@
 > *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
 > *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
 
-# Architecture
+# Website Documentation Context
 
-> Brain routing note: durable architecture truth starts at `../AGENTS.md`, `../../AGENTS.md`, and `../../business_vault/vault_index.md`. Use `../../business_vault/marketing/website_codebase_index.md` for the generated current code map.
+**Directory Path:** `website/docs/`
 
-## Application Shape
+**Purpose:** Lightweight website documentation router. These docs explain the local app, but the master source of truth is still `business_vault/`.
 
-This is a React 19 and Vite website for Sky's The Limit Painting LLC. The app is optimized for a marketing and lead-generation workflow with public pages, service area content, media assets, API lead handling, and Vercel deployment.
+## Brain Routing
 
-## Key Directories
+Read this path first for durable truth:
 
-```text
-api/             Vercel serverless endpoints
-docs/            Operating docs, audits, and project notes
-public/          Static images, videos, sitemap, and generated media
-remotion/        Video compositions and brand film renders
-src/components/  Reusable interface components
-src/data/        Market and service-area data
-src/lib/         Contact, SEO, and shared helpers
-src/pages/       Route-level page components
-tests/           Node-based architecture tests
-```
+1. `../AGENTS.md`
+2. `../../AGENTS.md`
+3. `../../business_vault/vault_index.md`
+4. `../../business_vault/marketing/website_codebase_index.md`
+5. The exact doc needed in this folder
 
-## Build Path
+## Active Docs
 
-1. `npm ci` installs locked dependencies.
-2. `npm run lint` runs TypeScript validation.
-3. `node --test tests/site-architecture.test.mjs` checks important site structure.
-4. `npm run build` creates the production Vite build in `dist/`.
-5. Vercel serves the built site and API functions.
+| File | Role |
+| --- | --- |
+| `ARCHITECTURE.md` | Local website architecture notes. |
+| `DEPLOYMENT.md` | Vercel deployment checklist and release notes. |
+| `ORGANIZATION.md` | Website repository organization. |
+| `RULES.md` | Website code and contribution rules. |
+| `SELF_HEALING_AGENT.md` | Local automation and self-healing notes. |
+| `SKILLS.md` | Human/team skill expectations and normalized agent skill location. |
+| `TROUBLESHOOTING.md` | Local website issue recovery notes. |
 
-## Operational Priorities
-
-- Keep contact and lead-capture flows working.
-- Keep generated media paths stable.
-- Keep SEO metadata and sitemap current.
-- Keep build checks fast enough to run on every pull request.
+Superpowers-generated plans/specs were moved into `../../business_vault/marketing/superpowers/` so planning history lives inside the Obsidian brain.

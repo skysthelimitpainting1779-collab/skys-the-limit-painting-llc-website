@@ -9,13 +9,18 @@ interface PageTransitionProps {
 export default function PageTransition({ children, className = '' }: PageTransitionProps) {
   const prefersReducedMotion = useReducedMotion();
 
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
-      initial={prefersReducedMotion ? false : { opacity: 0 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1 }}
-      exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: "easeInOut" }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.22, ease: 'easeOut' }}
       className={className}
+      style={{ willChange: 'opacity, transform' }}
     >
       {children}
     </motion.div>

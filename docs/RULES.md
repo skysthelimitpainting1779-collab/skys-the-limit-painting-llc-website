@@ -1,4 +1,69 @@
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
 # Repository Rules
+
+> Brain routing note: workspace policy is governed by `../AGENTS.md`, `../../AGENTS.md`, and `../../business_vault/vault_index.md`. This file only captures local website code rules.
 
 ## Code Standards
 

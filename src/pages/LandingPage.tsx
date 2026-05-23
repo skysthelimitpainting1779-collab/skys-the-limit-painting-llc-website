@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowRight, Camera, CheckCircle2, ClipboardCheck, MapPin, PaintRoller, Phone, Route } from 'lucide-react';
+import { ArrowRight, Calculator, Camera, CheckCircle2, ClipboardCheck, MapPin, PaintRoller, Phone, Route } from 'lucide-react';
 import PageMeta from '../components/PageMeta';
 import PageTransition from '../components/PageTransition';
 import FadeIn from '../components/animations/FadeIn';
@@ -95,13 +95,20 @@ export default function LandingPageRoute({ kind }: LandingPageRouteProps) {
             </div>
             <h1 className="max-w-[calc(100vw-2rem)] break-words text-[2rem] font-black leading-[1.02] text-white sm:max-w-5xl sm:text-5xl md:text-7xl">{page.title}</h1>
             <p className="mt-7 max-w-[calc(100vw-2rem)] text-base leading-relaxed text-[#e7dfd2] sm:max-w-3xl md:text-xl">{page.headline}</p>
-            <div className="mt-8 flex max-w-[calc(100vw-2rem)] flex-col gap-3 sm:max-w-none sm:flex-row">
+            <div className="mt-8 flex max-w-[calc(100vw-2rem)] flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
               <Link
                 to="/contact"
                 onClick={() => trackEvent('landing_cta_click', { page: path, action: 'estimate' })}
                 className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white"
               >
                 Start This Scope <ArrowRight size={18} />
+              </Link>
+              <Link
+                to="/estimate"
+                onClick={() => trackEvent('landing_cta_click', { page: path, action: 'calculator' })}
+                className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/55 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
+              >
+                <Calculator size={18} /> Price Range
               </Link>
               <a
                 href={`tel:${businessPhone}`}

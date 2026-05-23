@@ -112,16 +112,16 @@ export const markets: Market[] = [
     navLabel: 'Public Sector',
     number: '03',
     title: 'Public Sector Opportunities',
-    headline: 'Built for city, county, and state painting opportunities as the company grows.',
+    headline: 'Documentation-minded painting, facility, and striping readiness for qualified public opportunities.',
     summary:
       'Built with a long-term focus on city, county, and state painting opportunities, including facility repainting, pavement marking, striping, light poles, guardrails, and public-space work.',
     description:
-      'Sky’s the Limit Painting is preparing to compete for public-sector painting, facility, and pavement-marking work across Minnesota. We are registered under NAICS Code 238320 (Painting and Wall Covering) and prepared for SWIFT and SAM.gov bidding opportunities, bringing the safety compliance, documentation, and trade discipline public sector work requires.',
+      'Sky’s the Limit Painting is building a documented path for public-sector painting, facility, and pavement-marking work across Minnesota. We are registered under NAICS Code 238320 (Painting and Wall Covering) and maintain the safety, insurance, and documentation discipline public-sector conversations require.',
     image: '/images/services/striping/SkyLLP_ParkingLot_Striping.png',
     heroImage: '/brand/generated/sky-public-authority.webp',
     icon: Landmark,
     accent: 'Public-sector ready',
-    proof: ['NAICS Code 238320 & SAM.gov Active', 'General liability & auto coverage', 'Specialty DLI Contractor IR816596'],
+    proof: ['NAICS Code 238320 readiness', 'General liability & auto coverage', 'Registered MN Specialty Contractor IR816596'],
     capabilities: [
       {
         title: 'Facilities And Public Spaces',
@@ -155,7 +155,7 @@ export const marketBySlug = markets.reduce<Record<MarketSlug, Market>>((acc, mar
 }, {} as Record<MarketSlug, Market>);
 
 export const trustPillars = [
-  { title: 'Insured Minnesota Painting Contractor', body: 'General liability coverage in place.', icon: ShieldCheck },
+  { title: 'Registered MN Specialty Contractor', body: 'Registered Minnesota Specialty Contractor (Painting) with general liability coverage in place.', icon: ShieldCheck },
   { title: 'Owner-Operated And Trade-Built', body: 'Led by Anthony Briseno with Journeyworker Painter & Decorator apprenticeship background.', icon: PaintRoller },
   { title: 'Commercial Auto And Tools Coverage', body: 'Coverage in place for serious residential, commercial, and qualified public-sector opportunities.', icon: ClipboardCheck },
   { title: 'Scope Clarity And Follow-Through', body: 'Built around clear communication, prepared surfaces, clean execution, and a finished record.', icon: Ruler },

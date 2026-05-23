@@ -1,4 +1,5 @@
-import { Mail, MapPin, MessageSquareText, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Calculator, Mail, MapPin, MessageSquareText, Phone } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
@@ -44,7 +45,7 @@ export default function ContactPage() {
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-[#d8d0c2]">
               Send the project details Anthony needs to understand the surface, schedule, location, and next step. For the fastest response, call or text directly.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a href={`tel:${businessPhone}`} onClick={() => trackEvent('call_click', { source: 'contact_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#15110a] transition-colors hover:bg-white">
                 <Phone size={18} />
                 Call Anthony
@@ -53,6 +54,10 @@ export default function ContactPage() {
                 <MessageSquareText size={18} />
                 Text Anthony
               </a>
+              <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'contact_hero', label: 'Price Range' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] backdrop-blur">
+                <Calculator size={18} />
+                Price Range
+              </Link>
               <BookingCta />
             </div>
           </FadeIn>

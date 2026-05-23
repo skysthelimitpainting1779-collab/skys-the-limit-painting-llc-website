@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone } from 'lucide-react';
 import ConversionHeader from './ConversionHeader';
+import ConversionFooterCta from './ConversionFooterCta';
 import CustomCursor from './CustomCursor';
 import SocialLinks from './SocialLinks';
 import { areaLandingPages, serviceLandingPages, landingPagePath } from '../data/landingPages';
@@ -27,10 +28,12 @@ export default function Layout({ children }: LayoutProps) {
           <Phone size={16} className="text-orange-safety shrink-0" />
           Call/Text
         </a>
-        <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Estimate' })} className="min-w-0 basis-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
-          Estimate
+        <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Price Range' })} className="min-w-0 basis-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+          Price Range
         </Link>
       </div>
+
+      <ConversionFooterCta />
 
       {/* Footer */}
       <footer className="bg-black-primary text-white py-20 px-6 mt-12 relative overflow-hidden">
@@ -40,7 +43,7 @@ export default function Layout({ children }: LayoutProps) {
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
             <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 uppercase tracking-wide">Residential Detail. Commercial Discipline. Public-Sector Ready.</h3>
             <p className="text-gray-400 max-w-md text-lg">
-              An insured, owner-operated Minnesota painting contractor serving residential, commercial, and public-sector opportunities from Inver Grove Heights across the Twin Cities area.
+              A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities from Inver Grove Heights across the Twin Cities area.
             </p>
             <div className="mt-8">
                <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'footer' })} className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
@@ -73,6 +76,7 @@ export default function Layout({ children }: LayoutProps) {
           <div>
             <h4 className="font-bold mb-6 text-lg">Service Areas</h4>
             <nav className="flex flex-col gap-4 text-gray-400">
+              <Link to="/service-area" className="hover:text-orange-safety transition-colors">Coverage Map</Link>
               {areaLandingPages.slice(0, 5).map((page) => (
                 <Link key={page.slug} to={landingPagePath(page)} className="hover:text-orange-safety transition-colors">
                   {page.shortTitle}

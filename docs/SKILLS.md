@@ -1,4 +1,75 @@
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
 # Team Skills
+
+> Brain routing note: website skills and agent guidance route through `../AGENTS.md`, `../../AGENTS.md`, `../../business_vault/vault_index.md`, and `../../.agents/context.md`.
+
+## Agent Skill Location
+
+Reusable website, design, Vercel, CRO, SEO, and marketing skills are normalized under `../../.agents/skills/`. The old temporary zip/extracted folders under `website/tmp` and `website/agent-skills-main` are not active sources.
+
+Skills that failed `../../scripts/skills-shield.py` are quarantined under `../../.agents/blocked-skills/` until review.
 
 ## Required
 

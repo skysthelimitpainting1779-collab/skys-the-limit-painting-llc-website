@@ -1,4 +1,4 @@
-import { ArrowRight, Camera, CheckCircle2, ClipboardCheck, FileCheck2 } from 'lucide-react';
+import { ArrowRight, Calculator, Camera, CheckCircle2, ClipboardCheck, FileCheck2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FadeIn from './animations/FadeIn';
 import PageMeta from './PageMeta';
@@ -185,7 +185,10 @@ export default function MarketPage({ market }: MarketPageProps) {
                   <p className="text-sm font-semibold uppercase tracking-wider text-white">{item}</p>
                 </div>
               ))}
-              <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: market.cta, source: market.slug })} className="mt-8 inline-flex w-full items-center justify-center gap-2 bg-orange-safety px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
+              <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { label: 'Price Range', source: market.slug })} className="mt-8 inline-flex w-full items-center justify-center gap-2 border border-[#f0c067]/35 bg-[#f0c067]/10 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+                <Calculator size={18} /> Get A Price Range
+              </Link>
+              <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: market.cta, source: market.slug })} className="mt-3 inline-flex w-full items-center justify-center gap-2 bg-orange-safety px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-deep">
                 {market.cta} <ArrowRight size={18} />
               </Link>
               <BookingCta audience={market.slug === 'residential' ? 'homeowner' : market.slug} className="mt-3 w-full" />

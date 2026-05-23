@@ -18,19 +18,25 @@ export default function ReviewPage() {
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [privateError, setPrivateError] = useState('');
 
-  const googleReviewUrl = "https://search.google.com/local/writereview?placeid=ChIJ8d-Nq98d9kgR50-mR-K5k84"; // Placeholder or live link for Sky's the Limit
+  const googleReviewUrl = "https://search.google.com/local/writereview?placeid=ChIJ8d-Nq98d9kgR50-mR-K5k84";
 
   const handleRatingSelect = (selectedRating: number) => {
     setRating(selectedRating);
+    setPrivateError('');
     trackEvent('review_rating_select', { rating: selectedRating });
   };
 
   const handlePrivateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!privateFeedback.trim()) return;
+    if (!privateFeedback.trim()) {
+      setPrivateError('Please add a few details so we can understand what needs attention.');
+      return;
+    }
 
     setIsSubmitting(true);
+    setPrivateError('');
     trackEvent('private_feedback_submit', { rating });
 
     try {
@@ -52,10 +58,11 @@ export default function ReviewPage() {
       if (response.ok) {
         setFeedbackSubmitted(true);
       } else {
-        console.error('Feedback submit failed');
+        setPrivateError('The private feedback form did not send. Please call or text 651-410-4196 so we can handle this directly.');
       }
     } catch (err) {
       console.error('Error submitting feedback:', err);
+      setPrivateError('The private feedback form did not respond. Please call or text 651-410-4196 so we can handle this directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -139,7 +146,7 @@ export default function ReviewPage() {
                   </div>
                   <h3 className="text-2xl font-black text-white">We love to hear that!</h3>
                   <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">
-                    Since you had a 5-star experience, would you take 15 seconds to support an owner-operated local business by leaving a brief review on Google? It makes a world of difference.
+                    Since you had a strong experience, would you take 15 seconds to support an owner-operated local business by leaving a brief review on Google? A short note helps the next homeowner feel confident before they reach out.
                   </p>
                   
                   <a
@@ -225,6 +232,11 @@ export default function ReviewPage() {
                       >
                         {isSubmitting ? 'Sending...' : 'Submit Feedback'} <MessageSquare size={18} />
                       </button>
+                      {privateError && (
+                        <p className="border-l border-[#f0c067]/45 bg-[#070706] p-4 text-xs font-semibold leading-relaxed text-[#f2d6a8]" role="alert">
+                          {privateError}
+                        </p>
+                      )}
                     </form>
                   ) : (
                     /* Feedback Submitted Successfully */

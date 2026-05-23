@@ -15,7 +15,11 @@ const bookingLabels = {
 
 export default function BookingCta({ audience = 'homeowner', className = '' }: BookingCtaProps) {
   const bookingUrl = import.meta.env.VITE_BOOKING_URL || '';
-  const label = bookingLabels[audience];
+  const label = audience === 'commercial' 
+    ? bookingLabels.commercial 
+    : audience === 'public-sector' 
+    ? bookingLabels['public-sector'] 
+    : bookingLabels.homeowner;
 
   if (bookingUrl) {
     return (

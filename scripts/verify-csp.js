@@ -4,7 +4,13 @@ import path from 'path';
 function verifyCSP() {
   console.log('Initiating Content Security Policy (CSP) Header Verification... 🧬');
   
-  const vercelPath = path.resolve('vercel.json');
+  const workspaceRoot = path.resolve(process.cwd());
+  const vercelPath = path.normalize(path.resolve(workspaceRoot, 'vercel.json'));
+  
+  if (!vercelPath.startsWith(workspaceRoot)) {
+    throw new Error('Path traversal detected');
+  }
+
   if (!fs.existsSync(vercelPath)) {
     console.error('vercel.json not found in root directory! 🧬');
     process.exit(1);

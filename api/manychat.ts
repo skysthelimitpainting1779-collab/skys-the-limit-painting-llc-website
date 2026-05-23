@@ -22,10 +22,10 @@ function buildLeadId(): string {
 function buildLeadHtml(payload: Record<string, unknown>): string {
   const rows = Object.entries(payload)
     .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(([key, value]) => `<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">${escapeHtml(key)}</td><td style="padding:6px 10px;border:1px solid #ddd;">${escapeHtml(value)}</td></tr>`)
+    .map(([key, value]) => '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' + escapeHtml(key) + '</td><td style="padding:6px 10px;border:1px solid #ddd;">' + escapeHtml(value) + '</td></tr>')
     .join('');
 
-  return `<h1>New Sky's the Limit Painting ManyChat Lead</h1><table style="border-collapse:collapse;">${rows}</table>`;
+  return '<h1>New Sky\'s the Limit Painting ManyChat Lead</h1><table style="border-collapse:collapse;">' + rows + '</table>';
 }
 
 async function sendWithResend(payload: Record<string, unknown>) {

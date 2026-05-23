@@ -5,22 +5,32 @@
 
 import { BrowserRouter as Router, Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import Layout from './components/Layout';
 import HomePage from './pages/Home';
-import ResidentialPage from './pages/Residential';
-import CommercialPage from './pages/Commercial';
-import PublicSectorPage from './pages/PublicSector';
-import ProjectsPage from './pages/Projects';
-import AboutPage from './pages/About';
-import ContactPage from './pages/Contact';
-import ReviewPage from './pages/Review';
-import EstimatePage from './pages/Estimate';
-import CapabilitiesPage from './pages/Capabilities';
-import NotFoundPage from './pages/NotFound';
-import LandingPageRoute from './pages/LandingPage';
 import ScrollToTop from './components/ScrollToTop';
 import { trackEvent } from './lib/analytics';
+
+const ResidentialPage = lazy(() => import('./pages/Residential'));
+const CommercialPage = lazy(() => import('./pages/Commercial'));
+const PublicSectorPage = lazy(() => import('./pages/PublicSector'));
+const ProjectsPage = lazy(() => import('./pages/Projects'));
+const AboutPage = lazy(() => import('./pages/About'));
+const ContactPage = lazy(() => import('./pages/Contact'));
+const ReviewPage = lazy(() => import('./pages/Review'));
+const EstimatePage = lazy(() => import('./pages/Estimate'));
+const CapabilitiesPage = lazy(() => import('./pages/Capabilities'));
+const ServiceAreaPage = lazy(() => import('./pages/ServiceArea'));
+const NotFoundPage = lazy(() => import('./pages/NotFound'));
+const LandingPageRoute = lazy(() => import('./pages/LandingPage'));
+
+function RouteFallback() {
+  return (
+    <div className="min-h-[60svh] bg-[#080807]" role="status" aria-label="Loading page">
+      <span className="sr-only">Loading page</span>
+    </div>
+  );
+}
 
 function AnalyticsBridge() {
   const location = useLocation();
@@ -67,6 +77,7 @@ function AnimatedRoutes() {
         <Route path="/review" element={<ReviewPage />} />
         <Route path="/estimate" element={<EstimatePage />} />
         <Route path="/capabilities" element={<CapabilitiesPage />} />
+        <Route path="/service-area" element={<ServiceAreaPage />} />
         <Route path="/service-areas/:slug" element={<LandingPageRoute kind="area" />} />
         <Route path="/painting-services/:slug" element={<LandingPageRoute kind="service" />} />
         <Route path="/services" element={<Navigate to="/residential" replace />} />
@@ -75,7 +86,6 @@ function AnimatedRoutes() {
         <Route path="/services/commercial" element={<Navigate to="/commercial" replace />} />
         <Route path="/services/striping" element={<Navigate to="/public-sector" replace />} />
         <Route path="/services/pavement-marking" element={<Navigate to="/public-sector" replace />} />
-        <Route path="/service-area" element={<Navigate to="/public-sector" replace />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>
@@ -88,7 +98,9 @@ export default function App() {
       <AnalyticsBridge />
       <ScrollToTop />
       <Layout>
-        <AnimatedRoutes />
+        <Suspense fallback={<RouteFallback />}>
+          <AnimatedRoutes />
+        </Suspense>
       </Layout>
     </Router>
   );

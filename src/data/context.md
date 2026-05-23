@@ -7,7 +7,7 @@
 > ### 🧬 LLM CHEAT SHEET: OPERATIONS DATA QUICK REFERENCE
 > *   **Dynamic Payload Data Stores:**
 >     *   `landingPages.ts` — Holds structured page configurations (custom headlines, tailored benefits, localized portfolios) loaded dynamically by `src/pages/LandingPage.tsx`.
->     *   `markets.ts` — Structured matrix cataloging target Twin Cities municipal areas, zip codes, and custom messaging keys for local SEO.
+>     *   `markets.ts` — Structured three-market payload for residential, commercial, and public-sector readiness pages.
 
 ---
 
@@ -15,5 +15,5 @@
 
 This folder holds operational datasets that are parsed dynamically by view templates to output customized page content without database calls:
 
-*   **landingPages.ts** — Dynamic payload data store for all localized ad campaign landing pages.
-*   **markets.ts** — Structured array of Twin Cities cities, zip codes, and targeted messaging profiles.
+*   **landingPages.ts** — Dynamic payload data store for all localized ad campaign landing pages and service SEO pages.
+*   **markets.ts** — Structured three-market payload for residential, commercial, and public-sector readiness pages; public-sector copy must stay evidence-safe and avoid unverified SAM.gov active claims.

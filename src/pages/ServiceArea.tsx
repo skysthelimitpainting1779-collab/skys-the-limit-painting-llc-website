@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import ServiceAreaMap from '../components/ServiceAreaMap';
 
 export default function ServiceAreaPage() {
-  const areas = [
-    "Inver Grove Heights", "South St. Paul", "West St. Paul", "Eagan",
-    "Mendota Heights", "Cottage Grove", "Woodbury", "St. Paul", "Minneapolis",
-    "Dakota County", "Ramsey County", "Washington County", "Hennepin County"
-  ];
-
   return (
     <PageTransition>
-      <PageMeta title="Service Area | Twin Cities Painting Contractor" description="Serving Inver Grove Heights, Dakota County, and the Twin Cities Metro. Local, dependable painting services near you." />
+      <PageMeta title="Service Area Map | Twin Cities Painting Contractor" description="Fast service-area map for Sky's the Limit Painting LLC, serving Inver Grove Heights and the Twin Cities metro." />
       
       {/* Hero */}
       <section className="bg-black-primary py-24 px-6 border-b border-white/10">
@@ -30,7 +25,7 @@ export default function ServiceAreaPage() {
         </div>
       </section>
 
-      <div className="bg-black-charcoal py-24 px-6 min-h-screen">
+      <div className="bg-black-charcoal px-6 py-16 lg:py-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <FadeIn delay={0.1}>
             <div>
@@ -55,28 +50,18 @@ export default function ServiceAreaPage() {
           </FadeIn>
           
           <FadeIn delay={0.2}>
-            <div className="bg-black-primary p-8 md:p-12 rounded-sm border border-white/10 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-safety opacity-10 rounded-bl-full rounded-tr-sm -z-10"></div>
-              
-              <div className="flex items-center gap-3 mb-8">
-                <MapPin className="text-orange-safety shrink-0" size={28} />
-                <h3 className="text-2xl font-bold font-display uppercase tracking-wide">Communities We Cover</h3>
-              </div>
-              
-              <div className="flex flex-wrap gap-3">
-                {areas.map((loc, i) => (
-                  <span key={i} className="bg-white/5 border border-white/10 text-white font-bold tracking-wide uppercase text-sm px-4 py-2 rounded-sm">
-                    {loc}
-                  </span>
-                ))}
-              </div>
-               <p className="text-sm text-gray-500 mt-8 italic">
-                 Don't see your city? We may still be able to help. Please contact us to discuss your project.
-               </p>
+            <div className="border-l border-[#f0c067]/35 bg-black-primary p-8 md:p-12">
+              <p className="text-xs font-black uppercase tracking-[0.26em] text-orange-safety">How to use the map</p>
+              <h3 className="mt-4 text-3xl font-black leading-tight text-white">Pick a city, then send the project details.</h3>
+              <p className="mt-5 text-base leading-relaxed text-gray-300">
+                The map keeps the service area easy to scan without loading a slow embedded third-party map on every visit.
+              </p>
             </div>
           </FadeIn>
         </div>
       </div>
+
+      <ServiceAreaMap compact />
     </PageTransition>
   );
 }

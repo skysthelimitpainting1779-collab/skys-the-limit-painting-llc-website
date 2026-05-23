@@ -119,7 +119,7 @@ const routes = [
     path: '/',
     title: "Sky's the Limit Painting LLC | Minnesota Painting Contractor",
     description:
-      'Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for residential painting, commercial work, and public-sector opportunities.',
+      'Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) built for residential painting, commercial work, and qualified public-sector opportunities.',
     schema: businessSchema,
   },
   {
@@ -174,6 +174,20 @@ const routes = [
     schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }]),
   },
   {
+    path: '/capabilities',
+    title: "Capabilities Statement | Sky's the Limit Painting LLC",
+    description:
+      'Capabilities statement, verified corporate credentials, NAICS codes, SWIFT details, and public-sector readiness notes for Sky’s the Limit Painting LLC.',
+    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Capabilities', path: '/capabilities' }]),
+  },
+  {
+    path: '/service-area',
+    title: "Service Area Map | Sky's the Limit Painting LLC",
+    description:
+      "Fast service-area map for Sky's the Limit Painting LLC, serving Inver Grove Heights and the Twin Cities metro.",
+    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Service Area Map', path: '/service-area' }]),
+  },
+  {
     path: '/estimate',
     title: "Smart Estimate Calculator | Sky's the Limit Painting LLC",
     description:
@@ -210,25 +224,25 @@ function canonicalFor(routePath) {
 
 function injectHead(template, route) {
   const canonical = canonicalFor(route.path);
-  const image = `${siteUrl}${defaultImage}`;
+  const image = siteUrl + defaultImage;
   const schema = route.schema
-    ? `\n    <script type="application/ld+json" id="page-schema">${JSON.stringify(route.schema)}</script>`
+    ? '\n    <script type="application/ld+json" id="page-schema">' + JSON.stringify(route.schema) + '</script>'
     : '';
 
-  const fallbackContent = `<main><h1>${escapeHtml(route.title)}</h1><p>${escapeHtml(route.description)}</p></main>`;
+  const fallbackContent = '<main><h1>' + escapeHtml(route.title) + '</h1><p>' + escapeHtml(route.description) + '</p></main>';
 
   return template
-    .replace(/<title>.*?<\/title>/s, `<title>${escapeHtml(route.title)}</title>`)
-    .replace(/<meta name="description" content=".*?" \/>/s, `<meta name="description" content="${escapeHtml(route.description)}" />`)
-    .replace(/<link rel="canonical" href=".*?" \/>/s, `<link rel="canonical" href="${canonical}" />`)
-    .replace(/<meta property="og:title" content=".*?" \/>/s, `<meta property="og:title" content="${escapeHtml(route.title)}" />`)
-    .replace(/<meta property="og:description" content=".*?" \/>/s, `<meta property="og:description" content="${escapeHtml(route.description)}" />`)
-    .replace(/<meta property="og:image" content=".*?" \/>/s, `<meta property="og:image" content="${image}" />`)
+    .replace(/<title>.*?<\/title>/s, '<title>' + escapeHtml(route.title) + '</title>')
+    .replace(/<meta name="description" content=".*?" \/>/s, '<meta name="description" content="' + escapeHtml(route.description) + '" />')
+    .replace(/<link rel="canonical" href=".*?" \/>/s, '<link rel="canonical" href="' + canonical + '" />')
+    .replace(/<meta property="og:title" content=".*?" \/>/s, '<meta property="og:title" content="' + escapeHtml(route.title) + '" />')
+    .replace(/<meta property="og:description" content=".*?" \/>/s, '<meta property="og:description" content="' + escapeHtml(route.description) + '" />')
+    .replace(/<meta property="og:image" content=".*?" \/>/s, '<meta property="og:image" content="' + image + '" />')
     .replace(
       '<meta name="twitter:card" content="summary_large_image" />',
-      `<meta property="og:type" content="website" />\n    <meta property="og:url" content="${canonical}" />\n    <meta name="twitter:card" content="summary_large_image" />\n    <meta name="twitter:title" content="${escapeHtml(route.title)}" />\n    <meta name="twitter:description" content="${escapeHtml(route.description)}" />\n    <meta name="twitter:image" content="${image}" />${schema}`,
+      '<meta property="og:type" content="website" />\n    <meta property="og:url" content="' + canonical + '" />\n    <meta name="twitter:card" content="summary_large_image" />\n    <meta name="twitter:title" content="' + escapeHtml(route.title) + '" />\n    <meta name="twitter:description" content="' + escapeHtml(route.description) + '" />\n    <meta name="twitter:image" content="' + image + '" />' + schema,
     )
-    .replace('<div id="root"></div>', `<div id="root">${fallbackContent}</div>`);
+    .replace('<div id="root"></div>', '<div id="root">' + fallbackContent + '</div>');
 }
 
 const distDir = path.resolve('dist');

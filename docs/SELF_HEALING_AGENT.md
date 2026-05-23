@@ -1,4 +1,69 @@
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
 # Self-Healing Automation
+
+> Brain routing note: self-healing architecture is governed by `../../business_vault/brain_operating_system.md`, `../../business_vault/reality_register.md`, and `../../business_vault/vault_index.md`.
 
 ## What Exists
 

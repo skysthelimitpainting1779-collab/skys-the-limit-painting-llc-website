@@ -31,6 +31,25 @@ interface Cabinets {
   cabinetDrawers: number;
 }
 
+type NumericDimensionKey = 'width' | 'length' | 'ceilingHeight';
+type NumericTrimKey = 'doorsCount' | 'windowsCount' | 'trimLength';
+type CabinetKey = keyof Cabinets;
+
+const roomPresets = [
+  { label: 'Bedroom', width: 12, length: 14, ceilingHeight: 8 },
+  { label: 'Living Room', width: 16, length: 20, ceilingHeight: 8 },
+  { label: 'Kitchen', width: 12, length: 16, ceilingHeight: 8 },
+  { label: 'Basement', width: 22, length: 26, ceilingHeight: 8 },
+];
+
+function clampNumber(value: number, min: number, max: number) {
+  if (!Number.isFinite(value)) {
+    return min;
+  }
+
+  return Math.min(max, Math.max(min, value));
+}
+
 export default function EstimatePage() {
   const [step, setStep] = useState<Step>(1);
   const [dimensions, setDimensions] = useState<Dimensions>({
@@ -104,6 +123,29 @@ export default function EstimatePage() {
 
   const calculationResult = calculateCosts();
 
+  const setDimensionValue = (key: NumericDimensionKey, value: number, min: number, max: number) => {
+    setDimensions((prev) => ({ ...prev, [key]: clampNumber(value, min, max) }));
+  };
+
+  const setTrimValue = (key: NumericTrimKey, value: number, min: number, max: number) => {
+    setTrimPrep((prev) => ({ ...prev, [key]: clampNumber(value, min, max) }));
+  };
+
+  const setCabinetValue = (key: CabinetKey, value: number, min: number, max: number) => {
+    setCabinets((prev) => ({ ...prev, [key]: clampNumber(value, min, max) }));
+  };
+
+  const applyRoomPreset = (preset: (typeof roomPresets)[number]) => {
+    setDimensions((prev) => ({
+      ...prev,
+      roomType: preset.label,
+      width: preset.width,
+      length: preset.length,
+      ceilingHeight: preset.ceilingHeight,
+    }));
+    trackEvent('estimate_room_preset_select', { roomType: preset.label });
+  };
+
   const handleFinalSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
@@ -113,7 +155,7 @@ export default function EstimatePage() {
     const botHoneypot = String(data.get('bot_honeypot') || '');
     if (botHoneypot) {
       setStatus('sent');
-      setMessage('Your detailed cost breakdown has been reserved. Anthony will reach out to schedule your final site confirmation.');
+      setMessage('Your planning range was received. Sky’s the Limit can follow up to confirm surface condition and final scope.');
       return;
     }
 
@@ -165,7 +207,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}`,
 
       if (response.ok && result?.ok === true) {
         setStatus('sent');
-        setMessage('Your detailed cost breakdown has been reserved. Anthony has been notified and will text you to confirm scheduling.');
+        setMessage('Your planning range was received. Sky’s the Limit can follow up to confirm surface condition and final scope.');
         trackEvent('estimate_lead_submit_success', { budget: payload.budget });
       } else {
         setStatus('fallback');
@@ -222,7 +264,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
               Room Cost Calculator
             </h1>
             <p className="mt-3 text-sm text-[#c9c1b4]">
-              Obtain instant price transparency based on room dimensions, trim levels, and high-margin cabinet scope.
+              Build a realistic planning range from room dimensions, trim detail, prep level, and cabinet openings before requesting a final site-confirmed estimate.
             </p>
           </div>
 
@@ -248,6 +290,24 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
           {/* Step 1: Dimensions */}
           {step === 1 && (
             <div className="space-y-6">
+              <div>
+                <p className="block text-xs font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-3">
+                  Quick Room Presets
+                </p>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {roomPresets.map((preset) => (
+                    <button
+                      key={preset.label}
+                      type="button"
+                      onClick={() => applyRoomPreset(preset)}
+                      className="border border-white/10 bg-[#070706] p-3 text-sm font-bold text-gray-300 transition-all hover:border-[#f0c067] hover:text-white"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-xs font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-3">
                   Room Type
@@ -282,7 +342,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="50"
                     inputMode="numeric"
                     value={dimensions.width}
-                    onChange={(e) => setDimensions({ ...dimensions, width: Number(e.target.value) })}
+                    onChange={(e) => setDimensionValue('width', Number(e.target.value), 5, 50)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -297,7 +357,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="50"
                     inputMode="numeric"
                     value={dimensions.length}
-                    onChange={(e) => setDimensions({ ...dimensions, length: Number(e.target.value) })}
+                    onChange={(e) => setDimensionValue('length', Number(e.target.value), 5, 50)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -312,7 +372,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="20"
                     inputMode="numeric"
                     value={dimensions.ceilingHeight}
-                    onChange={(e) => setDimensions({ ...dimensions, ceilingHeight: Number(e.target.value) })}
+                    onChange={(e) => setDimensionValue('ceilingHeight', Number(e.target.value), 7, 20)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -377,7 +437,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="10"
                     inputMode="numeric"
                     value={trimPrep.doorsCount}
-                    onChange={(e) => setTrimPrep({ ...trimPrep, doorsCount: Math.max(0, Number(e.target.value)) })}
+                    onChange={(e) => setTrimValue('doorsCount', Number(e.target.value), 0, 10)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -392,7 +452,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="10"
                     inputMode="numeric"
                     value={trimPrep.windowsCount}
-                    onChange={(e) => setTrimPrep({ ...trimPrep, windowsCount: Math.max(0, Number(e.target.value)) })}
+                    onChange={(e) => setTrimValue('windowsCount', Number(e.target.value), 0, 10)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -407,7 +467,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="200"
                     inputMode="numeric"
                     value={trimPrep.trimLength}
-                    onChange={(e) => setTrimPrep({ ...trimPrep, trimLength: Math.max(0, Number(e.target.value)) })}
+                    onChange={(e) => setTrimValue('trimLength', Number(e.target.value), 0, 200)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -436,8 +496,8 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
           {step === 3 && (
             <div className="space-y-6">
               <div className="border-l-2 border-[#f0c067] bg-[#f0c067]/10 p-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#f0c067]">High-Margin Specialty Cabinet Painting</p>
-                <p className="text-xs text-gray-300 mt-2">Cabinet paint transformations cost significantly less than replacements while delivering stunning luxury upgrades.</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#f0c067]">Optional Cabinet Painting Add-On</p>
+                <p className="text-xs text-gray-300 mt-2">Cabinet paint transformations can modernize a kitchen without full replacement. Add openings here if you want the range to include that scope.</p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -452,7 +512,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="60"
                     inputMode="numeric"
                     value={cabinets.cabinetDoors}
-                    onChange={(e) => setCabinets({ ...cabinets, cabinetDoors: Math.max(0, Number(e.target.value)) })}
+                    onChange={(e) => setCabinetValue('cabinetDoors', Number(e.target.value), 0, 60)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -467,7 +527,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     max="40"
                     inputMode="numeric"
                     value={cabinets.cabinetDrawers}
-                    onChange={(e) => setCabinets({ ...cabinets, cabinetDrawers: Math.max(0, Number(e.target.value)) })}
+                    onChange={(e) => setCabinetValue('cabinetDrawers', Number(e.target.value), 0, 40)}
                     className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
                   />
                 </div>
@@ -503,13 +563,16 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <p className="mt-2 text-xs text-gray-400">
                   Approx. {calculationResult.wallArea} sq ft of wall surface area measured.
                 </p>
+                <p className="mt-4 text-xs leading-relaxed text-[#b9b2a6]">
+                  Planning range only. Final pricing depends on wall condition, furniture protection, repairs, color changes, access, coatings, and confirmed scope.
+                </p>
               </div>
 
               {status !== 'sent' ? (
                 <form onSubmit={handleFinalSubmit} className="space-y-4">
-                  <h3 className="text-lg font-black uppercase text-white tracking-wide">Lock In This Estimate</h3>
+                  <h3 className="text-lg font-black uppercase text-white tracking-wide">Send This Range For Review</h3>
                   <p className="text-xs text-gray-300">
-                    To receive a detailed PDF estimate breakdown and secure priority scheduling on Anthony's calendar, enter your contact information below.
+                    Send the calculated range with your contact details so Sky’s the Limit can confirm surfaces, prep, timing, and next steps.
                   </p>
 
                   {/* Honeypot field */}
@@ -594,13 +657,13 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                       disabled={status === 'submitting'}
                       className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white transition-all disabled:opacity-55"
                     >
-                      {status === 'submitting' ? 'Saving…' : 'Lock In My Estimate'} <ArrowRight size={18} />
+                      {status === 'submitting' ? 'Saving…' : 'Send My Range'} <ArrowRight size={18} />
                     </button>
                   )}
 
                   <p className="flex items-start gap-2 text-xs font-semibold text-[#b9b2a6]" aria-live="polite">
                     <ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#f0c067]" />
-                    {message || 'Your cost calculation will be locked in and routed to Anthony Briseno. Specialty Contractor registration details are fully verified.'}
+                    {message || 'Your planning range routes with the room details. Final estimates are confirmed after surface condition and scope are reviewed.'}
                   </p>
                 </form>
               ) : (
@@ -608,9 +671,9 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#f0c067]/10 text-[#f0c067] mb-6">
                     <CheckCircle2 size={32} />
                   </div>
-                  <h3 className="text-2xl font-black text-white">Estimate Reserved!</h3>
+                  <h3 className="text-2xl font-black text-white">Range Sent!</h3>
                   <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">
-                    Thank you, {name}. Your estimate range of ${calculationResult.low.toLocaleString()} - ${calculationResult.high.toLocaleString()} is locked in. Anthony has been notified privately and will follow up by text shortly.
+                    Thank you, {name}. Your planning range of ${calculationResult.low.toLocaleString()} - ${calculationResult.high.toLocaleString()} has been sent for review. Sky’s the Limit can follow up to confirm the final scope.
                   </p>
                 </div>
               )}

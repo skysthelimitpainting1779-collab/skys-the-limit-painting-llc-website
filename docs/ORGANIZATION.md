@@ -1,4 +1,69 @@
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
+> [!NOTE]
+> ### 🧬 MASTER BRAIN ROUTING ACTIVE
+> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
+> *   **Supreme Index:** [[vault_index.md]]
+> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
+> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+
 # Repository Organization
+
+> Brain routing note: repository organization should route through `../AGENTS.md`, `../../AGENTS.md`, `../../context.md`, and `../../business_vault/vault_index.md` before broad filesystem search.
 
 ## Branches
 

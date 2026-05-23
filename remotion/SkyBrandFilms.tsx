@@ -367,15 +367,23 @@ export type MarketLoopProps = {
   market: Market;
 };
 
-export const MarketLoop = ({ market }: MarketLoopProps) => (
-  <AbsoluteFill style={{ backgroundColor: '#070706' }}>
-    {marketAssets[market].map((asset) => (
-      <AnimatedFrame key={`${asset.src}-${asset.start}`} asset={asset} />
-    ))}
-    <CinematicGrade compact />
-    <BlueprintGrid opacity={0.18} />
-    <StripeLanguage compact />
-    <MeasurementMarks compact />
-    <Grain />
-  </AbsoluteFill>
-);
+export const MarketLoop = ({ market }: MarketLoopProps) => {
+  const assetsList = market === 'commercial' 
+    ? marketAssets.commercial 
+    : market === 'public-sector' 
+    ? marketAssets['public-sector'] 
+    : marketAssets.residential;
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: '#070706' }}>
+      {assetsList.map((asset) => (
+        <AnimatedFrame key={`${asset.src}-${asset.start}`} asset={asset} />
+      ))}
+      <CinematicGrade compact />
+      <BlueprintGrid opacity={0.18} />
+      <StripeLanguage compact />
+      <MeasurementMarks compact />
+      <Grain />
+    </AbsoluteFill>
+  );
+};

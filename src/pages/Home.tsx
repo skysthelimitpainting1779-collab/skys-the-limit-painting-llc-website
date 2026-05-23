@@ -2,6 +2,7 @@ import type { Key } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
+  Calculator,
   Camera,
   CheckCircle2,
   ClipboardCheck,
@@ -16,6 +17,7 @@ import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
 import ResponsiveImage from '../components/ResponsiveImage';
+import ServiceAreaMap from '../components/ServiceAreaMap';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { businessSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -25,7 +27,7 @@ const corePositioningLine = 'Residential detail. Commercial discipline. Public-s
 const customerPromise =
   'Interior and exterior painting for homes, businesses, and facilities in Inver Grove Heights and the Twin Cities Metro.';
 const verifiedContractorLine =
-  'Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor.';
+  'Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting).';
 
 const conversionSteps = [
   {
@@ -197,9 +199,12 @@ export default function HomePage() {
               </span>
             </p>
             <p className="mt-4 text-sm font-black uppercase tracking-[0.22em] text-[#f0c067]">{corePositioningLine}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
                 Request a Free Estimate <ArrowRight size={18} />
+              </Link>
+              <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { label: 'Price Range', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+                <Calculator size={18} /> Get A Price Range
               </Link>
               <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Phone size={18} /> Call or Text Anthony
@@ -316,6 +321,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <ServiceAreaMap />
 
       <section className="relative overflow-hidden border-y border-[#d8c7aa]/10 bg-[#11100d] px-4 py-24 sm:px-6 lg:px-8">
         <div className="measurement-rules absolute inset-0 opacity-15"></div>

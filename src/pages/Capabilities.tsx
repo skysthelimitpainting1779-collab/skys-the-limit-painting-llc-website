@@ -9,7 +9,7 @@ export default function CapabilitiesPage() {
     <PageTransition>
       <PageMeta
         title="Corporate Capabilities Statement | Sky's the Limit Painting LLC"
-        description="Official capabilities statement, corporate credentials, NAICS codes, and public sector bidding registry for Sky’s the Limit Painting LLC."
+        description="Capabilities statement, verified corporate credentials, NAICS codes, SWIFT details, and public-sector readiness notes for Sky’s the Limit Painting LLC."
         path="/capabilities"
         schema={breadcrumbSchema([
           { name: 'Home', path: '/' },
@@ -40,7 +40,7 @@ export default function CapabilitiesPage() {
               Capabilities Statement
             </h1>
             <p className="text-lg text-gray-300 max-w-xl">
-              Professional commercial, industrial, and public sector specialty painting services. Twin Cities metro area registered contractor.
+              Professional commercial, facility, and public-sector specialty painting services from a registered Minnesota Specialty Contractor (Painting).
             </p>
           </div>
         </div>
@@ -186,8 +186,8 @@ export default function CapabilitiesPage() {
                   <p className="text-sm font-mono text-white mt-1">VN0001223327_1</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#b9b2a6]">SAM.gov Status</p>
-                  <p className="text-sm font-bold text-white mt-1">Active / Bidding Ready</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#b9b2a6]">SAM.gov Package</p>
+                  <p className="text-sm font-bold text-white mt-1">Registration package in preparation</p>
                 </div>
               </div>
             </div>

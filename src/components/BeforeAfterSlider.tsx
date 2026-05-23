@@ -25,6 +25,16 @@ export default function BeforeAfterSlider({
   
   // Motion values for hardware acceleration
   const x = useMotionValue(0);
+
+  const setSliderPercent = (position: number) => {
+    const nextPosition = Math.max(0, Math.min(100, position));
+    setSliderPosition(nextPosition);
+
+    if (containerRef.current) {
+      const width = containerRef.current.offsetWidth;
+      x.set((nextPosition / 100) * width);
+    }
+  };
   
   // Set initial position once container is measured
   useEffect(() => {
@@ -39,7 +49,7 @@ export default function BeforeAfterSlider({
     const width = containerRef.current.offsetWidth;
     const currentX = x.get();
     const percent = Math.max(0, Math.min(100, (currentX / width) * 100));
-    setSliderPosition(percent);
+    setSliderPercent(percent);
   };
 
   // Sync width on window resize
@@ -54,9 +64,7 @@ export default function BeforeAfterSlider({
     return () => window.removeEventListener('resize', handleResize);
   }, [sliderPosition, x]);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const width = containerRef.current.offsetWidth;
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let newPosition = sliderPosition;
     if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
       event.preventDefault();
@@ -71,8 +79,7 @@ export default function BeforeAfterSlider({
       event.preventDefault();
       newPosition = 100;
     }
-    setSliderPosition(newPosition);
-    x.set((newPosition / 100) * width);
+    setSliderPercent(newPosition);
   };
 
   return (
@@ -80,13 +87,6 @@ export default function BeforeAfterSlider({
       <div
         ref={containerRef}
         className="relative h-[350px] w-full overflow-hidden rounded-sm border border-white/10 select-none cursor-ew-resize focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
-        role="slider"
-        aria-label="Before and after image comparison slider"
-        aria-valuenow={Math.round(sliderPosition)}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
       >
         <ResponsiveImage src={afterImage} alt={afterLabel} width={1200} height={700} className="absolute inset-0 h-full w-full object-cover pointer-events-none" />
 
@@ -103,6 +103,20 @@ export default function BeforeAfterSlider({
         <div className="absolute top-4 right-4 bg-orange-safety/80 backdrop-blur-sm px-3 py-1 rounded-sm border border-orange-safety text-white text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
           {afterLabel}
         </div>
+
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={Math.round(sliderPosition)}
+          aria-label="Before and after image comparison slider"
+          aria-valuetext={`${Math.round(sliderPosition)} percent ${beforeLabel} visible`}
+          onChange={(event) => setSliderPercent(Number(event.target.value))}
+          onKeyDown={handleKeyDown}
+          onMouseDown={(event) => event.currentTarget.focus()}
+          onTouchStart={(event) => event.currentTarget.focus()}
+          className="absolute inset-0 z-30 h-full w-full cursor-ew-resize opacity-0"
+        />
 
         {/* Draggable Divider Handle */}
         <motion.div
