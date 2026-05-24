@@ -1,3 +1,5 @@
+import { Resend } from 'resend';
+
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
 const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'projectType', 'timeline', 'contactMethod', 'notes'];
@@ -79,25 +81,18 @@ async function sendWithResend(payload: Record<string, unknown>) {
     return { configured: false };
   }
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: [leadToEmail],
-      cc: process.env.LEAD_CC_EMAIL ? [process.env.LEAD_CC_EMAIL] : undefined,
-      subject: `New ${asText(payload.market)} lead - ${asText(payload.name)} - ${asText(payload.leadId)}`,
-      html: buildLeadHtml(payload),
-      reply_to: asText(payload.email),
-    }),
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from: fromEmail,
+    to: [leadToEmail],
+    cc: process.env.LEAD_CC_EMAIL ? [process.env.LEAD_CC_EMAIL] : undefined,
+    subject: `New ${asText(payload.market)} lead - ${asText(payload.name)} - ${asText(payload.leadId)}`,
+    html: buildLeadHtml(payload),
+    replyTo: asText(payload.email),
   });
 
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Resend failed: ${response.status} ${body}`);
+  if (error) {
+    throw new Error(error.message);
   }
 
   return { configured: true };
