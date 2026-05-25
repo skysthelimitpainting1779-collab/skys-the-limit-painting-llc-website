@@ -23,7 +23,7 @@ jobs:
         node-version: [20.x, 22.x]
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Node.js
         uses: actions/setup-node@60a2fcb4275a27807c4509439348d6557ad057fb # v4.0.3
