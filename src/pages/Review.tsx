@@ -37,7 +37,7 @@ export default function ReviewPage() {
 
     setIsSubmitting(true);
     setPrivateError('');
-    trackEvent('private_feedback_submit', { rating });
+    trackEvent('private_feedback_submit', { rating: rating ?? undefined });
 
     try {
       const formId = import.meta.env.VITE_FORMSPREE_FORM_ID || "xanybvkd";

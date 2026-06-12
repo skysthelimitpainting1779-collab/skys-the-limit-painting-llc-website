@@ -26,14 +26,14 @@ interface ServiceAreaMapProps {
 
 export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps) {
   const prefersReducedMotion = useReducedMotion();
-  const mapMotion = prefersReducedMotion
+  const mapMotion = (prefersReducedMotion
     ? {}
     : {
         initial: false,
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, amount: 0.22 },
-        transition: { duration: 0.42, ease: 'easeOut' },
-      };
+        transition: { duration: 0.42, ease: 'easeOut' as const },
+      }) as any;
 
   return (
     <section

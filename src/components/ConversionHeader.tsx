@@ -94,7 +94,7 @@ export default function ConversionHeader() {
               >
                 Get Estimate
               </Link>
-              <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'header' })} className="group flex flex-col items-end gap-0">
+              <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'header' })} className="group flex flex-col items-end gap-0">
                 <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
                 <span className="whitespace-nowrap text-xl font-black tracking-normal leading-none text-orange-safety transition-colors group-hover:text-white xl:text-2xl 2xl:text-3xl">651-410-4196</span>
               </a>
@@ -137,7 +137,7 @@ export default function ConversionHeader() {
               <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_menu', label: 'Price Range' })} className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 Get A Price Range
               </Link>
-              <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+              <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
                 Call / Text 651-410-4196
               </a>
             </div>

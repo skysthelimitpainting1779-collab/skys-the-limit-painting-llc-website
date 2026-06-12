@@ -1,4 +1,31 @@
+if (!process.env.RESEND_API_KEY) {
+  console.warn("WARNING: RESEND_API_KEY is not set in the environment variables. ManyChat lead emails will not be sent!");
+}
+
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
+
+// Simple in-memory IP rate limiter
+const ipCache = new Map<string, { count: number; lastReset: number }>();
+const LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 5; // max 5 requests per minute per IP
+
+function rateLimit(ip: string): boolean {
+  const now = Date.now();
+  const state = ipCache.get(ip);
+  if (!state) {
+    ipCache.set(ip, { count: 1, lastReset: now });
+    return true;
+  }
+  if (now - state.lastReset > LIMIT_WINDOW_MS) {
+    ipCache.set(ip, { count: 1, lastReset: now });
+    return true;
+  }
+  if (state.count >= MAX_REQUESTS) {
+    return false;
+  }
+  state.count += 1;
+  return true;
+}
 
 function asText(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
@@ -144,6 +171,12 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const ip = (req.headers?.['x-forwarded-for'] as string || req.headers?.['x-real-ip'] as string || 'unknown').split(',')[0].trim();
+  if (!rateLimit(ip)) {
+    console.warn(`ManyChat rate limit exceeded for IP: ${ip}`);
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  }
+
   let body: any;
   try {
     body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -197,16 +230,22 @@ export default async function handler(req: any, res: any) {
     const configured = delivery.some((result) => result.status === 'fulfilled' && result.value.configured);
     const failed = delivery.find((result) => result.status === 'rejected');
 
+    if (failed) {
+      console.error('ManyChat lead delivery failure detail:', failed.reason);
+    }
+
     if (!configured && failed) {
       throw failed.reason;
     }
 
     if (!configured) {
-      return res.status(501).json({ error: 'Lead delivery platforms not configured in .env', fallback: 'email' });
+      console.error('ManyChat lead delivery error: Lead delivery is not configured yet.');
+      return res.status(500).json({ error: 'Lead delivery platforms not configured in .env', fallback: 'email' });
     }
   } catch (error: any) {
-    return res.status(502).json({ error: error.message || 'ManyChat lead delivery failed.', fallback: 'email' });
+    console.error('ManyChat lead delivery failed with error:', error);
+    return res.status(500).json({ error: error.message || 'ManyChat lead delivery failed.', fallback: 'email' });
   }
 
-  return res.status(200).json({ ok: true, leadId: lead.leadId });
+  return res.status(201).json({ ok: true, leadId: lead.leadId });
 }

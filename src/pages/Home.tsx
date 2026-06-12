@@ -206,7 +206,7 @@ export default function HomePage() {
               <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { label: 'Price Range', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Calculator size={18} /> Get A Price Range
               </Link>
-              <a href="tel:651-410-4196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Phone size={18} /> Call or Text Anthony
               </a>
             </div>
