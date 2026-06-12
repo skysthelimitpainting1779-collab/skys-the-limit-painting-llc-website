@@ -8,7 +8,7 @@ const APEX_DOMAIN = 'skysthelimitpaintingllc.com';
 const WWW_DOMAIN = `www.${APEX_DOMAIN}`;
 
 async function verifyDNS() {
-  console.log('Initiating Vercel Apex-to-WWW DNS Validator... 🧬');
+  console.log('Initiating Vercel Apex-to-WWW DNS Validator...');
   
   try {
     console.log(`Resolving DNS records for Apex: ${APEX_DOMAIN}`);
@@ -36,25 +36,25 @@ async function verifyDNS() {
       console.log('WWW A Records:', wwwRecords);
     }
 
-    console.log('\n--- DNS Configuration Diagnostics --- 🧬');
+    console.log('\n--- DNS Configuration Diagnostics ---');
     const hasA = apexRecords.some(r => r.type === 'A');
     if (hasA) {
-      console.log('[SUCCESS] Apex domain has active A-records mapped. 🧬');
+      console.log('[SUCCESS] Apex domain has active A-records mapped.');
     } else {
-      console.log('[WARNING] No A-records found for Apex domain. Verify Hostinger/Vercel settings. 🧬');
+      console.log('[WARNING] No A-records found for Apex domain. Verify Hostinger/Vercel settings.');
     }
 
     const hasVercelCNAME = Array.isArray(wwwRecords) && wwwRecords.some(r => r.includes('cname.vercel-dns.com') || r.includes('vercel'));
     if (hasVercelCNAME || (Array.isArray(wwwRecords) && wwwRecords.length > 0)) {
-      console.log('[SUCCESS] WWW subdomain is correctly configured and pointing to Vercel/Hostinger mapping. 🧬');
+      console.log('[SUCCESS] WWW subdomain is correctly configured and pointing to Vercel/Hostinger mapping.');
     } else {
-      console.log('[WARNING] WWW CNAME or A-records not mapping to Vercel. 🧬');
+      console.log('[WARNING] WWW CNAME or A-records not mapping to Vercel.');
     }
     
-    console.log('[INFO] Apex-to-WWW redirect is managed at the CDN/Vercel layer. Configuration looks solid. 🧬');
+    console.log('[INFO] Apex-to-WWW redirect is managed at the CDN/Vercel layer. Configuration looks solid.');
   } catch (err) {
     console.error('DNS Verification Error:', err.message);
-    console.log('[WARNING] DNS lookup failed or timed out. Ensure you are connected to the internet. 🧬');
+    console.log('[WARNING] DNS lookup failed or timed out. Ensure you are connected to the internet.');
   }
 }
 

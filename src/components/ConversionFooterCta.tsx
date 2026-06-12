@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';
 import { trackEvent } from '../lib/analytics';
+import MagneticButton from './animations/MagneticButton';
 
 const proofItems = [
   {
@@ -17,13 +18,13 @@ const proofItems = [
   {
     icon: ShieldCheck,
     title: 'Verified contractor language',
-    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operated from Inver Grove Heights.',
+    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers\' comp exempt under MN Statute 176.041.',
   },
 ];
 
 export default function ConversionFooterCta() {
   return (
-    <section className="relative overflow-hidden border-y border-[#d8c7aa]/16 bg-[#080807] px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden border-y border-[#d8c7aa]/16 mesh-gradient-bg px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="blueprint-grid absolute inset-0 opacity-10"></div>
       <div className="measurement-rules absolute inset-0 opacity-12"></div>
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
@@ -36,14 +37,16 @@ export default function ConversionFooterCta() {
             Start with a fast planning range, then send the details for a real estimate conversation. The better the surface story, the cleaner the first response.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              to="/estimate"
-              onClick={() => trackEvent('footer_conversion_cta_click', { action: 'calculator' })}
-              className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white"
-            >
-              <Calculator size={18} />
-              Get A Price Range
-            </Link>
+            <MagneticButton pullFactor={0.3}>
+              <Link
+                to="/estimate"
+                onClick={() => trackEvent('footer_conversion_cta_click', { action: 'calculator' })}
+                className="shimmer-cta inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white"
+              >
+                <Calculator size={18} />
+                Get A Price Range
+              </Link>
+            </MagneticButton>
             <a
               href={`tel:${businessPhone}`}
               onClick={() => trackEvent('call_click', { source: 'conversion_footer' })}

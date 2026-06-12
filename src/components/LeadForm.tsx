@@ -33,7 +33,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         const leads = JSON.parse(pending);
         if (!Array.isArray(leads) || leads.length === 0) return;
 
-        console.log(`🧬 [Offline Sync] Syncing ${leads.length} pending leads...`);
+        console.log(`[Offline Sync] Syncing ${leads.length} pending leads...`);
         for (const lead of leads) {
           await fetch('/api/leads', {
             method: 'POST',

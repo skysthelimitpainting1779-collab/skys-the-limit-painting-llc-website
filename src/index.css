@@ -172,4 +172,69 @@
       filter: blur(0);
     }
   }
+
+  /* Marquee animation */
+  @keyframes marquee-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee-left 28s linear infinite;
+    will-change: transform;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Shimmer CTA overlay */
+  @keyframes shimmer-slide {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
+  }
+  .shimmer-cta {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+    animation: shimmer-slide 2.5s ease infinite;
+    will-change: transform;
+  }
+
+  /* Spotlight card ambient glow */
+  .spotlight-card {
+    --spotlight-color: rgba(240, 192, 103, 0.12);
+  }
+
+  /* Pulse ring for badge */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    70% { transform: scale(1.55); opacity: 0; }
+    100% { transform: scale(1.55); opacity: 0; }
+  }
+  .animate-pulse-ring {
+    animation: pulse-ring 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    will-change: transform, opacity;
+  }
+
+  /* Animated mesh gradient for footer CTA */
+  @keyframes mesh-drift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .mesh-gradient-bg {
+    background: linear-gradient(
+      135deg,
+      #080807 0%,
+      #0f0e0b 25%,
+      #0b100f 50%,
+      #0f0d09 75%,
+      #080807 100%
+    );
+    background-size: 400% 400%;
+    animation: mesh-drift 12s ease infinite;
+  }
 }

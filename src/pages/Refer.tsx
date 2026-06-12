@@ -223,7 +223,7 @@ export default function ReferPage() {
           <div className="mt-16 border border-[#f0c067]/20 bg-[#11100d] p-6 text-center">
             <h3 className="text-xl font-black uppercase text-white mb-2">MN Contractor Transparency</h3>
             <p className="text-xs text-gray-400 max-w-xl mx-auto leading-relaxed">
-              Sky’s the Limit Painting LLC is an owner-operated specialty painting contractor (License ID: IR816596) based in Inver Grove Heights. All referrals are subject to verification. Owner is exempt from standard workers’ comp rules under MN Statute 176.041.
+              Sky’s the Limit Painting LLC is an owner-operated registered MN specialty contractor (Registration ID: IR816596) based in Inver Grove Heights. All referrals are subject to verification. Owner is exempt from standard workers’ comp rules under MN Statute 176.041.
             </p>
           </div>
         </div>

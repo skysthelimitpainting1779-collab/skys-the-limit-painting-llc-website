@@ -18,7 +18,11 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
         {children}
       </Link>
       {isActive && (
-        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-orange-safety"></span>
+        <motion.span
+          layoutId="nav-indicator"
+          className="absolute -bottom-1 left-0 w-full h-0.5 bg-orange-safety"
+          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+        />
       )}
     </div>
   );
@@ -31,7 +35,7 @@ export default function ConversionHeader() {
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => setScrolled(window.scrollY > 60);
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -43,7 +47,7 @@ export default function ConversionHeader() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/78 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}>
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/85 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}>
         
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">

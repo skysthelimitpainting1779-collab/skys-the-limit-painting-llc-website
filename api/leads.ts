@@ -222,11 +222,11 @@ function buildAutoReplyHtml(payload: Record<string, unknown>) {
     'Thank you for reaching out to Sky\'s the Limit Painting LLC! We are excited to help you transform your space.<br><br>' +
     'As a premier specialty contractor serving the entire Twin Cities metro area, we specialize in high-detail residential painting, commercial repaints, and pavement marking.<br><br>' +
     'To help our owner, Anthony, prepare a fast and accurate estimate for your project, could you please reply to this email with a few details:<br><br>' +
-    '1. <strong>Project Location</strong>: What is the address or city of the property🧬<br>' +
-    '2. <strong>Scope of Work</strong>: What surfaces or rooms are we painting🧬 (e.g., kitchen cabinets, living room walls, exterior siding)<br>' +
+    '1. <strong>Project Location</strong>: What is the address or city of the property?<br>' +
+    '2. <strong>Scope of Work</strong>: What surfaces or rooms are we painting? (e.g., kitchen cabinets, living room walls, exterior siding)<br>' +
     '3. <strong>Project Photos</strong>: Please reply with a few photos of the areas to be painted (this helps us see trim details and surface conditions).<br>' +
-    '4. <strong>Ideal Timeline</strong>: When would you like us to start🧬 (e.g., ASAP, next month, flexible)<br>' +
-    '5. <strong>Property Age</strong>: Was the structure built before 1978🧬 (We are certified in lead-safe practices and must verify this for safety compliance).<br><br>' +
+    '4. <strong>Ideal Timeline</strong>: When would you like us to start? (e.g., ASAP, next month, flexible)<br>' +
+    '5. <strong>Property Age</strong>: Was the structure built before 1978? (We are certified in lead-safe practices and must verify this for safety compliance).<br><br>' +
     'Once we receive these details, Anthony will review your scope and follow up to schedule a consultation or send your estimate.<br><br>' +
     'Thank you for choosing local,<br><br>' +
     'The Team<br>' +

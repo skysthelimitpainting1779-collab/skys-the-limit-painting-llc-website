@@ -1,7 +1,7 @@
 // Accessibility Contrast Ratio Validator (WCAG 2.1)
 // Formula: https://www.w3.org/TR/WCAG20-TECHS/G17.html
 
-console.log('Initiating WCAG 2.1 Accessibility Contrast Scanner... 🧬');
+console.log('Initiating WCAG 2.1 Accessibility Contrast Scanner...');
 
 function getRGB(color) {
   let hex = color.replace('#', '');
@@ -76,7 +76,7 @@ checks.forEach(check => {
 
 console.log('\n----------------------------------------');
 if (failed) {
-  console.log('[WARNING] One or more color contrast ratios do not meet WCAG AA requirements. 🧬');
+  console.log('[WARNING] One or more color contrast ratios do not meet WCAG AA requirements.');
 } else {
-  console.log('[SUCCESS] All key brand color contrast pairings fully meet WCAG AA standards! 🧬');
+  console.log('[SUCCESS] All key brand color contrast pairings fully meet WCAG AA standards!');
 }

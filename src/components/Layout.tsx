@@ -100,7 +100,7 @@ export default function Layout({ children }: LayoutProps) {
         
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Sky's the Limit Painting LLC. All rights reserved.</p>
-          <p>MN Contractor ID: IR816596 | Registered Specialty Contractor (Painting) | Fully Insured</p>
+          <p>Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers’ comp under MN Statute 176.041 | Fully Insured</p>
           <p>Based in Inver Grove Heights, MN</p>
         </div>
       </footer>

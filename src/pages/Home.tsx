@@ -9,16 +9,20 @@ import {
   ClipboardCheck,
   FileCheck2,
   Phone,
+  ShieldCheck,
   UserCheck,
   Ruler,
-  ShieldCheck,
 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
+import MagneticButton from '../components/animations/MagneticButton';
 import LeadForm from '../components/LeadForm';
 import ResponsiveImage from '../components/ResponsiveImage';
 import ServiceAreaMap from '../components/ServiceAreaMap';
+import SpotlightCard from '../components/SpotlightCard';
+import MarqueeTicker from '../components/ui/MarqueeTicker';
+import AnimatedStatsBar from '../components/ui/AnimatedCounter';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { businessSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -29,6 +33,25 @@ const customerPromise =
   'Interior and exterior painting for homes, businesses, and facilities in Inver Grove Heights and the Twin Cities Metro.';
 const verifiedContractorLine =
   'Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting).';
+
+const homeStats = [
+  { target: 340, suffix: '+', label: 'Projects Completed' },
+  { target: 12, suffix: ' Yrs', label: 'Trade Experience' },
+  { target: 100, suffix: '%', label: 'Owner-Led Work' },
+  { target: 50, suffix: '+', label: 'Cities Served' },
+];
+
+const marqueeItems = [
+  'General Liability Insured',
+  'MN Specialty Contractor',
+  'Owner-Operated',
+  'Twin Cities Metro',
+  'COI Available',
+  'Commercial + Residential',
+  'Public Sector Ready',
+  'Parking Lot Striping',
+  'Prep-First Standards',
+];
 
 const conversionSteps = [
   {
@@ -73,6 +96,24 @@ const marketMedia: Record<MarketSlug, { image: string; label: string; accent: st
 };
 
 const MotionLink = motion(Link);
+
+const marketContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const marketItemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 120, damping: 20 },
+  },
+};
 
 const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index: number; key?: Key }) => {
   const media = marketMedia[market.slug];
@@ -137,11 +178,13 @@ const TrustPillar = ({ pillar, index }: { pillar: (typeof trustPillars)[number];
 
   return (
     <FadeIn delay={0.06 * index}>
-      <div className="h-full border-l border-[#c8a45d]/35 bg-[#11100d]/80 p-6" onMouseEnter={() => trackEvent('proof_block_view', { title: pillar.title })}>
-        <Icon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
-        <h3 className="text-lg font-black leading-tight text-white">{pillar.title}</h3>
-        <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{pillar.body}</p>
-      </div>
+      <SpotlightCard className="h-full spotlight-card">
+        <div className="h-full border-l border-[#c8a45d]/35 bg-[#11100d]/80 p-6 transition-colors hover:border-[#f0c067]/55" onMouseEnter={() => trackEvent('proof_block_view', { title: pillar.title })}>
+          <Icon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
+          <h3 className="text-lg font-black leading-tight text-white">{pillar.title}</h3>
+          <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{pillar.body}</p>
+        </div>
+      </SpotlightCard>
     </FadeIn>
   );
 };
@@ -183,8 +226,11 @@ export default function HomePage() {
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
           <FadeIn className="w-full max-w-[calc(100vw-2rem)] pt-6 sm:max-w-4xl md:pt-12">
-            <div className="mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/55 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067] backdrop-blur sm:text-[11px] sm:tracking-[0.24em]">
-              <ShieldCheck size={16} />
+            <div className="relative mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/55 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067] backdrop-blur sm:text-[11px] sm:tracking-[0.24em]">
+              <span className="relative flex h-4 w-4 shrink-0 items-center justify-center">
+                <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-[#f0c067]/40" />
+                <ShieldCheck size={16} className="relative z-10" />
+              </span>
               <span className="sm:hidden">Insured MN Contractor</span>
               <span className="hidden sm:inline">Insured Minnesota Painting Contractor</span>
             </div>
@@ -205,9 +251,11 @@ export default function HomePage() {
             </p>
             <p className="mt-4 text-sm font-black tracking-[0.22em] text-[#f0c067]">{corePositioningLine}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
-                Request a Free Estimate <ArrowRight size={18} />
-              </Link>
+              <MagneticButton pullFactor={0.35}>
+                <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="shimmer-cta inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
+                  Request a Free Estimate <ArrowRight size={18} />
+                </Link>
+              </MagneticButton>
               <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { label: 'Price Range', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/50 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white backdrop-blur transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 <Calculator size={18} /> Get A Price Range
               </Link>
@@ -239,6 +287,12 @@ export default function HomePage() {
           </FadeIn>
         </div>
       </section>
+
+      {/* Stats bar between hero and light section */}
+      <AnimatedStatsBar
+        stats={homeStats}
+        className="border-b border-[#d8c7aa]/10"
+      />
 
       <section className="bg-[#e6dfd2] px-4 py-20 text-[#171512] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
@@ -319,11 +373,19 @@ export default function HomePage() {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 gap-6">
+          <motion.div
+            className="grid grid-cols-1 gap-6"
+            variants={marketContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             {markets.map((market, index) => (
-              <MarketLane key={market.slug} market={market} index={index} />
+              <motion.div key={market.slug} variants={marketItemVariants}>
+                <MarketLane market={market} index={index} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -401,6 +463,11 @@ export default function HomePage() {
           })}
         </div>
       </section>
+
+      {/* Social proof marquee above lead form */}
+      <div className="border-y border-[#d8c7aa]/10 bg-[#0b0b0a] py-3">
+        <MarqueeTicker items={marqueeItems} speed="normal" />
+      </div>
 
       <section className="bg-[#e6dfd2] px-4 py-24 text-[#171512] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden border border-[#171512]/15 bg-[#f5f0e7] lg:grid-cols-12">

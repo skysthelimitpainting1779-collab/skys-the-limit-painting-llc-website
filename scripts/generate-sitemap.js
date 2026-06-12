@@ -40,7 +40,7 @@ const paintingServicesSlugs = [
 ];
 
 function generateSitemap() {
-  console.log('Generating sitemap and robots.txt... 🧬');
+  console.log('Generating sitemap and robots.txt...');
   
   const today = new Date().toISOString().split('T')[0];
   
@@ -96,7 +96,7 @@ function generateSitemap() {
     throw new Error('Path traversal detected');
   }
   fs.writeFileSync(sitemapPath, xml, 'utf8');
-  console.log(`Sitemap written to: ${sitemapPath} 🧬`);
+  console.log(`Sitemap written to: ${sitemapPath}`);
   
   // Write sitemap.xml to public so it is copied in other processes
   const publicDir = path.normalize(path.resolve(workspaceRoot, 'public'));
@@ -109,7 +109,7 @@ function generateSitemap() {
       throw new Error('Path traversal detected');
     }
     fs.writeFileSync(publicSitemapPath, xml, 'utf8');
-    console.log(`Sitemap written to: ${publicSitemapPath} 🧬`);
+    console.log(`Sitemap written to: ${publicSitemapPath}`);
   }
   
   // Generate robots.txt
@@ -123,7 +123,7 @@ function generateSitemap() {
     throw new Error('Path traversal detected');
   }
   fs.writeFileSync(robotsPath, robots, 'utf8');
-  console.log(`Robots.txt written to: ${robotsPath} 🧬`);
+  console.log(`Robots.txt written to: ${robotsPath}`);
   
   if (fs.existsSync(publicDir)) {
     const publicRobotsPath = path.normalize(path.join(publicDir, 'robots.txt'));
@@ -131,10 +131,10 @@ function generateSitemap() {
       throw new Error('Path traversal detected');
     }
     fs.writeFileSync(publicRobotsPath, robots, 'utf8');
-    console.log(`Robots.txt written to: ${publicRobotsPath} 🧬`);
+    console.log(`Robots.txt written to: ${publicRobotsPath}`);
   }
   
-  console.log('Sitemap and robots.txt generated successfully! 🧬');
+  console.log('Sitemap and robots.txt generated successfully!');
 }
 
 generateSitemap();

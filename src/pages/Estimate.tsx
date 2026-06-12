@@ -776,7 +776,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
             </div>
           )}
 
-          {/* Trust Badges & Licensing Disclosures (Fogg Motivation) */}
+          {/* Trust Badges & Registration Disclosures (Fogg Motivation) */}
           <div className="mt-10 border-t border-white/10 pt-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-[11px] text-gray-400 font-bold uppercase tracking-wider">
             <div className="flex items-center gap-3">
               <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
@@ -789,7 +789,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
               <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
               <div>
                 <p className="text-white font-black text-[12px] leading-tight">MN Contractor</p>
-                <p className="text-[10px] tracking-normal font-normal text-gray-500 mt-0.5">id: ir816596 | painting</p>
+                <p className="text-[10px] tracking-normal font-normal text-gray-500 mt-0.5">reg: ir816596 | painting</p>
               </div>
             </div>
             <div className="flex items-center gap-3 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4">

@@ -118,3 +118,30 @@ test('local SEO and service landing pages are routable, prerendered, and listed 
   assert.match(landingRoute, /landingPagePath/);
   assert.match(landingRoute, /PageMeta/);
 });
+
+test('M2 compliance and contractor registration statements are correctly set', () => {
+  const layout = read('src/components/Layout.tsx');
+  const footerCta = read('src/components/ConversionFooterCta.tsx');
+  const refer = read('src/pages/Refer.tsx');
+  const estimate = read('src/pages/Estimate.tsx');
+  const ogPreview = read('public/og-preview.svg');
+
+  // 1. og-preview.svg
+  assert.match(ogPreview, /REGISTERED • MN SPECIALTY • INSURED/);
+  assert.match(ogPreview, /width="530"/);
+  assert.match(ogPreview, /MN CONTRACTOR REG\./);
+
+  // 2. Layout.tsx
+  assert.match(layout, /Registered MN Specialty Contractor \(ID: IR816596\) \| Owner exempt from workers’ comp under MN Statute 176.041 \| Fully Insured/);
+
+  // 3. ConversionFooterCta.tsx
+  assert.match(footerCta, /body: 'Registered Minnesota Specialty Contractor \(Painting\), fully insured, and owner-operator workers\\' comp exempt under MN Statute 176\.041\.',/);
+
+  // 4. Refer.tsx
+  assert.match(refer, /Sky’s the Limit Painting LLC is an owner-operated registered MN specialty contractor \(Registration ID: IR816596\) based in Inver Grove Heights\. All referrals are subject to verification\. Owner is exempt from standard workers’ comp rules under MN Statute 176\.041\./);
+
+  // 5. Estimate.tsx
+  assert.match(estimate, /\{\/\* Trust Badges & Registration Disclosures \(Fogg Motivation\) \*\/\}/);
+  assert.match(estimate, /reg: ir816596 \| painting/);
+});
+

@@ -123,8 +123,8 @@
   <g transform="translate(84, 110)">
     <!-- Brand badge -->
     <g>
-      <rect x="0" y="0" width="410" height="38" fill="rgba(255, 90, 0, 0.1)" stroke="rgba(255, 90, 0, 0.3)" stroke-width="1" />
-      <text x="16" y="24" class="font-display badge-text orange-text">LICENSED • BONDED • INSURED</text>
+      <rect x="0" y="0" width="530" height="38" fill="rgba(255, 90, 0, 0.1)" stroke="rgba(255, 90, 0, 0.3)" stroke-width="1" />
+      <text x="16" y="24" class="font-display badge-text orange-text">REGISTERED • MN SPECIALTY • INSURED</text>
     </g>
 
     <!-- Company Name Title -->
@@ -146,9 +146,9 @@
 
   <!-- Right Details Area -->
   <g transform="translate(762, 140)">
-    <!-- Segment 1: MN License -->
+    <!-- Segment 1: MN Specialty Registration -->
     <g transform="translate(0, 0)">
-      <text x="0" y="0" class="font-display detail-title gray-text">MN CONTRACTOR LIC.</text>
+      <text x="0" y="0" class="font-display detail-title gray-text">MN CONTRACTOR REG.</text>
       <text x="0" y="32" class="font-body detail-val white-text">IR816596</text>
       <line x1="0" y1="46" x2="80" y2="46" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
     </g>
