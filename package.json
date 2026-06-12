@@ -39,7 +39,7 @@
     "autoprefixer": "10.4.21",
     "remotion": "4.0.462",
     "tailwindcss": "^4.3.0",
-    "tsx": "4.21.0",
+    "tsx": "4.22.4",
     "typescript": "6.0.3",
     "vercel": "^54.12.2",
     "vite": "^6.2.0"
