@@ -201,6 +201,13 @@ const routes = [
       "Provide feedback on your residential painting or commercial coating project completed by Anthony Briseno and Sky's the Limit.",
     schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Review', path: '/review' }]),
   },
+  {
+    path: '/refer',
+    title: "Painting Referral Program | Sky's the Limit Painting LLC",
+    description:
+      "Earn $100 cash and give your friend $100 off their next interior or exterior painting project in the Twin Cities with our referral program.",
+    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Referral Program', path: '/refer' }]),
+  },
   ...landingRoutes,
   {
     path: '/404',

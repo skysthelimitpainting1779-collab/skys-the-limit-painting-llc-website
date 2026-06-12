@@ -28,7 +28,7 @@ export default function ServiceCommercial() {
                   <span key={i} className="text-xs font-bold text-orange-safety border border-orange-safety/50 rounded-sm px-3 py-1.5 uppercase bg-black/50 backdrop-blur-sm">{tag}</span>
                 ))}
               </div>
-              <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-white px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
+              <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-[#050505] px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
                 Get Your Commercial Estimate <ArrowRight size={18} />
               </Link>
             </FadeIn>
@@ -124,7 +124,7 @@ export default function ServiceCommercial() {
              <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
                We bring our commercial painting expertise to Inver Grove Heights, South St. Paul, West St. Paul, Woodbury, Eagan, Mendota Heights, and across the Twin Cities.
              </p>
-             <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-white px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
+             <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-[#050505] px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
                 Start Your Commercial Project <ArrowRight size={18} />
              </Link>
            </FadeIn>

@@ -1,100 +1,66 @@
 > [!NOTE]
 > ### 🧬 MASTER BRAIN ROUTING ACTIVE
 > This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+> *   **Supreme Index:** [[INDEX.md]]
+> *   **Relative Path:** [INDEX.md](../../obsidian-vault/wiki/INDEX.md)
+> *   **Absolute Path:** [INDEX.md](file:///C:/Users/Johnny%20Cage/DEV/obsidian-vault/wiki/INDEX.md)
 
 # Repository Rules
 
 > Brain routing note: workspace policy is governed by `../AGENTS.md`, `../../AGENTS.md`, and `../../business_vault/vault_index.md`. This file only captures local website code rules.
 
-## Code Standards
+## 🧬 Code Standards & Agent Discipline
 
-- Use TypeScript for application code.
-- Keep reusable UI in `src/components/`.
-- Keep business data in `src/data/`.
-- Keep shared helpers in `src/lib/`.
-- Avoid hard-coded secrets in source files.
-- Prefer small, focused changes that can be validated with the existing checks.
+To ensure consistency and maintain the high quality of the codebase, all agents must strictly follow these rules:
 
-## Validation Before Merge
+1. **Language & Types**:
+   - Write all application code in strict TypeScript.
+   - Run type checks locally via `npm run lint` (`tsc --noEmit`). No type assertions (`as any` or `any`) are permitted unless mathematically unavoidable and explicitly commented.
+   
+2. **Production Code Hygiene**:
+   - Banned outputs: Do not commit `console.log`, `console.debug`, or developer debugging breakpoints in production files.
+   - Use standardized API telemetry/logging paths via proper handlers.
 
-Run these before publishing important changes:
+3. **Strict Design & Accessibility Constraints**:
+   - Keep colors tied to the central HSL design tokens declared in `src/index.css`.
+   - **Contrast Safety Warning**: Safety Orange (`#FF5A00`) surfaces must use Dark Charcoal (`#050505`) text to satisfy WCAG AA contrast compliance. White text on safety orange is strictly banned.
+   - **Emoji Ban**: Emojis in source code files, React components, strings, or HTML markup are strictly BANNED. The only exception is the DNA emoji (`🧬`) which is reserved exclusively for markdown documentation files.
+
+4. **Directory Structure**:
+   - Reusable components: `src/components/`
+   - Static/dynamic pages: `src/pages/`
+   - Static configurations and content data: `src/data/`
+   - Serverless API functions: `api/`
+   - Utility code, hooks, and routing: `src/lib/`
+
+## 🛠️ Verification Gates Before Merge
+
+All modifications must pass local verification checks before they are submitted or merged. Run these commands:
 
 ```bash
+# Verify TypeScript compiles successfully
 npm run lint
-node --test tests/site-architecture.test.mjs
+
+# Run the unit and integration test suites
+npm test
+
+# Run the production build and verify static prerendering
 npm run build
 ```
 
-For visual changes, also review the affected pages in a browser.
+Verify in a local browser via `npm run dev` for any visual changes to confirm layouts, contrast compliance, and interaction responsiveness.
 
-## Git Standards
+## 🔀 Git & Branching Standards
 
-- Use clear commit messages, for example `feat: add service area gallery`.
-- Keep unrelated changes out of the same commit when possible.
-- Open pull requests for review when the change affects production behavior.
+- **Branch Naming**: Keep branches short, descriptive, and prefix them correctly:
+  - `feat/...` for new features or layouts.
+  - `fix/...` for bug fixes, style repairs, or type fixes.
+  - `chore/...` or `docs/...` for setup, dependency upgrades, or documentation changes.
+- **Commit Messages**: Follow standard semantic prefixes (e.g. `feat: ...`, `fix: ...`). Keep commits atomic and clean.
 
-## Security Rules
+## 🔒 Security Rules
 
-- Never commit `.env` or real API keys.
-- Keep `.env.example` updated with safe placeholder names.
-- Let Dependabot update dependencies through reviewable pull requests.
-- Treat lead handling, contact forms, and analytics as sensitive surfaces.
+- **API Secret Storage**: Never commit `.env` or cleartext configurations to Git.
+- **Example configs**: Keep `.env.example` updated with safe placeholder values.
+- Treat lead processing endpoints (`api/leads.ts`, `api/manychat.ts`) and analytics handlers as high-integrity security boundaries.
+

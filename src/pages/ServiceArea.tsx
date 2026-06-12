@@ -42,7 +42,7 @@ export default function ServiceAreaPage() {
               </div>
               
               <div className="mt-12">
-                <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-white px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
+                <Link to="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-[#050505] px-8 py-4 rounded-sm font-bold transition-colors uppercase tracking-wide">
                   Get an Estimate <ArrowRight size={18} />
                 </Link>
               </div>

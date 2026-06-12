@@ -1,109 +1,49 @@
 > [!NOTE]
 > ### 🧬 MASTER BRAIN ROUTING ACTIVE
 > This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+> *   **Supreme Index:** [[INDEX.md]]
+> *   **Relative Path:** [INDEX.md](../../obsidian-vault/wiki/INDEX.md)
+> *   **Absolute Path:** [INDEX.md](file:///C:/Users/Johnny%20Cage/DEV/obsidian-vault/wiki/INDEX.md)
 
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-# Troubleshooting
+# Troubleshooting Guide
 
 > Brain routing note: troubleshoot from `../AGENTS.md`, `../../AGENTS.md`, `../../business_vault/vault_index.md`, and `../../business_vault/marketing/omni_sync_dashboard.md` before treating this local doc as current reality.
 
-## `npm ci` Fails
+## 🔴 `npm ci` Dependency Installation Issues
 
-- Confirm `package-lock.json` is committed and matches `package.json`.
-- Delete local `node_modules` and run `npm ci` again.
-- Check whether a dependency update pull request changed the lockfile.
+- **Symptoms**: Node version conflicts or lockfile mismatch.
+- **Remedy**:
+  1. Confirm your active shell runs Node 20.x or 22.x (required by the Vite/Tailwind configuration).
+  2. Clear the target folder cache: delete `node_modules` and `package-lock.json` and reinstall cleanly via `npm install`.
 
-## Type Check Fails
+## 🔴 TypeScript Type Check Failures
 
-Run:
+- **Symptoms**: Build fails during compiler check or `npm run lint` raises errors.
+- **Remedy**:
+  1. Make sure no React type references are missing. Confirm `@types/react` and `@types/react-dom` exist under `devDependencies` in `package.json`.
+  2. Run `npm run lint` directly. Focus first on resolving module resolution conflicts or dynamic routing types inside `src/pages/LandingPage.tsx` or similar files.
+  3. Avoid using `as any` type assertions. Build structured TS Interfaces matching API responses.
 
-```bash
-npm run lint
-```
+## 🔴 Build & Prerender Errors
 
-Fix the TypeScript errors shown in the output. This repository currently uses the `lint` script for TypeScript validation.
+- **Symptoms**: `npm run build` fails during the post-build prerendering phase.
+- **Remedy**:
+  1. Verify the error stack: the prerender compiler runs in Node ESM mode (`scripts/prerender.mjs`). Any ES modules import mismatch will crash the build.
+  2. Confirm sitemap generation script `scripts/generate-sitemap.js` is executable and does not contain syntax errors.
+  3. Ensure that target write paths under `dist/` are writable and that folder permissions exist.
 
-## Build Fails
+## 🔴 Missing Assets or Media Errors
 
-Run:
+- **Symptoms**: Images or loop videos fail to load (404).
+- **Remedy**:
+  1. Check `public/` directory. All assets (e.g. `public/videos/hero.mp4`) must be positioned under `public/`.
+  2. Verify referencing paths in React code: always prefix paths with a forward slash (e.g. `/videos/hero.mp4`, not `./videos/hero.mp4`).
 
-```bash
-npm run build
-```
+## 🔴 Lead Form Submission & Webhook Failures
 
-Common causes:
+- **Symptoms**: Form displays processing states but fails to complete submission.
+- **Remedy**:
+  1. Open local DevTools and review the console and network requests for `/api/leads` or `/api/manychat`.
+  2. Inspect Vercel log dashboard for webhook execution timeouts or Resend API response errors.
+  3. Ensure that `RESEND_API_KEY` is present and active inside environment configuration variables.
 
-- Missing environment variable.
-- Missing public asset path.
-- Import path casing mismatch.
-- TypeScript error surfaced during the Vite build.
-
-## Video or Image Missing
-
-- Confirm the file exists under `public/`.
-- Confirm the code references it with a leading `/`.
-- Regenerate Remotion assets when the source composition changed.
-
-## Lead Form Issues
-
-- Check `api/leads.ts`.
-- Confirm environment variables are configured in Vercel.
-- Review Vercel function logs for request or delivery errors.

@@ -73,6 +73,7 @@ export default function ConversionHeader() {
               <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
               <NavLink to="/service-area">Areas</NavLink>
+              <NavLink to="/refer">Referral</NavLink>
               <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </nav>
@@ -130,6 +131,7 @@ export default function ConversionHeader() {
               <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
               <NavLink to="/service-area">Service Area</NavLink>
+              <NavLink to="/refer">Referral Program</NavLink>
               <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </nav>

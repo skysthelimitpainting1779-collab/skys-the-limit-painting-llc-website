@@ -23,6 +23,7 @@ const CapabilitiesPage = lazy(() => import('./pages/Capabilities'));
 const ServiceAreaPage = lazy(() => import('./pages/ServiceArea'));
 const NotFoundPage = lazy(() => import('./pages/NotFound'));
 const LandingPageRoute = lazy(() => import('./pages/LandingPage'));
+const ReferPage = lazy(() => import('./pages/Refer'));
 
 function RouteFallback() {
   return (
@@ -58,6 +59,15 @@ function AnalyticsBridge() {
     trackEvent('page_view', { path: location.pathname });
   }, [location.pathname]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref') || params.get('referrer');
+    if (ref && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ref)) {
+      localStorage.setItem('referrer_email', ref.trim());
+      trackEvent('referral_landed', { referrer: ref });
+    }
+  }, [location.search]);
+
   return null;
 }
 
@@ -80,6 +90,8 @@ function AnimatedRoutes() {
         <Route path="/service-area" element={<ServiceAreaPage />} />
         <Route path="/service-areas/:slug" element={<LandingPageRoute kind="area" />} />
         <Route path="/painting-services/:slug" element={<LandingPageRoute kind="service" />} />
+        <Route path="/refer" element={<ReferPage />} />
+        <Route path="/referral" element={<Navigate to="/refer" replace />} />
         <Route path="/services" element={<Navigate to="/residential" replace />} />
         <Route path="/services/interior" element={<Navigate to="/residential" replace />} />
         <Route path="/services/exterior" element={<Navigate to="/residential" replace />} />

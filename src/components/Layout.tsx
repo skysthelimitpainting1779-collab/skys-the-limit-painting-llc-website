@@ -20,7 +20,7 @@ export default function Layout({ children }: LayoutProps) {
       
       <ConversionHeader />
 
-      <main className="flex-grow pt-[116px] pb-20 md:pb-0">{children}</main>
+      <main className="flex-grow pt-[117px] pb-20 md:pb-0">{children}</main>
 
       {/* Mobile Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex max-w-[calc(100vw-2rem)] gap-2 overflow-hidden">
@@ -28,7 +28,7 @@ export default function Layout({ children }: LayoutProps) {
           <Phone size={16} className="text-orange-safety shrink-0" />
           Call/Text
         </a>
-        <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Price Range' })} className="min-w-0 basis-0 flex-1 bg-orange-safety text-white py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+        <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Price Range' })} className="min-w-0 basis-0 flex-1 bg-orange-safety text-[#050505] py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
           Price Range
         </Link>
       </div>
@@ -41,7 +41,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6 relative z-10">
           <div className="col-span-1 lg:col-span-2">
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
-            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 uppercase tracking-wide">Residential Detail. Commercial Discipline. Public-Sector Ready.</h3>
+            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 tracking-wide">Residential detail. Commercial discipline. Public-sector ready.</h3>
             <p className="text-gray-400 max-w-md text-lg">
               A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities from Inver Grove Heights across the Twin Cities area.
             </p>
@@ -91,6 +91,7 @@ export default function Layout({ children }: LayoutProps) {
               <Link to="/about" className="hover:text-orange-safety transition-colors">About Us</Link>
               <Link to="/capabilities" className="hover:text-orange-safety transition-colors">Capabilities Statement</Link>
               <Link to="/estimate" className="hover:text-orange-safety transition-colors">Room Cost Calculator</Link>
+              <Link to="/refer" className="hover:text-orange-safety transition-colors">Referral Program</Link>
               <Link to="/review" className="hover:text-orange-safety transition-colors">Google Review Funnel</Link>
               <Link to="/contact" className="hover:text-orange-safety transition-colors">Get an Estimate</Link>
             </nav>

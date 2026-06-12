@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Calculator, ArrowRight, ArrowLeft, CheckCircle2, ShieldCheck } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
@@ -77,6 +77,46 @@ export default function EstimatePage() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'sent' | 'fallback' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
+  // Persist progress in localStorage (Zeigarnik Effect)
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('sky_estimate_progress');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.step) setStep(parsed.step);
+        if (parsed.dimensions) setDimensions(parsed.dimensions);
+        if (parsed.trimPrep) setTrimPrep(parsed.trimPrep);
+        if (parsed.cabinets) setCabinets(parsed.cabinets);
+        if (parsed.name) setName(parsed.name);
+        if (parsed.phone) setPhone(parsed.phone);
+        if (parsed.email) setEmail(parsed.email);
+        if (parsed.city) setCity(parsed.city);
+        if (parsed.message) setMessage(parsed.message);
+      }
+    } catch (err) {
+      console.error('Failed to load saved estimate progress:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const progress = {
+        step,
+        dimensions,
+        trimPrep,
+        cabinets,
+        name,
+        phone,
+        email,
+        city,
+        message,
+      };
+      localStorage.setItem('sky_estimate_progress', JSON.stringify(progress));
+    } catch (err) {
+      console.error('Failed to save estimate progress:', err);
+    }
+  }, [step, dimensions, trimPrep, cabinets, name, phone, email, city, message]);
+
   const nextStep = () => {
     setStep((prev) => Math.min(prev + 1, 4) as Step);
     trackEvent('estimate_step_next', { currentStep: step });
@@ -92,11 +132,9 @@ export default function EstimatePage() {
     // Wall surface area: perimeter * height
     const wallArea = 2 * (dimensions.width + dimensions.length) * dimensions.ceilingHeight;
     // Base rate is $3.50 per sq ft
-    let baseCost = wallArea * 3.50;
-
-    // Prep level multipliers
-    const prepMultiplier = trimPrep.prepLevel === 'premium' ? 1.35 : 1.0;
-    baseCost *= prepMultiplier;
+    const wallBase = wallArea * 3.50;
+    const wallPrepValue = trimPrep.prepLevel === 'premium' ? wallBase * 0.35 : 0;
+    const wallCost = wallBase + wallPrepValue;
 
     // Add doors ($150 each) and windows ($100 each)
     const openingsCost = trimPrep.doorsCount * 150 + trimPrep.windowsCount * 100;
@@ -107,7 +145,7 @@ export default function EstimatePage() {
     // Cabinets: $125 per opening (door or drawer)
     const cabinetCost = (cabinets.cabinetDoors + cabinets.cabinetDrawers) * 125;
 
-    const totalEstimate = baseCost + openingsCost + trimCost + cabinetCost;
+    const totalEstimate = wallCost + openingsCost + trimCost + cabinetCost;
 
     // Return ranges
     const lowRange = Math.round(totalEstimate * 0.90);
@@ -118,6 +156,10 @@ export default function EstimatePage() {
       high: highRange,
       wallArea: Math.round(wallArea),
       totalEstimate: Math.round(totalEstimate),
+      wallCost: Math.round(wallCost),
+      openingsCost: Math.round(openingsCost),
+      trimCost: Math.round(trimCost),
+      cabinetCost: Math.round(cabinetCost),
     };
   };
 
@@ -159,6 +201,7 @@ export default function EstimatePage() {
       return;
     }
 
+    const referrerEmail = typeof window !== 'undefined' ? localStorage.getItem('referrer_email') : null;
     const payload = {
       source: 'Estimate Calculator',
       page: '/estimate',
@@ -179,6 +222,7 @@ Prep level: ${trimPrep.prepLevel}
 Doors: ${trimPrep.doorsCount}, Windows: ${trimPrep.windowsCount}, Trim: ${trimPrep.trimLength} ft
 Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers
 Calculated Range: $${calculationResult.low} - $${calculationResult.high}`,
+      ...(referrerEmail ? { referrerEmail } : {}),
     };
 
     // Offline lead saving
@@ -555,16 +599,58 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
           {/* Step 4: Results & Lead Capture */}
           {step === 4 && (
             <div className="space-y-6">
-              <div className="border border-white/10 bg-[#070706] p-6 text-center">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Estimated Interior Price Range</p>
-                <p className="mt-4 font-display text-4xl font-black text-white md:text-5xl tracking-normal">
+              <div className="border border-white/10 bg-[#070706] p-6">
+                <p className="text-xs font-black text-center uppercase tracking-[0.28em] text-[#f0c067]">Estimated Interior Price Range</p>
+                <p className="mt-4 text-center font-display text-4xl font-black text-white md:text-5xl tracking-normal">
                   ${calculationResult.low.toLocaleString()} – ${calculationResult.high.toLocaleString()}
                 </p>
-                <p className="mt-2 text-xs text-gray-400">
+                <p className="mt-2 text-center text-xs text-gray-400">
                   Approx. {calculationResult.wallArea} sq ft of wall surface area measured.
                 </p>
-                <p className="mt-4 text-xs leading-relaxed text-[#b9b2a6]">
-                  Planning range only. Final pricing depends on wall condition, furniture protection, repairs, color changes, access, coatings, and confirmed scope.
+
+                {/* Cost Breakdown */}
+                <div className="mt-6 border-t border-white/10 pt-5 space-y-3 text-xs">
+                  <p className="font-black uppercase tracking-wider text-white">Estimated Cost Breakdown</p>
+                  
+                  <div className="flex justify-between text-[#c9c1b4] border-b border-white/5 pb-2">
+                    <span>Wall prep, priming, and coatings ({dimensions.roomType})</span>
+                    <span className="font-bold text-white">${calculationResult.wallCost.toLocaleString()}</span>
+                  </div>
+
+                  {calculationResult.openingsCost > 0 && (
+                    <div className="flex justify-between text-[#c9c1b4] border-b border-white/5 pb-2">
+                      <span>Doors ({trimPrep.doorsCount}) & Windows ({trimPrep.windowsCount}) detailing</span>
+                      <span className="font-bold text-white">${calculationResult.openingsCost.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  {calculationResult.trimCost > 0 && (
+                    <div className="flex justify-between text-[#c9c1b4] border-b border-white/5 pb-2">
+                      <span>Baseboards & trim ({trimPrep.trimLength} linear ft)</span>
+                      <span className="font-bold text-white">${calculationResult.trimCost.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  {calculationResult.cabinetCost > 0 && (
+                    <div className="flex justify-between text-[#c9c1b4] border-b border-white/5 pb-2">
+                      <span>Cabinets ({cabinets.cabinetDoors + cabinets.cabinetDrawers} openings)</span>
+                      <span className="font-bold text-white">${calculationResult.cabinetCost.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between font-bold border-b border-white/10 pb-2 text-[#f0c067]">
+                    <span>Total Linear Base Estimate</span>
+                    <span>${calculationResult.totalEstimate.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="mt-5 border border-[#f0c067]/20 bg-[#f0c067]/5 p-4 text-[11px] leading-relaxed text-[#c9c1b4]">
+                  <p className="font-black uppercase tracking-wider text-[#f0c067] mb-1">Direct Contractor Advantage</p>
+                  Direct owner-operator structure. This range represents estimated field labor and premium coatings (Benjamin Moore or Sherwin-Williams). No national franchise markups, middleman fees, or sales commissions are included.
+                </div>
+
+                <p className="mt-4 text-left text-[11px] leading-relaxed text-gray-400">
+                  Planning range only. Final pricing depends on wall condition, furniture protection, structural repairs, color changes, and site-confirmed scope.
                 </p>
               </div>
 
@@ -689,6 +775,31 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
               </div>
             </div>
           )}
+
+          {/* Trust Badges & Licensing Disclosures (Fogg Motivation) */}
+          <div className="mt-10 border-t border-white/10 pt-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-[11px] text-gray-400 font-bold uppercase tracking-wider">
+            <div className="flex items-center gap-3">
+              <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
+              <div>
+                <p className="text-white font-black text-[12px] leading-tight">Fully Insured</p>
+                <p className="text-[10px] lowercase tracking-normal font-normal text-gray-500 mt-0.5">coi available on request</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4">
+              <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
+              <div>
+                <p className="text-white font-black text-[12px] leading-tight">MN Contractor</p>
+                <p className="text-[10px] tracking-normal font-normal text-gray-500 mt-0.5">id: ir816596 | painting</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4">
+              <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
+              <div>
+                <p className="text-white font-black text-[12px] leading-tight">Owner-Operated</p>
+                <p className="text-[10px] tracking-normal font-normal text-gray-500 mt-0.5">mn statute 176.041 exempt</p>
+              </div>
+            </div>
+          </div>
 
         </div>
       </section>

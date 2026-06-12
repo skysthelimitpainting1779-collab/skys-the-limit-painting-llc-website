@@ -15,6 +15,7 @@ const staticRoutes = [
   '/estimate',
   '/capabilities',
   '/service-area',
+  '/refer',
 ];
 
 const serviceAreasSlugs = [

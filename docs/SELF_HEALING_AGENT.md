@@ -1,65 +1,9 @@
 > [!NOTE]
 > ### 🧬 MASTER BRAIN ROUTING ACTIVE
 > This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
-
-> [!NOTE]
-> ### 🧬 MASTER BRAIN ROUTING ACTIVE
-> This document is a subordinate execution or evidence surface. The supreme Single Source of Truth (SSOT) resides inside the Obsidian master control plane:
-> *   **Supreme Index:** [[vault_index.md]]
-> *   **Relative Path:** [vault_index.md](../../business_vault/vault_index.md)
-> *   **Absolute Path:** [vault_index.md](file:///C:/Users/finan/New%20folder/business_vault/vault_index.md)
+> *   **Supreme Index:** [[INDEX.md]]
+> *   **Relative Path:** [INDEX.md](../../obsidian-vault/wiki/INDEX.md)
+> *   **Absolute Path:** [INDEX.md](file:///C:/Users/Johnny%20Cage/DEV/obsidian-vault/wiki/INDEX.md)
 
 # Self-Healing Automation
 
@@ -90,3 +34,4 @@ The repository should surface problems early and make routine maintenance easier
 ## Human Review Still Matters
 
 Automation cannot decide business priorities, approve design quality, or verify that painting service content is accurate. Use the checks as safety rails, then review the actual user experience.
+

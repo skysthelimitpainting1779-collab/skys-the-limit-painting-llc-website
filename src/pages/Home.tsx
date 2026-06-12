@@ -1,5 +1,6 @@
 import type { Key } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import {
   ArrowRight,
   Calculator,
@@ -71,6 +72,8 @@ const marketMedia: Record<MarketSlug, { image: string; label: string; accent: st
   },
 };
 
+const MotionLink = motion(Link);
+
 const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index: number; key?: Key }) => {
   const media = marketMedia[market.slug];
   const Icon = market.icon;
@@ -78,9 +81,11 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
 
   return (
     <FadeIn delay={0.08 * index}>
-      <Link
+      <MotionLink
         to={`/${market.slug}`}
-        className="group grid overflow-hidden border border-[#d8c7aa]/16 bg-[#11100d] transition duration-500 hover:-translate-y-1 hover:border-[#f0c067]/55 lg:grid-cols-12"
+        whileHover={{ y: -6, borderColor: 'rgba(240, 192, 103, 0.55)' }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        className="group grid overflow-hidden border border-[#d8c7aa]/16 bg-[#11100d] lg:grid-cols-12"
       >
         <div className={`relative min-h-[340px] overflow-hidden lg:col-span-7 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
           <ResponsiveImage
@@ -122,7 +127,7 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
             </span>
           </div>
         </div>
-      </Link>
+      </MotionLink>
     </FadeIn>
   );
 };
@@ -198,7 +203,7 @@ export default function HomePage() {
                 {customerPromise} {verifiedContractorLine} Request an estimate, approve the scope, then reserve your spot with a deposit when the job is ready to schedule.
               </span>
             </p>
-            <p className="mt-4 text-sm font-black uppercase tracking-[0.22em] text-[#f0c067]">{corePositioningLine}</p>
+            <p className="mt-4 text-sm font-black tracking-[0.22em] text-[#f0c067]">{corePositioningLine}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
                 Request a Free Estimate <ArrowRight size={18} />
@@ -225,7 +230,7 @@ export default function HomePage() {
             <div className="grid border-y border-[#d8c7aa]/20 bg-[#070706]/72 backdrop-blur md:grid-cols-3">
               {conversionSteps.map((item) => (
                 <div key={item.step} className="border-[#d8c7aa]/15 p-5 md:border-r md:last:border-r-0">
-                  <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#9fa9a9]">{item.step} / Customer path</p>
+                  <p className="text-[11px] font-black tracking-[0.24em] text-[#9fa9a9]">{item.step} / Customer path</p>
                   <h2 className="mt-3 text-xl font-black leading-tight text-white">{item.title}</h2>
                   <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#e7dfd2]">{item.body}</p>
                 </div>
@@ -238,7 +243,7 @@ export default function HomePage() {
       <section className="bg-[#e6dfd2] px-4 py-20 text-[#171512] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Built from the trade up</p>
+            <p className="text-xs font-black tracking-[0.28em] text-[#8b4d20]">Built from the trade up</p>
             <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl">
               Elite craftsmanship, transparent pricing, and zero jobsite stress.
             </h2>
@@ -266,7 +271,7 @@ export default function HomePage() {
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Uncompromising Preparation</p>
+            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067]">Uncompromising Preparation</p>
             <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
               Elite preparation makes the finish last.
             </h2>
@@ -303,7 +308,7 @@ export default function HomePage() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Specialized Coating Divisions</p>
+                <p className="text-xs font-black tracking-[0.28em] text-[#f0c067]">Specialized Coating Divisions</p>
                 <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl">
                   Tailored coating solutions for every scale.
                 </h2>
@@ -328,7 +333,7 @@ export default function HomePage() {
         <div className="measurement-rules absolute inset-0 opacity-15"></div>
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Verified Standards</p>
+            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067]">Verified Standards</p>
             <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Trade discipline you can count on.</h2>
             <p className="mt-5 text-sm leading-relaxed text-[#b9b2a6]">
               We back our work with verified credentials, premium materials, clear contracts, and hands-on owner oversight. No sales gimmicks—just exceptional painting backed by general liability, commercial auto, and tools coverage.
@@ -345,7 +350,7 @@ export default function HomePage() {
       <section className="bg-[#080807] px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-12 lg:items-start">
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Scope / Prep / Execute / Verify</p>
+            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067]">Scope / Prep / Execute / Verify</p>
             <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl">
               A process built for clean homes, active properties, and documented opportunities.
             </h2>
@@ -366,7 +371,7 @@ export default function HomePage() {
         <div className="absolute inset-x-0 top-0 h-1 bg-[repeating-linear-gradient(90deg,#f0c067_0_72px,transparent_72px_112px)] opacity-80"></div>
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-6">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Public-sector readiness</p>
+            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067]">Public-sector readiness</p>
             <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
               Ready for public bids, state contracts, and municipal work.
             </h2>
@@ -405,7 +410,7 @@ export default function HomePage() {
           </div>
           <div className="p-7 md:p-10 lg:col-span-7 lg:p-12">
             <FadeIn>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#8b4d20]">Start the scope</p>
+              <p className="text-xs font-black tracking-[0.28em] text-[#8b4d20]">Start the scope</p>
               <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
                 Request an estimate for a home, property, facility, or public-sector opportunity.
               </h2>

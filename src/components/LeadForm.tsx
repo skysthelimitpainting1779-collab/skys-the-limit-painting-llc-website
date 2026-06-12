@@ -70,6 +70,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       return;
     }
 
+    const referrerEmail = typeof window !== 'undefined' ? localStorage.getItem('referrer_email') : null;
     const payload = {
       source,
       page: window.location.pathname,
@@ -89,6 +90,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       company: String(data.get('company') || ''),
       website: String(data.get('website') || ''),
       hubspotutk,
+      ...(referrerEmail ? { referrerEmail } : {}),
       ...utm,
     };
 

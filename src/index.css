@@ -32,6 +32,7 @@
   body {
     @apply font-body bg-page-bg text-page-text antialiased selection:bg-orange-safety/20;
     min-height: 100dvh;
+    min-width: 320px;
     width: 100%;
     max-width: 100%;
     overflow-x: clip;
