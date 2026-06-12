@@ -28,7 +28,7 @@
     "motion": "12.23.24",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-router-dom": "7.14.1",
+    "react-router-dom": "7.17.0",
     "resend": "6.12.3",
     "vite": "^6.2.0"
   },
