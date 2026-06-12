@@ -1,7 +1,13 @@
 import { Resend } from 'resend';
+import pg from 'pg';
+const { Client } = pg;
 
 if (!process.env.RESEND_API_KEY) {
   console.warn("WARNING: RESEND_API_KEY is not set in the environment variables. Lead emails will not be sent!");
+}
+
+if (!process.env.POSTGRES_URL_NON_POOLING && !process.env.POSTGRES_URL) {
+  console.warn("WARNING: POSTGRES_URL_NON_POOLING is not set in the environment variables. Leads will not be saved to the database!");
 }
 
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
@@ -27,6 +33,91 @@ function rateLimit(ip: string): boolean {
   }
   state.count += 1;
   return true;
+}
+
+// Database Ingestion and Event Logging Helpers
+async function executeDbQuery(queryText: string, params: any[]) {
+  const rawConnectionString = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
+  if (!rawConnectionString) {
+    console.warn("Database connection string missing. Skipping database execution.");
+    return null;
+  }
+  
+  // Strip query parameters to prevent overriding ssl config
+  const connectionString = rawConnectionString.split('?')[0];
+  
+  const client = new Client({
+    connectionString,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+  
+  await client.connect();
+  try {
+    const res = await client.query(queryText, params);
+    return res;
+  } finally {
+    await client.end();
+  }
+}
+
+async function saveLeadToDb(lead: any) {
+  const query = `
+    INSERT INTO public.leads (
+      lead_id, source, name, phone, email, city, project_address, market, 
+      project_type, property_type, timeline, budget, contact_method, notes, 
+      utm_source, utm_medium, utm_campaign, page, status
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+    ON CONFLICT (lead_id) DO NOTHING;
+  `;
+  const params = [
+    lead.leadId,
+    asText(lead.source) || 'website',
+    asText(lead.name),
+    asText(lead.phone),
+    asText(lead.email),
+    asText(lead.city),
+    asText(lead.projectAddress || lead.project_address),
+    asText(lead.market),
+    asText(lead.projectType || lead.project_type),
+    asText(lead.propertyType || lead.property_type),
+    asText(lead.timeline),
+    asText(lead.budget),
+    asText(lead.contactMethod || lead.contact_method),
+    asText(lead.notes),
+    asText(lead.utm_source || lead.utmSource),
+    asText(lead.utm_medium || lead.utmMedium),
+    asText(lead.utm_campaign || lead.utmCampaign),
+    asText(lead.page),
+    'new'
+  ];
+  try {
+    await executeDbQuery(query, params);
+    console.log(`Lead stored in Supabase: ${lead.leadId}`);
+  } catch (err) {
+    console.error("Failed to store lead in Supabase:", err);
+  }
+}
+
+async function saveLeadEventToDb(leadId: string, eventType: string, provider: string, status: string, message?: string) {
+  const query = `
+    INSERT INTO public.lead_events (
+      lead_id, event_type, provider, status, message
+    ) VALUES ($1, $2, $3, $4, $5);
+  `;
+  const params = [
+    leadId,
+    eventType,
+    provider,
+    status,
+    message || null
+  ];
+  try {
+    await executeDbQuery(query, params);
+  } catch (err) {
+    console.error(`Failed to store lead event in Supabase for lead ${leadId}:`, err);
+  }
 }
 
 const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'projectType', 'timeline', 'contactMethod', 'notes'];
@@ -296,15 +387,55 @@ export default async function handler(req: any, res: any) {
     referrer: asText(req.headers?.referer || req.headers?.referrer),
   };
 
+  // Save lead first to Supabase
+  await saveLeadToDb(lead);
+
   try {
-    const delivery = await Promise.allSettled([
-      sendWithResend(lead),
-      sendAutoReplyToLead(lead),
-      sendLeadWebhook(lead),
-      sendToHubspot(lead),
+    const results = await Promise.allSettled([
+      (async () => {
+        try {
+          const res = await sendWithResend(lead);
+          await saveLeadEventToDb(lead.leadId, 'email_notify', 'resend', res.configured ? 'success' : 'skipped');
+          return res;
+        } catch (err) {
+          await saveLeadEventToDb(lead.leadId, 'email_notify', 'resend', 'failed', err instanceof Error ? err.message : String(err));
+          throw err;
+        }
+      })(),
+      (async () => {
+        try {
+          const res = await sendAutoReplyToLead(lead);
+          await saveLeadEventToDb(lead.leadId, 'email_autoreply', 'resend', res.configured ? 'success' : 'skipped');
+          return res;
+        } catch (err) {
+          await saveLeadEventToDb(lead.leadId, 'email_autoreply', 'resend', 'failed', err instanceof Error ? err.message : String(err));
+          throw err;
+        }
+      })(),
+      (async () => {
+        try {
+          const res = await sendLeadWebhook(lead);
+          await saveLeadEventToDb(lead.leadId, 'webhook', 'custom', res.configured ? 'success' : 'skipped');
+          return res;
+        } catch (err) {
+          await saveLeadEventToDb(lead.leadId, 'webhook', 'custom', 'failed', err instanceof Error ? err.message : String(err));
+          throw err;
+        }
+      })(),
+      (async () => {
+        try {
+          const res = await sendToHubspot(lead);
+          await saveLeadEventToDb(lead.leadId, 'crm', 'hubspot', res.configured ? 'success' : 'skipped');
+          return res;
+        } catch (err) {
+          await saveLeadEventToDb(lead.leadId, 'crm', 'hubspot', 'failed', err instanceof Error ? err.message : String(err));
+          throw err;
+        }
+      })()
     ]);
-    const configured = delivery.some((result) => result.status === 'fulfilled' && result.value.configured);
-    const failed = delivery.find((result) => result.status === 'rejected');
+
+    const configured = results.some((result) => result.status === 'fulfilled' && (result.value as any).configured);
+    const failed = results.find((result) => result.status === 'rejected');
 
     if (failed) {
       console.error('Lead delivery failure detail:', failed.reason);
