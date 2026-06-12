@@ -18,7 +18,7 @@
   "dependencies": {
     "@google/genai": "1.29.0",
     "@phosphor-icons/react": "2.1.10",
-    "@tailwindcss/vite": "4.1.14",
+    "@tailwindcss/vite": "^4.3.0",
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
     "@vitejs/plugin-react": "5.0.4",
@@ -30,7 +30,7 @@
     "react-dom": "19.0.0",
     "react-router-dom": "7.14.1",
     "resend": "6.12.3",
-    "vite": "8.0.14"
+    "vite": "^6.2.0"
   },
   "devDependencies": {
     "@remotion/cli": "4.0.462",
@@ -38,10 +38,11 @@
     "@types/node": "22.14.0",
     "autoprefixer": "10.4.21",
     "remotion": "4.0.462",
-    "tailwindcss": "4.1.14",
+    "tailwindcss": "^4.3.0",
     "tsx": "4.21.0",
     "typescript": "6.0.3",
-    "vite": "8.0.14"
+    "vercel": "^54.12.2",
+    "vite": "^6.2.0"
   },
   "overrides": {
     "source-map": "0.7.6"
