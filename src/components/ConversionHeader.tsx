@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calculator, Menu, X } from 'lucide-react';
+import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
 
@@ -31,6 +31,7 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
 export default function ConversionHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
   const prefersReducedMotion = useReducedMotion();
 
@@ -76,9 +77,50 @@ export default function ConversionHeader() {
               <NavLink to="/commercial">Commercial</NavLink>
               <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
-              <NavLink to="/service-area">Areas</NavLink>
-              <NavLink to="/refer">Referral</NavLink>
-              <NavLink to="/about">About</NavLink>
+              
+              {/* Dropdown Menu */}
+              <div 
+                className="relative group py-2"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={() => setDropdownOpen(false)}
+              >
+                <button 
+                  className="relative whitespace-nowrap text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1 cursor-pointer focus:outline-none"
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
+                >
+                  More
+                  <ChevronDown size={12} className="transition-transform duration-200 group-hover:rotate-180" />
+                </button>
+                
+                <div 
+                  className="absolute left-0 mt-2 w-48 bg-[#050505] border border-white/10 p-2 flex flex-col gap-1 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+                  style={{ borderRadius: '0px' }}
+                >
+                  <Link 
+                    to="/service-area" 
+                    onClick={() => trackEvent('nav_click', { path: '/service-area', label: 'Areas' })}
+                    className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    Areas
+                  </Link>
+                  <Link 
+                    to="/refer" 
+                    onClick={() => trackEvent('nav_click', { path: '/refer', label: 'Referral' })}
+                    className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    Referral
+                  </Link>
+                  <Link 
+                    to="/about" 
+                    onClick={() => trackEvent('nav_click', { path: '/about', label: 'About' })}
+                    className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    About
+                  </Link>
+                </div>
+              </div>
+
               <NavLink to="/contact">Contact</NavLink>
             </nav>
 
