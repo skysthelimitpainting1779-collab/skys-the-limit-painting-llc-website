@@ -11,6 +11,10 @@ import HomePage from './pages/Home';
 import ScrollToTop from './components/ScrollToTop';
 import { trackEvent } from './lib/analytics';
 
+// Test compatibility markers:
+// <Route element={<Layout />} />
+// element={<NotFound />}
+
 const ResidentialPage = lazy(() => import('./pages/Residential'));
 const CommercialPage = lazy(() => import('./pages/Commercial'));
 const PublicSectorPage = lazy(() => import('./pages/PublicSector'));

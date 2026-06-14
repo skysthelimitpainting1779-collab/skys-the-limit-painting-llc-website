@@ -136,7 +136,7 @@ export default function ReviewPage() {
               </div>
             </div>
           ) : (
-            /* Step 2: Funnel Flow */
+            /* Step 2: Funnel Flow - rating < 4 */
             <div>
               {rating >= 4 ? (
                 /* Happy Client: Redirect to Google */

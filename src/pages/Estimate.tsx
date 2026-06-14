@@ -202,6 +202,7 @@ export default function EstimatePage() {
     }
 
     const referrerEmail = typeof window !== 'undefined' ? localStorage.getItem('referrer_email') : null;
+    const projectAddress = String(data.get('projectAddress') || '');
     const payload = {
       source: 'Estimate Calculator',
       page: '/estimate',
@@ -209,6 +210,7 @@ export default function EstimatePage() {
       phone,
       email,
       city,
+      projectAddress,
       market: 'Residential',
       projectType: 'Interior',
       propertyType: 'Single-family home',
@@ -221,7 +223,7 @@ Dimensions: ${dimensions.width}x${dimensions.length}x${dimensions.ceilingHeight}
 Prep level: ${trimPrep.prepLevel}
 Doors: ${trimPrep.doorsCount}, Windows: ${trimPrep.windowsCount}, Trim: ${trimPrep.trimLength} ft
 Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers
-Calculated Range: $${calculationResult.low} - $${calculationResult.high}`,
+Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projectAddress ? `\nAddress: ${projectAddress}` : ''}`,
       ...(referrerEmail ? { referrerEmail } : {}),
     };
 
@@ -264,18 +266,21 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}`,
   };
 
   const handleEmailFallback = () => {
+    const addressInput = document.getElementById('client-address') as HTMLInputElement | null;
+    const projectAddress = addressInput?.value || '';
     window.location.href = buildEstimateMailto({
       Source: 'Estimate Calculator',
       Name: name,
       Phone: phone,
       Email: email,
       City: city,
+      'Project address': projectAddress,
       Market: 'Residential',
       'Project type': 'Interior',
       Budget: `$${calculationResult.low} - $${calculationResult.high}`,
       Notes: `Room Type: ${dimensions.roomType} (${dimensions.width}x${dimensions.length}x${dimensions.ceilingHeight})
 Prep: ${trimPrep.prepLevel} (Doors: ${trimPrep.doorsCount}, Windows: ${trimPrep.windowsCount}, Trim: ${trimPrep.trimLength} ft)
-Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
+Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers${projectAddress ? `\nAddress: ${projectAddress}` : ''}`,
     });
   };
 
@@ -287,24 +292,24 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
         path="/estimate"
       />
 
-      <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706] py-16 px-4 text-white sm:px-6 lg:px-8">
+      <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#050505] py-16 px-4 text-white sm:px-6 lg:px-8">
         <img
           src="/images/site/iphone-interior-painting-progress.png"
           alt="Interior painting progress"
-          className="absolute inset-0 h-full w-full object-cover opacity-15"
+          className="absolute inset-0 h-full w-full object-cover opacity-10"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#070706] via-[#070706]/94 to-[#070706]"></div>
-        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/94 to-[#050505]"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-12"></div>
         <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
         
-        <div className="relative z-10 mx-auto max-w-3xl border border-[#d8c7aa]/16 bg-[#11100d]/95 p-6 md:p-10 backdrop-blur-md">
+        <div className="relative z-10 mx-auto max-w-3xl border border-white/10 bg-[#0B0B0D]/95 p-6 md:p-10 backdrop-blur-md">
           
           {/* Header */}
           <div className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 border border-[#f0c067]/30 bg-[#070706]/70 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">
+            <span className="inline-flex items-center gap-2 border border-[#f0c067]/30 bg-[#050505]/70 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">
               <Calculator size={12} /> Linear Cost Estimator
             </span>
-            <h1 className="mt-6 font-display text-3xl font-black leading-none text-white sm:text-4xl text-wrap-balance">
+            <h1 className="mt-6 font-display text-3xl font-black leading-none text-white sm:text-4xl text-wrap-balance uppercase">
               Room Cost Calculator
             </h1>
             <p className="mt-3 text-sm text-[#c9c1b4]">
@@ -312,22 +317,20 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
             </p>
           </div>
 
-          {/* Progress Indicator */}
-          <div className="mb-10">
-            <div className="flex justify-between text-xs font-black uppercase tracking-wider text-gray-400 mb-2">
-              <span>Step {step} of 4</span>
-              <span>
-                {step === 1 && 'Room Dimensions'}
-                {step === 2 && 'Trim & Prep Details'}
-                {step === 3 && 'High-Margin Cabinets'}
-                {step === 4 && 'Estimate Results'}
-              </span>
-            </div>
-            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-[#f0c067] transition-all duration-300"
-                style={{ width: `${(step / 4) * 100}%` }}
-              ></div>
+          {/* Segmented Timeline Stepper */}
+          <div className="mb-10 border border-white/10 bg-[#050505] p-4">
+            <div className="grid grid-cols-4 gap-2 text-center text-[9px] font-black uppercase tracking-wider md:text-[10px]">
+              {[
+                { label: '01 // Dimensions', active: step >= 1 },
+                { label: '02 // Trim & Prep', active: step >= 2 },
+                { label: '03 // Cabinets', active: step >= 3 },
+                { label: '04 // Results', active: step >= 4 },
+              ].map((item, idx) => (
+                <div key={idx} className="flex flex-col gap-2">
+                  <div className={`h-1.5 w-full transition-all duration-300 ${item.active ? 'bg-[#f0c067]' : 'bg-white/10'}`}></div>
+                  <span className={item.active ? 'text-[#f0c067]' : 'text-gray-500'}>{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -339,16 +342,23 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                   Quick Room Presets
                 </p>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {roomPresets.map((preset) => (
-                    <button
-                      key={preset.label}
-                      type="button"
-                      onClick={() => applyRoomPreset(preset)}
-                      className="border border-white/10 bg-[#070706] p-3 text-sm font-bold text-gray-300 transition-all hover:border-[#f0c067] hover:text-white"
-                    >
-                      {preset.label}
-                    </button>
-                  ))}
+                  {roomPresets.map((preset) => {
+                    const isActive = dimensions.roomType === preset.label;
+                    return (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => applyRoomPreset(preset)}
+                        className={`border p-3 text-xs font-black uppercase tracking-wider transition-all duration-200 ${
+                          isActive
+                            ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067] backdrop-blur-md'
+                            : 'border-white/10 bg-white/5 text-gray-300 hover:border-white/20 hover:text-white'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -357,20 +367,23 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                   Room Type
                 </label>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {['Bedroom', 'Living Room', 'Kitchen', 'Bathroom', 'Hallway', 'Custom'].map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => setDimensions({ ...dimensions, roomType: type })}
-                      className={`p-3 border text-sm font-bold transition-all ${
-                        dimensions.roomType === type
-                          ? 'border-[#f0c067] bg-[#f0c067]/10 text-white'
-                          : 'border-white/10 bg-[#070706] text-gray-400 hover:border-white/20'
-                      }`}
-                    >
-                      {type}
-                    </button>
-                  ))}
+                  {['Bedroom', 'Living Room', 'Kitchen', 'Bathroom', 'Hallway', 'Custom'].map((type) => {
+                    const isActive = dimensions.roomType === type;
+                    return (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setDimensions({ ...dimensions, roomType: type })}
+                        className={`p-3 border text-xs font-black uppercase tracking-wider transition-all duration-200 ${
+                          isActive
+                            ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067] backdrop-blur-md'
+                            : 'border-white/10 bg-white/5 text-gray-400 hover:border-white/20 hover:text-white'
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -387,7 +400,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={dimensions.width}
                     onChange={(e) => setDimensionValue('width', Number(e.target.value), 5, 50)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
                 <div>
@@ -402,7 +415,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={dimensions.length}
                     onChange={(e) => setDimensionValue('length', Number(e.target.value), 5, 50)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
                 <div>
@@ -417,7 +430,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={dimensions.ceilingHeight}
                     onChange={(e) => setDimensionValue('ceilingHeight', Number(e.target.value), 7, 20)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
               </div>
@@ -426,7 +439,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white hover:text-[#15110a] transition-all"
+                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white hover:text-[#050505] transition-all cursor-pointer"
                 >
                   Next Step <ArrowRight size={16} />
                 </button>
@@ -448,7 +461,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     className={`p-4 border text-left transition-all ${
                       trimPrep.prepLevel === 'standard'
                         ? 'border-[#f0c067] bg-[#f0c067]/10'
-                        : 'border-white/10 bg-[#070706]'
+                        : 'border-white/10 bg-white/5'
                     }`}
                   >
                     <p className="font-bold text-white uppercase text-xs tracking-wider">Standard Prep</p>
@@ -460,7 +473,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     className={`p-4 border text-left transition-all ${
                       trimPrep.prepLevel === 'premium'
                         ? 'border-[#f0c067] bg-[#f0c067]/10'
-                        : 'border-white/10 bg-[#070706]'
+                        : 'border-white/10 bg-white/5'
                     }`}
                   >
                     <p className="font-bold text-white uppercase text-xs tracking-wider">Premium Detail Prep</p>
@@ -482,7 +495,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={trimPrep.doorsCount}
                     onChange={(e) => setTrimValue('doorsCount', Number(e.target.value), 0, 10)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
                 <div>
@@ -497,7 +510,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={trimPrep.windowsCount}
                     onChange={(e) => setTrimValue('windowsCount', Number(e.target.value), 0, 10)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
                 <div>
@@ -512,7 +525,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={trimPrep.trimLength}
                     onChange={(e) => setTrimValue('trimLength', Number(e.target.value), 0, 200)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
               </div>
@@ -521,14 +534,14 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="inline-flex items-center gap-2 border border-white/10 bg-[#070706] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:border-white transition-all"
+                  className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:border-white transition-all cursor-pointer"
                 >
                   <ArrowLeft size={16} /> Back
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white hover:text-black transition-all"
+                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white hover:text-black transition-all cursor-pointer"
                 >
                   Next Step <ArrowRight size={16} />
                 </button>
@@ -557,7 +570,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={cabinets.cabinetDoors}
                     onChange={(e) => setCabinetValue('cabinetDoors', Number(e.target.value), 0, 60)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
                 <div>
@@ -572,7 +585,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     inputMode="numeric"
                     value={cabinets.cabinetDrawers}
                     onChange={(e) => setCabinetValue('cabinetDrawers', Number(e.target.value), 0, 40)}
-                    className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                    className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                   />
                 </div>
               </div>
@@ -581,14 +594,14 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="inline-flex items-center gap-2 border border-white/10 bg-[#070706] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:border-white transition-all"
+                  className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:border-white transition-all cursor-pointer"
                 >
                   <ArrowLeft size={16} /> Back
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white hover:text-black transition-all"
+                  className="inline-flex items-center gap-2 bg-[#f0c067] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white hover:text-black transition-all cursor-pointer"
                 >
                   Calculate Cost <ArrowRight size={16} />
                 </button>
@@ -599,7 +612,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
           {/* Step 4: Results & Lead Capture */}
           {step === 4 && (
             <div className="space-y-6">
-              <div className="border border-white/10 bg-[#070706] p-6">
+              <div className="border border-white/10 bg-[#050505] p-6">
                 <p className="text-xs font-black text-center uppercase tracking-[0.28em] text-[#f0c067]">Estimated Interior Price Range</p>
                 <p className="mt-4 text-center font-display text-4xl font-black text-white md:text-5xl tracking-normal">
                   ${calculationResult.low.toLocaleString()} – ${calculationResult.high.toLocaleString()}
@@ -613,13 +626,13 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                   <p className="font-black uppercase tracking-wider text-white">Estimated Cost Breakdown</p>
                   
                   <div className="flex justify-between text-[#c9c1b4] border-b border-white/5 pb-2">
-                    <span>Wall prep, priming, and coatings ({dimensions.roomType})</span>
+                     <span>Wall prep, priming, and coatings ({dimensions.roomType})</span>
                     <span className="font-bold text-white">${calculationResult.wallCost.toLocaleString()}</span>
                   </div>
 
                   {calculationResult.openingsCost > 0 && (
                     <div className="flex justify-between text-[#c9c1b4] border-b border-white/5 pb-2">
-                      <span>Doors ({trimPrep.doorsCount}) & Windows ({trimPrep.windowsCount}) detailing</span>
+                       <span>Doors ({trimPrep.doorsCount}) & Windows ({trimPrep.windowsCount}) detailing</span>
                       <span className="font-bold text-white">${calculationResult.openingsCost.toLocaleString()}</span>
                     </div>
                   )}
@@ -673,10 +686,11 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         id="client-name"
                         type="text"
                         required
+                        aria-label="Full name"
                         placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                        className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                       />
                     </div>
                     <div>
@@ -687,15 +701,16 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         id="client-phone"
                         type="tel"
                         required
+                        aria-label="Phone"
                         placeholder="651-555-0199"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                        className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                       />
                     </div>
                   </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-3">
                     <div>
                       <label htmlFor="client-email" className="block text-xs font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-2">
                         Email Address
@@ -704,11 +719,12 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         id="client-email"
                         type="email"
                         required
+                        aria-label="Email"
                         spellCheck={false}
                         placeholder="john@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                        className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                       />
                     </div>
                     <div>
@@ -719,10 +735,24 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                         id="client-city"
                         type="text"
                         required
+                        aria-label="City"
                         placeholder="Eagan"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+                        className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="client-address" className="block text-xs font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-2">
+                        Street Address (Optional)
+                      </label>
+                      <input
+                        id="client-address"
+                        type="text"
+                        name="projectAddress"
+                        aria-label="Project address or cross streets"
+                        placeholder="123 Main St"
+                        className="w-full border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20"
                       />
                     </div>
                   </div>
@@ -731,7 +761,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     <button
                       type="button"
                       onClick={handleEmailFallback}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white transition-all"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white transition-all cursor-pointer"
                     >
                       Open Email Draft
                     </button>
@@ -741,9 +771,9 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                     <button
                       type="submit"
                       disabled={status === 'submitting'}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white transition-all disabled:opacity-55"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white hover:text-black transition-all disabled:opacity-55 cursor-pointer"
                     >
-                      {status === 'submitting' ? 'Saving…' : 'Send My Range'} <ArrowRight size={18} />
+                      {status === 'submitting' ? 'Saving…' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={18} />
                     </button>
                   )}
 
@@ -757,7 +787,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#f0c067]/10 text-[#f0c067] mb-6">
                     <CheckCircle2 size={32} />
                   </div>
-                  <h3 className="text-2xl font-black text-white">Range Sent!</h3>
+                  <h3 className="text-2xl font-black text-white uppercase">Range Sent!</h3>
                   <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">
                     Thank you, {name}. Your planning range of ${calculationResult.low.toLocaleString()} - ${calculationResult.high.toLocaleString()} has been sent for review. Sky’s the Limit can follow up to confirm the final scope.
                   </p>
@@ -768,7 +798,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="inline-flex items-center gap-2 border border-white/10 bg-[#070706] px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:border-white transition-all"
+                  className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-7 py-4 text-xs font-black uppercase tracking-[0.16em] text-white hover:border-white transition-all cursor-pointer"
                 >
                   <ArrowLeft size={16} /> Recalculate
                 </button>
@@ -781,21 +811,21 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers`,
             <div className="flex items-center gap-3">
               <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
               <div>
-                <p className="text-white font-black text-[12px] leading-tight">Fully Insured</p>
+                <p className="text-white font-black text-[12px] leading-tight uppercase">Fully Insured</p>
                 <p className="text-[10px] lowercase tracking-normal font-normal text-gray-500 mt-0.5">coi available on request</p>
               </div>
             </div>
             <div className="flex items-center gap-3 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4">
               <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
               <div>
-                <p className="text-white font-black text-[12px] leading-tight">MN Contractor</p>
+                <p className="text-white font-black text-[12px] leading-tight uppercase">MN Contractor</p>
                 <p className="text-[10px] tracking-normal font-normal text-gray-500 mt-0.5">reg: ir816596 | painting</p>
               </div>
             </div>
             <div className="flex items-center gap-3 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4">
               <ShieldCheck size={20} className="text-[#f0c067] shrink-0" />
               <div>
-                <p className="text-white font-black text-[12px] leading-tight">Owner-Operated</p>
+                <p className="text-white font-black text-[12px] leading-tight uppercase">Owner-Operated</p>
                 <p className="text-[10px] tracking-normal font-normal text-gray-500 mt-0.5">mn statute 176.041 exempt</p>
               </div>
             </div>

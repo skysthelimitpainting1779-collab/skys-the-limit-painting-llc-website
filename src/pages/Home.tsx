@@ -23,6 +23,7 @@ import ServiceAreaMap from '../components/ServiceAreaMap';
 import SpotlightCard from '../components/SpotlightCard';
 import MarqueeTicker from '../components/ui/MarqueeTicker';
 import AnimatedStatsBar from '../components/ui/AnimatedCounter';
+import ReviewCarousel from '../components/ReviewCarousel';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { businessSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -118,17 +119,16 @@ const marketItemVariants = {
 const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index: number; key?: Key }) => {
   const media = marketMedia[market.slug];
   const Icon = market.icon;
-  const isEven = index % 2 === 0;
 
   return (
-    <FadeIn delay={0.08 * index}>
+    <FadeIn delay={0.08 * index} className="h-full">
       <MotionLink
         to={`/${market.slug}`}
         whileHover={{ y: -6, borderColor: 'rgba(240, 192, 103, 0.55)' }}
         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-        className="group grid overflow-hidden border border-[#d8c7aa]/16 bg-[#11100d] lg:grid-cols-12"
+        className="group flex flex-col justify-between overflow-hidden border border-white/10 bg-[#0B0B0D] h-full"
       >
-        <div className={`relative min-h-[340px] overflow-hidden lg:col-span-7 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+        <div className="relative aspect-[16/10] w-full overflow-hidden">
           <ResponsiveImage
             src={media.image}
             alt={`${market.navLabel} painting work example`}
@@ -136,35 +136,35 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
             height={1100}
             className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
           <div className="measurement-rules absolute inset-0 opacity-25"></div>
-          <span className="absolute left-5 top-5 border border-white/15 bg-[#080807]/75 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#f0c067] backdrop-blur">
+          <span className="absolute left-5 top-5 border border-white/15 bg-[#050505]/75 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#f0c067] backdrop-blur">
             {media.label}
           </span>
         </div>
-        <div className={`relative flex min-h-[340px] flex-col justify-between p-7 md:p-10 lg:col-span-5 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+        <div className="relative flex flex-1 flex-col justify-between p-6">
           <div>
-            <div className="mb-10 flex items-center justify-between gap-5">
-              <span className="font-display text-6xl font-black leading-none text-white/12">{market.number}</span>
-              <span className="grid h-12 w-12 place-items-center border border-white/15 bg-white/5 text-white">
-                <Icon size={24} strokeWidth={1.6} />
+            <div className="mb-6 flex items-center justify-between gap-5">
+              <span className="font-display text-4xl font-black leading-none text-white/12">{market.number}</span>
+              <span className="grid h-10 w-10 place-items-center border border-white/15 bg-white/5 text-white">
+                <Icon size={20} strokeWidth={1.6} />
               </span>
             </div>
             <p className="text-xs font-black uppercase tracking-[0.26em] text-[#f0c067]">{media.accent}</p>
-            <h3 className="mt-4 text-4xl font-black leading-[0.96] text-white md:text-5xl">{market.navLabel}</h3>
-            <p className="mt-5 text-base leading-relaxed text-[#e4ded2]">{market.summary}</p>
+            <h3 className="mt-3 text-2xl font-black leading-none text-white uppercase">{market.navLabel}</h3>
+            <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">{market.summary}</p>
           </div>
-          <div className="mt-10">
-            <div className="grid gap-3 text-sm text-[#d8c7aa] sm:grid-cols-2">
+          <div className="mt-8">
+            <div className="grid gap-3 text-xs text-[#d8c7aa] sm:grid-cols-2">
               {market.proof.slice(0, 2).map((item) => (
-                <div key={item} className="flex gap-3 border-t border-white/10 pt-4">
-                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#f0c067]" size={17} />
+                <div key={item} className="flex gap-2 border-t border-white/10 pt-3">
+                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#f0c067]" size={14} />
                   <span>{item}</span>
                 </div>
               ))}
             </div>
-            <span className="mt-8 inline-flex items-center gap-3 text-sm font-black uppercase tracking-[0.18em] text-white">
-              View {market.navLabel} <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+            <span className="mt-6 inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.18em] text-white">
+              View {market.navLabel} <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
             </span>
           </div>
         </div>
@@ -234,12 +234,10 @@ export default function HomePage() {
               <span className="sm:hidden">Insured MN Contractor</span>
               <span className="hidden sm:inline">Insured Minnesota Painting Contractor</span>
             </div>
-            <h1 aria-label={`${customerPromise} ${corePositioningLine}`} className="max-w-[calc(100vw-2rem)] text-[2.45rem] font-black leading-[0.98] text-white sm:max-w-4xl sm:text-6xl lg:text-7xl xl:text-8xl">
-              <span className="block">Interior & exterior</span>
-              <span className="block text-white">painting in Inver Grove Heights</span>
-              <span className="block text-[#f0c067] sm:hidden">and the Twin</span>
-              <span className="block text-[#f0c067] sm:hidden">Cities.</span>
-              <span className="hidden text-[#f0c067] sm:block">and the Twin Cities.</span>
+            <h1 aria-label={`${customerPromise} ${corePositioningLine}`} className="max-w-[calc(100vw-2rem)] text-[2.45rem] font-black leading-[0.98] uppercase text-white sm:max-w-4xl sm:text-6.5xl lg:text-7.5xl xl:text-8xl tracking-tight">
+              <span className="block">Prep-First Elite</span>
+              <span className="block text-white">painting across the</span>
+              <span className="block text-[#f0c067]">Twin Cities.</span>
             </h1>
             <p className="mt-7 max-w-[calc(100vw-2rem)] text-base leading-relaxed text-[#e7dfd2] sm:max-w-2xl sm:text-lg md:text-xl">
               <span className="sm:hidden">
@@ -249,7 +247,7 @@ export default function HomePage() {
                 {customerPromise} {verifiedContractorLine} Request an estimate, approve the scope, then reserve your spot with a deposit when the job is ready to schedule.
               </span>
             </p>
-            <p className="mt-4 text-sm font-black tracking-[0.22em] text-[#f0c067]">{corePositioningLine}</p>
+            <p className="mt-4 text-sm font-black tracking-[0.22em] text-[#f0c067] uppercase">{corePositioningLine}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <MagneticButton pullFactor={0.35}>
                 <Link to="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Request an Estimate', source: 'home_hero' })} className="shimmer-cta inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white">
@@ -294,16 +292,16 @@ export default function HomePage() {
         className="border-b border-[#d8c7aa]/10"
       />
 
-      <section className="bg-[#e6dfd2] px-4 py-20 text-[#171512] sm:px-6 lg:px-8">
+      <section className="border-t border-white/10 bg-[#050505] px-4 py-20 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
-            <p className="text-xs font-black tracking-[0.28em] text-[#8b4d20]">Built from the trade up</p>
-            <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl">
+            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067] uppercase">Built from the trade up</p>
+            <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl text-white uppercase">
               Elite craftsmanship, transparent pricing, and zero jobsite stress.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
-            <p className="text-lg leading-relaxed text-[#3f3a33]">
+            <p className="text-lg leading-relaxed text-[#c9c1b4]">
               We believe in exceptional craftsmanship from the ground up. Sky’s the Limit Painting is an owner-operated, fully insured registered MN specialty contractor based in Inver Grove Heights. We serve homeowners, business managers, and public agencies across the Twin Cities with a dedication to structural prep, neatness, and flawless execution.
             </p>
           </FadeIn>
@@ -374,14 +372,14 @@ export default function HomePage() {
           </FadeIn>
 
           <motion.div
-            className="grid grid-cols-1 gap-6"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
             variants={marketContainerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
           >
             {markets.map((market, index) => (
-              <motion.div key={market.slug} variants={marketItemVariants}>
+              <motion.div key={market.slug} variants={marketItemVariants} className="h-full">
                 <MarketLane market={market} index={index} />
               </motion.div>
             ))}
@@ -391,12 +389,12 @@ export default function HomePage() {
 
       <ServiceAreaMap />
 
-      <section className="relative overflow-hidden border-y border-[#d8c7aa]/10 bg-[#11100d] px-4 py-24 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-4 py-24 sm:px-6 lg:px-8">
         <div className="measurement-rules absolute inset-0 opacity-15"></div>
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
-            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067]">Verified Standards</p>
-            <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Trade discipline you can count on.</h2>
+            <p className="text-xs font-black tracking-[0.28em] text-[#f0c067] uppercase">Verified Standards</p>
+            <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-5xl uppercase">Trade discipline you can count on.</h2>
             <p className="mt-5 text-sm leading-relaxed text-[#b9b2a6]">
               We back our work with verified credentials, premium materials, clear contracts, and hands-on owner oversight. No sales gimmicks—just exceptional painting backed by general liability, commercial auto, and tools coverage.
             </p>
@@ -406,6 +404,11 @@ export default function HomePage() {
               <TrustPillar key={pillar.title} pillar={pillar} index={index} />
             ))}
           </div>
+        </div>
+        <div className="relative mx-auto max-w-7xl mt-10">
+          <FadeIn delay={0.15}>
+            <ReviewCarousel />
+          </FadeIn>
         </div>
       </section>
 
@@ -469,16 +472,16 @@ export default function HomePage() {
         <MarqueeTicker items={marqueeItems} speed="normal" />
       </div>
 
-      <section className="bg-[#e6dfd2] px-4 py-24 text-[#171512] sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden border border-[#171512]/15 bg-[#f5f0e7] lg:grid-cols-12">
+      <section className="border-t border-white/10 bg-[#050505] px-4 py-24 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden border border-white/10 bg-[#0B0B0D] lg:grid-cols-12">
           <div className="relative min-h-[420px] lg:col-span-5">
             <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
-            <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,21,18,0.72),rgba(23,21,18,0.05))]"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.72),rgba(5,5,5,0.05))]"></div>
           </div>
           <div className="p-7 md:p-10 lg:col-span-7 lg:p-12">
             <FadeIn>
-              <p className="text-xs font-black tracking-[0.28em] text-[#8b4d20]">Start the scope</p>
-              <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
+              <p className="text-xs font-black tracking-[0.28em] text-[#f0c067] uppercase">Start the scope</p>
+              <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl uppercase">
                 Request an estimate for a home, property, facility, or public-sector opportunity.
               </h2>
               <div className="mt-10">

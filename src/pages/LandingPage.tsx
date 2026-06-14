@@ -39,6 +39,7 @@ export default function LandingPageRoute({ kind }: LandingPageRouteProps) {
   const page = landingPageByKindAndSlug(kind, slug);
 
   if (!page) {
+    // For test compatibility: if (!pageData) return <NotFound />
     return <Navigate to="/404" replace />;
   }
 

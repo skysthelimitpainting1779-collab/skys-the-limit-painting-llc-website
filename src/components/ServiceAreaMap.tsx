@@ -39,14 +39,14 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
     <section
       id="service-area-map"
       aria-labelledby="service-area-map-heading"
-      className={`relative overflow-hidden border-y border-[#d8c7aa]/12 bg-[#0d1211] px-4 text-white sm:px-6 lg:px-8 ${compact ? 'py-16' : 'py-20'}`}
+      className={`relative overflow-hidden border-y border-[#d8c7aa]/12 bg-[#050505] px-4 text-white sm:px-6 lg:px-8 ${compact ? 'py-16' : 'py-20'}`}
     >
       <div className="blueprint-grid absolute inset-0 opacity-8"></div>
-      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#7dd3fc,#f0c067,transparent)] opacity-70"></div>
+      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#D9AE43,#f0c067,transparent)] opacity-70"></div>
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
         <motion.div {...mapMotion} className="lg:col-span-5">
-          <p className="text-xs font-black uppercase tracking-[0.26em] text-[#7dd3fc]">Service-area map</p>
+          <p className="text-xs font-black uppercase tracking-[0.26em] text-[#f0c067]">Service-area map</p>
           <h2 id="service-area-map-heading" className="mt-4 text-3xl font-black leading-tight text-white md:text-5xl">
             Twin Cities coverage without the heavy map embed.
           </h2>
@@ -56,7 +56,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             {proofItems.map((item) => (
-              <div key={item} className="flex items-start gap-3 border-l border-[#7dd3fc]/35 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-[#eef7f4]">
+              <div key={item} className="flex items-start gap-3 border-l border-[#f0c067]/35 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-[#eef7f4]">
                 <MapPin aria-hidden="true" className="mt-0.5 shrink-0 text-[#f0c067]" size={16} />
                 <span>{item}</span>
               </div>
@@ -67,7 +67,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
             <Link
               to="/contact"
               onClick={() => trackEvent('service_area_map_cta_click', { action: 'estimate' })}
-              className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#101513] transition-colors hover:bg-white"
+              className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white"
             >
               Check My Address <ArrowRight aria-hidden="true" size={17} />
             </Link>
@@ -76,7 +76,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
               target="_blank"
               rel="noreferrer"
               onClick={() => trackEvent('service_area_map_cta_click', { action: 'directions' })}
-              className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/28 bg-white/[0.04] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#7dd3fc] hover:text-[#7dd3fc]"
+              className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/28 bg-white/[0.04] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
             >
               <Navigation2 aria-hidden="true" size={17} /> Open Directions
             </a>
@@ -85,7 +85,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
         <motion.figure {...mapMotion} className="lg:col-span-7">
           <div
-            className="relative aspect-[5/4] overflow-hidden border border-[#d8c7aa]/18 bg-[#111915] shadow-[0_24px_80px_rgba(0,0,0,0.34)] sm:aspect-[16/10]"
+            className="relative aspect-[5/4] overflow-hidden border border-[#d8c7aa]/18 bg-[#0B0B0D] shadow-[0_24px_80px_rgba(0,0,0,0.34)] sm:aspect-[16/10]"
             role="img"
             aria-labelledby="service-area-visual-title"
             aria-describedby="service-area-visual-description"
@@ -98,8 +98,8 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
             </span>
 
             <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 80" aria-hidden="true">
-              <rect width="100" height="80" fill="#111915" />
-              <path d="M14 20 C32 28 42 22 53 31 C63 39 75 34 89 44" fill="none" stroke="#7dd3fc" strokeOpacity="0.32" strokeWidth="1.2" />
+              <rect width="100" height="80" fill="#0B0B0D" />
+              <path d="M14 20 C32 28 42 22 53 31 C63 39 75 34 89 44" fill="none" stroke="#f0c067" strokeOpacity="0.32" strokeWidth="1.2" />
               <path d="M18 58 C31 48 44 52 55 45 C67 37 72 31 83 23" fill="none" stroke="#f0c067" strokeOpacity="0.48" strokeWidth="0.9" />
               <path d="M25 11 L73 72" stroke="#d8c7aa" strokeOpacity="0.14" strokeWidth="0.7" />
               <path d="M11 39 L92 39" stroke="#d8c7aa" strokeOpacity="0.14" strokeWidth="0.7" />
@@ -108,8 +108,8 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
               <path d="M69 74 C60 55 63 42 76 20" fill="none" stroke="#d8c7aa" strokeOpacity="0.12" strokeWidth="0.7" />
             </svg>
 
-            <div className="absolute left-4 top-4 border border-white/12 bg-[#0d1211]/82 px-4 py-3 backdrop-blur">
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7dd3fc]">Metro reach</p>
+            <div className="absolute left-4 top-4 border border-white/12 bg-[#0B0B0D]/82 px-4 py-3 backdrop-blur">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#f0c067]">Metro reach</p>
               <p className="mt-1 text-sm font-black text-white">Inver Grove Heights base</p>
             </div>
 
@@ -119,7 +119,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
                 to={`/service-areas/${pin.slug}`}
                 aria-label={`View ${pin.name} painting service area`}
                 onClick={() => trackEvent('service_area_map_pin_click', { area: pin.slug })}
-                className="group absolute z-10 grid min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7dd3fc]"
+                className="group absolute z-10 grid min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f0c067]"
                 style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
               >
                 <motion.span
@@ -127,11 +127,11 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
                   initial={false}
                   whileHover={prefersReducedMotion ? undefined : { scale: 1.08 }}
                   transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.18, delay: index * 0.02 }}
-                  className={`grid h-6 w-6 place-items-center rounded-full border ${pin.primary ? 'border-[#f0c067] bg-[#f0c067] text-[#101513]' : 'border-[#7dd3fc] bg-[#0d1211] text-[#7dd3fc]'} shadow-[0_0_0_6px_rgba(125,211,252,0.1)] transition-transform group-hover:scale-110`}
+                  className={`grid h-6 w-6 place-items-center rounded-full border ${pin.primary ? 'border-[#f0c067] bg-[#f0c067] text-[#101513]' : 'border-[#f0c067] bg-[#0b0b0d] text-[#f0c067]'} shadow-[0_0_0_6px_rgba(240,192,103,0.1)] transition-transform group-hover:scale-110`}
                 >
                   <span className="h-2 w-2 rounded-full bg-current"></span>
                 </motion.span>
-                <span className="pointer-events-none absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 whitespace-nowrap border border-white/12 bg-[#0d1211]/92 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-white opacity-0 shadow-xl backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 md:block">
+                <span className="pointer-events-none absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 whitespace-nowrap border border-white/12 bg-[#0B0B0D]/92 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-white opacity-0 shadow-xl backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 md:block">
                   {pin.name}
                 </span>
               </Link>
@@ -144,7 +144,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
                 key={pin.slug}
                 to={`/service-areas/${pin.slug}`}
                 onClick={() => trackEvent('service_area_map_list_click', { area: pin.slug })}
-                className="flex items-center justify-between gap-3 border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-[#eef7f4] transition-colors hover:border-[#7dd3fc] hover:text-[#7dd3fc]"
+                className="flex items-center justify-between gap-3 border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-[#eef7f4] transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
               >
                 <span>
                   {pin.name}

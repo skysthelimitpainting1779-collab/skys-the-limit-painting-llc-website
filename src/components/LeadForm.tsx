@@ -15,8 +15,8 @@ const projectOptions = ['Interior', 'Exterior', 'Facility', 'Striping', 'Pavemen
 const propertyOptions = ['Single-family home', 'Townhome / condo', 'Retail / storefront', 'Office / commercial', 'Facility / public property', 'Other'];
 const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
 const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
-const fieldClass = 'border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none placeholder:text-[#7d7469] transition-colors focus:border-[#bf6f2f] focus-visible:ring-2 focus-visible:ring-[#bf6f2f]/20';
-const selectClass = 'border border-[#171512]/20 bg-white p-4 text-[#171512] outline-none transition-colors focus:border-[#bf6f2f] focus-visible:ring-2 focus-visible:ring-[#bf6f2f]/20';
+const fieldClass = 'border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-colors focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20';
+const selectClass = 'border border-white/10 bg-white/5 p-4 text-white outline-none transition-colors focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20 [&>option]:bg-[#0B0B0D] [&>option]:text-white';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
   const [status, setStatus] = useState<Status>('idle');
@@ -206,9 +206,9 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     <form className={`grid grid-cols-1 gap-4 ${compact ? 'md:grid-cols-2' : ''}`} onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
       <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      <div className={`border-l border-[#bf6f2f]/45 bg-white/70 p-4 ${compact ? 'md:col-span-2' : ''}`}>
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#8b4d20]">Fast estimate intake</p>
-        <p className="mt-2 text-sm leading-relaxed text-[#4c453d]">
+      <div className={`border-l border-[#f0c067]/45 bg-white/5 p-4 ${compact ? 'md:col-span-2' : ''}`}>
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#f0c067]">Fast estimate intake</p>
+        <p className="mt-2 text-sm leading-relaxed text-white/70">
           Add the basics now. A photo link and clear surface notes make the first scope review tighter and reduce back-and-forth.
         </p>
       </div>
@@ -246,11 +246,11 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       </select>
       <input name="photosUrl" type="url" placeholder="Project photo link (Google Drive, iCloud, Dropbox)" aria-label="Project photo link" className={`${fieldClass} ${compact ? 'md:col-span-2' : ''}`} />
       <textarea name="notes" rows={5} placeholder="Rooms, exterior surfaces, repairs, timeline, access notes, or anything Anthony should know" aria-label="Project details" className={`${fieldClass} ${compact ? 'md:col-span-2' : ''}`} required />
-      <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#bf6f2f] disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
+      <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#050505] transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
         {status === 'submitting' ? 'Sending...' : 'Request My Estimate'} <ArrowRight size={18} />
       </button>
-      <p className={`flex items-start gap-2 text-sm font-semibold text-[#4c453d] ${compact ? 'md:col-span-2' : ''}`} aria-live="polite">
-        <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#bf6f2f]" />
+      <p className={`flex items-start gap-2 text-sm font-semibold text-white/60 ${compact ? 'md:col-span-2' : ''}`} aria-live="polite">
+        <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#f0c067]" />
         {message || 'Your request routes through the live lead endpoint when available. If the provider is unavailable, the form opens a prepared email draft so your details are not lost.'}
       </p>
     </form>

@@ -14,8 +14,17 @@
   --color-orange-deep: #E94F00;
   --color-green-trust: #2E7D32;
   
-  --font-display: "Montserrat", sans-serif;
+  --font-display: "Outfit", "Oswald", sans-serif;
   --font-body: "Inter", sans-serif;
+  --font-mono: "Fira Code", monospace;
+
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
 
   --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
 }

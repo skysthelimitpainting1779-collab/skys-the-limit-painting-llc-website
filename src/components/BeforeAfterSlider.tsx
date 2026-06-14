@@ -86,7 +86,7 @@ export default function BeforeAfterSlider({
     <div className="space-y-4">
       <div
         ref={containerRef}
-        className="relative h-[350px] w-full overflow-hidden rounded-sm border border-white/10 select-none cursor-ew-resize focus-visible:ring-2 focus-visible:ring-orange-safety focus:outline-none"
+        className="relative h-[350px] w-full overflow-hidden rounded-none border border-white/10 select-none cursor-ew-resize focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
       >
         <ResponsiveImage src={afterImage} alt={afterLabel} width={1200} height={700} className="absolute inset-0 h-full w-full object-cover pointer-events-none" />
 
@@ -97,10 +97,10 @@ export default function BeforeAfterSlider({
           <ResponsiveImage src={beforeImage} alt={beforeLabel} width={1200} height={700} className="absolute inset-0 h-full w-full object-cover max-w-none" style={{ width: containerRef.current?.offsetWidth || '100vw' }} />
         </div>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-none border border-white/20 text-white text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
           {beforeLabel}
         </div>
-        <div className="absolute top-4 right-4 bg-orange-safety/80 backdrop-blur-sm px-3 py-1 rounded-sm border border-orange-safety text-white text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
+        <div className="absolute top-4 right-4 bg-[#f0c067] backdrop-blur-sm px-3 py-1 rounded-none border border-[#f0c067] text-[#050505] text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
           {afterLabel}
         </div>
 
@@ -126,14 +126,14 @@ export default function BeforeAfterSlider({
           dragConstraints={containerRef}
           onDrag={handleDrag}
           style={{ x }}
-          className="absolute top-0 bottom-0 w-1 bg-orange-safety cursor-ew-resize z-20 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+          className="absolute top-0 bottom-0 w-1 bg-[#f0c067] cursor-ew-resize z-20 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)]"
         >
           <motion.div 
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
-            className="w-8 h-8 bg-white border-2 border-orange-safety rounded-full shadow-lg flex items-center justify-center text-orange-safety font-black"
+            className="w-8 h-8 bg-[#f0c067] border border-white/20 shadow-lg flex items-center justify-center text-[#050505] font-black"
           >
-            <span aria-hidden="true">&lt;&gt;</span>
+            <span aria-hidden="true" className="font-mono text-xs select-none">||</span>
           </motion.div>
         </motion.div>
       </div>

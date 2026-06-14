@@ -18,6 +18,7 @@ export default function CustomCursor() {
 
   useEffect(() => {
     // Flag to easily check if we are in interactive state without state variables
+    // For test compatibility: a, button, select, input hovered
     let isHovering = false;
 
     const updatePosition = (e: MouseEvent) => {

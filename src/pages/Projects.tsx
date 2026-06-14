@@ -11,32 +11,33 @@ import { breadcrumbSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
 
 const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-sm uppercase tracking-wider">
+  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-none uppercase tracking-wider">
     <CheckCircle2 size={12} className="text-[#f0c067]" />
     {children}
   </span>
 );
 
 const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeImage, afterImage }: any) => (
-  <div className="bg-[#11100d] rounded-sm overflow-hidden border border-[#d8c7aa]/16 shadow-sm flex flex-col group h-full mb-12 transition duration-500 hover:-translate-y-1 hover:border-[#f0c067]/55">
+  <div className="bg-[#0B0B0D] rounded-none overflow-hidden border border-white/10 shadow-sm flex flex-col group h-full mb-12 transition duration-500 hover:-translate-y-1 hover:border-[#f0c067]/55">
     <div className="relative overflow-hidden">
       {beforeImage && afterImage ? (
         <BeforeAfterSlider beforeImage={beforeImage} afterImage={afterImage} beforeLabel="The Challenge" afterLabel="The Result" />
       ) : (
         <div className="h-[350px] relative">
           <ResponsiveImage src={image} alt={`${type} in ${location}`} width={1200} height={700} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-sm">
+          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-none">
             {location}
           </div>
         </div>
       )}
       <div className="absolute top-4 left-4 z-10 pointer-events-none">
-        <span className="bg-[#f0c067] text-[#15110a] text-xs font-black uppercase tracking-widest px-3 py-1 rounded-sm shadow-md">
+        <span className="bg-[#f0c067] text-[#050505] text-xs font-black uppercase tracking-widest px-3 py-1 rounded-none shadow-md">
           {type}
         </span>
       </div>
     </div>
     <div className="p-8 flex flex-col flex-1">
+      <h3 className="text-xl font-display font-black text-white uppercase tracking-wide mb-6 group-hover:text-[#f0c067] transition-colors">{type}</h3>
       <div className="space-y-6 mb-8 flex-grow">
         <div>
           <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500"></span> The Challenge</h4>
@@ -57,6 +58,15 @@ const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeIma
           <p className="text-white text-sm font-medium leading-relaxed">{result}</p>
         </div>
       </div>
+      <div className="mt-auto pt-6 border-t border-white/5">
+        <Link 
+          to="/contact" 
+          onClick={() => trackEvent('project_card_cta_click', { projectType: type })}
+          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-[#f0c067] hover:text-white transition-colors"
+        >
+          Inquire About A Similar Scope <ArrowRight size={14} />
+        </Link>
+      </div>
     </div>
   </div>
 );
@@ -75,10 +85,10 @@ export default function ProjectsPage() {
       />
       
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#070706] py-24 px-6 border-b border-[#d8c7aa]/16">
-        <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="Sky's the Limit Painting LLC premium work proof" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-30" />
+      <section className="relative overflow-hidden bg-[#050505] py-24 px-6 border-b border-white/10">
+        <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="Sky's the Limit Painting LLC premium work proof" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.92)_44%,rgba(5,5,5,0.5)_100%)]"></div>
-        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
+        <div className="blueprint-grid absolute inset-0 opacity-12"></div>
         <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
         <div className="measurement-rules absolute inset-0 opacity-16"></div>
         
@@ -95,7 +105,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <div className="bg-[#080807] py-24 px-6">
+      <div className="bg-[#050505] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
              <FadeIn delay={0.1}>
@@ -144,15 +154,15 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      <section className="py-24 px-6 bg-[#11100d] border-t border-[#d8c7aa]/16">
-         <div className="max-w-4xl mx-auto bg-[#080807] border border-[#d8c7aa]/16 rounded-sm p-8 md:p-12 text-center relative overflow-hidden">
+      <section className="py-24 px-6 bg-[#050505] border-t border-white/10">
+         <div className="max-w-4xl mx-auto bg-[#0B0B0D] border border-white/10 rounded-none p-8 md:p-12 text-center relative overflow-hidden">
            <div className="blueprint-grid absolute inset-0 opacity-10"></div>
            <FadeIn className="relative z-10">
              <h2 className="text-3xl font-display font-black text-white mb-4 uppercase tracking-wide">Have a Similar Project?</h2>
              <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
                We're ready to put the same level of care into your next project. Contact us today for a free estimate.
              </p>
-             <Link to="/contact" onClick={() => trackEvent('projects_interaction', { action: 'estimate_cta' })} className="inline-flex items-center gap-2 bg-[#f0c067] hover:bg-white text-[#15110a] px-8 py-4 rounded-sm font-black transition-colors uppercase tracking-widest text-sm">
+             <Link to="/contact" onClick={() => trackEvent('projects_interaction', { action: 'estimate_cta' })} className="inline-flex items-center gap-2 bg-[#f0c067] hover:bg-white text-[#050505] px-8 py-4 rounded-none font-black transition-colors uppercase tracking-widest text-sm cursor-pointer">
                 Get Your Free Estimate <ArrowRight size={18} />
              </Link>
            </FadeIn>
