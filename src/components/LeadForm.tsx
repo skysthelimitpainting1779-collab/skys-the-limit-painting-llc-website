@@ -203,56 +203,144 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
   };
 
   return (
-    <form className={`grid grid-cols-1 gap-4 ${compact ? 'md:grid-cols-2' : ''}`} onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
+    <form className="space-y-6" onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
       <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      <div className={`border-l border-[#f0c067]/45 bg-white/5 p-4 ${compact ? 'md:col-span-2' : ''}`}>
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#f0c067]">Fast estimate intake</p>
-        <p className="mt-2 text-sm leading-relaxed text-white/70">
-          Add the basics now. A photo link and clear surface notes make the first scope review tighter and reduce back-and-forth.
+      
+      {/* Bento Section 01: Project Scope */}
+      <div className="border border-white/10 bg-[#0B0B0D]/50 p-6 flex flex-col gap-4">
+        <div className="border-b border-white/10 pb-3 mb-2 flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">01 // SCOPE SELECTION</span>
+            <h4 className="text-xs font-black uppercase tracking-wider text-white mt-1">Project Parameters</h4>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 hidden sm:inline">Reconnaissance</span>
+        </div>
+        
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Market Lane</label>
+            <select name="market" aria-label="Market" className={selectClass} required defaultValue={defaultMarket}>
+              <option>Residential</option>
+              <option>Commercial</option>
+              <option>Public Sector</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Project Type</label>
+            <select name="projectType" aria-label="Project type" className={selectClass} required defaultValue="">
+              <option value="" disabled>Select Type</option>
+              {projectOptions.map((option) => <option key={option}>{option}</option>)}
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Property Class</label>
+            <select name="propertyType" aria-label="Property type" className={selectClass} defaultValue="">
+              <option value="" disabled>Select Class</option>
+              {propertyOptions.map((option) => <option key={option}>{option}</option>)}
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Required Timeline</label>
+            <select name="timeline" aria-label="Timeline" className={selectClass} required defaultValue="">
+              <option value="" disabled>Select Timeline</option>
+              {timelineOptions.map((option) => <option key={option}>{option}</option>)}
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1.5 sm:col-span-1 md:col-span-2">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Budget Estimate</label>
+            <select name="budget" aria-label="Budget range" className={selectClass} defaultValue="">
+              <option value="" disabled>Select Budget Range</option>
+              {budgetOptions.map((option) => <option key={option}>{option}</option>)}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Bento Section 02: Contact Channels & Routing */}
+      <div className="border border-white/10 bg-[#0B0B0D]/50 p-6 flex flex-col gap-4">
+        <div className="border-b border-white/10 pb-3 mb-2 flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">02 // DIRECT CHANNELS</span>
+            <h4 className="text-xs font-black uppercase tracking-wider text-white mt-1">Client Routing & Verification</h4>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 hidden sm:inline">Security</span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Full Name</label>
+            <input name="name" type="text" placeholder="e.g. Johnny Cage" aria-label="Full name" autoComplete="name" className={fieldClass} required />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">City / Municipality</label>
+            <input name="city" type="text" placeholder="e.g. Inver Grove Heights" aria-label="City" autoComplete="address-level2" className={fieldClass} required />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Phone</label>
+            <input name="phone" type="tel" placeholder="e.g. 651-410-4196" aria-label="Phone" autoComplete="tel" inputMode="tel" className={fieldClass} required />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Email Address</label>
+            <input name="email" type="email" placeholder="e.g. johnny@fight.com" aria-label="Email" autoComplete="email" className={fieldClass} required />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Preferred Contact Method</label>
+            <select name="contactMethod" aria-label="Preferred contact method" className={selectClass} required defaultValue="">
+              <option value="" disabled>Select Method</option>
+              <option>Call</option>
+              <option>Text</option>
+              <option>Email</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Project Address / Cross Streets</label>
+            <input name="projectAddress" type="text" placeholder="e.g. 100 Main St" aria-label="Project address or cross streets" autoComplete="street-address" className={fieldClass} />
+          </div>
+        </div>
+      </div>
+
+      {/* Bento Section 03: Craft Details & Photo Proof */}
+      <div className="border border-white/10 bg-[#0B0B0D]/50 p-6 flex flex-col gap-4">
+        <div className="border-b border-white/10 pb-3 mb-2 flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">03 // SURFACE STORY & MEDIA</span>
+            <h4 className="text-xs font-black uppercase tracking-wider text-white mt-1">Scope Documentation</h4>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 hidden sm:inline">Verification</span>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Project Photo Link (Google Drive, iCloud, Dropbox, or public album)</label>
+          <input name="photosUrl" type="url" placeholder="https://drive.google.com/..." aria-label="Project photo link" className={fieldClass} />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[10px] font-black uppercase tracking-wider text-gray-400">Project Scope Notes</label>
+          <textarea name="notes" rows={4} placeholder="Describe rooms, siding, cabinet count, trim detail, prep concerns, or access limits..." aria-label="Project details" className={fieldClass} required />
+        </div>
+      </div>
+
+      {/* Form Submission Action */}
+      <div className="flex flex-col gap-4">
+        <button type="submit" disabled={status === 'submitting'} className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4.5 text-sm font-black uppercase tracking-[0.2em] text-[#050505] transition-colors hover:bg-white hover:text-[#050505] disabled:cursor-not-allowed disabled:opacity-60 w-full">
+          {status === 'submitting' ? 'Transmitting Scope...' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={18} />
+        </button>
+        
+        <p className="flex items-start gap-2 text-xs font-semibold text-gray-400 leading-relaxed" aria-live="polite">
+          <ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#f0c067]" />
+          {message || 'Your request routes through the live lead endpoint when available. If the provider is unavailable, the form opens a prepared email draft so your details are not lost.'}
         </p>
       </div>
-      <input name="name" type="text" placeholder="Full name" aria-label="Full name" autoComplete="name" className={fieldClass} required />
-      <input name="phone" type="tel" placeholder="Phone" aria-label="Phone" autoComplete="tel" inputMode="tel" className={fieldClass} required />
-      <input name="email" type="email" placeholder="Email" aria-label="Email" autoComplete="email" className={fieldClass} required />
-      <input name="city" type="text" placeholder="City" aria-label="City" autoComplete="address-level2" className={fieldClass} required />
-      <input name="projectAddress" type="text" placeholder="Project address or cross streets" aria-label="Project address or cross streets" autoComplete="street-address" className={fieldClass} />
-      <select name="market" aria-label="Market" className={selectClass} required defaultValue={defaultMarket}>
-        <option>Residential</option>
-        <option>Commercial</option>
-        <option>Public Sector</option>
-      </select>
-      <select name="projectType" aria-label="Project type" className={selectClass} required defaultValue="">
-        <option value="" disabled>Project type</option>
-        {projectOptions.map((option) => <option key={option}>{option}</option>)}
-      </select>
-      <select name="propertyType" aria-label="Property type" className={selectClass} defaultValue="">
-        <option value="" disabled>Property type</option>
-        {propertyOptions.map((option) => <option key={option}>{option}</option>)}
-      </select>
-      <select name="timeline" aria-label="Timeline" className={selectClass} required defaultValue="">
-        <option value="" disabled>Timeline</option>
-        {timelineOptions.map((option) => <option key={option}>{option}</option>)}
-      </select>
-      <select name="budget" aria-label="Budget range" className={selectClass} defaultValue="">
-        <option value="" disabled>Budget range</option>
-        {budgetOptions.map((option) => <option key={option}>{option}</option>)}
-      </select>
-      <select name="contactMethod" aria-label="Preferred contact method" className={selectClass} required defaultValue="">
-        <option value="" disabled>Preferred contact</option>
-        <option>Call</option>
-        <option>Text</option>
-        <option>Email</option>
-      </select>
-      <input name="photosUrl" type="url" placeholder="Project photo link (Google Drive, iCloud, Dropbox)" aria-label="Project photo link" className={`${fieldClass} ${compact ? 'md:col-span-2' : ''}`} />
-      <textarea name="notes" rows={5} placeholder="Rooms, exterior surfaces, repairs, timeline, access notes, or anything Anthony should know" aria-label="Project details" className={`${fieldClass} ${compact ? 'md:col-span-2' : ''}`} required />
-      <button type="submit" disabled={status === 'submitting'} className={`inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#050505] transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-60 ${compact ? 'md:col-span-2' : ''}`}>
-        {status === 'submitting' ? 'Sending...' : 'Request My Estimate'} <ArrowRight size={18} />
-      </button>
-      <p className={`flex items-start gap-2 text-sm font-semibold text-white/60 ${compact ? 'md:col-span-2' : ''}`} aria-live="polite">
-        <ShieldCheck size={17} className="mt-0.5 shrink-0 text-[#f0c067]" />
-        {message || 'Your request routes through the live lead endpoint when available. If the provider is unavailable, the form opens a prepared email draft so your details are not lost.'}
-      </p>
     </form>
   );
 }
