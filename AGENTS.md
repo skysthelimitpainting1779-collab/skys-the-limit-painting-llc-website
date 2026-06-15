@@ -49,3 +49,8 @@ Run these locally before submitting pull requests or deploying:
   - Keep colors tied to HSL palettes inside `index.css`. Avoid ad-hoc color classes.
   - **Contrast Safety Warning**: Safety Orange (`#FF5A00`) surfaces must use Dark Charcoal (`#050505`) text to satisfy WCAG AA contrast compliance. White text on safety orange is strictly banned.
   - **Emoji Ban**: Emojis in source code/components/markup are strictly BANNED (except the DNA emoji `🧬` in markdown documentation).
+
+## 🔍 External Research & Infrastructure Operations
+- **Information Retrieval**: Whenever there is information needed that is not generally known or requires external documentation lookup, you must search the web (`search_web`) or use the appropriate domain skill. Do not guess or make assumptions about APIs, config parameters, or dependency versions.
+- **Vercel & Platform Operations**: For all deployments, environment configuration updates, and Vercel infrastructure tasks, interact strictly through the Vercel CLI (e.g. `npx vercel`) or the Supabase/Vercel MCP server. Avoid interactive prompt prompts; use non-interactive CLI arguments (e.g. `--value`, `--yes`) to execute commands programmatically.
+- **CLI Non-Interactive Mode**: When running setup CLI scripts (like HubSpot CLI or Vercel CLI), always prefer non-interactive flags (e.g. `--personal-access-key`, `--use-default-name`, `--default`, `--yes`) to prevent blocking execution on prompt inputs.

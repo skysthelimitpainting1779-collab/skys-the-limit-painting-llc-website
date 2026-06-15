@@ -15,7 +15,7 @@ const serviceAreaPins = [
 ];
 
 const proofItems = [
-  'Based in Inver Grove Heights',
+  'Twin Cities Metro base',
   'Broad Twin Cities metro coverage',
   'Residential first, commercial ready',
   'Photo-assisted estimate intake',

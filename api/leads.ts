@@ -295,22 +295,14 @@ async function sendLeadWebhook(payload: Record<string, unknown>) {
 }
 
 async function sendToHubspot(payload: Record<string, unknown>) {
-  const portalId = '246259637';
+  const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
   const formId = process.env.HUBSPOT_FORM_ID;
+  const portalId = '246259637';
 
   if (!formId) {
-    return { configured: false };
-  }
-
-  const fields = [
-    { name: 'firstname', value: asText(payload.name) },
-    { name: 'email', value: asText(payload.email) },
-    { name: 'phone', value: asText(payload.phone) },
-    { name: 'city', value: asText(payload.city) },
-  ];
-
-  if (payload.company) {
-    fields.push({ name: 'company', value: asText(payload.company) });
+    if (!accessToken) {
+      return { configured: false };
+    }
   }
 
   const details = [
@@ -325,31 +317,122 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     payload.notes ? `Notes:\n${asText(payload.notes)}` : '',
   ].filter(Boolean).join('\n');
 
-  fields.push({ name: 'message', value: details });
+  if (accessToken) {
+    const email = asText(payload.email);
+    let contactId = '';
 
-  const context = {
-    hutk: asText(payload.hubspotutk) || undefined,
-    pageUri: asText(payload.page) || undefined,
-    pageName: 'Request an Estimate - Sky\'s the Limit Painting',
-  };
+    // Search for existing contact by email to prevent duplicates
+    if (email) {
+      try {
+        const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            filterGroups: [{
+              filters: [{
+                propertyName: 'email',
+                operator: 'EQ',
+                value: email,
+              }],
+            }],
+          }),
+        });
 
-  const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      fields,
-      context,
-    }),
-  });
+        if (searchRes.ok) {
+          const searchData = await searchRes.json() as any;
+          if (searchData.results && searchData.results.length > 0) {
+            contactId = searchData.results[0].id;
+          }
+        }
+      } catch (err) {
+        console.error('HubSpot contact search failed:', err);
+      }
+    }
 
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`HubSpot Forms API failed: ${response.status} ${body}`);
+    const nameParts = asText(payload.name).split(' ');
+    const firstname = nameParts[0] || '';
+    const lastname = nameParts.slice(1).join(' ') || '';
+
+    const properties = {
+      firstname,
+      lastname,
+      email,
+      phone: asText(payload.phone),
+      city: asText(payload.city),
+      message: details,
+    };
+
+    let response;
+    if (contactId) {
+      // Update existing contact
+      response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ properties }),
+      });
+    } else {
+      // Create new contact
+      response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ properties }),
+      });
+    }
+
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(`HubSpot CRM API failed: ${response.status} ${body}`);
+    }
+
+    return { configured: true };
+  } else {
+    // Fallback to legacy HubSpot forms API to support formId configurations and E2E tests
+    const fields = [
+      { name: 'firstname', value: asText(payload.name) },
+      { name: 'email', value: asText(payload.email) },
+      { name: 'phone', value: asText(payload.phone) },
+      { name: 'city', value: asText(payload.city) },
+    ];
+
+    if (payload.company) {
+      fields.push({ name: 'company', value: asText(payload.company) });
+    }
+
+    fields.push({ name: 'message', value: details });
+
+    const context = {
+      hutk: asText(payload.hubspotutk) || undefined,
+      pageUri: asText(payload.page) || undefined,
+      pageName: 'Request an Estimate - Sky\'s the Limit Painting',
+    };
+
+    const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fields,
+        context,
+      }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(`HubSpot Forms API failed: ${response.status} ${body}`);
+    }
+
+    return { configured: true };
   }
-
-  return { configured: true };
 }
 
 export default async function handler(req: any, res: any) {

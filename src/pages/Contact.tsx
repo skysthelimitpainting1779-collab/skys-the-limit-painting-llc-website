@@ -94,7 +94,7 @@ export default function ContactPage() {
                   <span className="grid h-10 w-10 place-items-center bg-[#f0c067]/10 text-[#f0c067]"><MapPin size={18} /></span>
                   <div>
                     <span className="block text-[9px] font-black uppercase text-gray-500">Location Base</span>
-                    <span className="block mt-0.5">Inver Grove Heights / Twin Cities</span>
+                    <span className="block mt-0.5">Twin Cities Metro Area</span>
                   </div>
                 </div>
               </div>

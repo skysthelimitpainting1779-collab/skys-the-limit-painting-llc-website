@@ -488,7 +488,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
               name="city"
               type="text"
               required
-              placeholder="e.g. Inver Grove Heights"
+              placeholder="e.g. Minneapolis"
               aria-label="City"
               autoComplete="address-level2"
               value={formData.city}

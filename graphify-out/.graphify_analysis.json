@@ -8,7 +8,7 @@
       "components_beforeafterslider_beforeafterslider",
       "components_beforeafterslider_beforeaftersliderprops",
       "components_marketpage",
-      "components_marketpage_marketpage",
+      "components_marketpage_marketpageprops",
       "components_pagemeta",
       "components_pagemeta_getsiteurl",
       "components_pagemeta_pagemeta",
@@ -21,7 +21,10 @@
       "components_responsiveimage",
       "components_responsiveimage_responsiveimage",
       "components_responsiveimage_responsiveimageprops",
+      "data_markets_market",
+      "lib_seo",
       "lib_seo_breadcrumbschema",
+      "lib_seo_siteurl",
       "pages_about",
       "pages_about_aboutpage",
       "pages_capabilities",
@@ -49,7 +52,8 @@
       "pages_services_servicespage",
       "pages_servicestriping",
       "pages_servicestriping_servicestriping",
-      "regenerated_image_1778652000603_painter_on_lift"
+      "regenerated_image_1778652000603_painter_on_lift",
+      "scripts_prerender_breadcrumbschema"
     ],
     "1": [
       "components_bookingcta",
@@ -62,18 +66,17 @@
       "components_conversionheader",
       "components_conversionheader_conversionheader",
       "components_conversionheader_navlink",
-      "components_leadform",
-      "components_leadform_budgetoptions",
-      "components_leadform_leadform",
-      "components_leadform_leadformprops",
-      "components_leadform_projectoptions",
-      "components_leadform_propertyoptions",
-      "components_leadform_status",
-      "components_leadform_timelineoptions",
+      "components_customcursor",
+      "components_customcursor_customcursor",
+      "components_layout",
+      "components_layout_layout",
+      "components_layout_layoutprops",
       "components_reviewcarousel",
       "components_reviewcarousel_reviewcarousel",
       "components_reviewcarousel_testimonial",
       "components_reviewcarousel_testimonials",
+      "components_scrolltotop",
+      "components_scrolltotop_scrolltotop",
       "components_serviceareamap",
       "components_serviceareamap_proofitems",
       "components_serviceareamap_serviceareamap",
@@ -83,37 +86,87 @@
       "components_sociallinks_sociallinks",
       "lib_analytics",
       "lib_analytics_analyticspayload",
-      "lib_analytics_readutmparams",
       "lib_analytics_trackevent",
       "lib_analytics_window",
-      "lib_contact",
-      "lib_contact_buildestimatemailto",
-      "lib_contact_openestimateemail",
-      "pages_estimate",
-      "pages_estimate_cabinetkey",
-      "pages_estimate_cabinets",
-      "pages_estimate_clampnumber",
-      "pages_estimate_dimensions",
-      "pages_estimate_estimatepage",
-      "pages_estimate_numericdimensionkey",
-      "pages_estimate_numerictrimkey",
-      "pages_estimate_roompresets",
-      "pages_estimate_step",
-      "pages_estimate_trimprep",
-      "src_app_analyticsbridge"
+      "pages_refer",
+      "pages_refer_referpage",
+      "src_app",
+      "src_app_aboutpage",
+      "src_app_analyticsbridge",
+      "src_app_animatedroutes",
+      "src_app_app",
+      "src_app_capabilitiespage",
+      "src_app_commercialpage",
+      "src_app_contactpage",
+      "src_app_estimatepage",
+      "src_app_landingpageroute",
+      "src_app_notfoundpage",
+      "src_app_projectspage",
+      "src_app_publicsectorpage",
+      "src_app_referpage",
+      "src_app_residentialpage",
+      "src_app_reviewpage",
+      "src_app_routefallback",
+      "src_app_serviceareapage",
+      "src_main"
     ],
     "2": [
+      "components_trustanchors",
+      "components_trustanchors_trustanchors",
+      "data_markets",
+      "data_markets_marketbyslug",
+      "data_markets_marketcapability",
+      "data_markets_markets",
+      "data_markets_marketslug",
+      "data_markets_supportingimages",
+      "data_markets_trustpillars",
+      "lib_seo_businessschema",
+      "pages_commercial",
+      "pages_commercial_commercialpage",
+      "pages_home",
+      "pages_home_conversionsteps",
+      "pages_home_coverageitems",
+      "pages_home_homepage",
+      "pages_home_homestats",
+      "pages_home_marketcontainervariants",
+      "pages_home_marketitemvariants",
+      "pages_home_marketlane",
+      "pages_home_marketmedia",
+      "pages_home_marqueeitems",
+      "pages_home_motionlink",
+      "pages_home_processstep",
+      "pages_home_trustpillar",
+      "pages_publicsector",
+      "pages_publicsector_publicsectorpage",
+      "pages_residential",
+      "pages_residential_residentialpage",
+      "ui_animatedcounter",
+      "ui_animatedcounter_animatedcounteritem",
+      "ui_animatedcounter_animatedcounterprops",
+      "ui_animatedcounter_animatedstatsbar",
+      "ui_animatedcounter_statsbarprops",
+      "ui_marqueeticker",
+      "ui_marqueeticker_marqueeticker",
+      "ui_marqueeticker_marqueetickerprops"
+    ],
+    "3": [
       "package",
-      "package_devdependencies",
-      "package_devdependencies_autoprefixer",
-      "package_devdependencies_remotion",
-      "package_devdependencies_remotion_cli",
-      "package_devdependencies_tailwindcss",
-      "package_devdependencies_tsx",
-      "package_devdependencies_types_express",
-      "package_devdependencies_types_node",
-      "package_devdependencies_typescript",
-      "package_devdependencies_vite",
+      "package_dependencies",
+      "package_dependencies_dotenv",
+      "package_dependencies_express",
+      "package_dependencies_google_genai",
+      "package_dependencies_lucide_react",
+      "package_dependencies_motion",
+      "package_dependencies_phosphor_icons_react",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_react_router_dom",
+      "package_dependencies_resend",
+      "package_dependencies_tailwindcss_vite",
+      "package_dependencies_vercel_analytics",
+      "package_dependencies_vercel_speed_insights",
+      "package_dependencies_vite",
+      "package_dependencies_vitejs_plugin_react",
       "package_name",
       "package_overrides",
       "package_overrides_source_map",
@@ -132,59 +185,89 @@
       "package_type",
       "package_version"
     ],
-    "3": [
-      "components_marketpage_marketpageprops",
-      "components_trustanchors",
-      "components_trustanchors_trustanchors",
-      "data_markets",
-      "data_markets_market",
-      "data_markets_marketbyslug",
-      "data_markets_marketcapability",
-      "data_markets_markets",
-      "data_markets_marketslug",
-      "data_markets_supportingimages",
-      "data_markets_trustpillars",
-      "lib_seo_businessschema",
-      "pages_commercial",
-      "pages_commercial_commercialpage",
-      "pages_home",
-      "pages_home_conversionsteps",
-      "pages_home_coverageitems",
-      "pages_home_homepage",
-      "pages_home_marketlane",
-      "pages_home_marketmedia",
-      "pages_home_processstep",
-      "pages_home_trustpillar",
-      "pages_publicsector",
-      "pages_publicsector_publicsectorpage",
-      "pages_residential",
-      "pages_residential_residentialpage"
-    ],
     "4": [
-      "components_customcursor",
-      "components_customcursor_customcursor",
-      "components_layout",
-      "components_layout_layoutprops",
-      "data_landingpages",
-      "data_landingpages_arealandingpages",
-      "data_landingpages_landingpage",
-      "data_landingpages_landingpagebykindandslug",
-      "data_landingpages_landingpagebyslug",
-      "data_landingpages_landingpagekind",
-      "data_landingpages_landingpagepath",
-      "data_landingpages_landingpages",
-      "data_landingpages_servicelandingpages",
-      "lib_seo",
-      "lib_seo_localbusinessschema",
-      "lib_seo_serviceschema",
-      "lib_seo_siteurl",
-      "pages_landingpage",
-      "pages_landingpage_landingpageroute",
-      "pages_landingpage_landingpagerouteprops",
-      "pages_landingpage_marketpath",
-      "pages_landingpage_sectionimages"
+      "agent_source_notes_md",
+      "agents_md",
+      "architecture_md",
+      "bug_report_md",
+      "claude_md",
+      "config_yml",
+      "context_md",
+      "deployment_md",
+      "docs_context_md",
+      "errors_md",
+      "feature_request_md",
+      "index_html",
+      "index_md",
+      "og_preview_svg",
+      "organization_md",
+      "production_audit_md",
+      "project_md",
+      "pull_request_template_md",
+      "readme_md",
+      "repository_md",
+      "robots_txt",
+      "rules_md",
+      "skills_md",
+      "skygbp_branded_equipment_png",
+      "skygbp_exterior_action_logo_png",
+      "skygbp_interior_action_png",
+      "skygbp_lightpole_painting_png",
+      "skygbp_surfaceprep_closeup_1_png",
+      "skyllp_brandlogo_svg",
+      "troubleshooting_md",
+      "visual_asset_map_md"
     ],
     "5": [
+      "components_leadform",
+      "components_leadform_budgetoptions",
+      "components_leadform_leadform",
+      "components_leadform_leadformprops",
+      "components_leadform_projectoptions",
+      "components_leadform_propertyoptions",
+      "components_leadform_status",
+      "components_leadform_timelineoptions",
+      "lib_analytics_readutmparams",
+      "lib_contact",
+      "lib_contact_buildestimatemailto",
+      "lib_contact_openestimateemail",
+      "pages_estimate",
+      "pages_estimate_cabinetkey",
+      "pages_estimate_cabinets",
+      "pages_estimate_clampnumber",
+      "pages_estimate_dimensions",
+      "pages_estimate_estimatepage",
+      "pages_estimate_numericdimensionkey",
+      "pages_estimate_numerictrimkey",
+      "pages_estimate_roompresets",
+      "pages_estimate_step",
+      "pages_estimate_trimprep"
+    ],
+    "6": [
+      "package_devdependencies",
+      "package_devdependencies_autoprefixer",
+      "package_devdependencies_pg",
+      "package_devdependencies_remotion",
+      "package_devdependencies_remotion_cli",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tsx",
+      "package_devdependencies_types_express",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_pg",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "package_devdependencies_vercel",
+      "package_devdependencies_vite",
+      "vercel",
+      "vercel_buildcommand",
+      "vercel_framework",
+      "vercel_headers",
+      "vercel_installcommand",
+      "vercel_outputdirectory",
+      "vercel_redirects"
+    ],
+    "7": [
       "remotion_index",
       "remotion_root",
       "remotion_root_remotionroot",
@@ -207,29 +290,29 @@
       "remotion_skybrandfilms_slowease",
       "remotion_skybrandfilms_stripelanguage"
     ],
-    "6": [
-      "components_layout_layout",
-      "components_scrolltotop",
-      "components_scrolltotop_scrolltotop",
-      "src_app",
-      "src_app_aboutpage",
-      "src_app_animatedroutes",
-      "src_app_app",
-      "src_app_capabilitiespage",
-      "src_app_commercialpage",
-      "src_app_contactpage",
-      "src_app_estimatepage",
-      "src_app_landingpageroute",
-      "src_app_notfoundpage",
-      "src_app_projectspage",
-      "src_app_publicsectorpage",
-      "src_app_residentialpage",
-      "src_app_reviewpage",
-      "src_app_routefallback",
-      "src_app_serviceareapage",
-      "src_main"
+    "8": [
+      "api_leads",
+      "api_leads_astext",
+      "api_leads_buildautoreplyhtml",
+      "api_leads_buildleadhtml",
+      "api_leads_buildleadid",
+      "api_leads_escapehtml",
+      "api_leads_executedbquery",
+      "api_leads_getsafevalue",
+      "api_leads_handler",
+      "api_leads_ipcache",
+      "api_leads_ispayload",
+      "api_leads_ratelimit",
+      "api_leads_requiredfields",
+      "api_leads_saveleadeventtodb",
+      "api_leads_saveleadtodb",
+      "api_leads_sendautoreplytolead",
+      "api_leads_sendleadwebhook",
+      "api_leads_sendtohubspot",
+      "api_leads_sendwithresend",
+      "api_leads_validate"
     ],
-    "7": [
+    "9": [
       "tsconfig",
       "tsconfig_compileroptions",
       "tsconfig_compileroptions_allowimportingtsextensions",
@@ -250,53 +333,25 @@
       "tsconfig_include",
       "tsconfig_paths"
     ],
-    "8": [
-      "package_dependencies",
-      "package_dependencies_dotenv",
-      "package_dependencies_express",
-      "package_dependencies_google_genai",
-      "package_dependencies_lucide_react",
-      "package_dependencies_motion",
-      "package_dependencies_phosphor_icons_react",
-      "package_dependencies_react",
-      "package_dependencies_react_dom",
-      "package_dependencies_react_router_dom",
-      "package_dependencies_resend",
-      "package_dependencies_tailwindcss_vite",
-      "package_dependencies_vercel_analytics",
-      "package_dependencies_vercel_speed_insights",
-      "package_dependencies_vite",
-      "package_dependencies_vitejs_plugin_react"
-    ],
-    "9": [
-      "api_leads",
-      "api_leads_astext",
-      "api_leads_buildautoreplyhtml",
-      "api_leads_buildleadhtml",
-      "api_leads_buildleadid",
-      "api_leads_escapehtml",
-      "api_leads_getsafevalue",
-      "api_leads_handler",
-      "api_leads_ispayload",
-      "api_leads_requiredfields",
-      "api_leads_sendautoreplytolead",
-      "api_leads_sendleadwebhook",
-      "api_leads_sendtohubspot",
-      "api_leads_sendwithresend",
-      "api_leads_validate"
-    ],
     "10": [
-      "scripts_prerender",
-      "scripts_prerender_breadcrumbschema",
-      "scripts_prerender_businessschema",
-      "scripts_prerender_canonicalfor",
-      "scripts_prerender_distdir",
-      "scripts_prerender_escapehtml",
-      "scripts_prerender_injecthead",
-      "scripts_prerender_landingroutes",
-      "scripts_prerender_routes",
-      "scripts_prerender_serviceschema",
-      "scripts_prerender_siteurl"
+      "components_marketpage_marketpage",
+      "data_landingpages",
+      "data_landingpages_arealandingpages",
+      "data_landingpages_landingpage",
+      "data_landingpages_landingpagebykindandslug",
+      "data_landingpages_landingpagebyslug",
+      "data_landingpages_landingpagekind",
+      "data_landingpages_landingpagepath",
+      "data_landingpages_landingpages",
+      "data_landingpages_servicelandingpages",
+      "lib_seo_localbusinessschema",
+      "lib_seo_serviceschema",
+      "pages_landingpage",
+      "pages_landingpage_landingpageroute",
+      "pages_landingpage_landingpagerouteprops",
+      "pages_landingpage_marketpath",
+      "pages_landingpage_sectionimages",
+      "scripts_prerender_serviceschema"
     ],
     "11": [
       "api_manychat",
@@ -305,20 +360,35 @@
       "api_manychat_buildleadid",
       "api_manychat_escapehtml",
       "api_manychat_handler",
+      "api_manychat_ipcache",
+      "api_manychat_ratelimit",
       "api_manychat_sendleadwebhook",
       "api_manychat_sendtohubspot",
       "api_manychat_sendwithresend"
     ],
     "12": [
-      "vercel",
-      "vercel_buildcommand",
-      "vercel_framework",
-      "vercel_headers",
-      "vercel_installcommand",
-      "vercel_outputdirectory",
-      "vercel_redirects"
+      "ci_yml",
+      "dependabot_yml",
+      "maintenance_yml",
+      "quality_gate_yml",
+      "release_yml",
+      "security_scan_yml",
+      "self_healing_agent_md",
+      "test_out_txt",
+      "test_output_txt"
     ],
     "13": [
+      "scripts_prerender",
+      "scripts_prerender_businessschema",
+      "scripts_prerender_canonicalfor",
+      "scripts_prerender_distdir",
+      "scripts_prerender_escapehtml",
+      "scripts_prerender_injecthead",
+      "scripts_prerender_landingroutes",
+      "scripts_prerender_routes",
+      "scripts_prerender_siteurl"
+    ],
+    "14": [
       "scripts_generate_brand_assets",
       "scripts_generate_brand_assets_add_overlays",
       "scripts_generate_brand_assets_composite",
@@ -326,7 +396,7 @@
       "scripts_generate_brand_assets_square_composite",
       "scripts_generate_brand_assets_tint"
     ],
-    "14": [
+    "15": [
       "scripts_test_accessibility",
       "scripts_test_accessibility_brandcolors",
       "scripts_test_accessibility_calculatecontrast",
@@ -334,123 +404,142 @@
       "scripts_test_accessibility_getluminance",
       "scripts_test_accessibility_getrgb"
     ],
-    "15": [
+    "16": [
       "animations_magneticbutton",
       "animations_magneticbutton_magneticbutton",
       "animations_magneticbutton_magneticbuttonprops",
       "components_heroleadmagnet",
       "components_heroleadmagnet_heroleadmagnet"
     ],
-    "16": [
+    "17": [
       "scripts_generate_sitemap",
       "scripts_generate_sitemap_generatesitemap",
       "scripts_generate_sitemap_paintingservicesslugs",
       "scripts_generate_sitemap_serviceareasslugs",
       "scripts_generate_sitemap_staticroutes"
     ],
-    "17": [
+    "18": [
       "inspect_images",
       "inspect_images_ai",
       "inspect_images_analyze",
       "inspect_images_main"
     ],
-    "18": [
+    "19": [
       "scripts_verify_dns",
       "scripts_verify_dns_resolveany",
       "scripts_verify_dns_resolvecname",
       "scripts_verify_dns_verifydns"
     ],
-    "19": [
+    "20": [
       "strings",
       "strings_backupdir",
       "strings_findstrings",
       "strings_workspaceroot"
     ],
-    "20": [
+    "21": [
+      "tests_e2e_test",
+      "tests_e2e_test_calculatesimulatedcosts",
+      "tests_e2e_test_exists",
+      "tests_e2e_test_read"
+    ],
+    "22": [
       "components_spotlightcard",
       "components_spotlightcard_spotlightcard",
       "components_spotlightcard_spotlightcardprops"
     ],
-    "21": [
+    "23": [
+      "copywriting_and_hooks_md",
+      "hubspot_and_sheets_setup_md",
+      "landing_page_content_md"
+    ],
+    "24": [
+      "llms_txt",
+      "pricing_md",
+      "sitemap_structure_md"
+    ],
+    "25": [
       "scripts_ci_check",
       "scripts_ci_check_runcicheck",
       "scripts_ci_check_runstep"
     ],
-    "22": [
+    "26": [
       "scripts_validate_schemas",
       "scripts_validate_schemas_gethtmlfiles",
       "scripts_validate_schemas_validateschemas"
     ],
-    "23": [
+    "27": [
       "scripts_compress_images",
       "scripts_compress_images_compress_images"
     ],
-    "24": [
+    "28": [
       "scripts_ping_google",
       "scripts_ping_google_verifysitemapingestion"
     ],
-    "25": [
+    "29": [
       "scripts_replace_image_refs",
       "scripts_replace_image_refs_replace_image_refs"
     ],
-    "26": [
+    "30": [
       "scripts_verify_csp",
       "scripts_verify_csp_verifycsp"
     ],
-    "27": [
+    "31": [
       "tests_remediation_test",
       "tests_remediation_test_read"
     ],
-    "28": [
+    "32": [
       "tests_site_architecture_test",
       "tests_site_architecture_test_read"
     ],
-    "29": [
+    "33": [
       "vite_config",
       "vite_config_manualchunks"
     ],
-    "30": [
+    "34": [
+      "api_context_md"
+    ],
+    "35": [
       "context_dynamic_operations_data"
     ],
-    "31": [
+    "36": [
       "context_library_utilities"
     ],
-    "32": [
+    "37": [
       "context_page_views"
     ],
-    "33": [
+    "38": [
       "context_reusable_ui_components"
     ],
-    "34": [
+    "39": [
       "src_types_d"
     ]
   },
   "cohesion": {
-    "0": 0.1130952380952381,
-    "1": 0.05357142857142857,
-    "2": 0.07142857142857142,
-    "3": 0.09846153846153846,
-    "4": 0.16883116883116883,
-    "5": 0.10952380952380952,
-    "6": 0.10526315789473684,
-    "7": 0.10526315789473684,
-    "8": 0.125,
-    "9": 0.2857142857142857,
-    "10": 0.21818181818181817,
-    "11": 0.4444444444444444,
-    "12": 0.2857142857142857,
-    "13": 0.7333333333333333,
-    "14": 0.4666666666666667,
-    "15": 0.5,
-    "16": 0.4,
-    "17": 0.6666666666666666,
-    "18": 0.8333333333333334,
-    "19": 0.5,
-    "20": 0.6666666666666666,
-    "21": 1.0,
-    "22": 1.0,
-    "23": 1.0,
-    "24": 1.0,
+    "0": 0.10595065312046444,
+    "1": 0.05079825834542816,
+    "2": 0.06606606606606606,
+    "3": 0.058823529411764705,
+    "4": 0.10967741935483871,
+    "5": 0.09881422924901186,
+    "6": 0.09090909090909091,
+    "7": 0.10952380952380952,
+    "8": 0.21052631578947367,
+    "9": 0.10526315789473684,
+    "10": 0.19607843137254902,
+    "11": 0.34545454545454546,
+    "12": 0.3888888888888889,
+    "13": 0.2777777777777778,
+    "14": 0.7333333333333333,
+    "15": 0.4666666666666667,
+    "16": 0.5,
+    "17": 0.4,
+    "18": 0.6666666666666666,
+    "19": 0.8333333333333334,
+    "20": 0.5,
+    "21": 0.5,
+    "22": 0.6666666666666666,
+    "23": 0.6666666666666666,
+    "24": 0.6666666666666666,
     "25": 1.0,
     "26": 1.0,
     "27": 1.0,
@@ -460,13 +549,18 @@
     "31": 1.0,
     "32": 1.0,
     "33": 1.0,
-    "34": 1.0
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0
   },
   "gods": [
     {
       "id": "lib_analytics_trackevent",
       "label": "trackEvent()",
-      "degree": 18
+      "degree": 19
     },
     {
       "id": "components_pagemeta_pagemeta",
@@ -494,6 +588,11 @@
       "degree": 13
     },
     {
+      "id": "api_leads_handler",
+      "label": "handler()",
+      "degree": 11
+    },
+    {
       "id": "package_scripts",
       "label": "scripts",
       "degree": 11
@@ -504,75 +603,70 @@
       "degree": 11
     },
     {
-      "id": "api_leads_handler",
-      "label": "handler()",
-      "degree": 9
-    },
-    {
       "id": "api_leads_astext",
       "label": "asText()",
-      "degree": 7
+      "degree": 8
     }
   ],
   "surprises": [
     {
-      "source": "AnalyticsBridge()",
-      "target": "trackEvent()",
-      "source_files": [
-        "src/App.tsx",
-        "src/lib/analytics.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "peripheral node `AnalyticsBridge()` unexpectedly reaches hub `trackEvent()`"
-    },
-    {
       "source": "MarketPage()",
-      "target": "serviceSchema()",
+      "target": "breadcrumbSchema()",
       "source_files": [
         "src/components/MarketPage.tsx",
-        "src/lib/seo.ts"
+        "scripts/prerender.mjs"
       ],
-      "confidence": "EXTRACTED",
+      "confidence": "INFERRED",
       "relation": "calls",
-      "why": "bridges separate communities"
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "LandingPageRoute()",
+      "target": "breadcrumbSchema()",
+      "source_files": [
+        "src/pages/LandingPage.tsx",
+        "scripts/prerender.mjs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
     },
     {
       "source": "AboutPage()",
       "target": "breadcrumbSchema()",
       "source_files": [
         "src/pages/About.tsx",
-        "src/lib/seo.ts"
+        "scripts/prerender.mjs"
       ],
-      "confidence": "EXTRACTED",
+      "confidence": "INFERRED",
       "relation": "calls",
-      "why": "peripheral node `AboutPage()` unexpectedly reaches hub `breadcrumbSchema()`"
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
     },
     {
       "source": "CapabilitiesPage()",
       "target": "breadcrumbSchema()",
       "source_files": [
         "src/pages/Capabilities.tsx",
-        "src/lib/seo.ts"
+        "scripts/prerender.mjs"
       ],
-      "confidence": "EXTRACTED",
+      "confidence": "INFERRED",
       "relation": "calls",
-      "why": "peripheral node `CapabilitiesPage()` unexpectedly reaches hub `breadcrumbSchema()`"
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
     },
     {
       "source": "ContactPage()",
       "target": "breadcrumbSchema()",
       "source_files": [
         "src/pages/Contact.tsx",
-        "src/lib/seo.ts"
+        "scripts/prerender.mjs"
       ],
-      "confidence": "EXTRACTED",
+      "confidence": "INFERRED",
       "relation": "calls",
-      "why": "peripheral node `ContactPage()` unexpectedly reaches hub `breadcrumbSchema()`"
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
     }
   ],
   "tokens": {
-    "input": 5115,
-    "output": 3313
+    "input": 90950,
+    "output": 7308
   }
 }

@@ -1,0 +1,578 @@
+{
+  "communities": {
+    "0": [
+      "animations_fadein",
+      "animations_fadein_fadein",
+      "animations_fadein_fadeinprops",
+      "components_beforeafterslider",
+      "components_beforeafterslider_beforeafterslider",
+      "components_beforeafterslider_beforeaftersliderprops",
+      "components_marketpage",
+      "components_marketpage_marketpage",
+      "components_pagemeta",
+      "components_pagemeta_getsiteurl",
+      "components_pagemeta_pagemeta",
+      "components_pagemeta_pagemetaprops",
+      "components_pagemeta_upsertlink",
+      "components_pagemeta_upsertmeta",
+      "components_pagetransition",
+      "components_pagetransition_pagetransition",
+      "components_pagetransition_pagetransitionprops",
+      "components_responsiveimage",
+      "components_responsiveimage_responsiveimage",
+      "components_responsiveimage_responsiveimageprops",
+      "lib_seo_breadcrumbschema",
+      "pages_about",
+      "pages_about_aboutpage",
+      "pages_capabilities",
+      "pages_capabilities_capabilitiespage",
+      "pages_contact",
+      "pages_contact_contactpage",
+      "pages_notfound",
+      "pages_notfound_notfoundpage",
+      "pages_projects",
+      "pages_projects_casestudycard",
+      "pages_projects_processtag",
+      "pages_projects_projectspage",
+      "pages_review",
+      "pages_review_reviewpage",
+      "pages_servicearea",
+      "pages_servicearea_serviceareapage",
+      "pages_servicecommercial",
+      "pages_servicecommercial_servicecommercial",
+      "pages_serviceexterior",
+      "pages_serviceexterior_serviceexterior",
+      "pages_serviceinterior",
+      "pages_serviceinterior_serviceinterior",
+      "pages_services",
+      "pages_services_photoservicecard",
+      "pages_services_servicespage",
+      "pages_servicestriping",
+      "pages_servicestriping_servicestriping",
+      "regenerated_image_1778652000603_painter_on_lift"
+    ],
+    "1": [
+      "components_bookingcta",
+      "components_bookingcta_bookingcta",
+      "components_bookingcta_bookingctaprops",
+      "components_bookingcta_bookinglabels",
+      "components_conversionfootercta",
+      "components_conversionfootercta_conversionfootercta",
+      "components_conversionfootercta_proofitems",
+      "components_conversionheader",
+      "components_conversionheader_conversionheader",
+      "components_conversionheader_navlink",
+      "components_leadform",
+      "components_leadform_budgetoptions",
+      "components_leadform_leadform",
+      "components_leadform_leadformprops",
+      "components_leadform_projectoptions",
+      "components_leadform_propertyoptions",
+      "components_leadform_status",
+      "components_leadform_timelineoptions",
+      "components_reviewcarousel",
+      "components_reviewcarousel_reviewcarousel",
+      "components_reviewcarousel_testimonial",
+      "components_reviewcarousel_testimonials",
+      "components_serviceareamap",
+      "components_serviceareamap_proofitems",
+      "components_serviceareamap_serviceareamap",
+      "components_serviceareamap_serviceareamapprops",
+      "components_serviceareamap_serviceareapins",
+      "components_sociallinks",
+      "components_sociallinks_sociallinks",
+      "lib_analytics",
+      "lib_analytics_analyticspayload",
+      "lib_analytics_readutmparams",
+      "lib_analytics_trackevent",
+      "lib_analytics_window",
+      "lib_contact",
+      "lib_contact_buildestimatemailto",
+      "lib_contact_openestimateemail",
+      "pages_estimate",
+      "pages_estimate_cabinetkey",
+      "pages_estimate_cabinets",
+      "pages_estimate_clampnumber",
+      "pages_estimate_dimensions",
+      "pages_estimate_estimatepage",
+      "pages_estimate_numericdimensionkey",
+      "pages_estimate_numerictrimkey",
+      "pages_estimate_roompresets",
+      "pages_estimate_step",
+      "pages_estimate_trimprep",
+      "src_app_analyticsbridge"
+    ],
+    "2": [
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_autoprefixer",
+      "package_devdependencies_remotion",
+      "package_devdependencies_remotion_cli",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tsx",
+      "package_devdependencies_types_express",
+      "package_devdependencies_types_node",
+      "package_devdependencies_typescript",
+      "package_devdependencies_vite",
+      "package_name",
+      "package_overrides",
+      "package_overrides_source_map",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_ci",
+      "package_scripts_clean",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_preview",
+      "package_scripts_remotion_studio",
+      "package_scripts_render_hero",
+      "package_scripts_render_markets",
+      "package_scripts_test",
+      "package_type",
+      "package_version"
+    ],
+    "3": [
+      "components_marketpage_marketpageprops",
+      "components_trustanchors",
+      "components_trustanchors_trustanchors",
+      "data_markets",
+      "data_markets_market",
+      "data_markets_marketbyslug",
+      "data_markets_marketcapability",
+      "data_markets_markets",
+      "data_markets_marketslug",
+      "data_markets_supportingimages",
+      "data_markets_trustpillars",
+      "lib_seo_businessschema",
+      "pages_commercial",
+      "pages_commercial_commercialpage",
+      "pages_home",
+      "pages_home_conversionsteps",
+      "pages_home_coverageitems",
+      "pages_home_homepage",
+      "pages_home_marketlane",
+      "pages_home_marketmedia",
+      "pages_home_processstep",
+      "pages_home_trustpillar",
+      "pages_publicsector",
+      "pages_publicsector_publicsectorpage",
+      "pages_residential",
+      "pages_residential_residentialpage"
+    ],
+    "4": [
+      "components_customcursor",
+      "components_customcursor_customcursor",
+      "components_layout",
+      "components_layout_layoutprops",
+      "data_landingpages",
+      "data_landingpages_arealandingpages",
+      "data_landingpages_landingpage",
+      "data_landingpages_landingpagebykindandslug",
+      "data_landingpages_landingpagebyslug",
+      "data_landingpages_landingpagekind",
+      "data_landingpages_landingpagepath",
+      "data_landingpages_landingpages",
+      "data_landingpages_servicelandingpages",
+      "lib_seo",
+      "lib_seo_localbusinessschema",
+      "lib_seo_serviceschema",
+      "lib_seo_siteurl",
+      "pages_landingpage",
+      "pages_landingpage_landingpageroute",
+      "pages_landingpage_landingpagerouteprops",
+      "pages_landingpage_marketpath",
+      "pages_landingpage_sectionimages"
+    ],
+    "5": [
+      "remotion_index",
+      "remotion_root",
+      "remotion_root_remotionroot",
+      "remotion_skybrandfilms",
+      "remotion_skybrandfilms_animatedframe",
+      "remotion_skybrandfilms_assets",
+      "remotion_skybrandfilms_blueprintgrid",
+      "remotion_skybrandfilms_brandheroloop",
+      "remotion_skybrandfilms_cinematicgrade",
+      "remotion_skybrandfilms_clamp",
+      "remotion_skybrandfilms_ease",
+      "remotion_skybrandfilms_frameasset",
+      "remotion_skybrandfilms_grain",
+      "remotion_skybrandfilms_heroframes",
+      "remotion_skybrandfilms_market",
+      "remotion_skybrandfilms_marketassets",
+      "remotion_skybrandfilms_marketloop",
+      "remotion_skybrandfilms_marketloopprops",
+      "remotion_skybrandfilms_measurementmarks",
+      "remotion_skybrandfilms_slowease",
+      "remotion_skybrandfilms_stripelanguage"
+    ],
+    "6": [
+      "components_layout_layout",
+      "components_scrolltotop",
+      "components_scrolltotop_scrolltotop",
+      "src_app",
+      "src_app_aboutpage",
+      "src_app_animatedroutes",
+      "src_app_app",
+      "src_app_capabilitiespage",
+      "src_app_commercialpage",
+      "src_app_contactpage",
+      "src_app_estimatepage",
+      "src_app_landingpageroute",
+      "src_app_notfoundpage",
+      "src_app_projectspage",
+      "src_app_publicsectorpage",
+      "src_app_residentialpage",
+      "src_app_reviewpage",
+      "src_app_routefallback",
+      "src_app_serviceareapage",
+      "src_main"
+    ],
+    "7": [
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowimportingtsextensions",
+      "tsconfig_compileroptions_allowjs",
+      "tsconfig_compileroptions_experimentaldecorators",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_jsx",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduledetection",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_target",
+      "tsconfig_compileroptions_usedefineforclassfields",
+      "tsconfig_exclude",
+      "tsconfig_include",
+      "tsconfig_paths"
+    ],
+    "8": [
+      "package_dependencies",
+      "package_dependencies_dotenv",
+      "package_dependencies_express",
+      "package_dependencies_google_genai",
+      "package_dependencies_lucide_react",
+      "package_dependencies_motion",
+      "package_dependencies_phosphor_icons_react",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_react_router_dom",
+      "package_dependencies_resend",
+      "package_dependencies_tailwindcss_vite",
+      "package_dependencies_vercel_analytics",
+      "package_dependencies_vercel_speed_insights",
+      "package_dependencies_vite",
+      "package_dependencies_vitejs_plugin_react"
+    ],
+    "9": [
+      "api_leads",
+      "api_leads_astext",
+      "api_leads_buildautoreplyhtml",
+      "api_leads_buildleadhtml",
+      "api_leads_buildleadid",
+      "api_leads_escapehtml",
+      "api_leads_getsafevalue",
+      "api_leads_handler",
+      "api_leads_ispayload",
+      "api_leads_requiredfields",
+      "api_leads_sendautoreplytolead",
+      "api_leads_sendleadwebhook",
+      "api_leads_sendtohubspot",
+      "api_leads_sendwithresend",
+      "api_leads_validate"
+    ],
+    "10": [
+      "scripts_prerender",
+      "scripts_prerender_breadcrumbschema",
+      "scripts_prerender_businessschema",
+      "scripts_prerender_canonicalfor",
+      "scripts_prerender_distdir",
+      "scripts_prerender_escapehtml",
+      "scripts_prerender_injecthead",
+      "scripts_prerender_landingroutes",
+      "scripts_prerender_routes",
+      "scripts_prerender_serviceschema",
+      "scripts_prerender_siteurl"
+    ],
+    "11": [
+      "api_manychat",
+      "api_manychat_astext",
+      "api_manychat_buildleadhtml",
+      "api_manychat_buildleadid",
+      "api_manychat_escapehtml",
+      "api_manychat_handler",
+      "api_manychat_sendleadwebhook",
+      "api_manychat_sendtohubspot",
+      "api_manychat_sendwithresend"
+    ],
+    "12": [
+      "vercel",
+      "vercel_buildcommand",
+      "vercel_framework",
+      "vercel_headers",
+      "vercel_installcommand",
+      "vercel_outputdirectory",
+      "vercel_redirects"
+    ],
+    "13": [
+      "scripts_generate_brand_assets",
+      "scripts_generate_brand_assets_add_overlays",
+      "scripts_generate_brand_assets_composite",
+      "scripts_generate_brand_assets_open_cover",
+      "scripts_generate_brand_assets_square_composite",
+      "scripts_generate_brand_assets_tint"
+    ],
+    "14": [
+      "scripts_test_accessibility",
+      "scripts_test_accessibility_brandcolors",
+      "scripts_test_accessibility_calculatecontrast",
+      "scripts_test_accessibility_checks",
+      "scripts_test_accessibility_getluminance",
+      "scripts_test_accessibility_getrgb"
+    ],
+    "15": [
+      "animations_magneticbutton",
+      "animations_magneticbutton_magneticbutton",
+      "animations_magneticbutton_magneticbuttonprops",
+      "components_heroleadmagnet",
+      "components_heroleadmagnet_heroleadmagnet"
+    ],
+    "16": [
+      "scripts_generate_sitemap",
+      "scripts_generate_sitemap_generatesitemap",
+      "scripts_generate_sitemap_paintingservicesslugs",
+      "scripts_generate_sitemap_serviceareasslugs",
+      "scripts_generate_sitemap_staticroutes"
+    ],
+    "17": [
+      "inspect_images",
+      "inspect_images_ai",
+      "inspect_images_analyze",
+      "inspect_images_main"
+    ],
+    "18": [
+      "scripts_verify_dns",
+      "scripts_verify_dns_resolveany",
+      "scripts_verify_dns_resolvecname",
+      "scripts_verify_dns_verifydns"
+    ],
+    "19": [
+      "strings",
+      "strings_backupdir",
+      "strings_findstrings",
+      "strings_workspaceroot"
+    ],
+    "20": [
+      "components_spotlightcard",
+      "components_spotlightcard_spotlightcard",
+      "components_spotlightcard_spotlightcardprops"
+    ],
+    "21": [
+      "scripts_ci_check",
+      "scripts_ci_check_runcicheck",
+      "scripts_ci_check_runstep"
+    ],
+    "22": [
+      "scripts_validate_schemas",
+      "scripts_validate_schemas_gethtmlfiles",
+      "scripts_validate_schemas_validateschemas"
+    ],
+    "23": [
+      "scripts_compress_images",
+      "scripts_compress_images_compress_images"
+    ],
+    "24": [
+      "scripts_ping_google",
+      "scripts_ping_google_verifysitemapingestion"
+    ],
+    "25": [
+      "scripts_replace_image_refs",
+      "scripts_replace_image_refs_replace_image_refs"
+    ],
+    "26": [
+      "scripts_verify_csp",
+      "scripts_verify_csp_verifycsp"
+    ],
+    "27": [
+      "tests_remediation_test",
+      "tests_remediation_test_read"
+    ],
+    "28": [
+      "tests_site_architecture_test",
+      "tests_site_architecture_test_read"
+    ],
+    "29": [
+      "vite_config",
+      "vite_config_manualchunks"
+    ],
+    "30": [
+      "context_dynamic_operations_data"
+    ],
+    "31": [
+      "context_library_utilities"
+    ],
+    "32": [
+      "context_page_views"
+    ],
+    "33": [
+      "context_reusable_ui_components"
+    ],
+    "34": [
+      "src_types_d"
+    ]
+  },
+  "cohesion": {
+    "0": 0.1130952380952381,
+    "1": 0.05357142857142857,
+    "2": 0.07142857142857142,
+    "3": 0.09846153846153846,
+    "4": 0.16883116883116883,
+    "5": 0.10952380952380952,
+    "6": 0.10526315789473684,
+    "7": 0.10526315789473684,
+    "8": 0.125,
+    "9": 0.2857142857142857,
+    "10": 0.21818181818181817,
+    "11": 0.4444444444444444,
+    "12": 0.2857142857142857,
+    "13": 0.7333333333333333,
+    "14": 0.4666666666666667,
+    "15": 0.5,
+    "16": 0.4,
+    "17": 0.6666666666666666,
+    "18": 0.8333333333333334,
+    "19": 0.5,
+    "20": 0.6666666666666666,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0
+  },
+  "gods": [
+    {
+      "id": "lib_analytics_trackevent",
+      "label": "trackEvent()",
+      "degree": 18
+    },
+    {
+      "id": "components_pagemeta_pagemeta",
+      "label": "PageMeta()",
+      "degree": 17
+    },
+    {
+      "id": "components_pagetransition_pagetransition",
+      "label": "PageTransition()",
+      "degree": 17
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 15
+    },
+    {
+      "id": "animations_fadein_fadein",
+      "label": "FadeIn()",
+      "degree": 14
+    },
+    {
+      "id": "lib_seo_breadcrumbschema",
+      "label": "breadcrumbSchema()",
+      "degree": 13
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 11
+    },
+    {
+      "id": "components_responsiveimage_responsiveimage",
+      "label": "ResponsiveImage()",
+      "degree": 11
+    },
+    {
+      "id": "api_leads_handler",
+      "label": "handler()",
+      "degree": 9
+    },
+    {
+      "id": "api_leads_astext",
+      "label": "asText()",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "AnalyticsBridge()",
+      "target": "trackEvent()",
+      "source_files": [
+        "src/App.tsx",
+        "src/lib/analytics.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `AnalyticsBridge()` unexpectedly reaches hub `trackEvent()`"
+    },
+    {
+      "source": "MarketPage()",
+      "target": "serviceSchema()",
+      "source_files": [
+        "src/components/MarketPage.tsx",
+        "src/lib/seo.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "AboutPage()",
+      "target": "breadcrumbSchema()",
+      "source_files": [
+        "src/pages/About.tsx",
+        "src/lib/seo.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `AboutPage()` unexpectedly reaches hub `breadcrumbSchema()`"
+    },
+    {
+      "source": "CapabilitiesPage()",
+      "target": "breadcrumbSchema()",
+      "source_files": [
+        "src/pages/Capabilities.tsx",
+        "src/lib/seo.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `CapabilitiesPage()` unexpectedly reaches hub `breadcrumbSchema()`"
+    },
+    {
+      "source": "ContactPage()",
+      "target": "breadcrumbSchema()",
+      "source_files": [
+        "src/pages/Contact.tsx",
+        "src/lib/seo.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `ContactPage()` unexpectedly reaches hub `breadcrumbSchema()`"
+    }
+  ],
+  "tokens": {
+    "input": 5115,
+    "output": 3313
+  }
+}

@@ -31,7 +31,7 @@ import { trackEvent } from '../lib/analytics';
 const corePositioningLine = 'Residential detail. Commercial discipline. Public-sector ready.';
 
 const customerPromise =
-  'Interior and exterior painting for homes, businesses, and facilities in Inver Grove Heights and the Twin Cities Metro.';
+  'Interior and exterior painting for homes, businesses, and facilities across the Twin Cities Metro Area.';
 const verifiedContractorLine =
   'Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting).';
 
@@ -204,7 +204,7 @@ export default function HomePage() {
     <PageTransition>
       <PageMeta
         title="Sky's the Limit Painting LLC | Twin Cities Painting Contractor"
-        description="Sky’s the Limit Painting LLC provides interior and exterior painting estimates for homes, businesses, and facilities in Inver Grove Heights and the Twin Cities Metro."
+        description="Sky’s the Limit Painting LLC provides interior and exterior painting estimates for homes, businesses, and facilities across the Twin Cities Metro Area."
         path="/"
         schema={businessSchema}
       />
@@ -302,7 +302,7 @@ export default function HomePage() {
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="text-lg leading-relaxed text-[#c9c1b4]">
-              We believe in exceptional craftsmanship from the ground up. Sky’s the Limit Painting is an owner-operated, fully insured registered MN specialty contractor based in Inver Grove Heights. We serve homeowners, business managers, and public agencies across the Twin Cities with a dedication to structural prep, neatness, and flawless execution.
+              We believe in exceptional craftsmanship from the ground up. Sky’s the Limit Painting is an owner-operated, fully insured registered MN specialty contractor serving the Twin Cities Metro. We serve homeowners, business managers, and public agencies across the region with a dedication to structural prep, neatness, and flawless execution.
             </p>
           </FadeIn>
         </div>

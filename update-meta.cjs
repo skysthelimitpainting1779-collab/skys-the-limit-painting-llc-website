@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const pages = [
-  { file: 'src/pages/About.tsx', title: "About Us | Sky's the Limit Painting LLC", desc: "Built by a Painter, Not a Sales Office. Learn about Anthony Briseno and Sky's the Limit Painting LLC based in Inver Grove Heights, MN." },
+  { file: 'src/pages/About.tsx', title: "About Us | Sky's the Limit Painting LLC", desc: "Built by a Painter, Not a Sales Office. Learn about Anthony Briseno and Sky's the Limit Painting LLC serving the Twin Cities Metro, MN." },
   { file: 'src/pages/Contact.tsx', title: "Contact Us & Free Estimates | Sky's the Limit Painting LLC", desc: "Get a free, clear estimate on your painting or striping project in the Twin Cities Metro. Call 651-410-4196 or message us today." },
   { file: 'src/pages/Projects.tsx', title: "Recent Painting Projects | Sky's the Limit Painting LLC", desc: "Real work. Clean finish. Take a look at some of our recent verifiable interior, exterior, and commercial painting projects across the Twin Cities." },
   { file: 'src/pages/ServiceArea.tsx', title: "Service Area | Twin Cities Painting Contractor", desc: "Serving Inver Grove Heights, Dakota County, and the Twin Cities Metro. Local, dependable painting services near you." },

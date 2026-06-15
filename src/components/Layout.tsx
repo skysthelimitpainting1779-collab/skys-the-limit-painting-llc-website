@@ -45,7 +45,7 @@ export default function Layout({ children }: LayoutProps) {
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
             <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 tracking-wide">Residential detail. Commercial discipline. Public-sector ready.</h3>
             <p className="text-gray-400 max-w-md text-lg">
-              A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities from Inver Grove Heights across the Twin Cities area.
+              A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities across the Twin Cities Metro area.
             </p>
             <div className="mt-8">
                <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'footer' })} className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
@@ -103,7 +103,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Sky's the Limit Painting LLC. All rights reserved.</p>
           <p>Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers’ comp under MN Statute 176.041 | Fully Insured</p>
-          <p>Based in Inver Grove Heights, MN</p>
+          <p>Twin Cities Metro Area, MN</p>
         </div>
       </footer>
     </div>

@@ -10,7 +10,7 @@ export default function AboutPage() {
     <PageTransition>
       <PageMeta
         title="About Anthony Briseno | Sky's the Limit Painting LLC"
-        description="Learn about Anthony Briseno and Sky’s the Limit Painting LLC, an owner-operated Minnesota painting contractor based in Inver Grove Heights."
+        description="Learn about Anthony Briseno and Sky’s the Limit Painting LLC, an owner-operated Minnesota painting contractor serving the Twin Cities Metro."
         path="/about"
         schema={breadcrumbSchema([
           { name: 'Home', path: '/' },
@@ -82,7 +82,7 @@ export default function AboutPage() {
               
               <div className="space-y-6 text-lg text-[#e4ded2] leading-relaxed">
                 <p>
-                  Sky’s the Limit Painting LLC is a Minnesota painting company based in Inver Grove Heights and led by Anthony Briseno.
+                  Sky’s the Limit Painting LLC is a Minnesota painting company serving the Twin Cities Metro and led by Anthony Briseno.
                 </p>
                 <p>
                   After completing a Minnesota Journeyworker Painter & Decorator apprenticeship, Anthony started Sky’s the Limit to bring dependable, skilled painting work to homeowners, businesses, and qualified opportunities across the Twin Cities area.

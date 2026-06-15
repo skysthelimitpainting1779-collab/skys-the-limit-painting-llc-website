@@ -223,7 +223,7 @@ export default function CapabilitiesPage() {
             <div className="border border-white/10 bg-[#0B0B0D] p-6 space-y-2 text-xs">
               <h4 className="font-bold uppercase tracking-wider text-white">Geographic Scope</h4>
               <p className="text-[#b9b2a6] leading-relaxed">
-                Headquartered in Inver Grove Heights, MN. Proudly providing commercial painting, pavement marking, and cabinet spraying across the entire Twin Cities Metropolitan Area.
+                Headquartered in the Twin Cities Metro, MN. Proudly providing commercial painting, pavement marking, and cabinet spraying across the entire Metropolitan Area.
               </p>
             </div>
 
