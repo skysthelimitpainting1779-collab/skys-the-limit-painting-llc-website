@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Navigation2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
+import 'leaflet/dist/leaflet.css';
 
 const serviceAreaPins = [
   { name: 'Minneapolis', slug: 'minneapolis', region: 'West metro', lat: 44.9778, lng: -93.2650 },
