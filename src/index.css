@@ -247,3 +247,46 @@
     animation: mesh-drift 12s ease infinite;
   }
 }
+
+/* Leaflet UI Dark Custom Theme */
+.leaflet-container {
+  background-color: #050505 !important;
+  outline: none;
+}
+.leaflet-popup-content-wrapper {
+  background: #0B0B0D !important;
+  color: #F7F7F7 !important;
+  border: 1px solid rgba(240, 192, 103, 0.25) !important;
+  border-radius: 0px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+}
+.leaflet-popup-content {
+  margin: 10px 14px !important;
+}
+.leaflet-popup-tip {
+  background: #0B0B0D !important;
+  border-left: 1px solid rgba(240, 192, 103, 0.25) !important;
+  border-bottom: 1px solid rgba(240, 192, 103, 0.25) !important;
+}
+.custom-map-marker {
+  transition: transform 0.2s ease-in-out;
+}
+.custom-map-marker:hover {
+  transform: scale(1.25) !important;
+}
+.leaflet-bar {
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 0px !important;
+}
+.leaflet-bar a {
+  background-color: #0B0B0D !important;
+  color: #f0c067 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0px !important;
+  transition: background-color 0.2s;
+}
+.leaflet-bar a:hover {
+  background-color: #f0c067 !important;
+  color: #050505 !important;
+}
+

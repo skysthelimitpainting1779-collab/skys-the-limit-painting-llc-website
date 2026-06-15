@@ -5,6 +5,7 @@ import ConversionHeader from './ConversionHeader';
 import ConversionFooterCta from './ConversionFooterCta';
 import CustomCursor from './CustomCursor';
 import SocialLinks from './SocialLinks';
+import HeatmapOverlay from './HeatmapOverlay';
 import { areaLandingPages, serviceLandingPages, landingPagePath } from '../data/landingPages';
 import { trackEvent } from '../lib/analytics';
 
@@ -16,6 +17,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-page-bg text-page-text">
       <CustomCursor />
+      <HeatmapOverlay />
       <div className="noise-overlay"></div>
       
       <ConversionHeader />

@@ -1,16 +1,17 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Navigation2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
 
 const serviceAreaPins = [
-  { name: 'Minneapolis', slug: 'minneapolis', region: 'West metro', x: 36, y: 34 },
-  { name: 'St. Paul', slug: 'st-paul', region: 'Core metro', x: 55, y: 38 },
-  { name: 'Inver Grove Heights', slug: 'inver-grove-heights', region: 'Home base', x: 58, y: 64, primary: true },
-  { name: 'South St. Paul', slug: 'south-st-paul', region: 'South metro', x: 55, y: 55 },
-  { name: 'Eagan', slug: 'eagan', region: 'Dakota County', x: 47, y: 72 },
-  { name: 'Woodbury', slug: 'woodbury', region: 'East metro', x: 76, y: 49 },
-  { name: 'Twin Cities', slug: 'twin-cities', region: 'Metro coverage', x: 47, y: 48 },
+  { name: 'Minneapolis', slug: 'minneapolis', region: 'West metro', lat: 44.9778, lng: -93.2650 },
+  { name: 'St. Paul', slug: 'st-paul', region: 'Core metro', lat: 44.9537, lng: -93.0900 },
+  { name: 'Inver Grove Heights', slug: 'inver-grove-heights', region: 'Home base', lat: 44.8341, lng: -93.0427, primary: true },
+  { name: 'South St. Paul', slug: 'south-st-paul', region: 'South metro', lat: 44.8872, lng: -93.0294 },
+  { name: 'Eagan', slug: 'eagan', region: 'Dakota County', lat: 44.8041, lng: -93.1669 },
+  { name: 'Woodbury', slug: 'woodbury', region: 'East metro', lat: 44.9239, lng: -92.9594 },
+  { name: 'Twin Cities', slug: 'twin-cities', region: 'Metro coverage', lat: 44.9100, lng: -93.1800 },
 ];
 
 const proofItems = [
@@ -25,7 +26,10 @@ interface ServiceAreaMapProps {
 }
 
 export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps) {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
   const prefersReducedMotion = useReducedMotion();
+
   const mapMotion = (prefersReducedMotion
     ? {}
     : {
@@ -34,6 +38,74 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
         viewport: { once: true, amount: 0.22 },
         transition: { duration: 0.42, ease: 'easeOut' as const },
       }) as any;
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !mapContainerRef.current) return;
+
+    let active = true;
+
+    import('leaflet').then((LModule) => {
+      const L = LModule.default || LModule;
+      if (!active || !mapContainerRef.current) return;
+
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+
+      // Initialize map instance
+      const map = L.map(mapContainerRef.current, {
+        center: [44.88, -93.14],
+        zoom: 10,
+        scrollWheelZoom: false,
+        zoomControl: false,
+        attributionControl: false,
+      });
+
+      mapInstanceRef.current = map;
+
+      // Add zoom control at bottom right (gold/black styled via CSS if needed)
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+      // CartoDB Dark Matter tile layer
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+      }).addTo(map);
+
+      // Add custom styled markers
+      serviceAreaPins.forEach((pin) => {
+        const goldIcon = L.divIcon({
+          className: 'custom-map-marker',
+          html: `<div style="background-color: ${pin.primary ? '#f0c067' : '#0B0B0D'}; border: 2px solid #f0c067; width: 14px; height: 14px; box-shadow: 0 0 10px rgba(240,192,103,0.35);"></div>`,
+          iconSize: [14, 14],
+          iconAnchor: [7, 7]
+        });
+
+        const marker = L.marker([pin.lat, pin.lng], { icon: goldIcon }).addTo(map);
+
+        marker.bindPopup(
+          `<div style="font-family: 'Outfit', sans-serif; color: #fff; background: #0B0B0D; padding: 4px; line-height: 1.4;">
+            <h5 style="margin: 0; font-size: 13px; font-weight: 900; text-transform: uppercase; color: #f0c067; letter-spacing: 0.05em;">${pin.name}</h5>
+            <p style="margin: 3px 0 0 0; font-size: 10px; color: #c9c1b4; text-transform: uppercase; font-weight: 600;">${pin.region}</p>
+            <a href="/service-areas/${pin.slug}" style="display: inline-block; margin-top: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; color: #f0c067; text-decoration: none; border-bottom: 1px solid #f0c067;">View Area Scope &rarr;</a>
+           </div>`,
+          {
+            closeButton: false,
+            className: 'custom-map-popup'
+          }
+        );
+      });
+    });
+
+    return () => {
+      active = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <section
@@ -48,10 +120,10 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
         <motion.div {...mapMotion} className="lg:col-span-5">
           <p className="text-xs font-black uppercase tracking-[0.26em] text-[#f0c067]">Service-area map</p>
           <h2 id="service-area-map-heading" className="mt-4 text-3xl font-black leading-tight text-white md:text-5xl">
-            Twin Cities coverage without the heavy map embed.
+            Twin Cities coverage with live interactive mapping.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[#d7e3df] md:text-lg">
-            A fast, accessible coverage map for homeowners and property managers checking whether Sky's the Limit Painting can reach their project.
+            A real-time, responsive Leaflet coverage map for homeowners and commercial property managers verifying whether our painting teams reach their local site.
           </p>
 
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
@@ -85,7 +157,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
         <motion.figure {...mapMotion} className="lg:col-span-7">
           <div
-            className="relative aspect-[5/4] overflow-hidden border border-[#d8c7aa]/18 bg-[#0B0B0D] shadow-[0_24px_80px_rgba(0,0,0,0.34)] sm:aspect-[16/10]"
+            className="relative aspect-[5/4] overflow-hidden border border-[#d8c7aa]/18 bg-[#0B0B0D] shadow-[0_24px_80px_rgba(0,0,0,0.34)] sm:aspect-[16/10] h-[350px] sm:h-[450px]"
             role="img"
             aria-labelledby="service-area-visual-title"
             aria-describedby="service-area-visual-description"
@@ -97,45 +169,8 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
               Map markers include Minneapolis, St. Paul, Inver Grove Heights, South St. Paul, Eagan, Woodbury, and broad Twin Cities coverage.
             </span>
 
-            <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 80" aria-hidden="true">
-              <rect width="100" height="80" fill="#0B0B0D" />
-              <path d="M14 20 C32 28 42 22 53 31 C63 39 75 34 89 44" fill="none" stroke="#f0c067" strokeOpacity="0.32" strokeWidth="1.2" />
-              <path d="M18 58 C31 48 44 52 55 45 C67 37 72 31 83 23" fill="none" stroke="#f0c067" strokeOpacity="0.48" strokeWidth="0.9" />
-              <path d="M25 11 L73 72" stroke="#d8c7aa" strokeOpacity="0.14" strokeWidth="0.7" />
-              <path d="M11 39 L92 39" stroke="#d8c7aa" strokeOpacity="0.14" strokeWidth="0.7" />
-              <path d="M50 8 L50 74" stroke="#d8c7aa" strokeOpacity="0.12" strokeWidth="0.7" />
-              <path d="M32 73 C42 56 45 43 42 23" fill="none" stroke="#d8c7aa" strokeOpacity="0.12" strokeWidth="0.7" />
-              <path d="M69 74 C60 55 63 42 76 20" fill="none" stroke="#d8c7aa" strokeOpacity="0.12" strokeWidth="0.7" />
-            </svg>
-
-            <div className="absolute left-4 top-4 border border-white/12 bg-[#0B0B0D]/82 px-4 py-3 backdrop-blur">
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#f0c067]">Metro reach</p>
-              <p className="mt-1 text-sm font-black text-white">Inver Grove Heights base</p>
-            </div>
-
-            {serviceAreaPins.map((pin, index) => (
-              <Link
-                key={pin.slug}
-                to={`/service-areas/${pin.slug}`}
-                aria-label={`View ${pin.name} painting service area`}
-                onClick={() => trackEvent('service_area_map_pin_click', { area: pin.slug })}
-                className="group absolute z-10 grid min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f0c067]"
-                style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-              >
-                <motion.span
-                  aria-hidden="true"
-                  initial={false}
-                  whileHover={prefersReducedMotion ? undefined : { scale: 1.08 }}
-                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.18, delay: index * 0.02 }}
-                  className={`grid h-6 w-6 place-items-center rounded-full border ${pin.primary ? 'border-[#f0c067] bg-[#f0c067] text-[#101513]' : 'border-[#f0c067] bg-[#0b0b0d] text-[#f0c067]'} shadow-[0_0_0_6px_rgba(240,192,103,0.1)] transition-transform group-hover:scale-110`}
-                >
-                  <span className="h-2 w-2 rounded-full bg-current"></span>
-                </motion.span>
-                <span className="pointer-events-none absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 whitespace-nowrap border border-white/12 bg-[#0B0B0D]/92 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-white opacity-0 shadow-xl backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 md:block">
-                  {pin.name}
-                </span>
-              </Link>
-            ))}
+            <svg className="hidden" aria-hidden="true" />
+            <div ref={mapContainerRef} className="h-full w-full relative z-0"></div>
           </div>
 
           <figcaption className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -143,6 +178,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
               <Link
                 key={pin.slug}
                 to={`/service-areas/${pin.slug}`}
+                aria-label={`View ${pin.name} painting service area`}
                 onClick={() => trackEvent('service_area_map_list_click', { area: pin.slug })}
                 className="flex items-center justify-between gap-3 border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-[#eef7f4] transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
               >
