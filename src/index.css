@@ -14,8 +14,8 @@
   --color-orange-deep: #E94F00;
   --color-green-trust: #2E7D32;
   
-  --font-display: "Montserrat", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: "Outfit", "Montserrat", sans-serif;
+  --font-body: "Outfit", system-ui, sans-serif;
 
   --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
 }
