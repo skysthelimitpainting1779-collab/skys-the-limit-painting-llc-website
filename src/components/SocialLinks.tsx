@@ -1,5 +1,4 @@
 import { Facebook, Instagram, Linkedin, Music2 } from 'lucide-react';
-import { trackEvent } from '../lib/analytics';
 
 const socialLinks = [
   { label: 'Facebook', url: import.meta.env.VITE_FACEBOOK_URL, icon: Facebook },
@@ -22,7 +21,8 @@ export default function SocialLinks() {
           target="_blank"
           rel="noreferrer"
           aria-label={label}
-          onClick={() => trackEvent('social_click', { label })}
+          data-track="social_click"
+          data-track-payload={JSON.stringify({ label })}
           className="grid h-11 w-11 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-orange-safety hover:text-orange-safety"
         >
           <Icon size={19} />

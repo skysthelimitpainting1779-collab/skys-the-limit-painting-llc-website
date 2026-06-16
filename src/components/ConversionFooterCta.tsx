@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';
-import { trackEvent } from '../lib/analytics';
 import MagneticButton from './animations/MagneticButton';
 
 const proofItems = [
@@ -40,7 +39,8 @@ export default function ConversionFooterCta() {
             <MagneticButton pullFactor={0.3}>
               <Link
                 to="/estimate"
-                onClick={() => trackEvent('footer_conversion_cta_click', { action: 'calculator' })}
+                data-track="footer_conversion_cta_click"
+                data-track-payload='{"action":"calculator"}'
                 className="shimmer-cta inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white"
               >
                 <Calculator size={18} />
@@ -49,7 +49,8 @@ export default function ConversionFooterCta() {
             </MagneticButton>
             <a
               href={`tel:${businessPhone}`}
-              onClick={() => trackEvent('call_click', { source: 'conversion_footer' })}
+              data-track="call_click"
+              data-track-payload='{"source":"conversion_footer"}'
               className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#11100d]/80 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
             >
               <Phone size={18} />

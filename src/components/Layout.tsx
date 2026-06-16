@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone } from 'lucide-react';
 import ConversionHeader from './ConversionHeader';
@@ -14,6 +14,26 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('[data-track]');
+      if (target) {
+        const eventName = target.getAttribute('data-track');
+        const payloadStr = target.getAttribute('data-track-payload');
+        try {
+          const payload = payloadStr ? JSON.parse(payloadStr) : {};
+          if (eventName) {
+            trackEvent(eventName, payload);
+          }
+        } catch (err) {
+          console.error('Failed to parse track payload:', err);
+        }
+      }
+    };
+    document.addEventListener('click', handleGlobalClick, { passive: true });
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, []);
+
   return (
     <div className="min-h-[100dvh] flex flex-col bg-page-bg text-page-text">
       <CustomCursor />
@@ -26,11 +46,11 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Mobile Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex max-w-[calc(100vw-2rem)] gap-2 overflow-hidden">
-        <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'mobile_sticky' })} className="min-w-0 basis-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
+        <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_sticky"}' className="min-w-0 basis-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-sm font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
           <Phone size={16} className="text-orange-safety shrink-0" />
           Call/Text
         </a>
-        <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_sticky', label: 'Price Range' })} className="min-w-0 basis-0 flex-1 bg-orange-safety text-[#050505] py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+        <Link to="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_sticky","label":"Price Range"}' className="min-w-0 basis-0 flex-1 bg-orange-safety text-[#050505] py-4 px-2 rounded-sm font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
           Price Range
         </Link>
       </div>
@@ -48,8 +68,8 @@ export default function Layout({ children }: LayoutProps) {
               A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities across the Twin Cities Metro area.
             </p>
             <div className="mt-8">
-               <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'footer' })} className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
-               <a href="mailto:skysthelimitpainting1779@gmail.com" onClick={() => trackEvent('lead_mailto_fallback_opened', { source: 'footer' })} className="text-gray-400 hover:text-white transition-colors">skysthelimitpainting1779@gmail.com</a>
+               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"footer"}' className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
+               <a href="mailto:skysthelimitpainting1779@gmail.com" data-track="lead_mailto_fallback_opened" data-track-payload='{"source":"footer"}' className="text-gray-400 hover:text-white transition-colors">skysthelimitpainting1779@gmail.com</a>
             </div>
             <SocialLinks />
           </div>

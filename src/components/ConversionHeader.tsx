@@ -2,7 +2,6 @@ import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { trackEvent } from '../lib/analytics';
 
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
   const location = useLocation();
@@ -12,7 +11,8 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
     <div className="relative group flex items-center">
       <Link 
         to={to} 
-        onClick={() => trackEvent('nav_click', { path: to, label: String(children) })}
+        data-track="nav_click"
+        data-track-payload={JSON.stringify({ path: to, label: String(children) })}
         className={`relative whitespace-nowrap text-xs font-bold uppercase tracking-widest transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
       >
         {children}
@@ -99,21 +99,24 @@ export default function ConversionHeader() {
                 >
                   <Link 
                     to="/service-area" 
-                    onClick={() => trackEvent('nav_click', { path: '/service-area', label: 'Areas' })}
+                    data-track="nav_click"
+                    data-track-payload='{"path":"/service-area","label":"Areas"}'
                     className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                   >
                     Areas
                   </Link>
                   <Link 
                     to="/refer" 
-                    onClick={() => trackEvent('nav_click', { path: '/refer', label: 'Referral' })}
+                    data-track="nav_click"
+                    data-track-payload='{"path":"/refer","label":"Referral"}'
                     className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                   >
                     Referral
                   </Link>
                   <Link 
                     to="/about" 
-                    onClick={() => trackEvent('nav_click', { path: '/about', label: 'About' })}
+                    data-track="nav_click"
+                    data-track-payload='{"path":"/about","label":"About"}'
                     className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                   >
                     About
@@ -128,7 +131,8 @@ export default function ConversionHeader() {
             <div className="hidden items-center gap-4 md:flex">
               <Link
                 to="/estimate"
-                onClick={() => trackEvent('hero_cta_click', { source: 'header', label: 'Price Range' })}
+                data-track="hero_cta_click"
+                data-track-payload='{"source":"header","label":"Price Range"}'
                 className="hidden items-center justify-center gap-2 border border-[#d8c7aa]/24 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] 2xl:inline-flex"
               >
                 <Calculator size={15} />
@@ -136,12 +140,13 @@ export default function ConversionHeader() {
               </Link>
               <Link
                 to="/contact"
-                onClick={() => trackEvent('hero_cta_click', { source: 'header', label: 'Get Estimate' })}
+                data-track="hero_cta_click"
+                data-track-payload='{"source":"header","label":"Get Estimate"}'
                 className="whitespace-nowrap border border-orange-safety bg-orange-safety px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white hover:border-white"
               >
                 Get Estimate
               </Link>
-              <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'header' })} className="group flex flex-col items-end gap-0">
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="group flex flex-col items-end gap-0">
                 <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
                 <span className="whitespace-nowrap text-xl font-black tracking-normal leading-none text-orange-safety transition-colors group-hover:text-white xl:text-2xl 2xl:text-3xl">651-410-4196</span>
               </a>
@@ -182,10 +187,10 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <Link to="/estimate" onClick={() => trackEvent('hero_cta_click', { source: 'mobile_menu', label: 'Price Range' })} className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <Link to="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 Get A Price Range
               </Link>
-              <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'mobile_menu' })} className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
                 Call / Text 651-410-4196
               </a>
             </div>
