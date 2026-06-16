@@ -138,6 +138,7 @@ export default function ReviewPage() {
           ) : (
             /* Step 2: Funnel Flow */
             <div>
+              {/* Private feedback branch handles rating < 4 below. */}
               {rating >= 4 ? (
                 /* Happy Client: Redirect to Google */
                 <div className="text-center">

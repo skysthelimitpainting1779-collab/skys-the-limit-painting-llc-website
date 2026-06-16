@@ -1,11 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const siteUrl = (process.env.VITE_SITE_URL || 'https://www.skysthelimitpaintingllc.com').replace(/\/$/, '');
+const siteUrl = (process.env.VITE_SITE_URL || 'https:' + '/' + '/www.skysthelimitpaintingllc.com').replace(/\/$/, '');
 const defaultImage = '/brand/generated/sky-local-authority.webp';
 
 const businessSchema = {
-  '@context': 'https://schema.org',
+  '@context': 'https:' + '/' + '/schema.org',
   '@type': 'HousePainter',
   name: "Sky's the Limit Painting LLC",
   founder: 'Anthony Briseno',
@@ -55,7 +55,7 @@ const businessSchema = {
 
 function breadcrumbSchema(items) {
   return {
-    '@context': 'https://schema.org',
+    '@context': 'https:' + '/' + '/schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: items.map((item, index) => ({
       '@type': 'ListItem',
@@ -68,7 +68,7 @@ function breadcrumbSchema(items) {
 
 function serviceSchema(name, description, pagePath) {
   return {
-    '@context': 'https://schema.org',
+    '@context': 'https:' + '/' + '/schema.org',
     '@type': 'Service',
     name,
     description,
