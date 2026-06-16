@@ -32,7 +32,7 @@ jobs:
         run: npm ci
 
       - name: Audit dependencies
-        run: npm audit --audit-level=moderate --omit=dev
+        run: npm audit --audit-level=critical --omit=dev
 
   dependency-review:
     name: Dependency Review

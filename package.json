@@ -55,8 +55,6 @@
   },
   "overrides": {
     "source-map": "0.7.6",
-    "esbuild": "^0.28.1",
-    "@babel/core": ">=7.29.1",
     "js-yaml": ">=4.1.2",
     "tar": ">=7.5.16"
   }
