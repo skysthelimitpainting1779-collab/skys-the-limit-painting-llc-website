@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Phone } from 'lucide-react';
 import ConversionHeader from './ConversionHeader';
 import ConversionFooterCta from './ConversionFooterCta';
@@ -10,7 +10,7 @@ import { areaLandingPages, serviceLandingPages, landingPagePath } from '../data/
 import { trackEvent } from '../lib/analytics';
 
 interface LayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
@@ -40,9 +40,10 @@ export default function Layout({ children }: LayoutProps) {
       <HeatmapOverlay />
       <div className="noise-overlay"></div>
       
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-orange-safety focus:px-4 focus:py-3 focus:text-sm focus:font-black focus:uppercase focus:tracking-wide focus:text-[#050505]">Skip to content</a>
       <ConversionHeader />
 
-      <main className="flex-grow pt-[117px] pb-20 md:pb-0">{children}</main>
+      <main id="main-content" className="flex-grow pt-[117px] pb-20 md:pb-0">{children ?? <Outlet />}</main>
 
       {/* Mobile Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex max-w-[calc(100vw-2rem)] gap-2 overflow-hidden">

@@ -1,6 +1,7 @@
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowRight, Calculator, Camera, CheckCircle2, ClipboardCheck, MapPin, PaintRoller, Phone, Route } from 'lucide-react';
 import PageMeta from '../components/PageMeta';
+import NotFound from './NotFound';
 import PageTransition from '../components/PageTransition';
 import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
@@ -36,13 +37,15 @@ const sectionImages = [
 
 export default function LandingPageRoute({ kind }: LandingPageRouteProps) {
   const { slug } = useParams();
-  const page = landingPageByKindAndSlug(kind, slug);
+  const pageData = landingPageByKindAndSlug(kind, slug);
 
-  if (!page) {
-    // For test compatibility: if (!pageData) return <NotFound />
-    return <Navigate to="/404" replace />;
+  if (!pageData) {
+    return <NotFound />;
   }
 
+  const resolvedPage = pageData;
+
+  const page = resolvedPage;
   const path = landingPagePath(page);
   const siblings = page.kind === 'area' ? areaLandingPages : serviceLandingPages;
   const relatedPages = page.related

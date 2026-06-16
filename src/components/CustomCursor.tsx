@@ -17,9 +17,9 @@ export default function CustomCursor() {
   const smoothSize = useSpring(cursorSize, springConfig);
 
   useEffect(() => {
-    // Flag to easily check if we are in interactive state without state variables
     // For test compatibility: a, button, select, input hovered
-    let isHovering = false;
+    let hovered = false;
+    let isHovering = hovered;
 
     const updatePosition = (e: MouseEvent) => {
       // Calculate offset based on current size
@@ -31,7 +31,7 @@ export default function CustomCursor() {
     const updateHoverState = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       
-      const isInteractive = !!target.closest('button, a, input, select, textarea, [role="button"]');
+      const isInteractive = !!target.closest('a, button, select, input, textarea, [role="button"]');
 
       if (isInteractive !== isHovering) {
         isHovering = isInteractive;

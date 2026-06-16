@@ -25,7 +25,7 @@ const ReviewPage = lazy(() => import('./pages/Review'));
 const EstimatePage = lazy(() => import('./pages/Estimate'));
 const CapabilitiesPage = lazy(() => import('./pages/Capabilities'));
 const ServiceAreaPage = lazy(() => import('./pages/ServiceArea'));
-const NotFoundPage = lazy(() => import('./pages/NotFound'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 const LandingPageRoute = lazy(() => import('./pages/LandingPage'));
 const ReferPage = lazy(() => import('./pages/Refer'));
 
@@ -80,30 +80,34 @@ function AnimatedRoutes() {
   
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/residential" element={<ResidentialPage />} />
-        <Route path="/commercial" element={<CommercialPage />} />
-        <Route path="/public-sector" element={<PublicSectorPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/review" element={<ReviewPage />} />
-        <Route path="/estimate" element={<EstimatePage />} />
-        <Route path="/capabilities" element={<CapabilitiesPage />} />
-        <Route path="/service-area" element={<ServiceAreaPage />} />
-        <Route path="/service-areas/:slug" element={<LandingPageRoute kind="area" />} />
-        <Route path="/painting-services/:slug" element={<LandingPageRoute kind="service" />} />
-        <Route path="/refer" element={<ReferPage />} />
-        <Route path="/referral" element={<Navigate to="/refer" replace />} />
-        <Route path="/services" element={<Navigate to="/residential" replace />} />
-        <Route path="/services/interior" element={<Navigate to="/residential" replace />} />
-        <Route path="/services/exterior" element={<Navigate to="/residential" replace />} />
-        <Route path="/services/commercial" element={<Navigate to="/commercial" replace />} />
-        <Route path="/services/striping" element={<Navigate to="/public-sector" replace />} />
-        <Route path="/services/pavement-marking" element={<Navigate to="/public-sector" replace />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <Suspense fallback={<RouteFallback />}>
+        <Routes location={location}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/residential" element={<ResidentialPage />} />
+            <Route path="/commercial" element={<CommercialPage />} />
+            <Route path="/public-sector" element={<PublicSectorPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/review" element={<ReviewPage />} />
+            <Route path="/estimate" element={<EstimatePage />} />
+            <Route path="/capabilities" element={<CapabilitiesPage />} />
+            <Route path="/service-area" element={<ServiceAreaPage />} />
+            <Route path="/service-areas/:slug" element={<LandingPageRoute kind="area" />} />
+            <Route path="/painting-services/:slug" element={<LandingPageRoute kind="service" />} />
+            <Route path="/refer" element={<ReferPage />} />
+            <Route path="/referral" element={<Navigate to="/refer" replace />} />
+            <Route path="/services" element={<Navigate to="/residential" replace />} />
+            <Route path="/services/interior" element={<Navigate to="/residential" replace />} />
+            <Route path="/services/exterior" element={<Navigate to="/residential" replace />} />
+            <Route path="/services/commercial" element={<Navigate to="/commercial" replace />} />
+            <Route path="/services/striping" element={<Navigate to="/public-sector" replace />} />
+            <Route path="/services/pavement-marking" element={<Navigate to="/public-sector" replace />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </AnimatePresence>
   );
 }
@@ -113,11 +117,7 @@ export default function App() {
     <Router>
       <AnalyticsBridge />
       <ScrollToTop />
-      <Layout>
-        <Suspense fallback={<RouteFallback />}>
-          <AnimatedRoutes />
-        </Suspense>
-      </Layout>
+      <AnimatedRoutes />
     </Router>
   );
 }
