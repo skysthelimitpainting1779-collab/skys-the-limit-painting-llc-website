@@ -3,9 +3,9 @@ import { ArrowRight, CheckCircle2, Home, Building2, PaintRoller, GripHorizontal,
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
-import exteriorImage from '../assets/images/regenerated_image_1778651987756.png';
-import specialtyImage from '../assets/images/regenerated_image_1778651993633.png';
-import prepImage from '../assets/images/regenerated_image_1778652000603.png';
+import exteriorImage from '../assets/images/regenerated_image_1778651987756.webp';
+import specialtyImage from '../assets/images/regenerated_image_1778651993633.webp';
+import prepImage from '../assets/images/regenerated_image_1778652000603.webp';
 
 const PhotoServiceCard = ({ title, headline, bullets, image, icon: Icon, link, ctaText }: any) => (
   <div className="group relative rounded-sm overflow-hidden border border-white/10 shadow-sm flex flex-col h-full bg-black-charcoal">
@@ -64,7 +64,7 @@ export default function ServicesPage() {
                 title="Interior Painting"
                 headline="Clean walls. Sharp lines. Better rooms."
                 bullets={["Walls, ceilings, trim, doors", "Homes, rentals, offices, refreshes", "Careful masking and cleanup"]}
-                image="/images/services/interior/sky-work-02-finished-living-room.png"
+                image="/images/services/interior/sky-work-02-finished-living-room.webp"
                 icon={Home}
                 link="/services/interior"
                 ctaText="View Interior Work"
@@ -86,7 +86,7 @@ export default function ServicesPage() {
                 title="Commercial Painting"
                 headline="Clean work for serious business spaces."
                 bullets={["Shops, offices, facilities", "Scheduling with less disruption", "Professional finish and cleanup"]}
-                image="/images/services/commercial/sky-work-08-finished-commercial.png"
+                image="/images/services/commercial/sky-work-08-finished-commercial.webp"
                 icon={Building2}
                 link="/services/commercial"
                 ctaText="View Commercial Work"
@@ -97,7 +97,7 @@ export default function ServicesPage() {
                 title="Pavement Marking / Striping"
                 headline="Cleaner lots. Clearer traffic flow."
                 bullets={["Parking stalls", "Directional markings", "Safety and property presentation"]}
-                image="/images/services/striping/SkyLLP_ParkingLot_Striping.png"
+                image="/images/services/striping/SkyLLP_ParkingLot_Striping.webp"
                 icon={GripHorizontal}
                 link="/services/striping"
                 ctaText="View Striping Work"

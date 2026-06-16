@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import ResponsiveImage from '../components/ResponsiveImage';
-import commercialBeforeImage from '../assets/images/regenerated_image_1778652000603.png';
+import commercialBeforeImage from '../assets/images/regenerated_image_1778652000603.webp';
 import { breadcrumbSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
 
@@ -116,7 +116,7 @@ export default function ProjectsPage() {
                  prep={["Grid cleaning", "Floor protection", "Masking fixtures", "Adhesion primer"]}
                  result="Darker, cleaner commercial interior with a more complete presentation for customers and staff."
                  beforeImage={commercialBeforeImage} 
-                 afterImage="/images/services/commercial/sky-work-08-finished-commercial.png"
+                 afterImage="/images/services/commercial/sky-work-08-finished-commercial.webp"
                />
              </FadeIn>
              <FadeIn delay={0.2}>
@@ -126,8 +126,8 @@ export default function ProjectsPage() {
                  problem="Bedroom walls, trim, and doors had visible wear, dated colors, and stains that needed careful prep before finish paint."
                  prep={["Drywall patching", "Stain-blocking primer", "Trim sanding", "Dust containment"]}
                  result="A cleaner, more current bedroom finish with sharper lines, stronger coverage, and a calmer finished feel."
-                 beforeImage="/images/services/interior/sky-work-01-finished-kitchen.png"
-                 afterImage="/images/services/interior/sky-work-real-04-before-after-bedroom.png"
+                 beforeImage="/images/services/interior/sky-work-01-finished-kitchen.webp"
+                 afterImage="/images/services/interior/sky-work-real-04-before-after-bedroom.webp"
                />
              </FadeIn>
              <FadeIn delay={0.3}>
@@ -137,7 +137,7 @@ export default function ProjectsPage() {
                  problem="Faded lot markings made parking flow harder to read and weakened the first impression of the property."
                  prep={["Power washing", "Debris clearing", "Chalk lining", "Layout adjustment"]}
                  result="Clearer, brighter parking lot markings that improve visibility, traffic flow, and the property's arrival experience."
-                 image="/images/services/striping/SkyLLP_ParkingLot_Striping.png"
+                 image="/images/services/striping/SkyLLP_ParkingLot_Striping.webp"
                />
              </FadeIn>
              <FadeIn delay={0.4}>
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
                  problem="Living room walls and trim needing an update to brighten the space after years of fading and minor structural settling."
                  prep={["Caulking baseboards", "Putty filling", "Spot priming", "Masking windows"]}
                  result="A fresh, clean finish that brightens the room and gives the trim and walls a more finished look."
-                 image="/images/services/interior/sky-work-02-finished-living-room.png"
+                 image="/images/services/interior/sky-work-02-finished-living-room.webp"
                />
              </FadeIn>
           </div>

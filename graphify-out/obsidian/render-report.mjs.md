@@ -1,0 +1,87 @@
+---
+source_file: ".agents/skills/vercel-optimize/lib/render-report.mjs"
+type: "code"
+community: "Project Fact Reporting"
+location: "L1"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Project_Fact_Reporting
+---
+
+# render-report.mjs
+
+## Connections
+- [[asArray()_1]] - `contains` [EXTRACTED]
+- [[assertValidObservations()]] - `contains` [EXTRACTED]
+- [[buildFinalReportMessage()]] - `contains` [EXTRACTED]
+- [[candidateForDisplay()]] - `contains` [EXTRACTED]
+- [[canonicalRefOf()]] - `contains` [EXTRACTED]
+- [[canonicalizeRoute()]] - `imports` [EXTRACTED]
+- [[compactFinalText()]] - `contains` [EXTRACTED]
+- [[computeCostCoverage()]] - `imports` [EXTRACTED]
+- [[computeImpactLabel()]] - `imports` [EXTRACTED]
+- [[cost-coverage.mjs]] - `imports_from` [EXTRACTED]
+- [[costRoundsToCents()]] - `contains` [EXTRACTED]
+- [[deriveProjectFacts()]] - `imports` [EXTRACTED]
+- [[display-labels.mjs]] - `imports_from` [EXTRACTED]
+- [[displayCandidate()]] - `contains` [EXTRACTED]
+- [[displayCandidateObject()]] - `contains` [EXTRACTED]
+- [[displayCandidateRef()]] - `contains` [EXTRACTED]
+- [[enrichRecFromCandidates()]] - `contains` [EXTRACTED]
+- [[escape()]] - `contains` [EXTRACTED]
+- [[extractCoverageLine()]] - `contains` [EXTRACTED]
+- [[formatBytes()]] - `contains` [EXTRACTED]
+- [[formatCandidateLabel()]] - `imports` [EXTRACTED]
+- [[formatEvidenceText()]] - `contains` [EXTRACTED]
+- [[formatGatedTargets()]] - `contains` [EXTRACTED]
+- [[formatKind()]] - `imports` [EXTRACTED]
+- [[formatNum()]] - `contains` [EXTRACTED]
+- [[formatPublicText()]] - `imports` [EXTRACTED]
+- [[formatRecommendationText()]] - `contains` [EXTRACTED]
+- [[formatRoute()]] - `imports` [EXTRACTED]
+- [[formatSignal()]] - `imports` [EXTRACTED]
+- [[formatUsage()]] - `contains` [EXTRACTED]
+- [[gates]] - `imports` [EXTRACTED]
+- [[groupGatedCandidates()]] - `contains` [EXTRACTED]
+- [[groupGbHoursByCanonicalRoute()]] - `contains` [EXTRACTED]
+- [[impact-label.mjs]] - `imports_from` [EXTRACTED]
+- [[impactString()]] - `contains` [EXTRACTED]
+- [[index.mjs]] - `imports_from` [EXTRACTED]
+- [[isPlatformScope()]] - `contains` [EXTRACTED]
+- [[metricState()]] - `contains` [EXTRACTED]
+- [[missingUsageSentence()]] - `contains` [EXTRACTED]
+- [[observabilityDataGap()]] - `contains` [EXTRACTED]
+- [[observabilityLabel()]] - `contains` [EXTRACTED]
+- [[observation-safety.mjs]] - `imports_from` [EXTRACTED]
+- [[parseCandidateRef()]] - `contains` [EXTRACTED]
+- [[priorityScore()]] - `contains` [EXTRACTED]
+- [[project-facts.mjs]] - `imports_from` [EXTRACTED]
+- [[publicGatedReason()]] - `contains` [EXTRACTED]
+- [[publicNoRecommendationReason()]] - `contains` [EXTRACTED]
+- [[render-report.mjs_1]] - `imports_from` [EXTRACTED]
+- [[renderConfigurationNotes()]] - `contains` [EXTRACTED]
+- [[renderCostBreakdown()]] - `contains` [EXTRACTED]
+- [[renderCostCoverageMarkdown()]] - `imports` [EXTRACTED]
+- [[renderCostHeader()]] - `contains` [EXTRACTED]
+- [[renderCoverageLine()]] - `contains` [EXTRACTED]
+- [[renderDataGaps()]] - `contains` [EXTRACTED]
+- [[renderFinalRecommendationPreview()]] - `contains` [EXTRACTED]
+- [[renderGatedTable()]] - `contains` [EXTRACTED]
+- [[renderMetadataLine()]] - `contains` [EXTRACTED]
+- [[renderRecDetail()]] - `contains` [EXTRACTED]
+- [[renderRecTable()]] - `contains` [EXTRACTED]
+- [[renderReport()]] - `contains` [EXTRACTED]
+- [[renderServiceCostRows()]] - `contains` [EXTRACTED]
+- [[renderStrengths()]] - `contains` [EXTRACTED]
+- [[route-normalize.mjs]] - `imports_from` [EXTRACTED]
+- [[serviceCost()]] - `contains` [EXTRACTED]
+- [[serviceEffectiveCost()]] - `contains` [EXTRACTED]
+- [[signalFromRec()]] - `contains` [EXTRACTED]
+- [[sortRecs()]] - `contains` [EXTRACTED]
+- [[splitCustomerSafeObservations()]] - `imports` [EXTRACTED]
+- [[splitInvestigationOutcomes()]] - `contains` [EXTRACTED]
+- [[stripDetailsLink()]] - `contains` [EXTRACTED]
+- [[tierScore()]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Project_Fact_Reporting

@@ -3,7 +3,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import PageMeta from '../components/PageMeta';
 import FadeIn from '../components/animations/FadeIn';
-import exteriorImage from '../assets/images/regenerated_image_1778651987756.png';
+import exteriorImage from '../assets/images/regenerated_image_1778651987756.webp';
 
 export default function ServiceExterior() {
   return (

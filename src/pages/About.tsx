@@ -64,7 +64,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 flex items-center justify-center bg-[#f0c067]/5 text-[#f0c067] font-display text-2xl font-black">
                   AB
                 </div>
-                <ResponsiveImage src="/images/site/anthony-portrait.png" alt="Anthony Briseno" width={400} height={400} className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale hover:grayscale-0 transition duration-500" />
+                <ResponsiveImage src="/images/site/anthony-portrait.webp" alt="Anthony Briseno" width={400} height={400} className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale hover:grayscale-0 transition duration-500" />
               </div>
               <div className="md:col-span-8 flex flex-col justify-center">
                 <p className="text-[10px] font-black uppercase tracking-wider text-[#f0c067]">Founder & Operator</p>

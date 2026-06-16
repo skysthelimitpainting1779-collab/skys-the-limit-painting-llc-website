@@ -1,0 +1,3052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skysthelimit-collab — Complete Call Flow &amp; Architecture Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --border: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+  --warn: #fbbf24; --err: #f87171; --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-size: 2.4rem; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 1.7rem; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h3 { font-size: 1.25rem; margin: 32px 0 12px; color: var(--accent); }
+h4 { font-size: 1.05rem; margin: 20px 0 8px; color: var(--warn); }
+p { margin: 8px 0; color: var(--muted); }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 32px; }
+.mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; position: relative; }
+.mermaid.is-enhanced { padding: 0; overflow: hidden; min-height: 260px; }
+.mermaid-viewport { padding: 54px 24px 24px; overflow: hidden; cursor: grab; touch-action: none; min-height: 260px; }
+.mermaid-viewport.is-dragging { cursor: grabbing; }
+.mermaid-viewport svg { max-width: none !important; height: auto; transform-origin: 0 0; transition: transform 120ms ease; }
+.mermaid-toolbar { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 6px; background: rgba(15,23,42,0.92); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+.mermaid-toolbar button, .mermaid-toolbar .zoom-level { height: 28px; min-width: 32px; border: 1px solid var(--border); border-radius: 6px; background: #1e293b; color: var(--text); font: 600 0.78rem system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; }
+.mermaid-toolbar button { cursor: pointer; }
+.mermaid-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+.mermaid-toolbar .zoom-level { min-width: 52px; color: var(--muted); background: transparent; }
+.call-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+.call-table th { background: #1a2744; color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+.call-table td { padding: 8px 14px; border: 1px solid var(--border); vertical-align: top; }
+.call-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.tag-async { background: #7c3aed33; color: #a78bfa; }
+.tag-class { background: #05966933; color: var(--ok); }
+.tag-func { background: #2563eb33; color: var(--accent); }
+.tag-cmd { background: #d9770633; color: var(--warn); }
+.tag-endpoint { background: #dc262633; color: var(--err); }
+.tag-hook { background: #db277733; color: #f472b6; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin: 16px 0; }
+.arrow-chain { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent); padding: 10px; background: rgba(56,189,248,0.06); border-radius: 6px; }
+code { font-family: 'Fira Code', 'Cascadia Code', monospace; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; font-size: 0.88em; }
+ul, ol { margin: 8px 0 8px 24px; color: var(--muted); }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+.nav { position: sticky; top: 0; background: var(--bg); z-index: 10; padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .container { padding: 16px; } h1 { font-size: 1.8rem; } }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>skysthelimit-collab — Complete Call Flow &amp; Architecture Documentation</h1>
+<p class="subtitle">Generated from graphify knowledge graph: 1632 nodes, 2778 edges, 231 communities. Commit: 6939757</p>
+
+<div class="nav">
+    <a href="#overview">Architecture Overview</a>
+    <a href="#extract-pipeline">Extraction Pipeline</a>
+    <a href="#build-graph">Graph Build</a>
+    <a href="#analysis-clustering">Analysis &amp; Clustering</a>
+    <a href="#outputs-docs">Outputs &amp; Docs</a>
+    <a href="#cli-skills">CLI &amp; Skill Installers</a>
+    <a href="#ingest-cache-update">Ingestion &amp; Updates</a>
+    <a href="#serve-api">Serving API</a>
+    <a href="#other">Other</a>
+</div>
+
+<!-- ====== Architecture Overview ====== -->
+<h2 id="overview">1. Architecture Overview</h2>
+
+<div class="mermaid">
+
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    EXTRACT_PIPELINE_5F350230("Extraction Pipeline<br/><small>71 nodes</small>")
+    class EXTRACT_PIPELINE_5F350230 module;
+    BUILD_GRAPH_321CBB04("Graph Build<br/><small>183 nodes</small>")
+    class BUILD_GRAPH_321CBB04 module;
+    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>21 nodes</small>")
+    class ANALYSIS_CLUSTERING_C79796DA module;
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>108 nodes</small>")
+    class OUTPUTS_DOCS_ED82387C module;
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>146 nodes</small>")
+    class CLI_SKILLS_9964CBB8 module;
+    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>51 nodes</small>")
+    class INGEST_CACHE_UPDATE_FF457338 module;
+    SERVE_API_35EC8E86("Serving API<br/><small>55 nodes</small>")
+    class SERVE_API_35EC8E86 module;
+    OTHER_D0941E68("Other<br/><small>997 nodes</small>")
+    class OTHER_D0941E68 module;
+    INGEST_CACHE_UPDATE_FF457338 -->|imports x17| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x15| OUTPUTS_DOCS_ED82387C
+    OTHER_D0941E68 -->|imports x12| BUILD_GRAPH_321CBB04
+    BUILD_GRAPH_321CBB04 -->|calls x11| OTHER_D0941E68
+    INGEST_CACHE_UPDATE_FF457338 -->|imports x10| EXTRACT_PIPELINE_5F350230
+    OTHER_D0941E68 -->|imports x10| EXTRACT_PIPELINE_5F350230
+    OUTPUTS_DOCS_ED82387C -->|contains x9| BUILD_GRAPH_321CBB04
+    OUTPUTS_DOCS_ED82387C -->|calls x8| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x7| INGEST_CACHE_UPDATE_FF457338
+    BUILD_GRAPH_321CBB04 -->|imports x5| OUTPUTS_DOCS_ED82387C
+    CLI_SKILLS_9964CBB8 -->|imports x5| OTHER_D0941E68
+    EXTRACT_PIPELINE_5F350230 -->|imports x4| OTHER_D0941E68
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h4>Architecture Layers</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
+      <tr><td>Extraction Pipeline</td><td>71</td><td><code>1, 39</code></td></tr><tr><td>Graph Build</td><td>183</td><td><code>9, 17, 25, 32, 34, 37, 40, 45, 60, 61, 64, 66, 70, 98, 125</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>21</td><td><code>50, 103, 105, 117</code></td></tr><tr><td>Outputs &amp; Docs</td><td>108</td><td><code>4, 5, 16, 56, 75, 141, 181, 188</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>146</td><td><code>12, 15, 18, 23, 31, 51, 55, 72, 74, 94, 120, 131, 212, 213</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>51</td><td><code>28, 41, 65, 69, 127, 151, 153, 207</code></td></tr><tr><td>Serving API</td><td>55</td><td><code>22, 33, 44, 82, 138, 150, 177</code></td></tr><tr><td>Other</td><td>997</td><td><code>95, 229, 11, 81, 113, 132, 133, 170, 174, 175, 0, 2, 3, 6, 7, 8, 10, 13, 14, 19, 20, 21, 26, 24, 29, 35, 30, 36, 38, 27, 42, 43, 46, 47, 49, 48, 53, 54, 83, 52, 57, 58, 59, 62, 63, 67, 68, 71, 73, 76, 77, 78, 79, 80, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 100, 101, 102, 104, 106, 109, 110, 111, 112, 96, 97, 99, 114, 115, 116, 118, 119, 121, 122, 123, 124, 126, 128, 129, 130, 134, 135, 136, 137, 139, 140, 142, 143, 144, 145, 146, 147, 148, 149, 152, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 171, 172, 173, 176, 178, 179, 180, 182, 183, 184, 185, 186, 187, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 208, 209, 210, 211, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 230, 231, 232</code></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Core Flow</h4>
+    <div class="arrow-chain">Analysis &amp; Clustering -&gt; Extraction Pipeline -&gt; Other -&gt; Outputs &amp; Docs -&gt; Graph Build -&gt; Ingestion &amp; Updates -&gt; CLI &amp; Skill Installers</div>
+  </div>
+</div>
+<div class="grid">
+  <div class="card">
+    <h4>Graph Report Highlights</h4>
+    <ul>
+      <li>1632 nodes · 2778 edges · 231 communities (123 shown, 108 thin omitted)</li>
+      <li>Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.77)</li>
+      <li>Token cost: 0 input · 0 output</li>
+      <li>1. `verifyClaim()` - 42 edges</li>
+      <li>2. `extractClaims()` - 31 edges</li>
+      <li>3. `canonicalizeRoute()` - 25 edges</li>
+    </ul>
+  </div>
+</div>
+<hr>
+<!-- ====== 2. Extraction Pipeline ====== -->
+<h2 id="extract-pipeline">2. Extraction Pipeline</h2>
+<p>Extraction Pipeline groups implementation around agents, skills, vercel, optimize, mostly in vercel-optimize/lib/extract-claims.mjs, vercel-optimize/lib/grade-recommendation.mjs, vercel-optimize/lib/repo-root.mjs. This section covers 71 nodes and 165 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Extraction Pipeline (71 nodes, 165 edges)
+    subgraph extract_pipeline_vercel_optimize_lib_extract_cla_ccc604e1["vercel-optimize/lib/extract-claims.mjs"]
+        lib_extract_claims_extractclaims_9c55a024("extractClaims()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_summarizeclaimresults_cd9b1fc7("summarizeClaimResults()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_asarray_a211c43b("asArray()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_cacherecommendationfiles_53da1de2("cacheRecommendationFiles()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_iscachecandidate_2469a340("isCacheCandidate()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionsauthsensitiveparallel_bcac516c("mentionsAuthSensitiveParallelization()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionscachednotfoundor404_a5b5e5da("mentionsCachedNotFoundOr404()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionscachelifecdnheadercla_d6a8e193("mentionsCacheLifeCdnHeaderClaim()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionscachelifetimechange_4bc4e5b6("mentionsCacheLifetimeChange()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionscatchtonotfound_0a11b5ee("mentionsCatchToNotFound()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionscpuboundparallelizati_ccf8becb("mentionsCpuBoundParallelization()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionsexistingcachetaginval_ef34e3e0("mentionsExistingCacheTagInvalidation()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionsignoredbuildsteprecom_5969889e("mentionsIgnoredBuildStepRecommendation()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+        lib_extract_claims_mentionsimageresponseheaders_b05652d8("mentionsImageResponseHeaders()<br/><small>vercel-optimize/lib/extract-claims.mjs</small>")
+    end
+    subgraph extract_pipeline_vercel_optimize_lib_grade_recom_c0a24117["vercel-optimize/lib/grade-recommendation.mjs"]
+        lib_grade_recommendation_graderecommendation_3bfd218d("gradeRecommendation()<br/><small>vercel-optimize/lib/grade-recommendation.mjs</small>")
+        lib_grade_recommendation_applyqualityfloor_d5704e0a("applyQualityFloor()<br/><small>vercel-optimize/lib/grade-recommendation.mjs</small>")
+    end
+    scanners_headers_in_page_scan_60a05498("scan()<br/><small>lib/scanners/headers-in-page.mjs</small>")
+    lib_repo_root_fileresolvesat_01a67803("fileResolvesAt()<br/><small>vercel-optimize/lib/repo-root.mjs</small>")
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_asarray_a211c43b
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_cacherecommendationfiles_53da1de2
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_iscachecandidate_2469a340
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionsauthsensitiveparallel_bcac516c
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionscachednotfoundor404_a5b5e5da
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionscachelifecdnheadercla_d6a8e193
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionscachelifetimechange_4bc4e5b6
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionscatchtonotfound_0a11b5ee
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionscpuboundparallelizati_ccf8becb
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionsexistingcachetaginval_ef34e3e0
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionsignoredbuildsteprecom_5969889e
+    lib_extract_claims_extractclaims_9c55a024 -->|calls| lib_extract_claims_mentionsimageresponseheaders_b05652d8
+    %% Omitted for readability: 53 nodes, 0 edges
+    class lib_extract_claims_extractclaims_9c55a024 function;
+    class lib_extract_claims_summarizeclaimresults_cd9b1fc7 function;
+    class lib_extract_claims_asarray_a211c43b function;
+    class lib_extract_claims_cacherecommendationfiles_53da1de2 function;
+    class lib_extract_claims_iscachecandidate_2469a340 function;
+    class lib_extract_claims_mentionsauthsensitiveparallel_bcac516c function;
+    class lib_extract_claims_mentionscachednotfoundor404_a5b5e5da function;
+    class lib_extract_claims_mentionscachelifecdnheadercla_d6a8e193 function;
+    class lib_extract_claims_mentionscachelifetimechange_4bc4e5b6 function;
+    class lib_extract_claims_mentionscatchtonotfound_0a11b5ee function;
+    class lib_extract_claims_mentionscpuboundparallelizati_ccf8becb function;
+    class lib_extract_claims_mentionsexistingcachetaginval_ef34e3e0 function;
+    class lib_extract_claims_mentionsignoredbuildsteprecom_5969889e function;
+    class lib_extract_claims_mentionsimageresponseheaders_b05652d8 function;
+    class lib_grade_recommendation_graderecommendation_3bfd218d function;
+    class lib_grade_recommendation_applyqualityfloor_d5704e0a function;
+    class scanners_headers_in_page_scan_60a05498 function;
+    class lib_repo_root_fileresolvesat_01a67803 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>extract-claims.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>verify-and-regen.mjs</code><br><small style="color:var(--muted)">vercel-optimize/scripts/verify-and-regen.mjs</small></td>
+  <td>extract-claims.mjs node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>asArray()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>cacheRecommendationFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>isCacheCandidate()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br>+27 more</td>
+  <td>extractClaims() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>normalizeProjectRootDirectory()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>normalizeProjectRootDirectory() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>cacheRecommendationFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recommendationFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>recommendsSharedCache()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>isCacheCandidate()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>recommendationFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>cacheRecommendationFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>asArray()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>recommendationFiles() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>recommendsSharedCache()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>cacheRecommendationFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>mentionsVaryHeader()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsVaryHeader() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>mentionsNextCachedNotFound()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>mentionsNextStableCacheApi()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>mentionsNext16RuntimeCacheApiMismatch()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>asArray()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>mentionsRuntimeCacheWhenCacheComponents()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>asArray()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>mentionsMultipleCacheLifeCalls()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>mentionsCacheLifetimeChange()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>mentionsCacheLifeCdnHeaderClaim()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>mentionsNextCacheComponentsStaticShellTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>asArray()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>mentionsImageResponseHeaders()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsImageResponseHeaders() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>mentionsNextImagePriorityRecommendation()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsNextImagePriorityRecommendation() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>mentionsNextCacheComponentsRouteSegmentConfig()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>mentionsRouteLevelRevalidate()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsRouteLevelRevalidate() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>mentionsExistingCacheTagInvalidation()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>mentionsUnsafeImmutableDynamicRoute()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>asArray()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small><br><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsUnsafeImmutableDynamicRoute() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>mentionsAuthSensitiveParallelization()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsAuthSensitiveParallelization() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>mentionsParallelizationImpactOverclaim()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsParallelizationImpactOverclaim() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>mentionsCpuBoundParallelization()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsCpuBoundParallelization() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>mentionsCachedNotFoundOr404()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>mentionsRuntimeErrorCause()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsRuntimeErrorCause() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>mentionsCatchToNotFound()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsCatchToNotFound() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>mentionsIgnoredBuildStepRecommendation()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>mentionsIgnoredBuildStepRecommendation() node in vercel-optimize/lib/extract-claims.mjs.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>mentionsTurboBuildCacheRecommendation()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>extractClaims()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td><code>recText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/extract-claims.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>vercel-optimize/lib/extract-claims.mjs</code></td><td>33 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/grade-recommendation.mjs</code></td><td>13 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/repo-root.mjs</code></td><td>6 nodes</td></tr>
+<tr><td><code>vercel-optimize/scripts/verify-and-regen.mjs</code></td><td>5 nodes</td></tr>
+<tr><td><code>lib/scanners/headers-in-page.mjs</code></td><td>4 nodes</td></tr>
+<tr><td><code>lib/scanners/max-age-without-s-maxage.mjs</code></td><td>3 nodes</td></tr>
+<tr><td><code>lib/scanners/prisma-include-tree.mjs</code></td><td>3 nodes</td></tr>
+<tr><td><code>lib/scanners/source-maps-production.mjs</code></td><td>3 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x91, contains x62, imports x9, imports x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 3. Graph Build ====== -->
+<h2 id="build-graph">3. Graph Build</h2>
+<p>Graph Build groups implementation around vercel, agents, skills, optimize, mostly in package.json, vercel-optimize/lib/dedup-recs.mjs, vercel-optimize/lib/route-normalize.mjs. This section covers 183 nodes and 269 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Graph Build (183 nodes, 269 edges)
+    subgraph build_graph_vercel_optimize_lib_dedup_recs_mjs_0325940e["vercel-optimize/lib/dedup-recs.mjs"]
+        lib_dedup_recs_mergeduplicaterecs_76d38d86("mergeDuplicateRecs()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_deduperecommendations_7ee19dae("dedupeRecommendations()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_recommendationkey_78bb00a2("recommendationKey()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_withdedupmetadata_9c693762("withDedupMetadata()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_dedupedittarget_1af675bc("dedupEditTarget()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_dedupintent_70d7a46d("dedupIntent()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_primaryskillrule_89cf712f("primarySkillRule()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_normalizepath_2d52346a("normalizePath()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_sharedfunctiontarget_96570a74("sharedFunctionTarget()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_fixshape_4855a73b("fixShape()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_normalizefixtext_d440acf5("normalizeFixText()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_cachelifeintent_23762dc8("cacheLifeIntent()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_iscacheliferec_ebc52087("isCacheLifeRec()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+        lib_dedup_recs_issmaxagecacheheaderrec_f60e1b40("isSMaxageCacheHeaderRec()<br/><small>vercel-optimize/lib/dedup-recs.mjs</small>")
+    end
+    subgraph build_graph_vercel_optimize_scripts_merge_signal_948b0580["vercel-optimize/scripts/merge-signals.mjs"]
+        scripts_merge_signals_main_a87bb38d("main()<br/><small>vercel-optimize/scripts/merge-signals.mjs</small>")
+        scripts_merge_signals_annotatefinding_a69aa710("annotateFinding()<br/><small>vercel-optimize/scripts/merge-signals.mjs</small>")
+    end
+    scanners_edge_heavy_import_scan_794be3f5("scan()<br/><small>lib/scanners/edge-heavy-import.mjs</small>")
+    lib_route_normalize_canonicalizeroute_fda1a95f("canonicalizeRoute()<br/><small>vercel-optimize/lib/route-normalize.mjs</small>")
+    lib_dedup_recs_deduperecommendations_7ee19dae -->|calls| lib_dedup_recs_mergeduplicaterecs_76d38d86
+    lib_dedup_recs_deduperecommendations_7ee19dae -->|calls| lib_dedup_recs_recommendationkey_78bb00a2
+    lib_dedup_recs_deduperecommendations_7ee19dae -->|calls| lib_dedup_recs_withdedupmetadata_9c693762
+    lib_dedup_recs_recommendationkey_78bb00a2 -->|calls| lib_dedup_recs_dedupedittarget_1af675bc
+    lib_dedup_recs_recommendationkey_78bb00a2 -->|calls| lib_dedup_recs_dedupintent_70d7a46d
+    lib_dedup_recs_recommendationkey_78bb00a2 -->|calls| lib_dedup_recs_primaryskillrule_89cf712f
+    lib_dedup_recs_normalizepath_2d52346a -->|calls| lib_dedup_recs_dedupedittarget_1af675bc
+    lib_dedup_recs_primaryskillrule_89cf712f -->|calls| lib_dedup_recs_sharedfunctiontarget_96570a74
+    lib_dedup_recs_fixshape_4855a73b -->|calls| lib_dedup_recs_dedupintent_70d7a46d
+    lib_dedup_recs_fixshape_4855a73b -->|calls| lib_dedup_recs_normalizefixtext_d440acf5
+    lib_dedup_recs_dedupintent_70d7a46d -->|calls| lib_dedup_recs_cachelifeintent_23762dc8
+    lib_dedup_recs_dedupintent_70d7a46d -->|calls| lib_dedup_recs_iscacheliferec_ebc52087
+    lib_dedup_recs_dedupintent_70d7a46d -->|calls| lib_dedup_recs_issmaxagecacheheaderrec_f60e1b40
+    lib_dedup_recs_dedupintent_70d7a46d -->|calls| lib_dedup_recs_sharedfunctiontarget_96570a74
+    lib_dedup_recs_dedupedittarget_1af675bc -->|calls| lib_dedup_recs_sharedfunctiontarget_96570a74
+    %% Omitted for readability: 165 nodes, 0 edges
+    class lib_dedup_recs_mergeduplicaterecs_76d38d86 function;
+    class lib_dedup_recs_deduperecommendations_7ee19dae function;
+    class lib_dedup_recs_recommendationkey_78bb00a2 function;
+    class lib_dedup_recs_withdedupmetadata_9c693762 function;
+    class lib_dedup_recs_dedupedittarget_1af675bc function;
+    class lib_dedup_recs_dedupintent_70d7a46d function;
+    class lib_dedup_recs_primaryskillrule_89cf712f function;
+    class lib_dedup_recs_normalizepath_2d52346a function;
+    class lib_dedup_recs_sharedfunctiontarget_96570a74 function;
+    class lib_dedup_recs_fixshape_4855a73b function;
+    class lib_dedup_recs_normalizefixtext_d440acf5 function;
+    class lib_dedup_recs_cachelifeintent_23762dc8 function;
+    class lib_dedup_recs_iscacheliferec_ebc52087 function;
+    class lib_dedup_recs_issmaxagecacheheaderrec_f60e1b40 function;
+    class scripts_merge_signals_main_a87bb38d function;
+    class scripts_merge_signals_annotatefinding_a69aa710 function;
+    class scanners_edge_heavy_import_scan_794be3f5 function;
+    class lib_route_normalize_canonicalizeroute_fda1a95f api;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>dedup-recs.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dedup-recs.mjs node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>dedupeRecommendations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>recommendationKey()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>withDedupMetadata()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>dedupeRecommendations() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>recommendationKey()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupeRecommendations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>dedupEditTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>primarySkillRule()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>recommendationKey() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>normalizePath()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>dedupEditTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>normalizePath() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>primarySkillRule()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>recommendationKey()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>sharedFunctionTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>primarySkillRule() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>fixShape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>normalizeFixText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>fixShape() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>fixShape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>recommendationKey()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>cacheLifeIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>isCacheLifeRec()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>isSMaxageCacheHeaderRec()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br>+1 more</td>
+  <td>dedupIntent() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>dedupEditTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizePath()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>recommendationKey()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>firstAffectedFile()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>sharedFunctionTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>dedupEditTarget() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>firstAffectedFile()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupEditTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>affectedFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>referencedCodeFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>firstAffectedFile() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>affectedFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>firstAffectedFile()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>affectedFiles() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>referencedCodeFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>firstAffectedFile()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>unique()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>referencedCodeFiles() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>isSMaxageCacheHeaderRec()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>isCacheLifeRec()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>sharedFunctionTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupEditTarget()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>primarySkillRule()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>sharedFunctionTarget() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>cacheLifeIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>unique()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>unique()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>cacheLifeIntent()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>referencedCodeFiles()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>unique() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>normalizeFixText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>fixShape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>normalizeFixText() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>withDedupMetadata()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupeRecommendations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>normalizedAppliesAlsoTo()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>numericCount()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>withDedupMetadata() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>dedupeRecommendations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>appliesAlsoEntry()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>normalizedAppliesAlsoTo()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>numericCount()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br>+2 more</td>
+  <td>mergeDuplicateRecs() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>recScore()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>signalMagnitude()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>recScore() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>signalMagnitude()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>recScore()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><code>parseNumber()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>signalMagnitude() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>parseNumber()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>signalMagnitude()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>parseNumber() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>numericCount()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>withDedupMetadata()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>numericCount() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>appliesAlsoEntry()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>appliesAlsoEntry() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>normalizedAppliesAlsoTo()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small><br><code>withDedupMetadata()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>normalizedAppliesAlsoTo() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>uniqueAppliesAlsoTo()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>mergeDuplicateRecs()</code><br><small style="color:var(--muted)">vercel-optimize/lib/dedup-recs.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>uniqueAppliesAlsoTo() node in vercel-optimize/lib/dedup-recs.mjs.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>enrichRecFromCandidates()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>canonicalizeRoute()</code><br><small style="color:var(--muted)">vercel-optimize/lib/route-normalize.mjs</small><br><code>canonicalRefOf()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>enrichRecFromCandidates() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>canonicalRefOf()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>enrichRecFromCandidates()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>canonicalizeRoute()</code><br><small style="color:var(--muted)">vercel-optimize/lib/route-normalize.mjs</small></td>
+  <td>canonicalRefOf() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>route-normalize.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/route-normalize.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>merge-signals.mjs</code><br><small style="color:var(--muted)">vercel-optimize/scripts/merge-signals.mjs</small></td>
+  <td>route-normalize.mjs node in vercel-optimize/lib/route-normalize.mjs.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>isSegmentTreePath()</code><br><small style="color:var(--muted)">vercel-optimize/lib/route-normalize.mjs</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>canonicalizeRoute()</code><br><small style="color:var(--muted)">vercel-optimize/lib/route-normalize.mjs</small></td>
+  <td>isSegmentTreePath() node in vercel-optimize/lib/route-normalize.mjs.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>package.json</code></td><td>50 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/dedup-recs.mjs</code></td><td>26 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/route-normalize.mjs</code></td><td>19 nodes</td></tr>
+<tr><td><code>tsconfig.json</code></td><td>19 nodes</td></tr>
+<tr><td><code>vercel-optimize/scripts/merge-signals.mjs</code></td><td>17 nodes</td></tr>
+<tr><td><code>vercel-optimize/references/docs-library.json</code></td><td>8 nodes</td></tr>
+<tr><td><code>lib/scanners/edge-heavy-import.mjs</code></td><td>7 nodes</td></tr>
+<tr><td><code>vercel-optimize/scripts/build-docs.mjs</code></td><td>7 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x154, calls x74, references x26, relates x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 4. Analysis & Clustering ====== -->
+<h2 id="analysis-clustering">4. Analysis &amp; Clustering</h2>
+<p>Analysis &amp; Clustering groups implementation around agents, skills, supabase, postgres, mostly in inspect_images.js, supabase-postgres-best-practices/references/query-index-types.md, supabase-postgres-best-practices/references/query-composite-indexes.md. This section covers 21 nodes and 19 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Analysis &amp; Clustering (21 nodes, 19 edges)
+    subgraph analysis_clustering_inspect_images_js_9104e49f["inspect_images.js"]
+        inspect_images_analyze_65048328("analyze()<br/><small>inspect_images.js</small>")
+        inspect_images_main_a922b96d("main()<br/><small>inspect_images.js</small>")
+        inspect_images_ai_32957d5e("ai<br/><small>inspect_images.js</small>")
+        inspect_images_f95f6176("inspect_images.js")
+    end
+    subgraph analysis_clustering_supabase_postgres_best_pract_cbbaa0d2["supabase-postgres-best-practices/references/query-index-types.md"]
+        query_index_types_brin_index_3a25c6cf("BRIN Index<br/><small>supabase-postgres-best-practices/references/query-index-types.md</small>")
+        query_index_types_gin_index_cc22f9db("GIN Index<br/><small>supabase-postgres-best-practices/references/query-index-types.md</small>")
+        query_index_types_gist_index_eed0d134("GiST Index<br/><small>supabase-postgres-best-practices/references/query-index-types.md</small>")
+        query_index_types_hash_index_bfce13ed("Hash Index<br/><small>supabase-postgres-best-practices/references/query-index-types.md</small>")
+    end
+    monitor_explain_analyze_explain_analyze_a80e625b("Use EXPLAIN ANALYZE to Diagnose Slow Qu...<br/><small>supabase-postgres-best-practices/references/monitor-explain-analyze.md</small>")
+    monitor_pg_stat_statements_pg_stat_statements_3056549a("Enable pg_stat_statements for Query Ana...<br/><small>supabase-postgres-best-practices/references/monitor-pg-stat-statements.md</small>")
+    monitor_vacuum_analyze_vacuum_analyze_d493779d("Maintain Table Statistics with VACUUM a...<br/><small>supabase-postgres-best-practices/references/monitor-vacuum-analyze.md</small>")
+    query_composite_indexes_composite_index_0eecc785("Composite Index<br/><small>supabase-postgres-best-practices/references/query-composite-indexes.md</small>")
+    query_covering_indexes_covering_index_fa96203d("Covering Index<br/><small>supabase-postgres-best-practices/references/query-covering-indexes.md</small>")
+    query_missing_indexes_btree_index_6eb7bb2e("B-tree Index<br/><small>supabase-postgres-best-practices/references/query-missing-indexes.md</small>")
+    query_partial_indexes_partial_index_0f83dbb8("Partial Index<br/><small>supabase-postgres-best-practices/references/query-partial-indexes.md</small>")
+    schema_constraints_pg_constraint_07d31253("pg_constraint<br/><small>supabase-postgres-best-practices/references/schema-constraints.md</small>")
+    schema_foreign_key_indexes_foreign_key_index_a9d5880c("Foreign Key Index<br/><small>supabase-postgres-best-practices/references/schema-foreign-key-indexes.md</small>")
+    schema_partitioning_partition_by_range_316dc5eb("partition by range<br/><small>supabase-postgres-best-practices/references/schema-partitioning.md</small>")
+    inspect_images_analyze_65048328 -->|calls| inspect_images_main_a922b96d
+    %% Omitted for readability: 3 nodes, 0 edges
+    class inspect_images_analyze_65048328 test;
+    class inspect_images_main_a922b96d test;
+    class inspect_images_ai_32957d5e test;
+    class inspect_images_f95f6176 test;
+    class query_index_types_brin_index_3a25c6cf concept;
+    class query_index_types_gin_index_cc22f9db concept;
+    class query_index_types_gist_index_eed0d134 concept;
+    class query_index_types_hash_index_bfce13ed concept;
+    class monitor_explain_analyze_explain_analyze_a80e625b concept;
+    class monitor_pg_stat_statements_pg_stat_statements_3056549a concept;
+    class monitor_vacuum_analyze_vacuum_analyze_d493779d concept;
+    class query_composite_indexes_composite_index_0eecc785 concept;
+    class query_covering_indexes_covering_index_fa96203d concept;
+    class query_missing_indexes_btree_index_6eb7bb2e concept;
+    class query_partial_indexes_partial_index_0f83dbb8 concept;
+    class schema_constraints_pg_constraint_07d31253 concept;
+    class schema_foreign_key_indexes_foreign_key_index_a9d5880c concept;
+    class schema_partitioning_partition_by_range_316dc5eb concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Composite Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-composite-indexes.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Composite Index.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Covering Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-covering-indexes.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Covering Index.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>B-tree Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-missing-indexes.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing B-tree Index.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Partial Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-partial-indexes.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Partial Index.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Foreign Key Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/schema-foreign-key-indexes.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Foreign Key Index.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Row Level Security</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/security-rls-basics.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Row Level Security.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>RLS Policy</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/security-rls-performance.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing RLS Policy.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>pg_constraint</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/schema-constraints.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing pg_constraint.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>app_user role</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/security-privileges.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing app_user role.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>partition by range</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/schema-partitioning.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing partition by range.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>inspect_images.js</code><br><small style="color:var(--muted)">inspect_images.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>inspect_images.js node in inspect_images.js.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>ai</code><br><small style="color:var(--muted)">inspect_images.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ai node in inspect_images.js.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>analyze()</code><br><small style="color:var(--muted)">inspect_images.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>main()</code><br><small style="color:var(--muted)">inspect_images.js</small></td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>main()</code><br><small style="color:var(--muted)">inspect_images.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>analyze()</code><br><small style="color:var(--muted)">inspect_images.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>main() node in inspect_images.js.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>GIN Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-index-types.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing GIN Index.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>GiST Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-index-types.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing GiST Index.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>BRIN Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-index-types.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing BRIN Index.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Hash Index</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/query-index-types.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Hash Index.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Use EXPLAIN ANALYZE to Diagnose Slow Queries</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/monitor-explain-analyze.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Use EXPLAIN ANALYZE to Diagnose Slow Queries.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>Enable pg_stat_statements for Query Analysis</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/monitor-pg-stat-statements.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Enable pg_stat_statements for Query Analysis.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Maintain Table Statistics with VACUUM and ANALYZE</code><br><small style="color:var(--muted)">supabase-postgres-best-practices/references/monitor-vacuum-analyze.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Maintain Table Statistics with VACUUM and ANALYZE.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>supabase-postgres-best-practices/references/query-index-types.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>inspect_images.js</code></td><td>4 nodes</td></tr>
+<tr><td><code>supabase-postgres-best-practices/references/monitor-explain-analyze.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>supabase-postgres-best-practices/references/monitor-pg-stat-statements.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>supabase-postgres-best-practices/references/monitor-vacuum-analyze.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>supabase-postgres-best-practices/references/query-composite-indexes.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>supabase-postgres-best-practices/references/query-covering-indexes.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>supabase-postgres-best-practices/references/query-missing-indexes.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: relates x10, contains x3, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 5. Outputs & Docs ====== -->
+<h2 id="outputs-docs">5. Outputs &amp; Docs</h2>
+<p>Outputs &amp; Docs groups implementation around agents, skills, vercel, optimize, mostly in vercel-optimize/lib/render-report.mjs, vercel-optimize/lib/observation-safety.mjs, vercel-optimize/lib/display-labels.mjs. This section covers 108 nodes and 227 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Outputs &amp; Docs (108 nodes, 227 edges)
+    subgraph outputs_docs_vercel_optimize_lib_display_labels_7aa916b2["vercel-optimize/lib/display-labels.mjs"]
+        lib_display_labels_formatkind_069a9594("formatKind()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+        lib_display_labels_formatcandidatelabel_cdc2c1b6("formatCandidateLabel()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+        lib_display_labels_formatcandidateline_43753334("formatCandidateLine()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+        lib_display_labels_formatroute_b2dde440("formatRoute()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+        lib_display_labels_formatsignal_894a9144("formatSignal()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+        lib_display_labels_formatpublictext_b4f4e06d("formatPublicText()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+        lib_display_labels_normalizeobservedwindowunits_01704695("normalizeObservedWindowUnits()<br/><small>vercel-optimize/lib/display-labels.mjs</small>")
+    end
+    subgraph outputs_docs_vercel_optimize_lib_render_report_m_e026d17d["vercel-optimize/lib/render-report.mjs"]
+        lib_render_report_renderreport_c2cfb054("renderReport()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+        lib_render_report_buildfinalreportmessage_7ec0ac2d("buildFinalReportMessage()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+        lib_render_report_groupgatedcandidates_fca12ffa("groupGatedCandidates()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+        lib_render_report_formatevidencetext_485e5bb7("formatEvidenceText()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+        lib_render_report_publicgatedreason_ad3417c6("publicGatedReason()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+        lib_render_report_displaycandidate_b08fbd8a("displayCandidate()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+        lib_render_report_displaycandidateref_623cec33("displayCandidateRef()<br/><small>vercel-optimize/lib/render-report.mjs</small>")
+    end
+    subgraph outputs_docs_vercel_optimize_lib_observation_saf_1cd1ff82["vercel-optimize/lib/observation-safety.mjs"]
+        lib_observation_safety_unsupportedobservationrea_91581349("unsupportedObservationReason()<br/><small>vercel-optimize/lib/observation-safety.mjs</small>")
+        lib_observation_safety_observationtext_0e912574("observationText()<br/><small>vercel-optimize/lib/observation-safety.mjs</small>")
+        lib_observation_safety_splitcustomersafeobservat_0c58663a("splitCustomerSafeObservations()<br/><small>vercel-optimize/lib/observation-safety.mjs</small>")
+    end
+    sanitizers_window_units_apply_0f44b2fb("apply()<br/><small>lib/sanitizers/window-units.mjs</small>")
+    lib_display_labels_formatkind_069a9594 -->|calls| lib_display_labels_formatcandidatelabel_cdc2c1b6
+    lib_display_labels_formatkind_069a9594 -->|calls| lib_display_labels_formatcandidateline_43753334
+    lib_display_labels_formatkind_069a9594 -->|calls| lib_render_report_groupgatedcandidates_fca12ffa
+    lib_display_labels_formatkind_069a9594 -->|calls| lib_render_report_renderreport_c2cfb054
+    lib_display_labels_formatroute_b2dde440 -->|calls| lib_display_labels_formatcandidatelabel_cdc2c1b6
+    lib_display_labels_formatroute_b2dde440 -->|calls| lib_display_labels_formatcandidateline_43753334
+    lib_display_labels_formatroute_b2dde440 -->|calls| lib_render_report_groupgatedcandidates_fca12ffa
+    lib_display_labels_formatsignal_894a9144 -->|calls| lib_display_labels_formatcandidateline_43753334
+    lib_display_labels_formatpublictext_b4f4e06d -->|calls| lib_display_labels_normalizeobservedwindowunits_01704695
+    lib_display_labels_formatpublictext_b4f4e06d -->|calls| lib_render_report_formatevidencetext_485e5bb7
+    lib_display_labels_formatpublictext_b4f4e06d -->|calls| lib_render_report_publicgatedreason_ad3417c6
+    lib_display_labels_normalizeobservedwindowunits_01704695 -->|calls| sanitizers_window_units_apply_0f44b2fb
+    lib_display_labels_formatcandidatelabel_cdc2c1b6 -->|calls| lib_render_report_displaycandidate_b08fbd8a
+    lib_display_labels_formatcandidatelabel_cdc2c1b6 -->|calls| lib_render_report_displaycandidateref_623cec33
+    lib_observation_safety_splitcustomersafeobservat_0c58663a -->|calls| lib_observation_safety_unsupportedobservationrea_91581349
+    lib_observation_safety_splitcustomersafeobservat_0c58663a -->|calls| lib_render_report_renderreport_c2cfb054
+    lib_render_report_renderreport_c2cfb054 -->|calls| lib_render_report_displaycandidateref_623cec33
+    lib_render_report_renderreport_c2cfb054 -->|calls| lib_render_report_formatevidencetext_485e5bb7
+    lib_render_report_groupgatedcandidates_fca12ffa -->|calls| lib_render_report_publicgatedreason_ad3417c6
+    %% Omitted for readability: 90 nodes, 0 edges
+    class lib_display_labels_formatkind_069a9594 function;
+    class lib_display_labels_formatcandidatelabel_cdc2c1b6 function;
+    class lib_display_labels_formatcandidateline_43753334 function;
+    class lib_display_labels_formatroute_b2dde440 api;
+    class lib_display_labels_formatsignal_894a9144 function;
+    class lib_display_labels_formatpublictext_b4f4e06d function;
+    class lib_display_labels_normalizeobservedwindowunits_01704695 function;
+    class lib_render_report_renderreport_c2cfb054 function;
+    class lib_render_report_buildfinalreportmessage_7ec0ac2d function;
+    class lib_render_report_groupgatedcandidates_fca12ffa function;
+    class lib_render_report_formatevidencetext_485e5bb7 function;
+    class lib_render_report_publicgatedreason_ad3417c6 function;
+    class lib_render_report_displaycandidate_b08fbd8a function;
+    class lib_render_report_displaycandidateref_623cec33 function;
+    class lib_observation_safety_unsupportedobservationrea_91581349 function;
+    class lib_observation_safety_observationtext_0e912574 function;
+    class lib_observation_safety_splitcustomersafeobservat_0c58663a function;
+    class sanitizers_window_units_apply_0f44b2fb function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>project-facts.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/project-facts.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>render-report.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>project-facts.mjs node in vercel-optimize/lib/project-facts.mjs.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>deriveProjectFacts()</code><br><small style="color:var(--muted)">vercel-optimize/lib/project-facts.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>render-report.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>renderConfigurationNotes()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>renderStrengths()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>deriveProjectFacts() node in vercel-optimize/lib/project-facts.mjs.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>render-report.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>deriveProjectFacts()</code><br><small style="color:var(--muted)">vercel-optimize/lib/project-facts.mjs</small><br><code>display-labels.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/display-labels.mjs</small><br><code>formatCandidateLabel()</code><br><small style="color:var(--muted)">vercel-optimize/lib/display-labels.mjs</small><br>+7 more</td>
+  <td><code>render-report.mjs</code><br><small style="color:var(--muted)">vercel-optimize/scripts/render-report.mjs</small></td>
+  <td>render-report.mjs node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>formatKind()</code><br><small style="color:var(--muted)">vercel-optimize/lib/display-labels.mjs</small><br><code>splitCustomerSafeObservations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/observation-safety.mjs</small></td>
+  <td><code>assertValidObservations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>displayCandidateRef()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>escape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br>+16 more</td>
+  <td>renderReport() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>assertValidObservations()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>assertValidObservations() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>renderCoverageLine()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>renderMetadataLine()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>observabilityLabel()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>renderMetadataLine() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>observabilityLabel()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderMetadataLine()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>observabilityLabel() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>renderCostHeader()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>renderCostHeader() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>renderCostBreakdown()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>escape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>groupGbHoursByCanonicalRoute()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>missingUsageSentence()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br>+1 more</td>
+  <td>renderCostBreakdown() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>renderServiceCostRows()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderCostBreakdown()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>escape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>renderServiceCostRows() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>serviceCost()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>serviceCost() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>serviceEffectiveCost()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>serviceEffectiveCost() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>costRoundsToCents()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>costRoundsToCents() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>renderRecTable()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>renderRecTable() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>renderGatedTable()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>escape()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>formatGatedTargets()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>groupGatedCandidates()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>renderGatedTable() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>formatGatedTargets()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderGatedTable()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>formatGatedTargets() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>publicNoRecommendationReason()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>formatEvidenceText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>publicNoRecommendationReason() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>splitInvestigationOutcomes()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>splitInvestigationOutcomes() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>formatEvidenceText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>formatPublicText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/display-labels.mjs</small><br><code>publicNoRecommendationReason()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>formatRecommendationText()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>formatEvidenceText() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>groupGbHoursByCanonicalRoute()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>renderCostBreakdown()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>groupGbHoursByCanonicalRoute() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>renderStrengths()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>deriveProjectFacts()</code><br><small style="color:var(--muted)">vercel-optimize/lib/project-facts.mjs</small><br><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>formatBytes()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>formatNum()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>renderStrengths() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>renderConfigurationNotes()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>deriveProjectFacts()</code><br><small style="color:var(--muted)">vercel-optimize/lib/project-facts.mjs</small><br><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>renderDataGaps()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderReport()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><code>metricState()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>missingUsageSentence()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>observabilityDataGap()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>renderDataGaps() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>observabilityDataGap()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderDataGaps()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>observabilityDataGap() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>missingUsageSentence()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderCostBreakdown()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small><br><code>renderDataGaps()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>missingUsageSentence() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>metricState()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderDataGaps()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>metricState() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>priorityScore()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>tierScore()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>priorityScore() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>tierScore()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>priorityScore()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>tierScore() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>isPlatformScope()</code><br><small style="color:var(--muted)">vercel-optimize/lib/render-report.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>isPlatformScope() node in vercel-optimize/lib/render-report.mjs.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>vercel-optimize/lib/render-report.mjs</code></td><td>49 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/display-labels.mjs</code></td><td>17 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/observation-safety.mjs</code></td><td>17 nodes</td></tr>
+<tr><td><code>vercel-optimize/scripts/render-report.mjs</code></td><td>16 nodes</td></tr>
+<tr><td><code>lib/sanitizers/window-units.mjs</code></td><td>4 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/project-facts.mjs</code></td><td>2 nodes</td></tr>
+<tr><td><code>vercel-react-best-practices/rules/rendering-animate-svg-wrapper.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>vercel-react-best-practices/rules/rendering-svg-precision.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x110, contains x99, imports x12, imports x6. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 6. CLI & Skill Installers ====== -->
+<h2 id="cli-skills">6. CLI &amp; Skill Installers</h2>
+<p>CLI &amp; Skill Installers groups implementation around skills, agents, vercel, optimize, mostly in src/App.tsx, vercel-optimize/scripts/collect-sub-agent-outputs.mjs, deploy-to-vercel/resources/deploy-codex.sh. This section covers 146 nodes and 165 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: CLI &amp; Skill Installers (146 nodes, 165 edges)
+    subgraph cli_skills_vercel_optimize_scripts_collect_sub_a_1e15fb0f["vercel-optimize/scripts/collect-sub-agent-outputs.mjs"]
+        scripts_collect_sub_agent_outputs_main_a1e85c0f("main()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_extractjsonval_d0f2eb91("extractJsonValue()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_normalizeoutpu_bc008944("normalizeOutput()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_log_0e1f5014("log()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_collectinputfi_2f84ba8b("collectInputFiles()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_infercandidate_b0233807("inferCandidateRefFromFile()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_parseargs_b792b80c("parseArgs()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_readexpectedbr_05322efe("readExpectedBriefs()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_readpreresolve_b14f7a25("readPreResolvedRecords()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_walkdir_570eba02("walkDir()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_extractfencebl_057428e7("extractFenceBlocks()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_findbalancedjs_5b9ffa09("findBalancedJsonSpans()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_tryparsejson_10852233("tryParseJson()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_isrecordobject_80070c6c("isRecordObject()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+        scripts_collect_sub_agent_outputs_unwrapenvelope_85cbcf08("unwrapEnvelope()<br/><small>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</small>")
+    end
+    subgraph cli_skills_src_components_ScrollToTop_tsx_82fca2e1["src/components/ScrollToTop.tsx"]
+        components_scrolltotop_204ff69d("ScrollToTop.tsx")
+        components_scrolltotop_scrolltotop_022ff07c("ScrollToTop()<br/><small>src/components/ScrollToTop.tsx</small>")
+    end
+    src_app_46efd68e("App.tsx")
+    scripts_collect_sub_agent_outputs_log_0e1f5014 -->|calls| scripts_collect_sub_agent_outputs_main_a1e85c0f
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_collectinputfi_2f84ba8b
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_extractjsonval_d0f2eb91
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_infercandidate_b0233807
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_normalizeoutpu_bc008944
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_parseargs_b792b80c
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_readexpectedbr_05322efe
+    scripts_collect_sub_agent_outputs_main_a1e85c0f -->|calls| scripts_collect_sub_agent_outputs_readpreresolve_b14f7a25
+    scripts_collect_sub_agent_outputs_collectinputfi_2f84ba8b -->|calls| scripts_collect_sub_agent_outputs_walkdir_570eba02
+    scripts_collect_sub_agent_outputs_extractjsonval_d0f2eb91 -->|calls| scripts_collect_sub_agent_outputs_extractfencebl_057428e7
+    scripts_collect_sub_agent_outputs_extractjsonval_d0f2eb91 -->|calls| scripts_collect_sub_agent_outputs_findbalancedjs_5b9ffa09
+    scripts_collect_sub_agent_outputs_extractjsonval_d0f2eb91 -->|calls| scripts_collect_sub_agent_outputs_tryparsejson_10852233
+    scripts_collect_sub_agent_outputs_normalizeoutpu_bc008944 -->|calls| scripts_collect_sub_agent_outputs_isrecordobject_80070c6c
+    scripts_collect_sub_agent_outputs_normalizeoutpu_bc008944 -->|calls| scripts_collect_sub_agent_outputs_unwrapenvelope_85cbcf08
+    src_app_46efd68e -->|imports| components_scrolltotop_204ff69d
+    src_app_46efd68e -->|imports| components_scrolltotop_scrolltotop_022ff07c
+    %% Omitted for readability: 128 nodes, 0 edges
+    class scripts_collect_sub_agent_outputs_main_a1e85c0f function;
+    class scripts_collect_sub_agent_outputs_extractjsonval_d0f2eb91 function;
+    class scripts_collect_sub_agent_outputs_normalizeoutpu_bc008944 function;
+    class scripts_collect_sub_agent_outputs_log_0e1f5014 function;
+    class scripts_collect_sub_agent_outputs_collectinputfi_2f84ba8b function;
+    class scripts_collect_sub_agent_outputs_infercandidate_b0233807 function;
+    class scripts_collect_sub_agent_outputs_parseargs_b792b80c function;
+    class scripts_collect_sub_agent_outputs_readexpectedbr_05322efe function;
+    class scripts_collect_sub_agent_outputs_readpreresolve_b14f7a25 function;
+    class scripts_collect_sub_agent_outputs_walkdir_570eba02 function;
+    class scripts_collect_sub_agent_outputs_extractfencebl_057428e7 function;
+    class scripts_collect_sub_agent_outputs_findbalancedjs_5b9ffa09 function;
+    class scripts_collect_sub_agent_outputs_tryparsejson_10852233 function;
+    class scripts_collect_sub_agent_outputs_isrecordobject_80070c6c function;
+    class scripts_collect_sub_agent_outputs_unwrapenvelope_85cbcf08 function;
+    class components_scrolltotop_204ff69d ui;
+    class components_scrolltotop_scrolltotop_022ff07c ui;
+    class src_app_46efd68e ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Vercel Optimize Skill</code><br><small style="color:var(--muted)">vercel-optimize/references/doctrine.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Vercel Optimize Skill node in vercel-optimize/references/doctrine.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Vercel React Best Practices Skill</code><br><small style="color:var(--muted)">skills/vercel-react-best-practices/SKILL.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Vercel React Best Practices Skill node in skills/vercel-react-best-practices/SKILL.md.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Doctrine</code><br><small style="color:var(--muted)">vercel-optimize/references/doctrine.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Doctrine.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Data Collection</code><br><small style="color:var(--muted)">vercel-optimize/references/data-collection.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Data Collection.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Observability Plus Stop-And-Ask</code><br><small style="color:var(--muted)">vercel-optimize/references/observability-plus.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Observability Plus Stop-And-Ask.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Recommendations</code><br><small style="color:var(--muted)">vercel-optimize/references/recommendations.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Recommendations.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Scanner Patterns</code><br><small style="color:var(--muted)">vercel-optimize/references/scanner-patterns.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Scanner Patterns.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Scoring</code><br><small style="color:var(--muted)">vercel-optimize/references/scoring.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Scoring.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Verification</code><br><small style="color:var(--muted)">vercel-optimize/references/verification.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Verification.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Voice</code><br><small style="color:var(--muted)">vercel-optimize/references/voice.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Voice.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Playbooks README</code><br><small style="color:var(--muted)">references/playbooks/README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Playbooks README.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>AI Application Playbook</code><br><small style="color:var(--muted)">references/playbooks/ai-application.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AI Application Playbook.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>API Service Playbook</code><br><small style="color:var(--muted)">references/playbooks/api-service.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing API Service Playbook.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Content Site Playbook</code><br><small style="color:var(--muted)">references/playbooks/content-site.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Content Site Playbook.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>E-commerce Playbook</code><br><small style="color:var(--muted)">references/playbooks/ecommerce.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing E-commerce Playbook.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Marketing Site Playbook</code><br><small style="color:var(--muted)">references/playbooks/marketing.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Marketing Site Playbook.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>SaaS Playbook</code><br><small style="color:var(--muted)">references/playbooks/saas.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SaaS Playbook.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>SvelteKit Playbook</code><br><small style="color:var(--muted)">references/playbooks/sveltekit.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SvelteKit Playbook.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Support Topics README</code><br><small style="color:var(--muted)">references/support-topics/README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Support Topics README.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>AGENTS.md Compiled Output</code><br><small style="color:var(--muted)">skills/vercel-react-best-practices/AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AGENTS.md Compiled Output.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>README.md</code><br><small style="color:var(--muted)">skills/vercel-react-best-practices/README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing README.md.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>SKILL.md</code><br><small style="color:var(--muted)">skills/vercel-react-best-practices/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SKILL.md.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Sections Metadata</code><br><small style="color:var(--muted)">vercel-react-best-practices/rules/_sections.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Sections Metadata.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Rule Template</code><br><small style="color:var(--muted)">vercel-react-best-practices/rules/_template.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Rule Template.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>AGENTS.md Operating Manual</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AGENTS.md Operating Manual.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Inspected Skills: web-design-guidelines, react-best-practices</code><br><small style="color:var(--muted)">AGENT_SOURCE_NOTES.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Inspected Skills: web-design-guidelines, react-best-practices.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>CLAUDE.md Developer &amp; Agent Reference Guide</code><br><small style="color:var(--muted)">CLAUDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing CLAUDE.md Developer &amp; Agent Reference Guide.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>Repository Index: website, skysthelimitpainting1779-collab</code><br><small style="color:var(--muted)">INDEX.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Repository Index: website, skysthelimitpainting1779-collab.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>PROJECT.md: Visual Redesign &amp; Functionality Audit</code><br><small style="color:var(--muted)">PROJECT.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing PROJECT.md: Visual Redesign &amp; Functionality Audit.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>README.md: Sky&#x27;s the Limit Painting LLC Website</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing README.md: Sky&#x27;s the Limit Painting LLC Website.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>vercel-optimize/scripts/collect-sub-agent-outputs.mjs</code></td><td>17 nodes</td></tr>
+<tr><td><code>src/App.tsx</code></td><td>17 nodes</td></tr>
+<tr><td><code>deploy-to-vercel/resources/deploy-codex.sh</code></td><td>6 nodes</td></tr>
+<tr><td><code>vercel-optimize/references/doctrine.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>skills/vercel-react-best-practices/SKILL.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/ScrollToTop.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>.agents/BRIEFING.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>.agents/ORIGINAL_REQUEST.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: references x72, contains x34, calls x14, relates x5. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 7. Ingestion & Updates ====== -->
+<h2 id="ingest-cache-update">7. Ingestion &amp; Updates</h2>
+<p>Ingestion &amp; Updates groups implementation around skills, agents, vercel, optimize, mostly in lib/scanners/cache-components-suspense-dedupe.mjs, lib/scanners/use-cache-date-stamp.mjs, lib/sanitizers/index.mjs. This section covers 51 nodes and 60 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Ingestion &amp; Updates (51 nodes, 60 edges)
+    subgraph ingest_cache_update_lib_scanners_cache_component_9e8d46dc["lib/scanners/cache-components-suspense-dedupe.mjs"]
+        scanners_cache_components_suspense_dedupe_scan_0fbbab52("scan()<br/><small>lib/scanners/cache-components-suspense-dedupe.mjs</small>")
+        scanners_cache_components_suspense_dedupe_countm_92cdf5a5("countMatches()<br/><small>lib/scanners/cache-components-suspense-dedupe.mjs</small>")
+        scanners_cache_components_suspense_dedupe_findre_092aa7f6("findRepeated()<br/><small>lib/scanners/cache-components-suspense-dedupe.mjs</small>")
+        scanners_cache_components_suspense_dedupe_trunca_adc762ce("truncate()<br/><small>lib/scanners/cache-components-suspense-dedupe.mjs</small>")
+        scanners_cache_components_suspense_dedupe_record_e2d3cc49("record()<br/><small>lib/scanners/cache-components-suspense-dedupe.mjs</small>")
+    end
+    subgraph ingest_cache_update_lib_sanitizers_index_mjs_fa3b8f19["lib/sanitizers/index.mjs"]
+        sanitizers_index_applysanitizers_587c7627("applySanitizers()<br/><small>lib/sanitizers/index.mjs</small>")
+        sanitizers_index_recordsanitizer_ccca94c9("recordSanitizer()<br/><small>lib/sanitizers/index.mjs</small>")
+        sanitizers_index_applysanitizersbatch_4af389ad("applySanitizersBatch()<br/><small>lib/sanitizers/index.mjs</small>")
+    end
+    subgraph ingest_cache_update_vercel_optimize_lib_impact_m_c247814f["vercel-optimize/lib/impact-magnitude.mjs"]
+        lib_impact_magnitude_applydollarstrip_72955249("applyDollarStrip()<br/><small>vercel-optimize/lib/impact-magnitude.mjs</small>")
+        lib_impact_magnitude_433ea0a8("impact-magnitude.mjs")
+        lib_impact_magnitude_stripdollarliterals_21f328db("stripDollarLiterals()<br/><small>vercel-optimize/lib/impact-magnitude.mjs</small>")
+    end
+    subgraph ingest_cache_update_lib_scanners_middleware_broa_ac73dbd5["lib/scanners/middleware-broad-matcher.mjs"]
+        scanners_middleware_broad_matcher_scan_232b2f70("scan()<br/><small>lib/scanners/middleware-broad-matcher.mjs</small>")
+        scanners_middleware_broad_matcher_isapplicable_77a54719("isApplicable()<br/><small>lib/scanners/middleware-broad-matcher.mjs</small>")
+    end
+    subgraph ingest_cache_update_lib_scanners_missing_cache_h_de6d5cd3["lib/scanners/missing-cache-headers.mjs"]
+        scanners_missing_cache_headers_scan_9c5af9cf("scan()<br/><small>lib/scanners/missing-cache-headers.mjs</small>")
+        scanners_missing_cache_headers_isapplicable_7062edf8("isApplicable()<br/><small>lib/scanners/missing-cache-headers.mjs</small>")
+    end
+    subgraph ingest_cache_update_lib_scanners_use_cache_date_2ec7b795["lib/scanners/use-cache-date-stamp.mjs"]
+        scanners_use_cache_date_stamp_scan_3f283f0d("scan()<br/><small>lib/scanners/use-cache-date-stamp.mjs</small>")
+        scanners_use_cache_date_stamp_classifysubtype_135e9397("classifySubtype()<br/><small>lib/scanners/use-cache-date-stamp.mjs</small>")
+    end
+    scanners_index_4a17dfb9("index.mjs")
+    lib_impact_magnitude_stripdollarliterals_21f328db -->|calls| lib_impact_magnitude_applydollarstrip_72955249
+    lib_impact_magnitude_applydollarstrip_72955249 -->|calls| sanitizers_index_applysanitizers_587c7627
+    sanitizers_index_recordsanitizer_ccca94c9 -->|calls| sanitizers_index_applysanitizers_587c7627
+    sanitizers_index_applysanitizers_587c7627 -->|calls| sanitizers_index_applysanitizersbatch_4af389ad
+    scanners_cache_components_suspense_dedupe_scan_0fbbab52 -->|calls| scanners_cache_components_suspense_dedupe_countm_92cdf5a5
+    scanners_cache_components_suspense_dedupe_scan_0fbbab52 -->|calls| scanners_cache_components_suspense_dedupe_findre_092aa7f6
+    scanners_cache_components_suspense_dedupe_scan_0fbbab52 -->|calls| scanners_cache_components_suspense_dedupe_trunca_adc762ce
+    scanners_cache_components_suspense_dedupe_findre_092aa7f6 -->|calls| scanners_cache_components_suspense_dedupe_record_e2d3cc49
+    scanners_middleware_broad_matcher_scan_232b2f70 -->|calls| scanners_middleware_broad_matcher_isapplicable_77a54719
+    scanners_missing_cache_headers_scan_9c5af9cf -->|calls| scanners_missing_cache_headers_isapplicable_7062edf8
+    scanners_use_cache_date_stamp_scan_3f283f0d -->|calls| scanners_use_cache_date_stamp_classifysubtype_135e9397
+    %% Omitted for readability: 33 nodes, 0 edges
+    class scanners_cache_components_suspense_dedupe_scan_0fbbab52 function;
+    class scanners_cache_components_suspense_dedupe_countm_92cdf5a5 function;
+    class scanners_cache_components_suspense_dedupe_findre_092aa7f6 function;
+    class scanners_cache_components_suspense_dedupe_trunca_adc762ce function;
+    class scanners_cache_components_suspense_dedupe_record_e2d3cc49 function;
+    class sanitizers_index_applysanitizers_587c7627 function;
+    class sanitizers_index_recordsanitizer_ccca94c9 function;
+    class sanitizers_index_applysanitizersbatch_4af389ad function;
+    class lib_impact_magnitude_applydollarstrip_72955249 function;
+    class lib_impact_magnitude_433ea0a8 function;
+    class lib_impact_magnitude_stripdollarliterals_21f328db function;
+    class scanners_middleware_broad_matcher_scan_232b2f70 function;
+    class scanners_middleware_broad_matcher_isapplicable_77a54719 function;
+    class scanners_missing_cache_headers_scan_9c5af9cf function;
+    class scanners_missing_cache_headers_isapplicable_7062edf8 function;
+    class scanners_use_cache_date_stamp_scan_3f283f0d function;
+    class scanners_use_cache_date_stamp_classifysubtype_135e9397 function;
+    class scanners_index_4a17dfb9 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>impact-magnitude.mjs</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>impact-magnitude.mjs node in vercel-optimize/lib/impact-magnitude.mjs.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>stripDollarLiterals()</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>applyDollarStrip()</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small></td>
+  <td>stripDollarLiterals() node in vercel-optimize/lib/impact-magnitude.mjs.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>applyDollarStrip()</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>stripDollarLiterals()</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small></td>
+  <td><code>applySanitizers()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small><br><code>index.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>applyDollarStrip() node in vercel-optimize/lib/impact-magnitude.mjs.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>bot-protection-certainty.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/bot-protection-certainty.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>bot-protection-certainty.mjs node in lib/sanitizers/bot-protection-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>metadata</code><br><small style="color:var(--muted)">lib/sanitizers/bot-protection-certainty.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>metadata node in lib/sanitizers/bot-protection-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>STRING_FIELDS</code><br><small style="color:var(--muted)">lib/sanitizers/bot-protection-certainty.mjs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>STRING_FIELDS node in lib/sanitizers/bot-protection-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>apply()</code><br><small style="color:var(--muted)">lib/sanitizers/bot-protection-certainty.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>apply() node in lib/sanitizers/bot-protection-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>cache-tag-invalidation-certainty.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/cache-tag-invalidation-certainty.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>metadata</code><br><small style="color:var(--muted)">lib/sanitizers/cache-tag-invalidation-certainty.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>metadata node in lib/sanitizers/cache-tag-invalidation-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>STRING_FIELDS</code><br><small style="color:var(--muted)">lib/sanitizers/cache-tag-invalidation-certainty.mjs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>STRING_FIELDS node in lib/sanitizers/cache-tag-invalidation-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>apply()</code><br><small style="color:var(--muted)">lib/sanitizers/cache-tag-invalidation-certainty.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>apply() node in lib/sanitizers/cache-tag-invalidation-certainty.mjs.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>applyDollarStrip()</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small><br><code>bot-protection-certainty.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/bot-protection-certainty.mjs</small><br><code>cache-tag-invalidation-certainty.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/cache-tag-invalidation-certainty.mjs</small><br>+1 more</td>
+  <td><code>missing-citation.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/missing-citation.mjs</small></td>
+  <td>index.mjs node in lib/sanitizers/index.mjs.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>SANITIZERS</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>SANITIZERS node in lib/sanitizers/index.mjs.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>recordSanitizer()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>applySanitizers()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>recordSanitizer() node in lib/sanitizers/index.mjs.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>applySanitizers()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>applyDollarStrip()</code><br><small style="color:var(--muted)">vercel-optimize/lib/impact-magnitude.mjs</small><br><code>recordSanitizer()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td><code>applySanitizersBatch()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>applySanitizers() node in lib/sanitizers/index.mjs.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>applySanitizersBatch()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>applySanitizers()</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>applySanitizersBatch() node in lib/sanitizers/index.mjs.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>missing-citation.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/missing-citation.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/sanitizers/index.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>missing-citation.mjs node in lib/sanitizers/missing-citation.mjs.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>metadata</code><br><small style="color:var(--muted)">lib/sanitizers/missing-citation.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>metadata node in lib/sanitizers/missing-citation.mjs.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>apply()</code><br><small style="color:var(--muted)">lib/sanitizers/missing-citation.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>apply() node in lib/sanitizers/missing-citation.mjs.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/scanners/index.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>cache-components-suspense-dedupe.mjs</code><br><small style="color:var(--muted)">lib/scanners/cache-components-suspense-dedupe.mjs</small></td>
+  <td><code>middleware-broad-matcher.mjs</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small><br><code>missing-cache-headers.mjs</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small><br><code>sveltekit-prerender-missing.mjs</code><br><small style="color:var(--muted)">lib/scanners/sveltekit-prerender-missing.mjs</small><br>+1 more</td>
+  <td>index.mjs node in lib/scanners/index.mjs.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>scanners</code><br><small style="color:var(--muted)">lib/scanners/index.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Starts scanning or handles scan status.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>middleware-broad-matcher.mjs</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/scanners/index.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>middleware-broad-matcher.mjs node in lib/scanners/middleware-broad-matcher.mjs.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>metadata</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>metadata node in lib/scanners/middleware-broad-matcher.mjs.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>scan()</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>isApplicable()</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small></td>
+  <td>Starts scanning or handles scan status.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>isApplicable()</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>scan()</code><br><small style="color:var(--muted)">lib/scanners/middleware-broad-matcher.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>isApplicable() node in lib/scanners/middleware-broad-matcher.mjs.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>missing-cache-headers.mjs</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/scanners/index.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>metadata</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>metadata node in lib/scanners/missing-cache-headers.mjs.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>scan()</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>isApplicable()</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small></td>
+  <td>Starts scanning or handles scan status.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>isApplicable()</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>scan()</code><br><small style="color:var(--muted)">lib/scanners/missing-cache-headers.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>isApplicable() node in lib/scanners/missing-cache-headers.mjs.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>sveltekit-prerender-missing.mjs</code><br><small style="color:var(--muted)">lib/scanners/sveltekit-prerender-missing.mjs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>index.mjs</code><br><small style="color:var(--muted)">lib/scanners/index.mjs</small></td>
+  <td>No direct outbound edge</td>
+  <td>sveltekit-prerender-missing.mjs node in lib/scanners/sveltekit-prerender-missing.mjs.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>lib/scanners/cache-components-suspense-dedupe.mjs</code></td><td>7 nodes</td></tr>
+<tr><td><code>lib/scanners/use-cache-date-stamp.mjs</code></td><td>7 nodes</td></tr>
+<tr><td><code>lib/sanitizers/index.mjs</code></td><td>5 nodes</td></tr>
+<tr><td><code>lib/sanitizers/bot-protection-certainty.mjs</code></td><td>4 nodes</td></tr>
+<tr><td><code>lib/sanitizers/cache-tag-invalidation-certainty.mjs</code></td><td>4 nodes</td></tr>
+<tr><td><code>lib/scanners/middleware-broad-matcher.mjs</code></td><td>4 nodes</td></tr>
+<tr><td><code>lib/scanners/missing-cache-headers.mjs</code></td><td>4 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/impact-magnitude.mjs</code></td><td>3 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x36, calls x14, imports x9, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 8. Serving API ====== -->
+<h2 id="serve-api">8. Serving API</h2>
+<p>Serving API groups implementation around api, leadsts, agents, sub, mostly in api/leads.ts, api/manychat.ts, sub_orch_impl/m2_explorer_1/BRIEFING.md. This section covers 55 nodes and 82 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Serving API (55 nodes, 82 edges)
+    subgraph serve_api_api_leads_ts_85d626a9["api/leads.ts"]
+        api_leads_astext_d054bfe0("asText()<br/><small>api/leads.ts</small>")
+        api_leads_executedbquery_562234a5("executeDbQuery()<br/><small>api/leads.ts</small>")
+        api_leads_saveleadtodb_fa6345b7("saveLeadToDb()<br/><small>api/leads.ts</small>")
+        api_leads_buildleadhtml_056523e5("buildLeadHtml()<br/><small>api/leads.ts</small>")
+        api_leads_ratelimit_1ef13f11("rateLimit()<br/><small>api/leads.ts</small>")
+        api_leads_handler_f4df0d06("handler()<br/><small>api/leads.ts</small>")
+        api_leads_saveleadeventtodb_832b4db5("saveLeadEventToDb()<br/><small>api/leads.ts</small>")
+        api_leads_buildautoreplyhtml_5629fe28("buildAutoReplyHtml()<br/><small>api/leads.ts</small>")
+        api_leads_sendautoreplytolead_063bef18("sendAutoReplyToLead()<br/><small>api/leads.ts</small>")
+        api_leads_sendtohubspot_9ae54888("sendToHubspot()<br/><small>api/leads.ts</small>")
+        api_leads_sendwithresend_94ff99d8("sendWithResend()<br/><small>api/leads.ts</small>")
+        api_leads_validate_70678fff("validate()<br/><small>api/leads.ts</small>")
+        api_leads_ispayload_717483a9("isPayload()<br/><small>api/leads.ts</small>")
+        api_leads_escapehtml_2055a0e5("escapeHtml()<br/><small>api/leads.ts</small>")
+    end
+    subgraph serve_api_lib_gates_external_api_slow_mjs_b4393e21["lib/gates/external-api-slow.mjs"]
+        gates_external_api_slow_gate_89f3b256("gate()<br/><small>lib/gates/external-api-slow.mjs</small>")
+        gates_external_api_slow_extractcallcounts_b5910f48("extractCallCounts()<br/><small>lib/gates/external-api-slow.mjs</small>")
+        gates_external_api_slow_extractexternalapis_4afec05d("extractExternalApis()<br/><small>lib/gates/external-api-slow.mjs</small>")
+    end
+    api_manychat_astext_034f653e("asText()<br/><small>api/manychat.ts</small>")
+    gates_external_api_slow_gate_89f3b256 -->|calls| gates_external_api_slow_extractcallcounts_b5910f48
+    gates_external_api_slow_gate_89f3b256 -->|calls| gates_external_api_slow_extractexternalapis_4afec05d
+    api_leads_ratelimit_1ef13f11 -->|calls| api_leads_handler_f4df0d06
+    api_leads_executedbquery_562234a5 -->|calls| api_leads_saveleadeventtodb_832b4db5
+    api_leads_executedbquery_562234a5 -->|calls| api_leads_saveleadtodb_fa6345b7
+    api_leads_saveleadtodb_fa6345b7 -->|calls| api_leads_handler_f4df0d06
+    api_leads_saveleadtodb_fa6345b7 -->|calls| api_leads_astext_d054bfe0
+    api_leads_astext_d054bfe0 -->|calls| api_leads_buildautoreplyhtml_5629fe28
+    api_leads_astext_d054bfe0 -->|calls| api_leads_handler_f4df0d06
+    api_leads_astext_d054bfe0 -->|calls| api_leads_sendautoreplytolead_063bef18
+    api_leads_astext_d054bfe0 -->|calls| api_leads_sendtohubspot_9ae54888
+    api_leads_astext_d054bfe0 -->|calls| api_leads_sendwithresend_94ff99d8
+    api_leads_astext_d054bfe0 -->|calls| api_leads_validate_70678fff
+    api_leads_ispayload_717483a9 -->|calls| api_leads_handler_f4df0d06
+    api_leads_escapehtml_2055a0e5 -->|calls| api_leads_buildautoreplyhtml_5629fe28
+    api_leads_validate_70678fff -->|calls| api_leads_handler_f4df0d06
+    api_leads_buildleadhtml_056523e5 -->|calls| api_leads_sendwithresend_94ff99d8
+    api_leads_buildautoreplyhtml_5629fe28 -->|calls| api_leads_sendautoreplytolead_063bef18
+    %% Omitted for readability: 37 nodes, 0 edges
+    class api_leads_astext_d054bfe0 function;
+    class api_leads_executedbquery_562234a5 function;
+    class api_leads_saveleadtodb_fa6345b7 function;
+    class api_leads_buildleadhtml_056523e5 function;
+    class api_leads_ratelimit_1ef13f11 function;
+    class api_leads_handler_f4df0d06 function;
+    class api_leads_saveleadeventtodb_832b4db5 function;
+    class api_leads_buildautoreplyhtml_5629fe28 function;
+    class api_leads_sendautoreplytolead_063bef18 function;
+    class api_leads_sendtohubspot_9ae54888 function;
+    class api_leads_sendwithresend_94ff99d8 function;
+    class api_leads_validate_70678fff function;
+    class api_leads_ispayload_717483a9 function;
+    class api_leads_escapehtml_2055a0e5 function;
+    class gates_external_api_slow_gate_89f3b256 function;
+    class gates_external_api_slow_extractcallcounts_b5910f48 function;
+    class gates_external_api_slow_extractexternalapis_4afec05d api;
+    class api_manychat_astext_034f653e function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>leads.ts</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>ipCache</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>rateLimit()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>rateLimit() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>executeDbQuery()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>saveLeadEventToDb()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>saveLeadToDb()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>executeDbQuery() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>saveLeadToDb()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>executeDbQuery()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>saveLeadToDb() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>saveLeadEventToDb()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>executeDbQuery()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>saveLeadEventToDb() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>requiredFields</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>requiredFields node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>saveLeadToDb()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><code>buildAutoReplyHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>sendAutoReplyToLead()</code><br><small style="color:var(--muted)">api/leads.ts</small><br>+3 more</td>
+  <td>asText() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>isPayload()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>isPayload() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>escapeHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>buildAutoReplyHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>getSafeValue()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getSafeValue() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>validate()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>validate() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>buildLeadId()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>buildLeadId() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>buildLeadHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>sendWithResend()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>sendWithResend()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>buildLeadHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>sendWithResend() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>buildAutoReplyHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>escapeHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><code>sendAutoReplyToLead()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>sendAutoReplyToLead()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>buildAutoReplyHtml()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>sendAutoReplyToLead() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>sendLeadWebhook()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sendLeadWebhook() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>sendToHubspot()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>sendToHubspot() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>handler()</code><br><small style="color:var(--muted)">api/leads.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asText()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>buildLeadId()</code><br><small style="color:var(--muted)">api/leads.ts</small><br><code>isPayload()</code><br><small style="color:var(--muted)">api/leads.ts</small><br>+3 more</td>
+  <td>No direct outbound edge</td>
+  <td>handler() node in api/leads.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Project Status</code><br><small style="color:var(--muted)">.agents/sub_orch_impl/progress.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Project Status.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>M2 Auditor Briefing</code><br><small style="color:var(--muted)">sub_orch_impl/m2_auditor/BRIEFING.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Auditor Briefing.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>M2 Auditor Original Request</code><br><small style="color:var(--muted)">sub_orch_impl/m2_auditor/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Auditor Original Request.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>M2 Challenger 1 Briefing</code><br><small style="color:var(--muted)">sub_orch_impl/m2_challenger_1/BRIEFING.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Challenger 1 Briefing.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>M2 Challenger 1 Original Request</code><br><small style="color:var(--muted)">sub_orch_impl/m2_challenger_1/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Challenger 1 Original Request.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>M2 Challenger 1 Progress</code><br><small style="color:var(--muted)">sub_orch_impl/m2_challenger_1/progress.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Challenger 1 Progress.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>M2 Explorer 1 Briefing</code><br><small style="color:var(--muted)">sub_orch_impl/m2_explorer_1/BRIEFING.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Explorer 1 Briefing.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>M2 Explorer 1 Original Request</code><br><small style="color:var(--muted)">sub_orch_impl/m2_explorer_1/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing M2 Explorer 1 Original Request.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>src/pages/Home.tsx</code><br><small style="color:var(--muted)">sub_orch_impl/m2_explorer_1/BRIEFING.md</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in sub_orch_impl/m2_explorer_1/BRIEFING.md.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>src/components/Layout.tsx</code><br><small style="color:var(--muted)">sub_orch_impl/m2_explorer_1/BRIEFING.md</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in sub_orch_impl/m2_explorer_1/BRIEFING.md.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>api/leads.ts</code></td><td>20 nodes</td></tr>
+<tr><td><code>api/manychat.ts</code></td><td>11 nodes</td></tr>
+<tr><td><code>sub_orch_impl/m2_explorer_1/BRIEFING.md</code></td><td>9 nodes</td></tr>
+<tr><td><code>lib/gates/external-api-slow.mjs</code></td><td>5 nodes</td></tr>
+<tr><td><code>sub_orch_impl/m2_auditor/BRIEFING.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>sub_orch_impl/m2_auditor/ORIGINAL_REQUEST.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>sub_orch_impl/m2_challenger_1/BRIEFING.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>sub_orch_impl/m2_challenger_1/ORIGINAL_REQUEST.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x33, calls x28, references x12. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 9. Other ====== -->
+<h2 id="other">9. Other</h2>
+<p>Other groups implementation around agents, skills, vercel, optimize, mostly in vercel-optimize/lib/verify-claim.mjs, vercel-optimize/lib/workspace-resolver.mjs, vercel-optimize/lib/vercel.mjs. This section covers 997 nodes and 1669 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Other (997 nodes, 1669 edges)
+    subgraph other_vercel_optimize_lib_budget_summary_mjs_89ba9644["vercel-optimize/lib/budget-summary.mjs"]
+        lib_budget_summary_buildbudgetsummary_9345dd22("buildBudgetSummary()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_buildchatpreview_5390aaef("buildChatPreview()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_buildexactchatmessage_225349c1("buildExactChatMessage()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_buildoptions_a960c856("buildOptions()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_buildprintcheck_95be1e12("buildPrintCheck()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_buildquestionpayload_42ea0e4a("buildQuestionPayload()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_buildquestiontext_22f91809("buildQuestionText()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+        lib_budget_summary_renderbudgetsummarymarkdown_ff6886cd("renderBudgetSummaryMarkdown()<br/><small>vercel-optimize/lib/budget-summary.mjs</small>")
+    end
+    subgraph other_src_components_PageMeta_tsx_ae472276["src/components/PageMeta.tsx"]
+        components_pagemeta_e9fbb295("PageMeta.tsx")
+        components_pagemeta_pagemeta_641ac828("PageMeta()<br/><small>src/components/PageMeta.tsx</small>")
+    end
+    subgraph other_src_components_PageTransition_tsx_98d1eddd["src/components/PageTransition.tsx"]
+        components_pagetransition_565f499f("PageTransition.tsx")
+        components_pagetransition_pagetransition_b3a3f002("PageTransition()<br/><small>src/components/PageTransition.tsx</small>")
+    end
+    subgraph other_vercel_optimize_lib_auth_route_mjs_3d79a751["vercel-optimize/lib/auth-route.mjs"]
+        lib_auth_route_isauthroute_40779cde("isAuthRoute()<br/><small>vercel-optimize/lib/auth-route.mjs</small>")
+        lib_auth_route_applyauthdisqualifier_7e3d7515("applyAuthDisqualifier()<br/><small>vercel-optimize/lib/auth-route.mjs</small>")
+    end
+    components_marketpage_8bd35107("MarketPage.tsx")
+    lib_citations_loadlibrary_5744bb6c("loadLibrary()<br/><small>vercel-optimize/lib/citations.mjs</small>")
+    lib_verify_claim_verifyclaim_14f2207f("verifyClaim()<br/><small>vercel-optimize/lib/verify-claim.mjs</small>")
+    scripts_budget_summary_main_b8faa588("main()<br/><small>vercel-optimize/scripts/budget-summary.mjs</small>")
+    lib_auth_route_isauthroute_40779cde -->|calls| lib_auth_route_applyauthdisqualifier_7e3d7515
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| lib_budget_summary_buildchatpreview_5390aaef
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| lib_budget_summary_buildexactchatmessage_225349c1
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| lib_budget_summary_buildoptions_a960c856
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| lib_budget_summary_buildprintcheck_95be1e12
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| lib_budget_summary_buildquestionpayload_42ea0e4a
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| lib_budget_summary_buildquestiontext_22f91809
+    lib_budget_summary_buildbudgetsummary_9345dd22 -->|calls| scripts_budget_summary_main_b8faa588
+    lib_budget_summary_renderbudgetsummarymarkdown_ff6886cd -->|calls| scripts_budget_summary_main_b8faa588
+    components_marketpage_8bd35107 -->|imports| components_pagemeta_e9fbb295
+    components_marketpage_8bd35107 -->|imports| components_pagemeta_pagemeta_641ac828
+    components_marketpage_8bd35107 -->|imports| components_pagetransition_565f499f
+    components_marketpage_8bd35107 -->|imports| components_pagetransition_pagetransition_b3a3f002
+    %% Omitted for readability: 979 nodes, 0 edges
+    class lib_budget_summary_buildbudgetsummary_9345dd22 function;
+    class lib_budget_summary_buildchatpreview_5390aaef function;
+    class lib_budget_summary_buildexactchatmessage_225349c1 function;
+    class lib_budget_summary_buildoptions_a960c856 function;
+    class lib_budget_summary_buildprintcheck_95be1e12 function;
+    class lib_budget_summary_buildquestionpayload_42ea0e4a function;
+    class lib_budget_summary_buildquestiontext_22f91809 function;
+    class lib_budget_summary_renderbudgetsummarymarkdown_ff6886cd function;
+    class components_pagemeta_e9fbb295 ui;
+    class components_pagemeta_pagemeta_641ac828 ui;
+    class components_pagetransition_565f499f ui;
+    class components_pagetransition_pagetransition_b3a3f002 ui;
+    class lib_auth_route_isauthroute_40779cde api;
+    class lib_auth_route_applyauthdisqualifier_7e3d7515 function;
+    class components_marketpage_8bd35107 ui;
+    class lib_citations_loadlibrary_5744bb6c function;
+    class lib_verify_claim_verifyclaim_14f2207f function;
+    class scripts_budget_summary_main_b8faa588 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>CI Workflow</code><br><small style="color:var(--muted)">.github/workflows/ci.yml</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>CI Workflow node in .github/workflows/ci.yml.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Quality Gate Workflow</code><br><small style="color:var(--muted)">.github/workflows/quality-gate.yml</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Quality Gate Workflow node in .github/workflows/quality-gate.yml.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Release Workflow</code><br><small style="color:var(--muted)">.github/workflows/release.yml</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Release Workflow node in .github/workflows/release.yml.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Security Scan Workflow</code><br><small style="color:var(--muted)">.github/workflows/security-scan.yml</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Starts scanning or handles scan status.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Use contentInsetAdjustmentBehavior for Safe Areas</code><br><small style="color:var(--muted)">vercel-react-native-skills/rules/ui-safe-area-scroll.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Use contentInsetAdjustmentBehavior for Safe Areas.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>ORIGINAL_REQUEST.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_reviewer_1/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>BRIEFING.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_reviewer_2/BRIEFING.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing BRIEFING.md.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>ORIGINAL_REQUEST.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_reviewer_2/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>BRIEFING.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/BRIEFING.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing BRIEFING.md.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>ORIGINAL_REQUEST.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>handoff.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/handoff.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing handoff.md.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>progress.md</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/progress.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing progress.md.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>BRIEFING.md</code><br><small style="color:var(--muted)">.agents/worker_e2e_0/BRIEFING.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing BRIEFING.md.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>ORIGINAL_REQUEST.md</code><br><small style="color:var(--muted)">.agents/worker_e2e_0/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>public/og-preview.svg</code><br><small style="color:var(--muted)">public/og-preview.svg</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>public/og-preview.svg node in public/og-preview.svg.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>src/components/Layout.tsx</code><br><small style="color:var(--muted)">src/components/Layout.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/components/Layout.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>src/components/ConversionFooterCta.tsx</code><br><small style="color:var(--muted)">src/components/ConversionFooterCta.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/components/ConversionFooterCta.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>src/pages/Refer.tsx</code><br><small style="color:var(--muted)">src/pages/Refer.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/pages/Refer.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>src/pages/Estimate.tsx</code><br><small style="color:var(--muted)">src/pages/Estimate.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/pages/Estimate.tsx.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>tests/site-architecture.test.mjs</code><br><small style="color:var(--muted)">tests/site-architecture.test.mjs</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>tests/e2e.test.mjs</code><br><small style="color:var(--muted)">tests/e2e.test.mjs</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>TEST_INFRA.md</code><br><small style="color:var(--muted)">TEST_INFRA.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing TEST_INFRA.md.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>TEST_READY.md</code><br><small style="color:var(--muted)">TEST_READY.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing TEST_READY.md.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Compliance Requirement: No forbidden claims</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Compliance Requirement: No forbidden claims node in sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>Parent Conversation e1617ed6-c7ae-4683-8b55-bd6380f74784</code><br><small style="color:var(--muted)">sub_orch_impl/m2_reviewer_2/BRIEFING.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Parent Conversation e1617ed6-c7ae-4683-8b55-bd6380f74784 node in sub_orch_impl/m2_reviewer_2/BRIEFING.md.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Parent Conversation ec863b6e-9bc4-42e0-9902-10cd85c1a23c</code><br><small style="color:var(--muted)">.agents/worker_e2e_0/BRIEFING.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Parent Conversation ec863b6e-9bc4-42e0-9902-10cd85c1a23c node in .agents/worker_e2e_0/BRIEFING.md.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>MN Statute 176.041</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>MN Statute 176.041 node in sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>Registration ID: IR816596</code><br><small style="color:var(--muted)">sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Registration ID: IR816596 node in sub_orch_impl/m2_worker/ORIGINAL_REQUEST.md.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Code Directory Context: Source Root</code><br><small style="color:var(--muted)">src/context.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Code Directory Context: Source Root.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>Code Directory Context: Reusable UI Components</code><br><small style="color:var(--muted)">src/components/context.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Code Directory Context: Reusable UI Components.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>vercel-optimize/lib/verify-claim.mjs</code></td><td>83 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/workspace-resolver.mjs</code></td><td>42 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/vercel.mjs</code></td><td>38 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/support-topics.mjs</code></td><td>27 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/throttle.mjs</code></td><td>27 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/investigation-brief.mjs</code></td><td>26 nodes</td></tr>
+<tr><td><code>vercel-optimize/lib/reconcile-candidates.mjs</code></td><td>23 nodes</td></tr>
+<tr><td><code>src/pages/context.md</code></td><td>20 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x688, calls x509, imports x190, imports x165. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<h2 id="stats">Project Statistics</h2>
+
+<div class="grid">
+  <div class="card">
+    <h4>Graph</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>Nodes</td><td>1632</td></tr>
+      <tr><td>Edges</td><td>2778</td></tr>
+      <tr><td>Hyperedges</td><td>0</td></tr>
+      <tr><td>Communities</td><td>231</td></tr>
+      <tr><td>Documented Sections</td><td>8</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Edge Confidence</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>EXTRACTED</td><td>2674</td></tr>
+      <tr><td>INFERRED</td><td>103</td></tr>
+      <tr><td>AMBIGUOUS</td><td>1</td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
+  <p>skysthelimit-collab — Architecture Documentation</p>
+  <p>Generated: 2026-06-16 04:39 UTC · graphify callflow-html</p>
+</div>
+
+</div><!-- .container -->
+
+<script>
+(function () {
+  const mermaidConfig = {
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: { htmlLabels: true, useMaxWidth: true },
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#38bdf8',
+      secondaryColor: '#0f172a',
+      tertiaryColor: '#334155',
+      lineColor: '#64748b',
+      textColor: '#e2e8f0',
+    }
+  };
+
+  mermaid.initialize(mermaidConfig);
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function enhanceMermaidDiagrams() {
+    document.querySelectorAll('.mermaid').forEach((container) => {
+      if (container.dataset.zoomReady === 'true') return;
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      container.dataset.zoomReady = 'true';
+      container.classList.add('is-enhanced');
+
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid-viewport';
+      svg.parentNode.insertBefore(viewport, svg);
+      viewport.appendChild(svg);
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mermaid-toolbar';
+      toolbar.innerHTML = [
+        '<button type="button" data-action="zoom-out" title="Zoom out">-</button>',
+        '<span class="zoom-level" data-role="level">100%</span>',
+        '<button type="button" data-action="zoom-in" title="Zoom in">+</button>',
+        '<button type="button" data-action="fit" title="Fit width">Fit</button>',
+        '<button type="button" data-action="reset" title="Reset view">Reset</button>'
+      ].join('');
+      container.insertBefore(toolbar, viewport);
+
+      const state = { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+      const level = toolbar.querySelector('[data-role="level"]');
+
+      function applyTransform() {
+        svg.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+        level.textContent = `${Math.round(state.scale * 100)}%`;
+      }
+
+      function zoomBy(delta) {
+        state.scale = clamp(state.scale + delta, 0.25, 3);
+        applyTransform();
+      }
+
+      function reset() {
+        state.scale = 1;
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      function fitWidth() {
+        const rawWidth = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width
+          ? svg.viewBox.baseVal.width
+          : svg.getBoundingClientRect().width / state.scale;
+        if (!rawWidth) {
+          reset();
+          return;
+        }
+        state.scale = clamp((viewport.clientWidth - 48) / rawWidth, 0.25, 1.4);
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      toolbar.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+        const action = button.dataset.action;
+        if (action === 'zoom-in') zoomBy(0.15);
+        if (action === 'zoom-out') zoomBy(-0.15);
+        if (action === 'fit') fitWidth();
+        if (action === 'reset') reset();
+      });
+
+      viewport.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        zoomBy(event.deltaY < 0 ? 0.1 : -0.1);
+      }, { passive: false });
+
+      viewport.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        state.dragging = true;
+        state.startX = event.clientX;
+        state.startY = event.clientY;
+        state.originX = state.x;
+        state.originY = state.y;
+        viewport.classList.add('is-dragging');
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener('pointermove', (event) => {
+        if (!state.dragging) return;
+        state.x = state.originX + event.clientX - state.startX;
+        state.y = state.originY + event.clientY - state.startY;
+        applyTransform();
+      });
+
+      function endDrag(event) {
+        if (!state.dragging) return;
+        state.dragging = false;
+        viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      applyTransform();
+    });
+  }
+
+  function renderMermaid() {
+    const result = mermaid.run
+      ? mermaid.run({ querySelector: '.mermaid' })
+      : Promise.resolve();
+    Promise.resolve(result)
+      .then(enhanceMermaidDiagrams)
+      .catch((error) => {
+        console.error('Mermaid render failed:', error);
+        enhanceMermaidDiagrams();
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaid);
+  } else {
+    renderMermaid();
+  }
+})();
+</script>
+
+</body>
+</html>

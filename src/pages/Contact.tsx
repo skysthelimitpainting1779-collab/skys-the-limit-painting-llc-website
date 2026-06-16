@@ -24,7 +24,7 @@ export default function ContactPage() {
       />
       <section className="relative overflow-hidden bg-[#050505] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <ResponsiveImage
-          src="/images/site/marketing-hero-exterior-painting.png"
+          src="/images/site/marketing-hero-exterior-painting.webp"
           alt="Premium painting service contact background"
           width={1600}
           height={900}

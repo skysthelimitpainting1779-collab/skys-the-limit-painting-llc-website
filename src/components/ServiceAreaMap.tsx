@@ -69,7 +69,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
       // CartoDB Dark Matter tile layer
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.webp', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
       }).addTo(map);

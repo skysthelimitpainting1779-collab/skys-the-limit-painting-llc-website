@@ -12,7 +12,7 @@ export default function ServiceInterior() {
       {/* Hero */}
       <section className="relative bg-black-primary pt-24 pb-32 overflow-hidden px-6 shadow-inner border-b border-white/10">
         <div className="absolute inset-0 z-0">
-          <img src="/images/services/interior/sky-work-02-finished-living-room.png" alt="Interior Painting" className="w-full h-full object-cover opacity-40" />
+          <img src="/images/services/interior/sky-work-02-finished-living-room.webp" alt="Interior Painting" className="w-full h-full object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-r from-black-primary via-black-primary/95 to-transparent"></div>
         </div>
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
@@ -35,7 +35,7 @@ export default function ServiceInterior() {
           </div>
           <div className="flex-1 hidden md:block">
             <FadeIn delay={0.2} direction="left">
-               <img src="/images/services/interior/sky-work-real-04-before-after-bedroom.png" alt="Before and After Bedroom" className="rounded-sm border border-white/20 shadow-2xl w-full rotate-2" />
+               <img src="/images/services/interior/sky-work-real-04-before-after-bedroom.webp" alt="Before and After Bedroom" className="rounded-sm border border-white/20 shadow-2xl w-full rotate-2" />
             </FadeIn>
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function ServiceInterior() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
              <FadeIn delay={0.1}>
                 <div className="group rounded-sm overflow-hidden border border-white/10 relative h-[300px]">
-                  <img src="/images/services/interior/sky-work-01-finished-kitchen.png" alt="Finished Kitchen" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                  <img src="/images/services/interior/sky-work-01-finished-kitchen.webp" alt="Finished Kitchen" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black-primary/90 to-transparent p-6 pt-12">
                     <span className="text-white font-bold uppercase tracking-wider text-sm">Finished Kitchen</span>
                   </div>
@@ -108,7 +108,7 @@ export default function ServiceInterior() {
              </FadeIn>
              <FadeIn delay={0.2}>
                 <div className="group rounded-sm overflow-hidden border border-white/10 relative h-[300px]">
-                  <img src="/images/services/interior/sky-work-02-finished-living-room.png" alt="Living Room" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                  <img src="/images/services/interior/sky-work-02-finished-living-room.webp" alt="Living Room" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black-primary/90 to-transparent p-6 pt-12">
                     <span className="text-white font-bold uppercase tracking-wider text-sm">Living Room</span>
                   </div>
@@ -116,7 +116,7 @@ export default function ServiceInterior() {
              </FadeIn>
              <FadeIn delay={0.3}>
                 <div className="group rounded-sm overflow-hidden border border-white/10 relative h-[300px]">
-                  <img src="/images/services/interior/sky-work-real-04-before-after-bedroom.png" alt="Bedroom Before & After" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                  <img src="/images/services/interior/sky-work-real-04-before-after-bedroom.webp" alt="Bedroom Before & After" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black-primary/90 to-transparent p-6 pt-12">
                     <span className="text-white font-bold uppercase tracking-wider text-sm">Bedroom Repaint</span>
                   </div>

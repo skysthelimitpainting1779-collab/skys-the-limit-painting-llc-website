@@ -12,7 +12,7 @@ export default function ServiceStriping() {
       {/* Hero */}
       <section className="relative bg-black-primary pt-24 pb-32 overflow-hidden px-6 shadow-inner border-b border-white/10">
         <div className="absolute inset-0 z-0">
-          <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.png" alt="Pavement Striping" className="w-full h-full object-cover opacity-40" />
+          <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.webp" alt="Pavement Striping" className="w-full h-full object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-r from-black-primary via-black-primary/95 to-transparent"></div>
         </div>
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
@@ -35,7 +35,7 @@ export default function ServiceStriping() {
           </div>
           <div className="flex-1 hidden md:block">
             <FadeIn delay={0.2} direction="left">
-               <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.png" alt="Finished Striping Job" className="rounded-sm border border-white/20 shadow-2xl w-full rotate-2" />
+               <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.webp" alt="Finished Striping Job" className="rounded-sm border border-white/20 shadow-2xl w-full rotate-2" />
             </FadeIn>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function ServiceStriping() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
              <FadeIn delay={0.1}>
                 <div className="group rounded-sm overflow-hidden border border-white/10 relative h-[300px]">
-                  <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.png" alt="Parking Lot Striping" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                  <img src="/images/services/striping/SkyLLP_ParkingLot_Striping.webp" alt="Parking Lot Striping" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black-primary/90 to-transparent p-6 pt-12">
                     <span className="text-white font-bold uppercase tracking-wider text-sm">Standard Stall Striping</span>
                   </div>
@@ -106,7 +106,7 @@ export default function ServiceStriping() {
              </FadeIn>
              <FadeIn delay={0.2}>
                 <div className="group rounded-sm overflow-hidden border border-white/10 relative h-[300px]">
-                  <img src="/images/services/commercial/sky-work-real-08-commercial.png" alt="Commercial painting project proof" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                  <img src="/images/services/commercial/sky-work-real-08-commercial.webp" alt="Commercial painting project proof" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black-primary/90 to-transparent p-6 pt-12">
                     <span className="text-white font-bold uppercase tracking-wider text-sm">Commercial Prep Reference</span>
                   </div>

@@ -2,13 +2,13 @@ import os
 import sys
 
 def compress_images():
-    print("Initiating WebP Image Compressor... 🧬")
+    print("Initiating WebP Image Compressor...")
     
     try:
         from PIL import Image
     except ImportError:
         print("Pillow is not installed. To run image compression, please run: pip install Pillow")
-        print("Skipping active conversion but registering script for production deployment. 🧬")
+        print("Skipping active conversion but registering script for production deployment.")
         sys.exit(0)
         
     # We scan the website/public directory and any other graphic assets folders
@@ -42,7 +42,7 @@ def compress_images():
                     except Exception as e:
                         print(f"Error compressing {file}: {e}")
                         
-    print(f"WebP compression complete. Successfully compressed {count} images to WebP! 🧬")
+    print(f"WebP compression complete. Successfully compressed {count} images to WebP!")
 
 if __name__ == '__main__':
     compress_images()

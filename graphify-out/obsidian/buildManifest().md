@@ -1,0 +1,22 @@
+---
+source_file: ".agents/skills/vercel-optimize/scripts/prepare-investigation-brief.mjs"
+type: "code"
+community: "Investigation Briefing"
+location: "L108"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Investigation_Briefing
+---
+
+# buildManifest()
+
+## Connections
+- [[buildFanoutPlan()]] - `calls` [EXTRACTED]
+- [[candidateRefFor()]] - `calls` [EXTRACTED]
+- [[formatCandidateLabel()]] - `calls` [EXTRACTED]
+- [[main()_9]] - `calls` [EXTRACTED]
+- [[prepare-investigation-brief.mjs]] - `contains` [EXTRACTED]
+- [[resolveFiles()]] - `calls` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Investigation_Briefing

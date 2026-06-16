@@ -80,17 +80,17 @@ const coverageItems = [
 
 const marketMedia: Record<MarketSlug, { image: string; label: string; accent: string }> = {
   residential: {
-    image: '/images/site/iphone-interior-painting-progress.png',
+    image: '/images/site/iphone-interior-painting-progress.webp',
     label: 'Real home work',
     accent: 'Warm, detailed, protected',
   },
   commercial: {
-    image: '/images/site/iphone-commercial-door-frame.png',
+    image: '/images/site/iphone-commercial-door-frame.webp',
     label: 'Real property work',
     accent: 'Structured, reliable, clean',
   },
   'public-sector': {
-    image: '/images/services/striping/SkyLLP_ParkingLot_Striping.png',
+    image: '/images/services/striping/SkyLLP_ParkingLot_Striping.webp',
     label: 'Civic readiness',
     accent: 'Documented, precise, infrastructure-aware',
   },
@@ -211,7 +211,7 @@ export default function HomePage() {
 
       <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706]">
         <ResponsiveImage
-          src="/images/site/marketing-hero-exterior-painting.png"
+          src="/images/site/marketing-hero-exterior-painting.webp"
           alt="Exterior painting project with protected windows, clean drop cloths, and a painter working on trim"
           width={1600}
           height={900}
@@ -313,7 +313,7 @@ export default function HomePage() {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-5">
             <div className="relative min-h-[460px] overflow-hidden border border-white/12">
-              <ResponsiveImage src="/images/site/marketing-hero-exterior-painting.png" alt="Polished exterior painting project proof" width={1600} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <ResponsiveImage src="/images/site/marketing-hero-exterior-painting.webp" alt="Polished exterior painting project proof" width={1600} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.86),rgba(8,8,7,0.1))]"></div>
               <div className="absolute left-0 right-0 top-0 h-1 bg-[repeating-linear-gradient(90deg,#f0c067_0_72px,transparent_72px_112px)] opacity-80"></div>
               <div className="absolute bottom-0 left-0 right-0 p-7">
@@ -332,9 +332,9 @@ export default function HomePage() {
             </p>
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {[
-                [Camera, 'Real interior prep', '/images/site/iphone-interior-painting-progress.png'],
-                [UserCheck, 'Real exterior prep', '/images/site/iphone-exterior-prep-front-entry.png'],
-                [ClipboardCheck, 'Real commercial work', '/images/site/iphone-commercial-door-frame.png'],
+                [Camera, 'Real interior prep', '/images/site/iphone-interior-painting-progress.webp'],
+                [UserCheck, 'Real exterior prep', '/images/site/iphone-exterior-prep-front-entry.webp'],
+                [ClipboardCheck, 'Real commercial work', '/images/site/iphone-commercial-door-frame.webp'],
               ].map(([Icon, title, body]) => {
                 const ProofIcon = Icon as typeof UserCheck;
                 return (

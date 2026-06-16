@@ -294,7 +294,7 @@ Cabinets: ${cabinets.cabinetDoors} doors, ${cabinets.cabinetDrawers} drawers${pr
 
       <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#050505] py-16 px-4 text-white sm:px-6 lg:px-8">
         <img
-          src="/images/site/iphone-interior-painting-progress.png"
+          src="/images/site/iphone-interior-painting-progress.webp"
           alt="Interior painting progress"
           className="absolute inset-0 h-full w-full object-cover opacity-10"
         />

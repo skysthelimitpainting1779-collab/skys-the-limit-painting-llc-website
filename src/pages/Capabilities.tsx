@@ -20,7 +20,7 @@ export default function CapabilitiesPage() {
       {/* Hero Header */}
       <section className="relative bg-[#050505] py-20 px-6 text-white overflow-hidden">
         <ResponsiveImage
-          src="/images/services/striping/SkyLLP_ParkingLot_Striping.png"
+          src="/images/services/striping/SkyLLP_ParkingLot_Striping.webp"
           alt="Procurement and commercial parking lot striping"
           width={1600}
           height={900}

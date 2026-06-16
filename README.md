@@ -2,6 +2,10 @@
 
 This repository contains the complete, production-ready website for **Sky's the Limit Painting LLC**, a premier Minnesota painting and pavement marking contractor based in Inver Grove Heights.
 
+## Agent Operating Manual
+
+Use [AGENTS.md](AGENTS.md) as the source of truth for agent work. It defines the wiki-first workflow, verification gate, claim guardrails, and Google Open Knowledge standard.
+
 ## Setup Instructions
 
 This project uses React, Vite, Tailwind CSS (v4), TypeScript, and React Router.
@@ -74,6 +78,10 @@ This project is Vercel-ready and Netlify-ready.
 - Run `npm run build` before deploying.
 - Run `npm run lint` for TypeScript validation.
 - Browser-check the homepage, `/services`, `/projects`, and `/contact` after visual or copy changes.
+
+## Google Open Knowledge Notes
+
+Structured data work must follow [docs/google-open-knowledge.md](docs/google-open-knowledge.md). Keep JSON-LD aligned with visible page content, use stable entity IDs, validate changed URLs with Google Rich Results Test, and avoid unsupported claims.
 
 ## Image Usage Directory
 

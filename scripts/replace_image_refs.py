@@ -2,7 +2,7 @@ import os
 import re
 
 def replace_image_refs():
-    print("Initiating Codebase Image References to WebP Replacer... 🧬")
+    print("Initiating Codebase Image References to WebP Replacer...")
     
     src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'))
     if not os.path.exists(src_dir):
@@ -47,7 +47,7 @@ def replace_image_refs():
                 except Exception as e:
                     print(f"Error processing file {file}: {e}")
                     
-    print(f"Image reference replacement complete. Updated {count} reference(s) across {file_count} file(s)! 🧬")
+    print(f"Image reference replacement complete. Updated {count} reference(s) across {file_count} file(s)!")
 
 if __name__ == '__main__':
     replace_image_refs()
