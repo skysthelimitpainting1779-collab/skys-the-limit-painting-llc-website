@@ -32,7 +32,7 @@
     "vite": "^6.2.0"
   },
   "devDependencies": {
-    "@remotion/cli": "4.0.462",
+    "@remotion/cli": "4.0.477",
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.3",
     "@types/pg": "^8.20.0",
