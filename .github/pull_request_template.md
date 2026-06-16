@@ -16,7 +16,7 @@ Briefly describe what changed and why.
 
 - [ ] `npm run lint`
 - [ ] `npm run build`
-- [ ] `node --test tests/site-architecture.test.mjs`
+- [ ] `npm test`
 - [ ] Visual check completed when UI changed
 
 ## Notes
