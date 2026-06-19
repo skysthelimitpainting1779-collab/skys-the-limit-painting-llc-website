@@ -10,6 +10,7 @@ import Script from 'next/script';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.skysthelimitpaintingllc.com"),
   title: "Sky’s the Limit Painting LLC | Minnesota Painting Contractor",
   description: "Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for residential painting, commercial work, and public-sector opportunities.",
   keywords: [
