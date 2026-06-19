@@ -947,7 +947,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/display-labels.mjs",
       "source_location": "L146",
       "_origin": "ast",
-      "community": 40,
+      "community": 16,
       "norm_label": "formatcandidatelabel()",
       "id": "lib_display_labels_formatcandidatelabel"
     },
@@ -3487,7 +3487,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "render-report.mjs",
       "id": "lib_render_report"
     },
@@ -3607,7 +3607,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L377",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "rendercostbreakdown()",
       "id": "lib_render_report_rendercostbreakdown"
     },
@@ -3617,7 +3617,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L440",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "renderservicecostrows()",
       "id": "lib_render_report_renderservicecostrows"
     },
@@ -3627,7 +3627,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L475",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "servicecost()",
       "id": "lib_render_report_servicecost"
     },
@@ -3637,7 +3637,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L481",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "serviceeffectivecost()",
       "id": "lib_render_report_serviceeffectivecost"
     },
@@ -3647,7 +3647,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L487",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "costroundstocents()",
       "id": "lib_render_report_costroundstocents"
     },
@@ -3677,7 +3677,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L574",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "rendergatedtable()",
       "id": "lib_render_report_rendergatedtable"
     },
@@ -3687,7 +3687,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L588",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "formatgatedtargets()",
       "id": "lib_render_report_formatgatedtargets"
     },
@@ -3807,7 +3807,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L710",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "groupgbhoursbycanonicalroute()",
       "id": "lib_render_report_groupgbhoursbycanonicalroute"
     },
@@ -3817,7 +3817,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L719",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "renderstrengths()",
       "id": "lib_render_report_renderstrengths"
     },
@@ -3837,7 +3837,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L760",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "renderdatagaps()",
       "id": "lib_render_report_renderdatagaps"
     },
@@ -3847,7 +3847,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L791",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "observabilitydatagap()",
       "id": "lib_render_report_observabilitydatagap"
     },
@@ -3857,7 +3857,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L832",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "missingusagesentence()",
       "id": "lib_render_report_missingusagesentence"
     },
@@ -3867,7 +3867,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L852",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "metricstate()",
       "id": "lib_render_report_metricstate"
     },
@@ -3887,7 +3887,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L871",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "priorityscore()",
       "id": "lib_render_report_priorityscore"
     },
@@ -3897,7 +3897,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L874",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "tierscore()",
       "id": "lib_render_report_tierscore"
     },
@@ -3907,7 +3907,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L876",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "isplatformscope()",
       "id": "lib_render_report_isplatformscope"
     },
@@ -3927,7 +3927,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L887",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "signalfromrec()",
       "id": "lib_render_report_signalfromrec"
     },
@@ -3937,7 +3937,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L891",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "formatusage()",
       "id": "lib_render_report_formatusage"
     },
@@ -3947,7 +3947,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L897",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "formatnum()",
       "id": "lib_render_report_formatnum"
     },
@@ -3957,7 +3957,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L904",
       "_origin": "ast",
-      "community": 40,
+      "community": 6,
       "norm_label": "formatbytes()",
       "id": "lib_render_report_formatbytes"
     },
@@ -3967,7 +3967,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L913",
       "_origin": "ast",
-      "community": 342,
+      "community": 6,
       "norm_label": "escape()",
       "id": "lib_render_report_escape"
     },
