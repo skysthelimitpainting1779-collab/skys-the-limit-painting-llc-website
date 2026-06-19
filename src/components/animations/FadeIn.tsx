@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useReducedMotion } from 'motion/react';
 import { ReactNode, Key } from 'react';
 

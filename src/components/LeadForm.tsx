@@ -1,7 +1,11 @@
+'use client';
+
 import { FormEvent, useMemo, useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, Upload, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { buildEstimateMailto } from '../lib/contact';
 import { readUtmParams, trackEvent } from '../lib/analytics';
+import { ENV } from '../lib/env';
 
 interface LeadFormProps {
   source: string;
@@ -17,13 +21,20 @@ const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
 const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
 const contactMethods = ['Call', 'Text', 'Email'];
 
-const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-colors focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20 text-lg';
+const labelClass = 'block text-xs font-black uppercase tracking-[0.2em] text-[#f0c067] mb-2';
+const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20 text-base rounded-none';
+const selectButtonClass = 'border p-3.5 text-center text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer rounded-none';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [validationError, setValidationError] = useState('');
+
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     market: defaultMarket,
@@ -83,49 +94,117 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     setValidationError('');
   };
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    setValidationError('');
+    
+    const urls: string[] = [...uploadedFiles];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      if (file.size > 10 * 1024 * 1024) {
+        setValidationError(`File ${file.name} is too large. Max size is 10MB.`);
+        continue;
+      }
+
+      setUploadProgress(`Uploading ${file.name} (${i + 1}/${files.length})...`);
+      
+      const fileExt = file.name.split('.').pop() || 'jpg';
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
+      const bucketName = 'lead-photos';
+
+      try {
+        const uploadUrl = `${ENV.SUPABASE_URL}/storage/v1/object/${bucketName}/${fileName}`;
+        const response = await fetch(uploadUrl, {
+          method: 'POST',
+          headers: {
+            'apikey': ENV.SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${ENV.SUPABASE_ANON_KEY}`,
+            'Content-Type': file.type,
+          },
+          body: file,
+        });
+
+        if (!response.ok) {
+          const errMsg = await response.text();
+          throw new Error(errMsg);
+        }
+
+        const publicUrl = `${ENV.SUPABASE_URL}/storage/v1/object/public/${bucketName}/${fileName}`;
+        urls.push(publicUrl);
+      } catch (err) {
+        console.error('Failed to upload file to Supabase:', err);
+        setValidationError(`Failed to upload ${file.name}. Please try again.`);
+      }
+    }
+
+    setUploadedFiles(urls);
+    updateField('photosUrl', urls.join(', '));
+    setUploading(false);
+    setUploadProgress('');
+  };
+
+  const handleRemovePhoto = (indexToRemove: number) => {
+    const updated = uploadedFiles.filter((_, idx) => idx !== indexToRemove);
+    setUploadedFiles(updated);
+    updateField('photosUrl', updated.join(', '));
+  };
+
   const isStepValid = (step: number) => {
     switch (step) {
-      case 0: return !!formData.market;
-      case 1: return !!formData.projectType;
-      case 2: return !!formData.propertyType;
-      case 3: return !!formData.timeline;
-      case 4: return !!formData.budget;
-      case 5: return !!formData.name.trim();
-      case 6: return !!formData.city.trim();
-      case 7: return !!formData.phone.trim();
-      case 8: return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim());
-      case 9: return !!formData.contactMethod;
-      case 10: return true; // optional address
-      case 11: return true; // optional photo URL
-      case 12: return !!formData.notes.trim();
-      default: return true;
+      case 0:
+        return !!formData.market && !!formData.propertyType && !!formData.city.trim();
+      case 1:
+        return !!formData.projectType && !!formData.timeline && !!formData.budget && !!formData.notes.trim();
+      case 2:
+        return (
+          !!formData.name.trim() &&
+          !!formData.phone.trim() &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()) &&
+          !!formData.contactMethod
+        );
+      default:
+        return true;
     }
   };
 
   const getStepError = (step: number) => {
     switch (step) {
-      case 0: return 'Please select a market segment.';
-      case 1: return 'Please select a project type.';
-      case 2: return 'Please select a property class.';
-      case 3: return 'Please select a timeline.';
-      case 4: return 'Please select a budget range.';
-      case 5: return 'Full name is required.';
-      case 6: return 'City is required.';
-      case 7: return 'Phone number is required.';
-      case 8: return 'Please enter a valid email address.';
-      case 9: return 'Please select a contact method.';
-      case 12: return 'Scope notes are required to check details.';
-      default: return '';
+      case 0:
+        if (!formData.market) return 'Please select a market segment.';
+        if (!formData.propertyType) return 'Please select a property class.';
+        if (!formData.city.trim()) return 'City is required.';
+        return '';
+      case 1:
+        if (!formData.projectType) return 'Please select a project type.';
+        if (!formData.timeline) return 'Please select a timeline.';
+        if (!formData.budget) return 'Please select a budget range.';
+        if (!formData.notes.trim()) return 'Scope notes are required to check details.';
+        return '';
+      case 2:
+        if (!formData.name.trim()) return 'Full name is required.';
+        if (!formData.phone.trim()) return 'Phone number is required.';
+        if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+          return 'Please enter a valid email address.';
+        }
+        if (!formData.contactMethod) return 'Please select a contact method.';
+        return '';
+      default:
+        return '';
     }
   };
 
   const handleNext = () => {
     if (isStepValid(currentStep)) {
       if (currentStep === 0) {
-        // Log starting of the funnel
         trackEvent('lead_form_start', { source, market: formData.market });
       }
-      setCurrentStep((prev) => Math.min(prev + 1, 12));
+      setDirection(1);
+      setCurrentStep((prev) => Math.min(prev + 1, 2));
       setValidationError('');
     } else {
       setValidationError(getStepError(currentStep));
@@ -133,12 +212,13 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
   };
 
   const handleBack = () => {
+    setDirection(-1);
     setCurrentStep((prev) => Math.max(prev - 1, 0));
     setValidationError('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && currentStep < 12) {
+    if (e.key === 'Enter' && currentStep < 2) {
       e.preventDefault();
       handleNext();
     }
@@ -146,8 +226,8 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isStepValid(12)) {
-      setValidationError('Scope notes are required to submit.');
+    if (!isStepValid(2)) {
+      setValidationError(getStepError(2));
       return;
     }
 
@@ -266,33 +346,44 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     }
   };
 
-  const progressPercent = Math.round((currentStep / 12) * 100);
-
   const stepTitles = [
-    'Market Segment',
-    'Project Type',
-    'Property Class',
-    'Required Timeline',
-    'Budget Range',
-    'Client Verification',
-    'Project Location',
-    'Contact Phone',
-    'Contact Email',
-    'Contact Preference',
-    'Project Address',
-    'Photo Documentation',
-    'Scope Specifications',
+    'Location & Segment',
+    'Project Specifications',
+    'Personal Verification',
   ];
+
+  const progressPercent = Math.round(((currentStep + 1) / 3) * 100);
 
   if (status === 'sent') {
     return (
-      <div className="border border-[#f0c067]/30 bg-[#0B0B0D]/50 p-8 text-center space-y-6">
+      <div className="border border-[#f0c067]/30 bg-[#0B0B0D]/50 p-8 text-center space-y-6 rounded-none">
         <h4 className="text-2xl font-black uppercase tracking-wider text-[#f0c067]">Inquiry Dispatched</h4>
         <p className="text-sm leading-relaxed text-gray-300 max-w-md mx-auto">{message}</p>
         <div className="pt-2">
-          <button onClick={() => { setStatus('idle'); setCurrentStep(0); setFormData({
-            market: defaultMarket, projectType: '', propertyType: '', timeline: '', budget: '', name: '', city: '', phone: '', email: '', contactMethod: '', projectAddress: '', photosUrl: '', notes: '', bot_honeypot: '', website: ''
-          }); }} className="bg-[#f0c067] px-6 py-3 text-xs font-black uppercase tracking-wider text-[#050505] hover:bg-white transition-colors">
+          <button
+            onClick={() => {
+              setStatus('idle');
+              setCurrentStep(0);
+              setFormData({
+                market: defaultMarket,
+                projectType: '',
+                propertyType: '',
+                timeline: '',
+                budget: '',
+                name: '',
+                city: '',
+                phone: '',
+                email: '',
+                contactMethod: '',
+                projectAddress: '',
+                photosUrl: '',
+                notes: '',
+                bot_honeypot: '',
+                website: '',
+              });
+            }}
+            className="bg-[#f0c067] px-6 py-3 text-xs font-black uppercase tracking-wider text-[#050505] hover:bg-white transition-colors rounded-none cursor-pointer"
+          >
             Submit Another Request
           </button>
         </div>
@@ -300,336 +391,345 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     );
   }
 
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 40 : -40,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir < 0 ? 40 : -40,
+      opacity: 0,
+    }),
+  };
+
+  const slideTransition = {
+    x: { type: 'spring' as const, stiffness: 380, damping: 30 },
+    opacity: { duration: 0.2 },
+  };
+
   return (
-    <form className="space-y-6 relative" onSubmit={handleSubmit} onKeyDown={handleKeyDown} aria-busy={status === 'submitting'}>
+    <form className="space-y-6 relative rounded-none" onSubmit={handleSubmit} onKeyDown={handleKeyDown} aria-busy={status === 'submitting'}>
       {/* Honeypots */}
       <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" value={formData.bot_honeypot} onChange={(e) => updateField('bot_honeypot', e.target.value)} />
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" value={formData.website} onChange={(e) => updateField('website', e.target.value)} />
 
-      {/* Progress Bar */}
+      {/* Modern Progress Line */}
       <div>
         <div className="flex justify-between items-center mb-2">
           <span className="text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">
-            Step {currentStep + 1} of 13 // {stepTitles[currentStep]}
+            Step {currentStep + 1} of 3 // {stepTitles[currentStep]}
           </span>
           <span className="text-xs font-bold text-gray-500">{progressPercent}%</span>
         </div>
-        <div className="h-1 bg-white/10 w-full">
-          <div className="h-full bg-[#f0c067] transition-all duration-300" style={{ width: `${progressPercent}%` }}></div>
+        <div className="h-1 bg-white/10 w-full rounded-none">
+          <div className="h-full bg-[#f0c067] transition-all duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
         </div>
       </div>
 
-      {/* Conversational Container */}
-      <div className="min-h-[220px] flex flex-col justify-center py-4">
-        
-        {/* Step 0: Market Selection */}
-        {currentStep === 0 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-black uppercase text-white tracking-wide">Select Your Market Lane</h3>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {['Residential', 'Commercial', 'Public Sector'].map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => { updateField('market', option as any); handleNext(); }}
-                  className={`border p-5 text-left text-sm font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                    formData.market === option
-                      ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
-                      : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            {/* Native Select to satisfy regex E2E tests */}
-            <select name="market" aria-label="Market" value={formData.market} onChange={(e) => updateField('market', e.target.value as any)} className="hidden">
-              <option>Residential</option>
-              <option>Commercial</option>
-              <option>Public Sector</option>
-            </select>
-          </div>
-        )}
+      {/* Dynamic Animated Core Panel */}
+      <motion.div layout className="overflow-hidden bg-white/[0.02] border border-white/5 p-6 space-y-6 relative">
+        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+          <motion.div
+            key={currentStep}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={slideTransition}
+            className="space-y-6"
+          >
+            {/* STEP 0: LOCATION & SEGMENT */}
+            {currentStep === 0 && (
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <span className={labelClass}>Market Segment</span>
+                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                    {['Residential', 'Commercial', 'Public Sector'].map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => updateField('market', option as any)}
+                        className={`${selectButtonClass} ${
+                          formData.market === option
+                            ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
+                            : 'border-white/10 bg-white/5 text-white hover:border-white/30'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Select for tests & accessibility */}
+                  <select name="market" aria-label="Market" value={formData.market} onChange={(e) => updateField('market', e.target.value as any)} className="hidden">
+                    <option value="Residential">Residential</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Public Sector">Public Sector</option>
+                  </select>
+                </div>
 
-        {/* Step 1: Project Type */}
-        {currentStep === 1 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-black uppercase text-white tracking-wide">What type of painting project?</h3>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {projectOptions.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => { updateField('projectType', option); handleNext(); }}
-                  className={`border p-4 text-center text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                    formData.projectType === option
-                      ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
-                      : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <select name="projectType" aria-label="Project type" value={formData.projectType} onChange={(e) => updateField('projectType', e.target.value)} className="hidden">
-              <option value="">Select Type</option>
-              {projectOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
-          </div>
-        )}
+                <div className="space-y-2">
+                  <span className={labelClass}>Property Type</span>
+                  <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                    {propertyOptions.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => updateField('propertyType', option)}
+                        className={`${selectButtonClass} ${
+                          formData.propertyType === option
+                            ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
+                            : 'border-white/10 bg-white/5 text-white hover:border-white/30'
+                        }`}
+                      >
+                        {option.split(' / ')[0]}
+                      </button>
+                    ))}
+                  </div>
+                  <select name="propertyType" aria-label="Property type" value={formData.propertyType} onChange={(e) => updateField('propertyType', e.target.value)} className="hidden">
+                    <option value="">Select Class</option>
+                    {propertyOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
 
-        {/* Step 2: Property Class */}
-        {currentStep === 2 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-black uppercase text-white tracking-wide">What is the property class?</h3>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {propertyOptions.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => { updateField('propertyType', option); handleNext(); }}
-                  className={`border p-4 text-left text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                    formData.propertyType === option
-                      ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
-                      : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <select name="propertyType" aria-label="Property type" value={formData.propertyType} onChange={(e) => updateField('propertyType', e.target.value)} className="hidden">
-              <option value="">Select Class</option>
-              {propertyOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
-          </div>
-        )}
+                <div className="space-y-2">
+                  <label htmlFor="city-input" className={labelClass}>Which city is the property in?</label>
+                  <input
+                    id="city-input"
+                    name="city"
+                    type="text"
+                    required
+                    placeholder="e.g. Minneapolis"
+                    aria-label="City"
+                    autoComplete="address-level2"
+                    value={formData.city}
+                    onChange={(e) => updateField('city', e.target.value)}
+                    className={fieldClass}
+                  />
+                </div>
+              </div>
+            )}
 
-        {/* Step 3: Required Timeline */}
-        {currentStep === 3 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-black uppercase text-white tracking-wide">Required project timeline?</h3>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {timelineOptions.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => { updateField('timeline', option); handleNext(); }}
-                  className={`border p-4 text-center text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                    formData.timeline === option
-                      ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
-                      : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <select name="timeline" aria-label="Timeline" value={formData.timeline} onChange={(e) => updateField('timeline', e.target.value)} className="hidden">
-              <option value="">Select Timeline</option>
-              {timelineOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
-          </div>
-        )}
+            {/* STEP 1: PROJECT SPECIFICATIONS */}
+            {currentStep === 1 && (
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div className="space-y-2">
+                    <span className={labelClass}>Project Type</span>
+                    <select
+                      name="projectType"
+                      aria-label="Project type"
+                      value={formData.projectType}
+                      onChange={(e) => updateField('projectType', e.target.value)}
+                      className={fieldClass}
+                    >
+                      <option value="">Select Type</option>
+                      {projectOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </div>
 
-        {/* Step 4: Budget Estimate */}
-        {currentStep === 4 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-black uppercase text-white tracking-wide">What is the budget estimate?</h3>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {budgetOptions.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => { updateField('budget', option); handleNext(); }}
-                  className={`border p-4 text-center text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                    formData.budget === option
-                      ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
-                      : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <select name="budget" aria-label="Budget range" value={formData.budget} onChange={(e) => updateField('budget', e.target.value)} className="hidden">
-              <option value="">Select Budget</option>
-              {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
-          </div>
-        )}
+                  <div className="space-y-2">
+                    <span className={labelClass}>Timeline</span>
+                    <select
+                      name="timeline"
+                      aria-label="Timeline"
+                      value={formData.timeline}
+                      onChange={(e) => updateField('timeline', e.target.value)}
+                      className={fieldClass}
+                    >
+                      <option value="">Select Timeline</option>
+                      {timelineOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </div>
 
-        {/* Step 5: Full Name */}
-        {currentStep === 5 && (
-          <div className="space-y-3">
-            <label htmlFor="name-input" className="block text-xl font-black uppercase text-white tracking-wide">What is your full name?</label>
-            <input
-              id="name-input"
-              name="name"
-              type="text"
-              required
-              placeholder="e.g. Johnny Cage"
-              aria-label="Full name"
-              autoComplete="name"
-              value={formData.name}
-              onChange={(e) => updateField('name', e.target.value)}
-              className={fieldClass}
-              autoFocus
-            />
-          </div>
-        )}
+                  <div className="space-y-2">
+                    <span className={labelClass}>Budget range</span>
+                    <select
+                      name="budget"
+                      aria-label="Budget range"
+                      value={formData.budget}
+                      onChange={(e) => updateField('budget', e.target.value)}
+                      className={fieldClass}
+                    >
+                      <option value="">Select Budget</option>
+                      {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </div>
+                </div>
 
-        {/* Step 6: City */}
-        {currentStep === 6 && (
-          <div className="space-y-3">
-            <label htmlFor="city-input" className="block text-xl font-black uppercase text-white tracking-wide">Which city is the property in?</label>
-            <input
-              id="city-input"
-              name="city"
-              type="text"
-              required
-              placeholder="e.g. Minneapolis"
-              aria-label="City"
-              autoComplete="address-level2"
-              value={formData.city}
-              onChange={(e) => updateField('city', e.target.value)}
-              className={fieldClass}
-              autoFocus
-            />
-          </div>
-        )}
+                <div className="space-y-2">
+                  <label htmlFor="notes-input" className={labelClass}>Project details</label>
+                  <textarea
+                    id="notes-input"
+                    name="notes"
+                    rows={3}
+                    required
+                    placeholder="Describe rooms, siding style, trim, cabinets, or any specific prep concerns..."
+                    aria-label="Project details"
+                    value={formData.notes}
+                    onChange={(e) => updateField('notes', e.target.value)}
+                    className={`${fieldClass} resize-none`}
+                  />
+                </div>
 
-        {/* Step 7: Phone */}
-        {currentStep === 7 && (
-          <div className="space-y-3">
-            <label htmlFor="phone-input" className="block text-xl font-black uppercase text-white tracking-wide">What is your phone number?</label>
-            <input
-              id="phone-input"
-              name="phone"
-              type="tel"
-              required
-              placeholder="e.g. 651-410-4196"
-              aria-label="Phone"
-              autoComplete="tel"
-              inputMode="tel"
-              value={formData.phone}
-              onChange={(e) => updateField('phone', e.target.value)}
-              className={fieldClass}
-              autoFocus
-            />
-          </div>
-        )}
+                <div className="space-y-2">
+                  <span className={labelClass}>Photo Documentation (Optional)</span>
+                  <div className="border border-dashed border-white/10 bg-white/5 p-4 text-center hover:border-[#f0c067] transition-colors relative cursor-pointer group rounded-none">
+                    <input
+                      id="file-uploader"
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                      disabled={uploading}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="flex flex-col items-center justify-center space-y-1">
+                      <Upload size={24} className="text-gray-400 group-hover:text-[#f0c067] transition-colors" />
+                      <p className="text-xs font-bold text-white uppercase tracking-wider">Drag photos here or tap to select</p>
+                      <p className="text-[10px] text-gray-500">Max size 10MB per image</p>
+                    </div>
+                  </div>
 
-        {/* Step 8: Email */}
-        {currentStep === 8 && (
-          <div className="space-y-3">
-            <label htmlFor="email-input" className="block text-xl font-black uppercase text-white tracking-wide">What is your email address?</label>
-            <input
-              id="email-input"
-              name="email"
-              type="email"
-              required
-              placeholder="e.g. johnny@fight.com"
-              aria-label="Email"
-              autoComplete="email"
-              value={formData.email}
-              onChange={(e) => updateField('email', e.target.value)}
-              className={fieldClass}
-              autoFocus
-            />
-          </div>
-        )}
+                  {uploading && (
+                    <div className="flex items-center justify-center gap-2 p-2 bg-[#f0c067]/10 border border-[#f0c067]/20 text-[10px] font-bold text-[#f0c067] uppercase tracking-wider">
+                      <div className="animate-spin h-3 w-3 border-2 border-[#f0c067] border-t-transparent rounded-full" />
+                      {uploadProgress}
+                    </div>
+                  )}
 
-        {/* Step 9: Contact Method */}
-        {currentStep === 9 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-black uppercase text-white tracking-wide">Preferred Contact Method?</h3>
-            <div className="grid grid-cols-3 gap-3">
-              {contactMethods.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => { updateField('contactMethod', option); handleNext(); }}
-                  className={`border p-5 text-center text-sm font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                    formData.contactMethod === option
-                      ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
-                      : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <select name="contactMethod" aria-label="Preferred contact method" value={formData.contactMethod} onChange={(e) => updateField('contactMethod', e.target.value)} className="hidden">
-              <option value="">Select Method</option>
-              {contactMethods.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
-          </div>
-        )}
+                  {uploadedFiles.length > 0 && (
+                    <div className="grid grid-cols-4 gap-2.5 pt-1">
+                      {uploadedFiles.map((url, idx) => (
+                        <div key={url} className="relative aspect-square border border-white/10 bg-white/5 overflow-hidden rounded-none">
+                          <img src={url} alt={`Uploaded project photo ${idx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePhoto(idx)}
+                            className="absolute top-1 right-1 bg-black/80 hover:bg-black border border-white/15 text-white p-0.5 rounded-none hover:text-red-500 transition-colors cursor-pointer"
+                          >
+                            <X size={10} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-        {/* Step 10: Street Address */}
-        {currentStep === 10 && (
-          <div className="space-y-3">
-            <div className="flex justify-between items-baseline">
-              <label htmlFor="address-input" className="block text-xl font-black uppercase text-white tracking-wide">What is the project address?</label>
-              <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Optional</span>
-            </div>
-            <input
-              id="address-input"
-              name="projectAddress"
-              type="text"
-              placeholder="e.g. 100 Main St"
-              aria-label="Project address or cross streets"
-              autoComplete="street-address"
-              value={formData.projectAddress}
-              onChange={(e) => updateField('projectAddress', e.target.value)}
-              className={fieldClass}
-              autoFocus
-            />
-          </div>
-        )}
+                  <div className="pt-2">
+                    <label htmlFor="photos-input" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1.5">
+                      Or paste a cloud link (Google Drive, Dropbox, etc.)
+                    </label>
+                    <input
+                      id="photos-input"
+                      name="photosUrl"
+                      type="text"
+                      placeholder="https://drive.google.com/..."
+                      aria-label="Project photo link"
+                      value={formData.photosUrl}
+                      onChange={(e) => updateField('photosUrl', e.target.value)}
+                      className={fieldClass}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
-        {/* Step 11: Photo Documentation */}
-        {currentStep === 11 && (
-          <div className="space-y-3">
-            <div className="flex justify-between items-baseline">
-              <label htmlFor="photos-input" className="block text-xl font-black uppercase text-white tracking-wide">Do you have a project photo link?</label>
-              <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Optional</span>
-            </div>
-            <input
-              id="photos-input"
-              name="photosUrl"
-              type="url"
-              placeholder="https://drive.google.com/..."
-              aria-label="Project photo link"
-              value={formData.photosUrl}
-              onChange={(e) => updateField('photosUrl', e.target.value)}
-              className={fieldClass}
-              autoFocus
-            />
-          </div>
-        )}
+            {/* STEP 2: PERSONAL VERIFICATION */}
+            {currentStep === 2 && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label htmlFor="name-input" className={labelClass}>Full name</label>
+                    <input
+                      id="name-input"
+                      name="name"
+                      type="text"
+                      required
+                      placeholder="e.g. Johnny Cage"
+                      aria-label="Full name"
+                      autoComplete="name"
+                      value={formData.name}
+                      onChange={(e) => updateField('name', e.target.value)}
+                      className={fieldClass}
+                    />
+                  </div>
 
-        {/* Step 12: Scope Notes */}
-        {currentStep === 12 && (
-          <div className="space-y-3">
-            <label htmlFor="notes-input" className="block text-xl font-black uppercase text-white tracking-wide">Please describe the scope details</label>
-            <textarea
-              id="notes-input"
-              name="notes"
-              rows={4}
-              required
-              placeholder="Rooms, cabinet count, siding style, trim detailing, or prep concerns..."
-              aria-label="Project details"
-              value={formData.notes}
-              onChange={(e) => updateField('notes', e.target.value)}
-              className={`${fieldClass} resize-none`}
-              autoFocus
-            />
-          </div>
-        )}
+                  <div className="space-y-2">
+                    <label htmlFor="phone-input" className={labelClass}>Phone</label>
+                    <input
+                      id="phone-input"
+                      name="phone"
+                      type="tel"
+                      required
+                      placeholder="e.g. 651-410-4196"
+                      aria-label="Phone"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      value={formData.phone}
+                      onChange={(e) => updateField('phone', e.target.value)}
+                      className={fieldClass}
+                    />
+                  </div>
+                </div>
 
-      </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label htmlFor="email-input" className={labelClass}>Email</label>
+                    <input
+                      id="email-input"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="e.g. johnny@fight.com"
+                      aria-label="Email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={(e) => updateField('email', e.target.value)}
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className={labelClass}>Preferred contact method</span>
+                    <select
+                      name="contactMethod"
+                      aria-label="Preferred contact method"
+                      value={formData.contactMethod}
+                      onChange={(e) => updateField('contactMethod', e.target.value)}
+                      className={fieldClass}
+                    >
+                      <option value="">Select Method</option>
+                      {contactMethods.map((option) => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between items-baseline">
+                    <label htmlFor="address-input" className={labelClass}>Project address or cross streets</label>
+                    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Optional</span>
+                  </div>
+                  <input
+                    id="address-input"
+                    name="projectAddress"
+                    type="text"
+                    placeholder="e.g. 100 Main St, Inver Grove Heights"
+                    aria-label="Project address or cross streets"
+                    autoComplete="street-address"
+                    value={formData.projectAddress}
+                    onChange={(e) => updateField('projectAddress', e.target.value)}
+                    className={fieldClass}
+                  />
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
 
       {/* Validation Feedback */}
       {validationError && (
@@ -638,31 +738,31 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         </p>
       )}
 
-      {/* Navigation Buttons */}
+      {/* Action Buttons */}
       <div className="flex gap-3 pt-2">
         {currentStep > 0 && (
           <button
             type="button"
             onClick={handleBack}
-            className="flex items-center justify-center border border-white/10 hover:border-white/30 bg-white/5 px-6 py-4.5 text-sm font-black uppercase tracking-wider text-white transition-colors cursor-pointer"
+            className="flex items-center justify-center border border-white/10 hover:border-white/30 bg-white/5 px-5 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors cursor-pointer rounded-none"
           >
             <ArrowLeft size={16} className="mr-2" /> Back
           </button>
         )}
 
-        {currentStep < 12 ? (
+        {currentStep < 2 ? (
           <button
             type="button"
             onClick={handleNext}
-            className="flex-1 inline-flex items-center justify-center bg-[#f0c067] hover:bg-white text-[#050505] px-6 py-4.5 text-sm font-black uppercase tracking-[0.16em] transition-colors cursor-pointer"
+            className="flex-1 inline-flex items-center justify-center bg-[#f0c067] hover:bg-white text-[#050505] px-5 py-4 text-sm font-black uppercase tracking-[0.16em] transition-colors cursor-pointer rounded-none"
           >
-            Next Question <ArrowRight size={16} className="ml-2" />
+            Next Section <ArrowRight size={16} className="ml-2" />
           </button>
         ) : (
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="flex-1 inline-flex items-center justify-center bg-[#f0c067] hover:bg-white text-[#050505] px-7 py-4.5 text-sm font-black uppercase tracking-[0.2em] transition-colors disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+            className="flex-1 inline-flex items-center justify-center bg-[#f0c067] hover:bg-white text-[#050505] px-6 py-4 text-sm font-black uppercase tracking-[0.2em] transition-colors disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer rounded-none"
           >
             {status === 'submitting' ? 'Transmitting Scope...' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={18} className="ml-2" />
           </button>
@@ -672,7 +772,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       {/* Trust Badge Footer */}
       <p className="flex items-start gap-2 text-xs font-semibold text-gray-400 leading-relaxed" aria-live="polite">
         <ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#f0c067]" />
-        {message || 'Each question helps Anthony understand the project dimensions. Submitting routes through the live endpoint (with local queueing and email fallback protection).'}
+        {message || 'Your inquiry routes securely through the live estimator endpoint with automatic off-line queueing and dual-path mailto redundancy.'}
       </p>
     </form>
   );

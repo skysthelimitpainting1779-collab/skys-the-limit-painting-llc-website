@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight, MapPin, Navigation2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
@@ -138,7 +140,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link
-              to="/contact"
+              href="/contact"
               onClick={() => trackEvent('service_area_map_cta_click', { action: 'estimate' })}
               className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white"
             >
@@ -178,7 +180,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
             {serviceAreaPins.map((pin) => (
               <Link
                 key={pin.slug}
-                to={`/service-areas/${pin.slug}`}
+                href={`/service-areas/${pin.slug}`}
                 aria-label={`View ${pin.name} painting service area`}
                 onClick={() => trackEvent('service_area_map_list_click', { area: pin.slug })}
                 className="flex items-center justify-between gap-3 border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-[#eef7f4] transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"

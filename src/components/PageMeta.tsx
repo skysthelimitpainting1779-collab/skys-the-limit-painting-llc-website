@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { ENV } from '../lib/env';
+
 interface PageMetaProps {
   title: string;
   description: string;
@@ -13,7 +15,7 @@ const defaultImage = '/og-preview.svg';
 
 function getSiteUrl() {
   const fallback = typeof window === 'undefined' ? 'https://www.skysthelimitpaintingllc.com' : window.location.origin;
-  return (import.meta.env.VITE_SITE_URL || fallback).replace(/\/$/, '');
+  return (ENV.SITE_URL || fallback).replace(/\/$/, '');
 }
 
 function upsertMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
@@ -57,7 +59,7 @@ export default function PageMeta({ title, description, path, image = defaultImag
     upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
     upsertLink('canonical', canonicalUrl);
 
-    const verification = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION;
+    const verification = ENV.GOOGLE_SITE_VERIFICATION;
     if (verification) {
       upsertMeta('meta[name="google-site-verification"]', 'name', 'google-site-verification', verification);
     }

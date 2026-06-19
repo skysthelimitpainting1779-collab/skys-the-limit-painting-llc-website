@@ -7,10 +7,10 @@
     "node": ">=22.11.0"
   },
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && node scripts/prerender.mjs && node scripts/validate-schemas.mjs && node scripts/generate-sitemap.js && node scripts/ping-google.js",
-    "preview": "vite preview",
-    "clean": "node -e \"import('node:fs').then(({ rmSync }) => rmSync('dist', { recursive: true, force: true }))\"",
+    "dev": "next dev --port=3000 --hostname=0.0.0.0",
+    "build": "next build",
+    "preview": "next start",
+    "clean": "node -e \"import('node:fs').then(({ rmSync }) => { rmSync('dist', { recursive: true, force: true }); rmSync('.next', { recursive: true, force: true }); })\"",
     "lint": "tsc --noEmit",
     "ci": "node scripts/ci_check.js",
     "test": "node --test tests/*.mjs",
@@ -29,6 +29,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "1.18.0",
     "motion": "^12.40.0",
+    "next": "^16.2.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.17.0",
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "@remotion/cli": "4.0.477",
+    "@tailwindcss/postcss": "^4.3.1",
     "@types/express": "^5.0.6",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^25.9.3",
@@ -46,6 +48,7 @@
     "autoprefixer": "^10.5.0",
     "jsdom": "^27.0.1",
     "pg": "^8.21.0",
+    "postcss": "^8.5.15",
     "remotion": "4.0.477",
     "tailwindcss": "^4.3.1",
     "tsx": "^4.22.4",

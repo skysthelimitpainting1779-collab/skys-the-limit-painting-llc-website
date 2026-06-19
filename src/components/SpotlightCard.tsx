@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState, ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 

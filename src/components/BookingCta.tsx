@@ -12,8 +12,10 @@ const bookingLabels = {
   'public-sector': 'Request a Capability Conversation',
 };
 
+import { ENV } from '../lib/env';
+
 export default function BookingCta({ audience = 'homeowner', className = '' }: BookingCtaProps) {
-  const bookingUrl = import.meta.env.VITE_BOOKING_URL || '';
+  const bookingUrl = ENV.BOOKING_URL || '';
   const label = audience === 'commercial' 
     ? bookingLabels.commercial 
     : audience === 'public-sector' 

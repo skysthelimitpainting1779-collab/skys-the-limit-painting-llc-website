@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { Flame, RefreshCw, EyeOff } from 'lucide-react';
 
 interface ClickPoint {
@@ -12,7 +14,7 @@ interface ClickPoint {
 export default function HeatmapOverlay() {
   const [heatmapActive, setHeatmapActive] = useState(false);
   const [clicks, setClicks] = useState<ClickPoint[]>([]);
-  const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -71,7 +73,7 @@ export default function HeatmapOverlay() {
     setClicks([]);
   };
 
-  const activeClicksOnPath = clicks.filter((c) => c.path === location.pathname);
+  const activeClicksOnPath = clicks.filter((c) => c.path === pathname);
 
   return (
     <>

@@ -1,0 +1,1 @@
+{"nodes": [{"id": "lib_scanners_unoptimized_image", "label": "Unoptimized Image Scanner", "file_type": "code", "source_file": ".agents/skills/vercel-optimize/lib/scanners/unoptimized-image.mjs", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [], "hyperedges": []}

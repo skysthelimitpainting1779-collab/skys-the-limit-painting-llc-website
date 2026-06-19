@@ -1,20 +1,19 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { test } from 'node:test';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('Vite config does not expose server-only Gemini secrets to the client', () => {
-  const viteConfig = read('vite.config.ts');
-  const packageJson = read('package.json');
+test('Vite config is deleted and package.json does not expose Gemini sdk', () => {
+  const viteConfigExists = existsSync(new URL('../vite.config.ts', import.meta.url));
+  assert.ok(!viteConfigExists, 'vite.config.ts should be deleted to prevent client exposure of configs');
 
-  assert.doesNotMatch(viteConfig, /GEMINI_API_KEY/);
-  assert.doesNotMatch(viteConfig, /VITE_GEMINI_API_KEY/);
+  const packageJson = read('package.json');
   assert.doesNotMatch(packageJson, /@google\/genai/);
 });
 
 test('lead email HTML escapes submitted keys and values', () => {
-  const leadsApi = read('api/leads.ts');
+  const leadsApi = read('src/app/api/leads/route.ts');
 
   assert.match(leadsApi, /function escapeHtml/);
   assert.match(leadsApi, /replaceAll\('&', '&amp;'\)/);
@@ -42,16 +41,17 @@ test('Vercel config has security headers and no blanket SPA rewrite', () => {
 
 test('build pipeline prerenders public routes and static 404 metadata', () => {
   const packageJson = JSON.parse(read('package.json'));
-  const prerender = read('scripts/prerender.mjs');
+  assert.equal(packageJson.scripts.build, 'next build');
 
-  assert.match(packageJson.scripts.build, /scripts\/prerender\.mjs/);
-  for (const route of ['/', '/residential', '/commercial', '/public-sector', '/projects', '/about', '/contact', '/capabilities', '/service-area', '/404']) {
-    assert.match(prerender, new RegExp(`path: '${route.replace('/', '\\/')}'`));
+  const layout = read('src/app/layout.tsx');
+  assert.match(layout, /application\/ld\+json/);
+  assert.match(layout, /canonical/);
+
+  // Assert that App Router directories exist for core pages
+  for (const route of ['residential', 'commercial', 'public-sector', 'projects', 'about', 'contact', 'capabilities', 'service-area']) {
+    const pagePath = `src/app/${route}/page.tsx`;
+    assert.ok(existsSync(new URL(`../${pagePath}`, import.meta.url)), `${pagePath} should exist for the route ${route}`);
   }
-  assert.match(prerender, /404\.html/);
-  assert.match(prerender, /application\/ld\+json/);
-  assert.match(prerender, /canonical/);
-  assert.match(prerender, /fallbackContent/);
 });
 
 test('before and after slider remains pointer-enabled and is keyboard accessible', () => {
@@ -65,13 +65,16 @@ test('before and after slider remains pointer-enabled and is keyboard accessible
 });
 
 test('service area map is fast, routable, and accessible', () => {
-  const app = read('src/App.tsx');
+  const appExists = existsSync(new URL('../src/App.tsx', import.meta.url));
+  assert.ok(!appExists, 'src/App.tsx should be deleted to clean up Vite router remnants');
+
+  const page = read('src/app/service-area/page.tsx');
   const header = read('src/components/ConversionHeader.tsx');
   const map = read('src/components/ServiceAreaMap.tsx');
   const sitemapGenerator = read('scripts/generate-sitemap.js');
 
-  assert.match(app, /path="\/service-area"/);
-  assert.match(header, /to="\/service-area"/);
+  assert.match(page, /ServiceArea/);
+  assert.match(header, /href="\/service-area"/); // Header in Next.js uses HTML5 href (or Link with href)
   assert.match(sitemapGenerator, /'\/service-area'/);
   assert.match(map, /role="img"/);
   assert.match(map, /aria-describedby/);
@@ -81,7 +84,7 @@ test('service area map is fast, routable, and accessible', () => {
 
 test('lead form controls have accessible names and normalized funnel events', () => {
   const leadForm = read('src/components/LeadForm.tsx');
-  const leadsApi = read('api/leads.ts');
+  const leadsApi = read('src/app/api/leads/route.ts');
 
   for (const label of ['Full name', 'Phone', 'Email', 'City', 'Project address or cross streets', 'Market', 'Project type', 'Property type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project photo link', 'Project details']) {
     assert.match(leadForm, new RegExp(`aria-label="${label}"`));

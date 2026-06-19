@@ -1,16 +1,19 @@
+'use client';
+
 import { ReactNode, useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
-  const location = useLocation();
-  const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
+  const pathname = usePathname();
+  const isActive = pathname === to || (to !== '/' && pathname.startsWith(to));
 
   return (
     <div className="relative group flex items-center">
       <Link 
-        to={to} 
+        href={to} 
         data-track="nav_click"
         data-track-payload={JSON.stringify({ path: to, label: String(children) })}
         className={`relative whitespace-nowrap text-xs font-bold uppercase tracking-widest transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
@@ -32,7 +35,7 @@ export default function ConversionHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -44,7 +47,17 @@ export default function ConversionHeader() {
 
   useEffect(() => {
     setMobileMenuOpen(false);
-  }, [location]);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      if (ref) {
+        localStorage.setItem('referrer_email', ref.trim());
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -61,7 +74,7 @@ export default function ConversionHeader() {
         {/* Primary Nav */}
         <div className={`py-4`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <div className="grid h-14 w-14 place-items-center overflow-hidden border border-white/12 bg-white p-1.5">
                 <img src="/brand/SkyLLP_BrandLogo.svg" alt="Sky's the Limit Painting LLC" className="h-full w-full object-contain" />
               </div>
@@ -98,7 +111,7 @@ export default function ConversionHeader() {
                   style={{ borderRadius: '0px' }}
                 >
                   <Link 
-                    to="/service-area" 
+                    href="/service-area" 
                     data-track="nav_click"
                     data-track-payload='{"path":"/service-area","label":"Areas"}'
                     className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
@@ -106,7 +119,7 @@ export default function ConversionHeader() {
                     Areas
                   </Link>
                   <Link 
-                    to="/refer" 
+                    href="/refer" 
                     data-track="nav_click"
                     data-track-payload='{"path":"/refer","label":"Referral"}'
                     className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
@@ -114,7 +127,7 @@ export default function ConversionHeader() {
                     Referral
                   </Link>
                   <Link 
-                    to="/about" 
+                    href="/about" 
                     data-track="nav_click"
                     data-track-payload='{"path":"/about","label":"About"}'
                     className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
@@ -130,7 +143,7 @@ export default function ConversionHeader() {
             {/* Desktop Actions - Conversion Anchor */}
             <div className="hidden items-center gap-4 md:flex">
               <Link
-                to="/estimate"
+                href="/estimate"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Price Range"}'
                 className="hidden items-center justify-center gap-2 border border-[#d8c7aa]/24 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] 2xl:inline-flex"
@@ -139,7 +152,7 @@ export default function ConversionHeader() {
                 Price Range
               </Link>
               <Link
-                to="/contact"
+                href="/contact"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Get Estimate"}'
                 className="whitespace-nowrap border border-orange-safety bg-orange-safety px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white hover:border-white"
@@ -187,7 +200,7 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <Link to="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 Get A Price Range
               </Link>
               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">

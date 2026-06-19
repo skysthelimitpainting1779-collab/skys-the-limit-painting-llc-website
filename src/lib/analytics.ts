@@ -9,6 +9,7 @@ declare global {
 }
 
 export function trackEvent(eventName: string, payload: AnalyticsPayload = {}) {
+  if (typeof window === 'undefined') return;
   window.va?.(eventName, payload);
 
   if (window.gtag) {
@@ -17,6 +18,15 @@ export function trackEvent(eventName: string, payload: AnalyticsPayload = {}) {
 }
 
 export function readUtmParams() {
+  if (typeof window === 'undefined') {
+    return {
+      utmSource: '',
+      utmMedium: '',
+      utmCampaign: '',
+      utmTerm: '',
+      utmContent: '',
+    };
+  }
   const params = new URLSearchParams(window.location.search);
   return {
     utmSource: params.get('utm_source') || '',

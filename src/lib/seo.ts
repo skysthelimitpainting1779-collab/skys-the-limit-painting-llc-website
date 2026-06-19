@@ -1,4 +1,6 @@
-const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://www.skysthelimitpaintingllc.com').replace(/\/$/, '');
+import { ENV } from './env';
+
+const siteUrl = ENV.SITE_URL.replace(/\/$/, '');
 
 export const businessSchema = {
   '@context': 'https://schema.org',

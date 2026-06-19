@@ -14,8 +14,8 @@
   --color-orange-deep: #E94F00;
   --color-green-trust: #2E7D32;
   
-  --font-display: "Outfit", "Oswald", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: "Satoshi", "Oswald", sans-serif;
+  --font-body: "Geist", sans-serif;
   --font-mono: "Fira Code", monospace;
 
   --radius-xs: 0px;
@@ -289,4 +289,19 @@
   background-color: #f0c067 !important;
   color: #050505 !important;
 }
+
+/* Spec Inspector mode active style overrides */
+.spec-mode-active * {
+  outline: 1px dashed rgba(240, 192, 103, 0.22) !important;
+  outline-offset: -1px;
+}
+.spec-mode-active a, 
+.spec-mode-active button,
+.spec-mode-active input,
+.spec-mode-active select,
+.spec-mode-active textarea {
+  outline: 1px dashed #f0c067 !important;
+  outline-offset: 2px;
+}
+
 

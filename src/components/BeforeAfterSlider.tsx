@@ -1,7 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue } from 'motion/react';

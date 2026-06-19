@@ -1,18 +1,20 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { test } from 'node:test';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('top-level routes use the three-market architecture', () => {
-  const app = read('src/App.tsx');
+test('top-level routes use the three-market architecture in Next.js filesystem routing', () => {
+  const appExists = existsSync(new URL('../src/App.tsx', import.meta.url));
+  assert.ok(!appExists, 'src/App.tsx should be deleted to clean up Vite router remnants');
 
-  for (const route of ['"/"', '"/residential"', '"/commercial"', '"/public-sector"', '"/projects"', '"/about"', '"/contact"', '"/service-area"']) {
-    assert.match(app, new RegExp(route.replace('/', '\\/')));
+  for (const route of ['', 'residential', 'commercial', 'public-sector', 'projects', 'about', 'contact', 'service-area']) {
+    const pagePath = route === '' ? 'src/app/page.tsx' : `src/app/${route}/page.tsx`;
+    assert.ok(existsSync(new URL(`../${pagePath}`, import.meta.url)), `${pagePath} should exist`);
   }
 
-  assert.match(app, /"\/service-areas\/:slug"/);
-  assert.match(app, /"\/painting-services\/:slug"/);
+  assert.ok(existsSync(new URL('../src/app/service-areas/[slug]/page.tsx', import.meta.url)));
+  assert.ok(existsSync(new URL('../src/app/painting-services/[slug]/page.tsx', import.meta.url)));
 });
 
 test('primary navigation leads with residential, commercial, and public sector', () => {
@@ -29,7 +31,7 @@ test('primary navigation leads with residential, commercial, and public sector',
 });
 
 test('homepage states the approved positioning and avoids forbidden claims', () => {
-  const home = read('src/pages/Home.tsx');
+  const home = read('src/app/HomeClient.tsx');
 
   assert.match(home, /Residential detail\. Commercial discipline\. Public-sector ready\./);
   assert.match(home, /registered Minnesota Specialty Contractor \(Painting\)/);
@@ -38,16 +40,17 @@ test('homepage states the approved positioning and avoids forbidden claims', () 
 });
 
 test('remediation guardrails cover secrets, headers, prerendering, and accessible interactions', () => {
-  const viteConfig = read('vite.config.ts');
+  const viteConfigExists = existsSync(new URL('../vite.config.ts', import.meta.url));
+  assert.ok(!viteConfigExists, 'vite.config.ts should be deleted to prevent client exposure of configs');
+
   const packageJson = read('package.json');
   const vercelConfig = JSON.parse(read('vercel.json'));
   const prerender = read('scripts/prerender.mjs');
   const slider = read('src/components/BeforeAfterSlider.tsx');
   const leadForm = read('src/components/LeadForm.tsx');
   const serviceAreaMap = read('src/components/ServiceAreaMap.tsx');
-  const leadsApi = read('api/leads.ts');
+  const leadsApi = read('src/app/api/leads/route.ts');
 
-  assert.doesNotMatch(viteConfig, /GEMINI_API_KEY|VITE_GEMINI_API_KEY/);
   assert.doesNotMatch(packageJson, /@google\/genai/);
   assert.match(leadsApi, /function escapeHtml/);
   assert.match(leadsApi, /escapeHtml\(key\)/);
@@ -88,7 +91,7 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
 
 test('local SEO and service landing pages are routable, prerendered, and listed in the sitemap', () => {
   const landingPages = read('src/data/landingPages.ts');
-  const landingRoute = read('src/pages/LandingPage.tsx');
+  const landingRoute = read('src/views/LandingPage.tsx');
   const prerender = read('scripts/prerender.mjs');
   const sitemap = read('public/sitemap.xml');
 
@@ -116,14 +119,17 @@ test('local SEO and service landing pages are routable, prerendered, and listed 
 
   assert.match(landingRoute, /LeadForm/);
   assert.match(landingRoute, /landingPagePath/);
-  assert.match(landingRoute, /PageMeta/);
+
+  // Assert that App Router dynamic page has generateMetadata for SEO headers
+  const appSlugPage = read('src/app/service-areas/[slug]/page.tsx');
+  assert.match(appSlugPage, /generateMetadata/);
 });
 
 test('M2 compliance and contractor registration statements are correctly set', () => {
   const layout = read('src/components/Layout.tsx');
   const footerCta = read('src/components/ConversionFooterCta.tsx');
-  const refer = read('src/pages/Refer.tsx');
-  const estimate = read('src/pages/Estimate.tsx');
+  const refer = read('src/views/Refer.tsx');
+  const estimate = read('src/views/Estimate.tsx');
   const ogPreview = read('public/og-preview.svg');
 
   // 1. og-preview.svg
@@ -144,4 +150,3 @@ test('M2 compliance and contractor registration statements are correctly set', (
   assert.match(estimate, /\{\/\* Trust Badges & Registration Disclosures \(Fogg Motivation\) \*\/\}/);
   assert.match(estimate, /reg: ir816596 \| painting/);
 });
-

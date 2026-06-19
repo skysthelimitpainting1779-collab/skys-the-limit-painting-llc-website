@@ -5,7 +5,7 @@ import { test, describe } from 'node:test';
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const exists = (path) => existsSync(new URL(`../${path}`, import.meta.url));
 
-// Calculator Cost Simulation Formula matching src/pages/Estimate.tsx exactly
+// Calculator Cost Simulation Formula matching src/views/Estimate.tsx exactly
 function calculateSimulatedCosts(width, length, height, prepLevel, doors, windows, trimLength, cabDoors, cabDrawers) {
   const wallArea = 2 * (width + length) * height;
   const wallBase = wallArea * 3.50;
@@ -24,10 +24,10 @@ function calculateSimulatedCosts(width, length, height, prepLevel, doors, window
 describe('Tier 1: Feature Coverage', () => {
 
   test('T1.1 Routing & Navigation - Core layout components render successfully', () => {
-    const app = read('src/App.tsx');
-    assert.match(app, /import Layout/);
-    assert.match(app, /<Route element={<Layout \/>}/);
-    assert.ok(exists('src/components/Layout.tsx'));
+    const layout = read('src/app/layout.tsx');
+    assert.match(layout, /import ConversionHeader/);
+    assert.match(layout, /import ConversionFooterCta/);
+    assert.ok(exists('src/app/layout.tsx'));
     assert.ok(exists('src/components/ConversionHeader.tsx'));
     assert.ok(exists('src/components/ConversionFooterCta.tsx'));
   });
@@ -57,37 +57,36 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.5 Routing & Navigation - Invalid paths serve the customized 404 page', () => {
-    const app = read('src/App.tsx');
-    assert.match(app, /path="\*"/);
-    assert.match(app, /element={<NotFound \/>}/);
-    assert.ok(exists('src/pages/NotFound.tsx'));
+    const notFound = read('src/app/not-found.tsx');
+    assert.match(notFound, /NotFoundPage/);
+    assert.ok(exists('src/views/NotFound.tsx'));
   });
 
   test('T1.6 Three-Market Content - Home page renders the approved positioning statement', () => {
-    const home = read('src/pages/Home.tsx');
+    const home = read('src/app/HomeClient.tsx');
     assert.match(home, /Residential detail\. Commercial discipline\. Public-sector ready\./);
   });
 
   test('T1.7 Three-Market Content - Residential page loads specific data fields', () => {
-    const res = read('src/pages/Residential.tsx');
+    const res = read('src/views/Residential.tsx');
     assert.match(res, /market="Residential"/);
     assert.match(res, /PageMeta/);
   });
 
   test('T1.8 Three-Market Content - Commercial page loads specific data fields', () => {
-    const comm = read('src/pages/Commercial.tsx');
+    const comm = read('src/views/Commercial.tsx');
     assert.match(comm, /market="Commercial"/);
     assert.match(comm, /PageMeta/);
   });
 
   test('T1.9 Three-Market Content - Public Sector page loads specific data fields', () => {
-    const pub = read('src/pages/PublicSector.tsx');
+    const pub = read('src/views/PublicSector.tsx');
     assert.match(pub, /market="Public Sector"/);
     assert.match(pub, /PageMeta/);
   });
 
   test('T1.10 Three-Market Content - Capabilities statement page displays NAICS and SWIFT details', () => {
-    const cap = read('src/pages/Capabilities.tsx');
+    const cap = read('src/views/Capabilities.tsx');
     assert.match(cap, /NAICS 238320/);
     assert.match(cap, /VN0001223327_1/);
   });
@@ -138,7 +137,7 @@ describe('Tier 1: Feature Coverage', () => {
   test('T1.18 Interactive Components - Clicking service area pins navigates user correctly', () => {
     const map = read('src/components/ServiceAreaMap.tsx');
     assert.match(map, /Link/);
-    assert.match(map, /to={`\/service-areas\/\${pin\.slug}`}/);
+    assert.match(map, /href=\{\`\/service-areas\/\${pin\.slug}\`\}/);
   });
 
   test('T1.19 Interactive Components - CustomCursor renders elements on screen', () => {
@@ -154,13 +153,13 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.21 Room Calculator - Preset selections apply correct room dimensions', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /Bedroom.*12.*14.*8/);
     assert.match(est, /Living Room.*16.*20.*8/);
   });
 
   test('T1.22 Room Calculator - Room dimensions width/length changes update wall surface area calculations', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /2 \* \(dimensions\.width \+ dimensions\.length\) \* dimensions\.ceilingHeight/);
     
     // Simulate Bedroom Preset (12 x 14 x 8)
@@ -181,7 +180,7 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.23 Room Calculator - Adjusting doors and windows counts updates openings cost', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /doorsCount \* 150 \+ .*windowsCount \* 100/);
     
     // Width 12, Length 14, Height 8, Doors 2, Windows 3
@@ -193,7 +192,7 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.24 Room Calculator - Selecting cabinet doors/drawers increments high-margin cabinet paint costs', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /cabinetDoors \+ .*cabinetDrawers.* \* 125/);
     
     // Width 12, Length 14, Height 8, Doors 1, Windows 1, Cabinet Doors 10, Drawers 5
@@ -215,13 +214,13 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.26 Reputation Funnel - Rating 4 stars displays the Google Review redirect prompt', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /rating >= 4/);
     assert.match(rev, /Leave Us a Google Review/);
   });
 
   test('T1.27 Reputation Funnel - Google Review link opens in a new tab pointing to the GBP review page', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /href=\{googleReviewUrl\}/);
     assert.match(rev, /target="_blank"/);
     assert.match(rev, /rel="noopener noreferrer"/);
@@ -229,19 +228,19 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.28 Reputation Funnel - Rating 1, 2, or 3 stars intercepts user and displays private feedback form', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /We want to make it right\./);
     assert.match(rev, /handlePrivateSubmit/);
   });
 
   test('T1.29 Reputation Funnel - Feedback form submits private reviews to Formspree endpoint', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /formspree\.io\/f\//);
     assert.match(rev, /xanybvkd/);
   });
 
   test('T1.30 Reputation Funnel - Clicking "Change rating" button resets rating state', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /onClick=\{\(\) => setRating\(null\)\}/);
     assert.match(rev, /Change rating/);
   });
@@ -264,12 +263,12 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.34 Lead Capture & API - /api/leads validates email structures and throws bad request', () => {
-    const api = read('api/leads.ts');
+    const api = read('src/app/api/leads/route.ts');
     assert.match(api, /Enter a valid email address\./);
   });
 
   test('T1.35 Lead Capture & API - /api/manychat extracts and normalizes payload parameters', () => {
-    const mc = read('api/manychat.ts');
+    const mc = read('src/app/api/manychat/route.ts');
     assert.match(mc, /customFields/);
     assert.match(mc, /budget/);
     assert.match(mc, /timeline/);
@@ -299,9 +298,9 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.4 Routing & Navigation - Referral parameters are parsed and stored in LocalStorage', () => {
-    const app = read('src/App.tsx');
-    assert.match(app, /ref/);
-    assert.match(app, /localStorage\.setItem\('referrer_email'/);
+    const header = read('src/components/ConversionHeader.tsx');
+    assert.match(header, /ref/);
+    assert.match(header, /localStorage\.setItem\('referrer_email'/);
   });
 
   test('T2.5 Routing & Navigation - E.164 phone numbers are format-compliant', () => {
@@ -313,15 +312,15 @@ describe('Tier 2: Boundary/Corner Cases', () => {
 
   test('T2.6 Three-Market Content - Emojis are 100% absent in code/components/markup', () => {
     const files = [
-      'src/App.tsx',
+      'src/app/layout.tsx',
       'src/components/ConversionHeader.tsx',
       'src/components/LeadForm.tsx',
       'src/components/Layout.tsx',
-      'src/pages/Home.tsx',
-      'src/pages/Estimate.tsx',
-      'src/pages/Review.tsx',
-      'api/leads.ts',
-      'api/manychat.ts'
+      'src/app/HomeClient.tsx',
+      'src/views/Estimate.tsx',
+      'src/views/Review.tsx',
+      'src/app/api/leads/route.ts',
+      'src/app/api/manychat/route.ts'
     ];
     for (const f of files) {
       const content = read(f);
@@ -331,7 +330,7 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.7 Three-Market Content - Licensed or Bonded claims are absent on Home page', () => {
-    const home = read('src/pages/Home.tsx');
+    const home = read('src/app/HomeClient.tsx');
     assert.doesNotMatch(home, /Licensed/i);
     assert.doesNotMatch(home, /Bonded/i);
     assert.doesNotMatch(home, /Government-certified/i);
@@ -343,19 +342,19 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.9 Three-Market Content - Workers comp exemption statement is present near insurance references', () => {
-    const capabilities = read('src/pages/Capabilities.tsx');
+    const capabilities = read('src/views/Capabilities.tsx');
     assert.match(capabilities, /Minnesota Statute 176\.041/);
     assert.match(capabilities, /Workers' Compensation Exemption/);
   });
 
   test('T2.10 Three-Market Content - SAM.gov active claims are absent on the Capabilities page', () => {
-    const capabilities = read('src/pages/Capabilities.tsx');
+    const capabilities = read('src/views/Capabilities.tsx');
     assert.doesNotMatch(capabilities, /SAM\.gov active claim/i);
     assert.match(capabilities, /Registration package in preparation/);
   });
 
   test('T2.11 Local SEO Pages - Invalid SEO slugs return 404', () => {
-    const landing = read('src/pages/LandingPage.tsx');
+    const landing = read('src/views/LandingPage.tsx');
     assert.match(landing, /if \(!pageData\)/);
     assert.match(landing, /return <NotFound \/>/);
   });
@@ -415,56 +414,56 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.21 Room Calculator - Width values clamp strictly to 5 (min) and 50 (max)', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /5, 50/);
   });
 
   test('T2.22 Room Calculator - Length values clamp strictly to 5 (min) and 50 (max)', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /5, 50/);
   });
 
   test('T2.23 Room Calculator - Ceiling height values clamp strictly to 7 (min) and 20 (max)', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /7, 20/);
   });
 
   test('T2.24 Room Calculator - Cabinet doors count clamps strictly to 0 (min) and 60 (max)', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /0, 60/);
   });
 
   test('T2.25 Room Calculator - State is persisted in localStorage to prevent loss', () => {
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(est, /sky_estimate_progress/);
     assert.match(est, /localStorage\.setItem/);
   });
 
   test('T2.26 Reputation Funnel - Empty reviews submitted to Formspree block with validation warnings', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /!privateFeedback\.trim\(\)/);
     assert.match(rev, /Please add a few details/);
   });
 
   test('T2.27 Reputation Funnel - Formspree connection failures show a clear fallback contact message', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /The private feedback form did not send\. Please call or text/);
   });
 
   test('T2.28 Reputation Funnel - Selected review rating events are logged to the analytics engine', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /trackEvent\('review_rating_select'/);
   });
 
   test('T2.29 Reputation Funnel - Hovering over star selection scales buttons and alters fill', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /onMouseEnter/);
     assert.match(rev, /onMouseLeave/);
     assert.match(rev, /hoverRating/);
   });
 
   test('T2.30 Reputation Funnel - Submitting a 0-star rating is blocked', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /rating === null/);
   });
 
@@ -475,24 +474,24 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.32 Lead Capture & API - API rate limiting blocks requests exceeding 5 per minute', () => {
-    const api = read('api/leads.ts');
+    const api = read('src/app/api/leads/route.ts');
     assert.match(api, /MAX_REQUESTS = 5/);
     assert.match(api, /rateLimit/);
   });
 
   test('T2.33 Lead Capture & API - Upload photo URLs are validated and rejected if protocol is missing', () => {
-    const api = read('api/leads.ts');
+    const api = read('src/app/api/leads/route.ts');
     assert.match(api, /\['http:', 'https:'\].includes\(url\.protocol\)/);
   });
 
   test('T2.34 Lead Capture & API - HubSpot CRM integration skips gracefully if credentials are missing', () => {
-    const api = read('api/leads.ts');
+    const api = read('src/app/api/leads/route.ts');
     assert.match(api, /HUBSPOT_FORM_ID/);
     assert.match(api, /if \(!formId\)/);
   });
 
   test('T2.35 Lead Capture & API - API endpoints return 500 with email draft fallbacks if Resend is missing', () => {
-    const api = read('api/leads.ts');
+    const api = read('src/app/api/leads/route.ts');
     assert.match(api, /res\.status\(500\)\.json\(\{.*fallback: 'email'/);
   });
 
@@ -507,7 +506,7 @@ describe('Tier 3: Cross-Feature Combinations', () => {
   });
 
   test('T3.2 Offline + Review Funnel - Submitting negative reviews offline triggers fallback message', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /catch \(err\)/);
     assert.match(rev, /The private feedback form did not respond\. Please call or text/);
   });
@@ -531,13 +530,13 @@ describe('Tier 3: Cross-Feature Combinations', () => {
 
   test('T3.6 Slider + Room Calculator - Keyboard events do not conflict between sliders', () => {
     const slider = read('src/components/BeforeAfterSlider.tsx');
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     assert.match(slider, /onKeyDown/);
     assert.match(est, /onChange/);
   });
 
   test('T3.7 Review Funnel + Analytics - Redirecting to Google Business Reviews logs conversions', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /trackEvent\('google_review_redirect_click'/);
   });
 
@@ -546,19 +545,19 @@ describe('Tier 3: Cross-Feature Combinations', () => {
 describe('Tier 4: Real-World Scenarios', () => {
 
   test('T4.1 Customer Acquisition - Referral, slider comparison, room calculation, and lead submission flow', () => {
-    const app = read('src/App.tsx');
+    const header = read('src/components/ConversionHeader.tsx');
     const slider = read('src/components/BeforeAfterSlider.tsx');
-    const est = read('src/pages/Estimate.tsx');
+    const est = read('src/views/Estimate.tsx');
     const form = read('src/components/LeadForm.tsx');
     
-    assert.match(app, /localStorage\.setItem\('referrer_email'/);
+    assert.match(header, /localStorage\.setItem\('referrer_email'/);
     assert.match(slider, /BeforeAfterSlider/);
     assert.match(est, /EstimatePage/);
     assert.match(form, /LeadForm/);
   });
 
   test('T4.2 Intercepted Review - Negative rating intercepts unhappy client to private feedback', () => {
-    const rev = read('src/pages/Review.tsx');
+    const rev = read('src/views/Review.tsx');
     assert.match(rev, /rating < 4/);
     assert.match(rev, /We want to make it right/);
     assert.match(rev, /formspree\.io/);
@@ -571,7 +570,7 @@ describe('Tier 4: Real-World Scenarios', () => {
   });
 
   test('T4.4 Security & Anti-Spam - Bot honeypot triggers quick success, and rate limit blocks flood', () => {
-    const api = read('api/leads.ts');
+    const api = read('src/app/api/leads/route.ts');
     const form = read('src/components/LeadForm.tsx');
     assert.match(form, /bot_honeypot/);
     assert.match(api, /rateLimit/);

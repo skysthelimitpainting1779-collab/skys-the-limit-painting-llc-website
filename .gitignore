@@ -9,4 +9,7 @@ coverage/
 .vercel
 tmp/
 .agents/
+.next/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
 

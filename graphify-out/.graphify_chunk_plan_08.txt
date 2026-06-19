@@ -1,0 +1,12 @@
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\NotFound.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\Projects.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\PublicSector.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\Residential.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\Review.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\ServiceArea.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\ServiceCommercial.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\ServiceExterior.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\ServiceInterior.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\ServiceStriping.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\src\pages\Services.tsx
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\supabase\migrations\20260612193756_create_leads_tables.sql

@@ -52,11 +52,13 @@ const Linkedin = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SV
   </svg>
 );
 
+import { ENV } from '../lib/env';
+
 const socialLinks = [
-  { label: 'Facebook', url: import.meta.env.VITE_FACEBOOK_URL, icon: Facebook },
-  { label: 'Instagram', url: import.meta.env.VITE_INSTAGRAM_URL, icon: Instagram },
-  { label: 'LinkedIn', url: import.meta.env.VITE_LINKEDIN_URL, icon: Linkedin },
-  { label: 'TikTok', url: import.meta.env.VITE_TIKTOK_URL, icon: Music2 },
+  { label: 'Facebook', url: ENV.FACEBOOK_URL, icon: Facebook },
+  { label: 'Instagram', url: ENV.INSTAGRAM_URL, icon: Instagram },
+  { label: 'LinkedIn', url: ENV.LINKEDIN_URL, icon: Linkedin },
+  { label: 'TikTok', url: ENV.TIKTOK_URL, icon: Music2 },
 ].filter((item) => Boolean(item.url));
 
 export default function SocialLinks() {

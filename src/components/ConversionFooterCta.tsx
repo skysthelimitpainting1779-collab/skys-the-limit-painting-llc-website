@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';
 import MagneticButton from './animations/MagneticButton';
@@ -38,7 +38,7 @@ export default function ConversionFooterCta() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <MagneticButton pullFactor={0.3}>
               <Link
-                to="/estimate"
+                href="/estimate"
                 data-track="footer_conversion_cta_click"
                 data-track-payload='{"action":"calculator"}'
                 className="shimmer-cta inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white"

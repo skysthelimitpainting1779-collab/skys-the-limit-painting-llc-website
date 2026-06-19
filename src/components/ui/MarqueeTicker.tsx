@@ -1,3 +1,5 @@
+'use client';
+
 import { useReducedMotion } from 'motion/react';
 
 interface MarqueeTickerProps {
