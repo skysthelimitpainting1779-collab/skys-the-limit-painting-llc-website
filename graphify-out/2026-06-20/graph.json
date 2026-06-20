@@ -207,7 +207,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "budget-summary.mjs",
       "id": "lib_budget_summary"
     },
@@ -217,7 +217,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildbudgetsummary()",
       "id": "lib_budget_summary_buildbudgetsummary"
     },
@@ -227,7 +227,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L72",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildchatpreview()",
       "id": "lib_budget_summary_buildchatpreview"
     },
@@ -237,7 +237,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L90",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildexactchatmessage()",
       "id": "lib_budget_summary_buildexactchatmessage"
     },
@@ -247,7 +247,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L98",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildprintcheck()",
       "id": "lib_budget_summary_buildprintcheck"
     },
@@ -257,7 +257,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L116",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildquestiontext()",
       "id": "lib_budget_summary_buildquestiontext"
     },
@@ -267,7 +267,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L121",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildoptions()",
       "id": "lib_budget_summary_buildoptions"
     },
@@ -277,7 +277,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L149",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "buildquestionpayload()",
       "id": "lib_budget_summary_buildquestionpayload"
     },
@@ -287,7 +287,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/budget-summary.mjs",
       "source_location": "L163",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "renderbudgetsummarymarkdown()",
       "id": "lib_budget_summary_renderbudgetsummarymarkdown"
     },
@@ -1407,7 +1407,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/build-minutes-fanout.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "build-minutes-fanout.mjs",
       "id": "gates_build_minutes_fanout"
     },
@@ -1417,7 +1417,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/build-minutes-fanout.mjs",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "metadata",
       "id": "gates_build_minutes_fanout_metadata"
     },
@@ -1427,7 +1427,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/build-minutes-fanout.mjs",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "gate()",
       "id": "gates_build_minutes_fanout_gate"
     },
@@ -1437,7 +1437,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/build-minutes-fanout.mjs",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "unique()",
       "id": "gates_build_minutes_fanout_unique"
     },
@@ -1447,7 +1447,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/cold-start.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 102,
+      "community": 103,
       "norm_label": "cold-start.mjs",
       "id": "gates_cold_start"
     },
@@ -1457,7 +1457,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/cold-start.mjs",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 102,
+      "community": 103,
       "norm_label": "metadata",
       "id": "gates_cold_start_metadata"
     },
@@ -1467,7 +1467,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/cold-start.mjs",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 102,
+      "community": 103,
       "norm_label": "gate()",
       "id": "gates_cold_start_gate"
     },
@@ -1477,7 +1477,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/cold-start.mjs",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 102,
+      "community": 103,
       "norm_label": "extractcoldstarts()",
       "id": "gates_cold_start_extractcoldstarts"
     },
@@ -1777,7 +1777,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/index.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "index.mjs",
       "id": "gates_index"
     },
@@ -1787,7 +1787,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/index.mjs",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "gates",
       "id": "gates_index_gates"
     },
@@ -1797,7 +1797,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/isr-overrevalidation.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 103,
+      "community": 104,
       "norm_label": "isr-overrevalidation.mjs",
       "id": "gates_isr_overrevalidation"
     },
@@ -1807,7 +1807,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/isr-overrevalidation.mjs",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 103,
+      "community": 104,
       "norm_label": "metadata",
       "id": "gates_isr_overrevalidation_metadata"
     },
@@ -1817,7 +1817,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/isr-overrevalidation.mjs",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 103,
+      "community": 104,
       "norm_label": "gate()",
       "id": "gates_isr_overrevalidation_gate"
     },
@@ -1827,7 +1827,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/isr-overrevalidation.mjs",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 103,
+      "community": 104,
       "norm_label": "extractrows()",
       "id": "gates_isr_overrevalidation_extractrows"
     },
@@ -1837,7 +1837,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/middleware-heavy.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 104,
+      "community": 105,
       "norm_label": "middleware-heavy.mjs",
       "id": "gates_middleware_heavy"
     },
@@ -1847,7 +1847,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/middleware-heavy.mjs",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 104,
+      "community": 105,
       "norm_label": "metadata",
       "id": "gates_middleware_heavy_metadata"
     },
@@ -1857,7 +1857,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/middleware-heavy.mjs",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 104,
+      "community": 105,
       "norm_label": "gate()",
       "id": "gates_middleware_heavy_gate"
     },
@@ -1867,7 +1867,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/middleware-heavy.mjs",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 104,
+      "community": 105,
       "norm_label": "sumrows()",
       "id": "gates_middleware_heavy_sumrows"
     },
@@ -1877,7 +1877,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/observability-events-attribution.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 105,
+      "community": 106,
       "norm_label": "observability-events-attribution.mjs",
       "id": "gates_observability_events_attribution"
     },
@@ -1887,7 +1887,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/observability-events-attribution.mjs",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 105,
+      "community": 106,
       "norm_label": "metadata",
       "id": "gates_observability_events_attribution_metadata"
     },
@@ -1897,7 +1897,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/observability-events-attribution.mjs",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 105,
+      "community": 106,
       "norm_label": "gate()",
       "id": "gates_observability_events_attribution_gate"
     },
@@ -1907,7 +1907,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/observability-events-attribution.mjs",
       "source_location": "L54",
       "_origin": "ast",
-      "community": 105,
+      "community": 106,
       "norm_label": "sumbilled()",
       "id": "gates_observability_events_attribution_sumbilled"
     },
@@ -1917,7 +1917,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-bot-protection.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 83,
       "norm_label": "platform-bot-protection.mjs",
       "id": "gates_platform_bot_protection"
     },
@@ -1927,7 +1927,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-bot-protection.mjs",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 42,
+      "community": 83,
       "norm_label": "metadata",
       "id": "gates_platform_bot_protection_metadata"
     },
@@ -1937,7 +1937,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-bot-protection.mjs",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 42,
+      "community": 83,
       "norm_label": "gate()",
       "id": "gates_platform_bot_protection_gate"
     },
@@ -1947,7 +1947,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-bot-protection.mjs",
       "source_location": "L85",
       "_origin": "ast",
-      "community": 42,
+      "community": 83,
       "norm_label": "totalrequestsfromsignals()",
       "id": "gates_platform_bot_protection_totalrequestsfromsignals"
     },
@@ -1957,7 +1957,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-bot-protection.mjs",
       "source_location": "L92",
       "_origin": "ast",
-      "community": 42,
+      "community": 83,
       "norm_label": "computebotshare()",
       "id": "gates_platform_bot_protection_computebotshare"
     },
@@ -1967,7 +1967,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-fluid-compute.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 83,
+      "community": 84,
       "norm_label": "platform-fluid-compute.mjs",
       "id": "gates_platform_fluid_compute"
     },
@@ -1977,7 +1977,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-fluid-compute.mjs",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 83,
+      "community": 84,
       "norm_label": "metadata",
       "id": "gates_platform_fluid_compute_metadata"
     },
@@ -1987,7 +1987,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-fluid-compute.mjs",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 83,
+      "community": 84,
       "norm_label": "gate()",
       "id": "gates_platform_fluid_compute_gate"
     },
@@ -1997,7 +1997,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-fluid-compute.mjs",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 83,
+      "community": 84,
       "norm_label": "extracthighcoldroutes()",
       "id": "gates_platform_fluid_compute_extracthighcoldroutes"
     },
@@ -2007,7 +2007,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-fluid-compute.mjs",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 83,
+      "community": 84,
       "norm_label": "extractslowhotroutes()",
       "id": "gates_platform_fluid_compute_extractslowhotroutes"
     },
@@ -2017,7 +2017,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/region-misconfig.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "region-misconfig.mjs",
       "id": "gates_region_misconfig"
     },
@@ -2027,7 +2027,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/region-misconfig.mjs",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "metadata",
       "id": "gates_region_misconfig_metadata"
     },
@@ -2037,7 +2037,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/region-misconfig.mjs",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 42,
+      "community": 58,
       "norm_label": "gate()",
       "id": "gates_region_misconfig_gate"
     },
@@ -2047,7 +2047,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/route-errors.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 84,
+      "community": 85,
       "norm_label": "route-errors.mjs",
       "id": "gates_route_errors"
     },
@@ -2057,7 +2057,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/route-errors.mjs",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 84,
+      "community": 85,
       "norm_label": "metadata",
       "id": "gates_route_errors_metadata"
     },
@@ -2067,7 +2067,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/route-errors.mjs",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 84,
+      "community": 85,
       "norm_label": "gate()",
       "id": "gates_route_errors_gate"
     },
@@ -2077,7 +2077,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/route-errors.mjs",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 84,
+      "community": 85,
       "norm_label": "extracterrors()",
       "id": "gates_route_errors_extracterrors"
     },
@@ -2087,7 +2087,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/route-errors.mjs",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 84,
+      "community": 85,
       "norm_label": "extractfromstatusrows()",
       "id": "gates_route_errors_extractfromstatusrows"
     },
@@ -2277,7 +2277,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/slow-route.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 85,
+      "community": 86,
       "norm_label": "slow-route.mjs",
       "id": "gates_slow_route"
     },
@@ -2287,7 +2287,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/slow-route.mjs",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 85,
+      "community": 86,
       "norm_label": "metadata",
       "id": "gates_slow_route_metadata"
     },
@@ -2297,7 +2297,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/slow-route.mjs",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 85,
+      "community": 86,
       "norm_label": "gate()",
       "id": "gates_slow_route_gate"
     },
@@ -2307,7 +2307,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/slow-route.mjs",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 85,
+      "community": 86,
       "norm_label": "extracterrorratesbyroute()",
       "id": "gates_slow_route_extracterrorratesbyroute"
     },
@@ -2317,7 +2317,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/slow-route.mjs",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 85,
+      "community": 86,
       "norm_label": "extractfunctionroutes()",
       "id": "gates_slow_route_extractfunctionroutes"
     },
@@ -2327,7 +2327,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/types.d.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 86,
+      "community": 87,
       "norm_label": "types.d.ts",
       "id": "gates_types_d"
     },
@@ -2337,7 +2337,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/types.d.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 86,
+      "community": 87,
       "norm_label": "candidatescope",
       "id": "gates_types_d_candidatescope"
     },
@@ -2347,7 +2347,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/types.d.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 86,
+      "community": 87,
       "norm_label": "gatemetadata",
       "id": "gates_types_d_gatemetadata"
     },
@@ -2357,7 +2357,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/types.d.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 86,
+      "community": 87,
       "norm_label": "candidate",
       "id": "gates_types_d_candidate"
     },
@@ -2367,7 +2367,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/types.d.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 86,
+      "community": 87,
       "norm_label": "signals",
       "id": "gates_types_d_signals"
     },
@@ -2377,7 +2377,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/uncached-route.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 87,
+      "community": 88,
       "norm_label": "uncached-route.mjs",
       "id": "gates_uncached_route"
     },
@@ -2387,7 +2387,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/uncached-route.mjs",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 87,
+      "community": 88,
       "norm_label": "metadata",
       "id": "gates_uncached_route_metadata"
     },
@@ -2397,7 +2397,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/uncached-route.mjs",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 87,
+      "community": 88,
       "norm_label": "gate()",
       "id": "gates_uncached_route_gate"
     },
@@ -2407,7 +2407,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/uncached-route.mjs",
       "source_location": "L54",
       "_origin": "ast",
-      "community": 87,
+      "community": 88,
       "norm_label": "extractcachehitrates()",
       "id": "gates_uncached_route_extractcachehitrates"
     },
@@ -2417,7 +2417,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/uncached-route.mjs",
       "source_location": "L76",
       "_origin": "ast",
-      "community": 87,
+      "community": 88,
       "norm_label": "extractmethodshares()",
       "id": "gates_uncached_route_extractmethodshares"
     },
@@ -2427,7 +2427,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/usage-spike-triage.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 88,
+      "community": 89,
       "norm_label": "usage-spike-triage.mjs",
       "id": "gates_usage_spike_triage"
     },
@@ -2437,7 +2437,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/usage-spike-triage.mjs",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 88,
+      "community": 89,
       "norm_label": "metadata",
       "id": "gates_usage_spike_triage_metadata"
     },
@@ -2447,7 +2447,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/usage-spike-triage.mjs",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 88,
+      "community": 89,
       "norm_label": "gate()",
       "id": "gates_usage_spike_triage_gate"
     },
@@ -2457,7 +2457,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/usage-spike-triage.mjs",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 88,
+      "community": 89,
       "norm_label": "daytotal()",
       "id": "gates_usage_spike_triage_daytotal"
     },
@@ -2467,7 +2467,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/gates/usage-spike-triage.mjs",
       "source_location": "L104",
       "_origin": "ast",
-      "community": 88,
+      "community": 89,
       "norm_label": "aggregateskustats()",
       "id": "gates_usage_spike_triage_aggregateskustats"
     },
@@ -3497,7 +3497,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "renderreport()",
       "id": "lib_render_report_renderreport"
     },
@@ -3507,7 +3507,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L190",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "assertvalidobservations()",
       "id": "lib_render_report_assertvalidobservations"
     },
@@ -3567,7 +3567,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L273",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "rendercoverageline()",
       "id": "lib_render_report_rendercoverageline"
     },
@@ -3577,7 +3577,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L315",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "rendermetadataline()",
       "id": "lib_render_report_rendermetadataline"
     },
@@ -3587,7 +3587,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L331",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "observabilitylabel()",
       "id": "lib_render_report_observabilitylabel"
     },
@@ -3597,7 +3597,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L362",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "rendercostheader()",
       "id": "lib_render_report_rendercostheader"
     },
@@ -3607,7 +3607,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L377",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "rendercostbreakdown()",
       "id": "lib_render_report_rendercostbreakdown"
     },
@@ -3617,7 +3617,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L440",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "renderservicecostrows()",
       "id": "lib_render_report_renderservicecostrows"
     },
@@ -3657,7 +3657,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L492",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "renderrectable()",
       "id": "lib_render_report_renderrectable"
     },
@@ -3677,7 +3677,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L574",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "rendergatedtable()",
       "id": "lib_render_report_rendergatedtable"
     },
@@ -3687,7 +3687,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L588",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "formatgatedtargets()",
       "id": "lib_render_report_formatgatedtargets"
     },
@@ -3707,7 +3707,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L614",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "publicnorecommendationreason()",
       "id": "lib_render_report_publicnorecommendationreason"
     },
@@ -3717,7 +3717,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L631",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "splitinvestigationoutcomes()",
       "id": "lib_render_report_splitinvestigationoutcomes"
     },
@@ -3737,7 +3737,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L650",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "formatevidencetext()",
       "id": "lib_render_report_formatevidencetext"
     },
@@ -3807,7 +3807,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L710",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "groupgbhoursbycanonicalroute()",
       "id": "lib_render_report_groupgbhoursbycanonicalroute"
     },
@@ -3827,7 +3827,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L753",
       "_origin": "ast",
-      "community": 50,
+      "community": 49,
       "norm_label": "renderconfigurationnotes()",
       "id": "lib_render_report_renderconfigurationnotes"
     },
@@ -3837,7 +3837,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L760",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "renderdatagaps()",
       "id": "lib_render_report_renderdatagaps"
     },
@@ -3847,7 +3847,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L791",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "observabilitydatagap()",
       "id": "lib_render_report_observabilitydatagap"
     },
@@ -3857,7 +3857,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L832",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "missingusagesentence()",
       "id": "lib_render_report_missingusagesentence"
     },
@@ -3867,7 +3867,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L852",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "metricstate()",
       "id": "lib_render_report_metricstate"
     },
@@ -3967,7 +3967,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/render-report.mjs",
       "source_location": "L913",
       "_origin": "ast",
-      "community": 56,
+      "community": 55,
       "norm_label": "escape()",
       "id": "lib_render_report_escape"
     },
@@ -5077,7 +5077,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/index.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "index.mjs",
       "id": "scanners_index"
     },
@@ -5087,7 +5087,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/index.mjs",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "scanners",
       "id": "scanners_index_scanners"
     },
@@ -5197,7 +5197,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "middleware-broad-matcher.mjs",
       "id": "scanners_middleware_broad_matcher"
     },
@@ -5207,7 +5207,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "metadata",
       "id": "scanners_middleware_broad_matcher_metadata"
     },
@@ -5217,7 +5217,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "scan()",
       "id": "scanners_middleware_broad_matcher_scan"
     },
@@ -5227,7 +5227,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "isapplicable()",
       "id": "scanners_middleware_broad_matcher_isapplicable"
     },
@@ -5237,7 +5237,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/missing-cache-headers.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "missing-cache-headers.mjs",
       "id": "scanners_missing_cache_headers"
     },
@@ -5247,7 +5247,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/missing-cache-headers.mjs",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "metadata",
       "id": "scanners_missing_cache_headers_metadata"
     },
@@ -5257,7 +5257,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/missing-cache-headers.mjs",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "scan()",
       "id": "scanners_missing_cache_headers_scan"
     },
@@ -5267,7 +5267,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/missing-cache-headers.mjs",
       "source_location": "L88",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "isapplicable()",
       "id": "scanners_missing_cache_headers_isapplicable"
     },
@@ -5377,7 +5377,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/sveltekit-prerender-missing.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "sveltekit-prerender-missing.mjs",
       "id": "scanners_sveltekit_prerender_missing"
     },
@@ -5387,7 +5387,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/sveltekit-prerender-missing.mjs",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "metadata",
       "id": "scanners_sveltekit_prerender_missing_metadata"
     },
@@ -5397,7 +5397,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/sveltekit-prerender-missing.mjs",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 45,
+      "community": 44,
       "norm_label": "scan()",
       "id": "scanners_sveltekit_prerender_missing_scan"
     },
@@ -7887,7 +7887,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/budget-summary.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "budget-summary.mjs",
       "id": "scripts_budget_summary"
     },
@@ -7897,7 +7897,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/budget-summary.mjs",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "main()",
       "id": "scripts_budget_summary_main"
     },
@@ -7907,7 +7907,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/budget-summary.mjs",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 47,
+      "community": 46,
       "norm_label": "parseargs()",
       "id": "scripts_budget_summary_parseargs"
     },
@@ -7917,7 +7917,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "build-docs.mjs",
       "id": "scripts_build_docs"
     },
@@ -7927,7 +7927,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "here",
       "id": "scripts_build_docs_here"
     },
@@ -7937,7 +7937,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "refs",
       "id": "scripts_build_docs_refs"
     },
@@ -7947,7 +7947,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "main()",
       "id": "scripts_build_docs_main"
     },
@@ -7957,7 +7957,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "renderscanners()",
       "id": "scripts_build_docs_renderscanners"
     },
@@ -7967,7 +7967,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "rendercandidates()",
       "id": "scripts_build_docs_rendercandidates"
     },
@@ -7977,7 +7977,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/build-docs.mjs",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 64,
+      "community": 71,
       "norm_label": "trimtrailingblankline()",
       "id": "scripts_build_docs_trimtrailingblankline"
     },
@@ -8027,7 +8027,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "check-docs-fresh.mjs",
       "id": "scripts_check_docs_fresh"
     },
@@ -8037,7 +8037,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "here",
       "id": "scripts_check_docs_fresh_here"
     },
@@ -8047,7 +8047,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "refs",
       "id": "scripts_check_docs_fresh_refs"
     },
@@ -8057,7 +8057,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "main()",
       "id": "scripts_check_docs_fresh_main"
     },
@@ -8067,7 +8067,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "renderscanners()",
       "id": "scripts_check_docs_fresh_renderscanners"
     },
@@ -8077,7 +8077,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "rendercandidates()",
       "id": "scripts_check_docs_fresh_rendercandidates"
     },
@@ -8087,7 +8087,7 @@
       "source_file": ".agents/skills/vercel-optimize/scripts/check-docs-fresh.mjs",
       "source_location": "L86",
       "_origin": "ast",
-      "community": 71,
+      "community": 64,
       "norm_label": "trimtrailingblankline()",
       "id": "scripts_check_docs_fresh_trimtrailingblankline"
     },
@@ -9217,7 +9217,7 @@
       "source_file": "inspect_images.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 106,
+      "community": 107,
       "norm_label": "inspect_images.js",
       "id": "inspect_images"
     },
@@ -9227,7 +9227,7 @@
       "source_file": "inspect_images.js",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 106,
+      "community": 107,
       "norm_label": "ai",
       "id": "inspect_images_ai"
     },
@@ -9237,7 +9237,7 @@
       "source_file": "inspect_images.js",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 106,
+      "community": 107,
       "norm_label": "analyze()",
       "id": "inspect_images_analyze"
     },
@@ -9247,7 +9247,7 @@
       "source_file": "inspect_images.js",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 106,
+      "community": 107,
       "norm_label": "main()",
       "id": "inspect_images_main"
     },
@@ -9327,7 +9327,7 @@
       "source_file": "package.json",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "scripts",
       "id": "package_scripts"
     },
@@ -9337,7 +9337,7 @@
       "source_file": "package.json",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "dev",
       "id": "package_scripts_dev"
     },
@@ -9347,7 +9347,7 @@
       "source_file": "package.json",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "build",
       "id": "package_scripts_build"
     },
@@ -9357,7 +9357,7 @@
       "source_file": "package.json",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "preview",
       "id": "package_scripts_preview"
     },
@@ -9367,7 +9367,7 @@
       "source_file": "package.json",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "clean",
       "id": "package_scripts_clean"
     },
@@ -9377,7 +9377,7 @@
       "source_file": "package.json",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "lint",
       "id": "package_scripts_lint"
     },
@@ -9387,7 +9387,7 @@
       "source_file": "package.json",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "ci",
       "id": "package_scripts_ci"
     },
@@ -9397,7 +9397,7 @@
       "source_file": "package.json",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "test",
       "id": "package_scripts_test"
     },
@@ -9407,7 +9407,7 @@
       "source_file": "package.json",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "remotion:studio",
       "id": "package_scripts_remotion_studio"
     },
@@ -9417,7 +9417,7 @@
       "source_file": "package.json",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "render:hero",
       "id": "package_scripts_render_hero"
     },
@@ -9427,7 +9427,7 @@
       "source_file": "package.json",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 52,
+      "community": 51,
       "norm_label": "render:markets",
       "id": "package_scripts_render_markets"
     },
@@ -9997,7 +9997,7 @@
       "source_file": "scripts/ci_check.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 128,
+      "community": 129,
       "norm_label": "ci_check.js",
       "id": "scripts_ci_check"
     },
@@ -10007,7 +10007,7 @@
       "source_file": "scripts/ci_check.js",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 128,
+      "community": 129,
       "norm_label": "runstep()",
       "id": "scripts_ci_check_runstep"
     },
@@ -10017,7 +10017,7 @@
       "source_file": "scripts/ci_check.js",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 128,
+      "community": 129,
       "norm_label": "runcicheck()",
       "id": "scripts_ci_check_runcicheck"
     },
@@ -10027,7 +10027,7 @@
       "source_file": "scripts/compress_images.py",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 151,
+      "community": 152,
       "norm_label": "compress_images.py",
       "id": "scripts_compress_images"
     },
@@ -10037,7 +10037,7 @@
       "source_file": "scripts/compress_images.py",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 151,
+      "community": 152,
       "norm_label": "compress_images()",
       "id": "scripts_compress_images_compress_images"
     },
@@ -10107,7 +10107,7 @@
       "source_file": "scripts/generate-sitemap.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 90,
+      "community": 91,
       "norm_label": "generate-sitemap.js",
       "id": "scripts_generate_sitemap"
     },
@@ -10117,7 +10117,7 @@
       "source_file": "scripts/generate-sitemap.js",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 90,
+      "community": 91,
       "norm_label": "staticroutes",
       "id": "scripts_generate_sitemap_staticroutes"
     },
@@ -10127,7 +10127,7 @@
       "source_file": "scripts/generate-sitemap.js",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 90,
+      "community": 91,
       "norm_label": "serviceareasslugs",
       "id": "scripts_generate_sitemap_serviceareasslugs"
     },
@@ -10137,7 +10137,7 @@
       "source_file": "scripts/generate-sitemap.js",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 90,
+      "community": 91,
       "norm_label": "paintingservicesslugs",
       "id": "scripts_generate_sitemap_paintingservicesslugs"
     },
@@ -10147,7 +10147,7 @@
       "source_file": "scripts/generate-sitemap.js",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 90,
+      "community": 91,
       "norm_label": "generatesitemap()",
       "id": "scripts_generate_sitemap_generatesitemap"
     },
@@ -10157,7 +10157,7 @@
       "source_file": "scripts/ping-google.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 153,
+      "community": 154,
       "norm_label": "ping-google.js",
       "id": "scripts_ping_google"
     },
@@ -10167,7 +10167,7 @@
       "source_file": "scripts/ping-google.js",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 153,
+      "community": 154,
       "norm_label": "verifysitemapingestion()",
       "id": "scripts_ping_google_verifysitemapingestion"
     },
@@ -10177,7 +10177,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "prerender.mjs",
       "id": "scripts_prerender"
     },
@@ -10187,7 +10187,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "siteurl",
       "id": "scripts_prerender_siteurl"
     },
@@ -10197,7 +10197,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "businessschema",
       "id": "scripts_prerender_businessschema"
     },
@@ -10207,7 +10207,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L56",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "breadcrumbschema()",
       "id": "scripts_prerender_breadcrumbschema"
     },
@@ -10217,7 +10217,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "serviceschema()",
       "id": "scripts_prerender_serviceschema"
     },
@@ -10227,7 +10227,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "landingroutes",
       "id": "scripts_prerender_landingroutes"
     },
@@ -10237,7 +10237,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L117",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "routes",
       "id": "scripts_prerender_routes"
     },
@@ -10247,7 +10247,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L220",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "escapehtml()",
       "id": "scripts_prerender_escapehtml"
     },
@@ -10257,7 +10257,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L228",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "canonicalfor()",
       "id": "scripts_prerender_canonicalfor"
     },
@@ -10267,7 +10267,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L232",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "injecthead()",
       "id": "scripts_prerender_injecthead"
     },
@@ -10277,7 +10277,7 @@
       "source_file": "scripts/prerender.mjs",
       "source_location": "L255",
       "_origin": "ast",
-      "community": 53,
+      "community": 52,
       "norm_label": "distdir",
       "id": "scripts_prerender_distdir"
     },
@@ -10287,7 +10287,7 @@
       "source_file": "scripts/replace_image_refs.py",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 155,
+      "community": 156,
       "norm_label": "replace_image_refs.py",
       "id": "scripts_replace_image_refs"
     },
@@ -10297,7 +10297,7 @@
       "source_file": "scripts/replace_image_refs.py",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 155,
+      "community": 156,
       "norm_label": "replace_image_refs()",
       "id": "scripts_replace_image_refs_replace_image_refs"
     },
@@ -10367,7 +10367,7 @@
       "source_file": "scripts/validate-schemas.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 130,
+      "community": 131,
       "norm_label": "validate-schemas.mjs",
       "id": "scripts_validate_schemas"
     },
@@ -10377,7 +10377,7 @@
       "source_file": "scripts/validate-schemas.mjs",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 130,
+      "community": 131,
       "norm_label": "gethtmlfiles()",
       "id": "scripts_validate_schemas_gethtmlfiles"
     },
@@ -10387,7 +10387,7 @@
       "source_file": "scripts/validate-schemas.mjs",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 130,
+      "community": 131,
       "norm_label": "validateschemas()",
       "id": "scripts_validate_schemas_validateschemas"
     },
@@ -10397,7 +10397,7 @@
       "source_file": "scripts/verify-csp.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 156,
+      "community": 157,
       "norm_label": "verify-csp.js",
       "id": "scripts_verify_csp"
     },
@@ -10407,7 +10407,7 @@
       "source_file": "scripts/verify-csp.js",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 156,
+      "community": 157,
       "norm_label": "verifycsp()",
       "id": "scripts_verify_csp_verifycsp"
     },
@@ -10417,7 +10417,7 @@
       "source_file": "scripts/verify_dns.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 109,
+      "community": 110,
       "norm_label": "verify_dns.js",
       "id": "scripts_verify_dns"
     },
@@ -10427,7 +10427,7 @@
       "source_file": "scripts/verify_dns.js",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 109,
+      "community": 110,
       "norm_label": "resolveany",
       "id": "scripts_verify_dns_resolveany"
     },
@@ -10437,7 +10437,7 @@
       "source_file": "scripts/verify_dns.js",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 109,
+      "community": 110,
       "norm_label": "resolvecname",
       "id": "scripts_verify_dns_resolvecname"
     },
@@ -10447,7 +10447,7 @@
       "source_file": "scripts/verify_dns.js",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 109,
+      "community": 110,
       "norm_label": "verifydns()",
       "id": "scripts_verify_dns_verifydns"
     },
@@ -11547,7 +11547,7 @@
       "source_file": "src/types.d.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 312,
+      "community": 313,
       "norm_label": "types.d.ts",
       "id": "src_types_d"
     },
@@ -11557,7 +11557,7 @@
       "source_file": "strings.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 111,
+      "community": 112,
       "norm_label": "strings.js",
       "id": "strings"
     },
@@ -11567,7 +11567,7 @@
       "source_file": "strings.js",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 111,
+      "community": 112,
       "norm_label": "findstrings()",
       "id": "strings_findstrings"
     },
@@ -11577,7 +11577,7 @@
       "source_file": "strings.js",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 111,
+      "community": 112,
       "norm_label": "workspaceroot",
       "id": "strings_workspaceroot"
     },
@@ -11587,7 +11587,7 @@
       "source_file": "strings.js",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 111,
+      "community": 112,
       "norm_label": "backupdir",
       "id": "strings_backupdir"
     },
@@ -11597,7 +11597,7 @@
       "source_file": "tests/e2e.test.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 112,
+      "community": 113,
       "norm_label": "e2e.test.mjs",
       "id": "tests_e2e_test"
     },
@@ -11607,7 +11607,7 @@
       "source_file": "tests/e2e.test.mjs",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 112,
+      "community": 113,
       "norm_label": "read()",
       "id": "tests_e2e_test_read"
     },
@@ -11617,7 +11617,7 @@
       "source_file": "tests/e2e.test.mjs",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 112,
+      "community": 113,
       "norm_label": "exists()",
       "id": "tests_e2e_test_exists"
     },
@@ -11627,7 +11627,7 @@
       "source_file": "tests/e2e.test.mjs",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 112,
+      "community": 113,
       "norm_label": "calculatesimulatedcosts()",
       "id": "tests_e2e_test_calculatesimulatedcosts"
     },
@@ -11637,7 +11637,7 @@
       "source_file": "tests/remediation.test.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 163,
+      "community": 164,
       "norm_label": "remediation.test.mjs",
       "id": "tests_remediation_test"
     },
@@ -11647,7 +11647,7 @@
       "source_file": "tests/remediation.test.mjs",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 163,
+      "community": 164,
       "norm_label": "read()",
       "id": "tests_remediation_test_read"
     },
@@ -11657,7 +11657,7 @@
       "source_file": "tests/site-architecture.test.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 164,
+      "community": 165,
       "norm_label": "site-architecture.test.mjs",
       "id": "tests_site_architecture_test"
     },
@@ -11667,7 +11667,7 @@
       "source_file": "tests/site-architecture.test.mjs",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 164,
+      "community": 165,
       "norm_label": "read()",
       "id": "tests_site_architecture_test_read"
     },
@@ -11947,7 +11947,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/throttle.mjs",
       "source_location": "L184",
       "_origin": "ast",
-      "community": 212,
+      "community": 213,
       "norm_label": "getmetricsemaphore",
       "id": "lib_throttle_getmetricsemaphore"
     },
@@ -11960,7 +11960,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "metadata.json",
       "id": "vercelcompositionpatterns_metadata_json"
     },
@@ -11969,7 +11969,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/build-minutes-fanout.mjs",
       "source_location": null,
-      "community": 176,
+      "community": 177,
       "norm_label": "gate",
       "id": "buildminutesfanout_gate"
     },
@@ -11978,7 +11978,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/cold-start.mjs",
       "source_location": null,
-      "community": 178,
+      "community": 179,
       "norm_label": "gate",
       "id": "coldstart_gate"
     },
@@ -11987,7 +11987,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/cwv-poor.mjs",
       "source_location": null,
-      "community": 183,
+      "community": 184,
       "norm_label": "gate",
       "id": "cwvpoor_gate"
     },
@@ -11996,7 +11996,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/external-api-slow.mjs",
       "source_location": null,
-      "community": 190,
+      "community": 191,
       "norm_label": "gate",
       "id": "externalapislow_gate"
     },
@@ -12005,7 +12005,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/hard-gates.mjs",
       "source_location": null,
-      "community": 199,
+      "community": 200,
       "norm_label": "applyhardgates",
       "id": "hardgates_applyhardgates"
     },
@@ -12027,7 +12027,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/isr-overrevalidation.mjs",
       "source_location": null,
-      "community": 207,
+      "community": 208,
       "norm_label": "gate",
       "id": "isroverrevalidation_gate"
     },
@@ -12036,7 +12036,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/middleware-heavy.mjs",
       "source_location": null,
-      "community": 222,
+      "community": 223,
       "norm_label": "gate",
       "id": "middlewareheavy_gate"
     },
@@ -12045,7 +12045,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/observability-events-attribution.mjs",
       "source_location": null,
-      "community": 234,
+      "community": 235,
       "norm_label": "gate",
       "id": "observabilityeventsattribution_gate"
     },
@@ -12054,7 +12054,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-bot-protection.mjs",
       "source_location": null,
-      "community": 238,
+      "community": 239,
       "norm_label": "gate",
       "id": "platformbotprotection_gate"
     },
@@ -12063,7 +12063,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/platform-fluid-compute.mjs",
       "source_location": null,
-      "community": 239,
+      "community": 240,
       "norm_label": "gate",
       "id": "platformfluidcompute_gate"
     },
@@ -12072,7 +12072,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/region-misconfig.mjs",
       "source_location": null,
-      "community": 254,
+      "community": 255,
       "norm_label": "gate",
       "id": "regionmisconfig_gate"
     },
@@ -12081,7 +12081,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/route-errors.mjs",
       "source_location": null,
-      "community": 278,
+      "community": 279,
       "norm_label": "gate",
       "id": "routeerrors_gate"
     },
@@ -12090,7 +12090,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/scanner-driven.mjs",
       "source_location": null,
-      "community": 280,
+      "community": 281,
       "norm_label": "gate",
       "id": "scannerdriven_gate"
     },
@@ -12099,7 +12099,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/select-candidates.mjs",
       "source_location": null,
-      "community": 292,
+      "community": 293,
       "norm_label": "selectlaunchcandidates",
       "id": "selectcandidates_selectlaunchcandidates"
     },
@@ -12108,7 +12108,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/slow-route.mjs",
       "source_location": null,
-      "community": 308,
+      "community": 309,
       "norm_label": "gate",
       "id": "slowroute_gate"
     },
@@ -12130,7 +12130,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/uncached-route.mjs",
       "source_location": null,
-      "community": 330,
+      "community": 331,
       "norm_label": "gate",
       "id": "uncachedroute_gate"
     },
@@ -12139,7 +12139,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/gates/usage-spike-triage.mjs",
       "source_location": null,
-      "community": 331,
+      "community": 332,
       "norm_label": "gate",
       "id": "usagespiketriage_gate"
     },
@@ -12249,7 +12249,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/util.mjs",
       "source_location": null,
-      "community": 333,
+      "community": 334,
       "norm_label": "lineof",
       "id": "util_lineof"
     },
@@ -12258,7 +12258,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/util.mjs",
       "source_location": null,
-      "community": 332,
+      "community": 333,
       "norm_label": "extractroute",
       "id": "util_extractroute"
     },
@@ -12285,7 +12285,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/verify-claim.mjs",
       "source_location": null,
-      "community": 337,
+      "community": 338,
       "norm_label": "verifyclaim",
       "id": "verifyclaim_verifyclaim"
     },
@@ -12294,7 +12294,7 @@
       "file_type": "code",
       "source_file": ".agents/skills/vercel-optimize/lib/workspace-resolver.mjs",
       "source_location": null,
-      "community": 339,
+      "community": 340,
       "norm_label": "resolveworkspaceimports",
       "id": "workspaceresolver_resolveworkspaceimports"
     },
@@ -12307,7 +12307,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 334,
+      "community": 335,
       "norm_label": "vercel-optimize metadata",
       "id": "vercel_optimize_metadata"
     },
@@ -12320,7 +12320,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 213,
+      "community": 214,
       "norm_label": ".lighthouserc.json",
       "id": "lighthouserc_json"
     },
@@ -12333,7 +12333,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 336,
+      "community": 337,
       "norm_label": "vercel repo config",
       "id": "vercel_repo_config"
     },
@@ -12346,7 +12346,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 220,
+      "community": 221,
       "norm_label": "metadata.json",
       "id": "metadata_json"
     },
@@ -12354,7 +12354,7 @@
       "label": "PageMeta",
       "file_type": "code",
       "source_file": "src/components/PageMeta.tsx",
-      "community": 236,
+      "community": 237,
       "norm_label": "pagemeta",
       "id": "pagemeta_pagemeta"
     },
@@ -12362,7 +12362,7 @@
       "label": "PageTransition",
       "file_type": "code",
       "source_file": "src/components/PageTransition.tsx",
-      "community": 237,
+      "community": 238,
       "norm_label": "pagetransition",
       "id": "pagetransition_pagetransition"
     },
@@ -12370,7 +12370,7 @@
       "label": "FadeIn Animation",
       "file_type": "code",
       "source_file": "src/components/animations/FadeIn.tsx",
-      "community": 191,
+      "community": 192,
       "norm_label": "fadein animation",
       "id": "fadein_fadein"
     },
@@ -12383,7 +12383,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 219,
+      "community": 220,
       "norm_label": "markets.ts - markets data",
       "id": "markets_ts"
     },
@@ -12391,7 +12391,7 @@
       "label": "Leads Table",
       "file_type": "code",
       "source_file": "supabase/migrations/20260612193756_create_leads_tables.sql",
-      "community": 146,
+      "community": 147,
       "norm_label": "leads table",
       "id": "leads_table"
     },
@@ -12399,7 +12399,7 @@
       "label": "Lead Events Table",
       "file_type": "code",
       "source_file": "supabase/migrations/20260612193756_create_leads_tables.sql",
-      "community": 146,
+      "community": 147,
       "norm_label": "lead events table",
       "id": "lead_events_table"
     },
@@ -12446,7 +12446,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/briefing.md: sentinel mission briefing",
       "id": "briefingmd_sentinel_mission"
     },
@@ -12459,7 +12459,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/original_request.md: original user request",
       "id": "original_request_sentinel"
     },
@@ -12537,7 +12537,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/handoff.md: sentinel handoff report",
       "id": "handoffmd_sentinel_handoff"
     },
@@ -12550,7 +12550,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/orchestrator/briefing.md: orchestrator mission",
       "id": "orchestrator_briefingmd_orchestrator_mission"
     },
@@ -12563,7 +12563,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/orchestrator/original_request.md: orchestrator original request",
       "id": "orchestrator_original_request_orchestrator_task"
     },
@@ -12576,7 +12576,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/orchestrator/context.md: project context & constraints",
       "id": "orchestrator_contextmd_project_context"
     },
@@ -12589,7 +12589,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/orchestrator/progress.md: orchestrator progress",
       "id": "orchestrator_progressmd_orchestrator_progress"
     },
@@ -12602,7 +12602,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 321,
+      "community": 322,
       "norm_label": "tasks checklist",
       "id": "taskmd_tasks_checklist"
     },
@@ -12615,7 +12615,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 134,
+      "community": 135,
       "norm_label": "e2e testing suite",
       "id": "taskmd_e2e_testing_suite"
     },
@@ -12628,7 +12628,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 319,
+      "community": 320,
       "norm_label": "compliance & contractor registration",
       "id": "taskmd_compliance_contractor_registration"
     },
@@ -12641,7 +12641,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 322,
+      "community": 323,
       "norm_label": "visual redesign, contrast & emoji ban",
       "id": "taskmd_visual_redesign_contrast_emoji_ban"
     },
@@ -12654,7 +12654,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 135,
+      "community": 136,
       "norm_label": "offline-first lead queue & calculator/review routing",
       "id": "taskmd_offline_first_lead_queue_calculator_review_routing"
     },
@@ -12667,7 +12667,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 162,
+      "community": 163,
       "norm_label": "performance, seo & build hygiene",
       "id": "taskmd_performance_seo_build_hygiene"
     },
@@ -12680,7 +12680,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 320,
+      "community": 321,
       "norm_label": "final verification & adversarial hardening",
       "id": "taskmd_final_verification_adversarial_hardening"
     },
@@ -12693,7 +12693,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 134,
+      "community": 135,
       "norm_label": "test_infra.md",
       "id": "taskmd_test_infra_md"
     },
@@ -12706,7 +12706,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 134,
+      "community": 135,
       "norm_label": "test_ready.md",
       "id": "taskmd_test_ready_md"
     },
@@ -12719,7 +12719,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 135,
+      "community": 136,
       "norm_label": "estimate.tsx",
       "id": "taskmd_estimate_tsx"
     },
@@ -12732,7 +12732,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 135,
+      "community": 136,
       "norm_label": "leadform.tsx",
       "id": "taskmd_leadform_tsx"
     },
@@ -12745,7 +12745,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 162,
+      "community": 163,
       "norm_label": "api/leads.ts",
       "id": "taskmd_api_leads_ts"
     },
@@ -12758,7 +12758,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 318,
+      "community": 319,
       "norm_label": "api/manychat.ts",
       "id": "task md_api_manychat_ts"
     },
@@ -12771,7 +12771,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 303,
+      "community": 304,
       "norm_label": ".agents/skills/brandkit/skill.md: brandkit image generation skill",
       "id": "skill_brandkit_brandkit_skill"
     },
@@ -12784,7 +12784,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 304,
+      "community": 305,
       "norm_label": ".agents/skills/deploy-to-vercel/skill.md: deploy to vercel skill",
       "id": "skill_deploy_to_vercel_vercel_deploy_skill"
     },
@@ -12797,7 +12797,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 132,
+      "community": 133,
       "norm_label": ".agents/skills/design-taste-frontend/skill.md: design taste frontend skill",
       "id": "skill_design_taste_frontend_design_taste_skill"
     },
@@ -12810,7 +12810,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": ".agents/skills/full-output-enforcement/skill.md: full-output enforcement skill",
       "id": "skill_full_output_enforcement_output_skill"
     },
@@ -12823,7 +12823,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 132,
+      "community": 133,
       "norm_label": ".agents/skills/gpt-taste/skill.md: gpt taste & gsap motion skill",
       "id": "skill_gpt_taste_gsap_motion_skill"
     },
@@ -12836,7 +12836,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 132,
+      "community": 133,
       "norm_label": ".agents/skills/high-end-visual-design/skill.md: high-end visual design skill",
       "id": "skill_high_end_visual_design_agency_skill"
     },
@@ -12849,7 +12849,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 159,
+      "community": 160,
       "norm_label": ".agents/skills/image-to-code/skill.md: image-to-code skill",
       "id": "skill_image_to_code_image_to_code_skill"
     },
@@ -12862,7 +12862,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 159,
+      "community": 160,
       "norm_label": ".agents/skills/imagegen-frontend-mobile/skill.md: imagegen frontend mobile skill",
       "id": "skill_imagegen_frontend_mobile_mobile_skill"
     },
@@ -12953,7 +12953,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase-postgres-best-practices changelog.md",
       "id": "supabase_postgres_best_practices_changelog_md"
     },
@@ -12966,7 +12966,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase-postgres-best-practices skill.md",
       "id": "supabase_postgres_best_practices_skill_md"
     },
@@ -12979,7 +12979,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase-postgres-best-practices _contributing.md",
       "id": "supabase_postgres_best_practices_contributing_md"
     },
@@ -12992,7 +12992,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase-postgres-best-practices _sections.md",
       "id": "supabase_postgres_best_practices_sections_md"
     },
@@ -13005,7 +13005,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase-postgres-best-practices _template.md",
       "id": "supabase_postgres_best_practices_template_md"
     },
@@ -13018,7 +13018,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase-postgres-best-practices advanced-full-text-search.md",
       "id": "supabase_postgres_best_practices_advanced_full_text_search_md"
     },
@@ -13031,7 +13031,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 166,
+      "community": 167,
       "norm_label": "index jsonb columns for efficient querying",
       "id": "advanced_jsonb_indexing_jsonb_indexing"
     },
@@ -13044,7 +13044,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 99,
+      "community": 100,
       "norm_label": "configure idle connection timeouts",
       "id": "conn_idle_timeout_idle_connection_timeouts"
     },
@@ -13057,7 +13057,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 99,
+      "community": 100,
       "norm_label": "set appropriate connection limits",
       "id": "conn_limits_connection_limits"
     },
@@ -13070,7 +13070,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 99,
+      "community": 100,
       "norm_label": "use connection pooling for all applications",
       "id": "conn_pooling_connection_pooling"
     },
@@ -13083,7 +13083,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 99,
+      "community": 100,
       "norm_label": "use prepared statements correctly with pooling",
       "id": "conn_prepared_statements_prepared_statements_pooling"
     },
@@ -13096,7 +13096,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 101,
       "norm_label": "batch insert statements for bulk data",
       "id": "data_batch_inserts_batch_inserts"
     },
@@ -13109,7 +13109,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 101,
       "norm_label": "eliminate n+1 queries with batch loading",
       "id": "data_n_plus_one_eliminate_n_plus_one"
     },
@@ -13122,7 +13122,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 101,
       "norm_label": "use cursor-based pagination instead of offset",
       "id": "data_pagination_cursor_pagination"
     },
@@ -13135,7 +13135,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 101,
       "norm_label": "use upsert for insert-or-update operations",
       "id": "data_upsert_upsert_operations"
     },
@@ -13148,7 +13148,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 107,
+      "community": 108,
       "norm_label": "use advisory locks for application-level locking",
       "id": "lock_advisory_advisory_locks"
     },
@@ -13161,7 +13161,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 107,
+      "community": 108,
       "norm_label": "prevent deadlocks with consistent lock ordering",
       "id": "lock_deadlock_prevention_deadlock_prevention"
     },
@@ -13174,7 +13174,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 107,
+      "community": 108,
       "norm_label": "keep transactions short to reduce lock contention",
       "id": "lock_short_transactions_short_transactions"
     },
@@ -13187,7 +13187,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 107,
+      "community": 108,
       "norm_label": "use skip locked for non-blocking queue processing",
       "id": "lock_skip_locked_skip_locked_queues"
     },
@@ -13200,7 +13200,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 124,
+      "community": 125,
       "norm_label": "use explain analyze to diagnose slow queries",
       "id": "monitor_explain_analyze_explain_analyze"
     },
@@ -13213,7 +13213,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 124,
+      "community": 125,
       "norm_label": "enable pg_stat_statements for query analysis",
       "id": "monitor_pg_stat_statements_pg_stat_statements"
     },
@@ -13226,7 +13226,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 124,
+      "community": 125,
       "norm_label": "maintain table statistics with vacuum and analyze",
       "id": "monitor_vacuum_analyze_vacuum_analyze"
     },
@@ -13239,7 +13239,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "composite index",
       "id": "query-composite-indexes_composite_index"
     },
@@ -13252,7 +13252,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "covering index",
       "id": "query-covering-indexes_covering_index"
     },
@@ -13265,7 +13265,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 108,
+      "community": 109,
       "norm_label": "gin index",
       "id": "query-index-types_gin_index"
     },
@@ -13278,7 +13278,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 108,
+      "community": 109,
       "norm_label": "gist index",
       "id": "query-index-types_gist_index"
     },
@@ -13291,7 +13291,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 108,
+      "community": 109,
       "norm_label": "brin index",
       "id": "query-index-types_brin_index"
     },
@@ -13304,7 +13304,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 108,
+      "community": 109,
       "norm_label": "hash index",
       "id": "query-index-types_hash_index"
     },
@@ -13317,7 +13317,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "b-tree index",
       "id": "query-missing-indexes_btree_index"
     },
@@ -13330,7 +13330,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "partial index",
       "id": "query-partial-indexes_partial_index"
     },
@@ -13343,7 +13343,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "pg_constraint",
       "id": "schema-constraints_pg_constraint"
     },
@@ -13356,7 +13356,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 150,
+      "community": 151,
       "norm_label": "bigint generated always as identity",
       "id": "schema-data-types_bigint_identity"
     },
@@ -13369,7 +13369,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "foreign key index",
       "id": "schema-foreign-key-indexes_foreign_key_index"
     },
@@ -13382,7 +13382,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 281,
+      "community": 282,
       "norm_label": "use lowercase identifiers for compatibility",
       "id": "schemalowercaseidentifiers_use_lowercase_identifiers_for_compatibility"
     },
@@ -13395,7 +13395,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "partition by range",
       "id": "schema-partitioning_partition_by_range"
     },
@@ -13408,7 +13408,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 150,
+      "community": 151,
       "norm_label": "uuidv7",
       "id": "schema-primary-keys_uuidv7"
     },
@@ -13421,7 +13421,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "app_user role",
       "id": "security-privileges_app_user"
     },
@@ -13434,7 +13434,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "row level security",
       "id": "security-rls-basics_row_level_security"
     },
@@ -13447,7 +13447,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 56,
       "norm_label": "rls policy",
       "id": "security-rls-performance_rls_policy"
     },
@@ -13460,7 +13460,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase changelog.md",
       "id": "supabase_changelog_md"
     },
@@ -13473,7 +13473,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase skill.md",
       "id": "supabase_skill_md"
     },
@@ -13486,7 +13486,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase feedback-issue-template.md",
       "id": "supabase_feedback_issue_template_md"
     },
@@ -13499,7 +13499,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 57,
       "norm_label": "supabase skill-feedback.md",
       "id": "supabase_skill_feedback_md"
     },
@@ -13512,7 +13512,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 165,
+      "community": 166,
       "norm_label": "vercel cli",
       "id": "vercel-cli-with-tokens_vercel_cli"
     },
@@ -13525,7 +13525,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 165,
+      "community": 166,
       "norm_label": "composercontext",
       "id": "vercel-composition-patterns_composercontext"
     },
@@ -13538,7 +13538,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "agents.md",
       "id": "vercelcompositionpatterns_agents_md"
     },
@@ -13551,7 +13551,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "readme.md",
       "id": "vercelcompositionpatterns_readme"
     },
@@ -13564,7 +13564,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "skill.md",
       "id": "vercelcompositionpatterns_skill"
     },
@@ -13577,7 +13577,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "_sections.md",
       "id": "vercelcompositionpatterns_sections"
     },
@@ -13590,7 +13590,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "_template.md",
       "id": "vercelcompositionpatterns_template"
     },
@@ -13603,7 +13603,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "architecture-avoid-boolean-props.md",
       "id": "vercelcompositionpatterns_architectureavoidbooleanprops"
     },
@@ -13616,7 +13616,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "architecture-compound-components.md",
       "id": "vercelcompositionpatterns_architecturecompoundcomponents"
     },
@@ -13629,7 +13629,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "patterns-children-over-render-pro\u8089\u4e1d.md",
       "id": "vercelcompositionpatterns_patternschildrenoverrenderprops"
     },
@@ -13642,7 +13642,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "patterns-explicit-variants.md",
       "id": "vercelcompositionpatterns_patternsexplicitvariants"
     },
@@ -13655,7 +13655,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "react19-no-forwardref.md",
       "id": "vercelcompositionpatterns_react19noforwardref"
     },
@@ -13668,7 +13668,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "state-context-interface.md",
       "id": "vercelcompositionpatterns_statecontextinterface"
     },
@@ -13681,7 +13681,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "state-decouple-implementation.md",
       "id": "vercelcompositionpatterns_statedecoupleimplementation"
     },
@@ -13694,7 +13694,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "norm_label": "state-lift-state.md",
       "id": "vercelcompositionpatterns_stateliftstate"
     },
@@ -13707,7 +13707,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 94,
+      "community": 95,
       "norm_label": "agents.md",
       "id": "verceloptimize_agents"
     },
@@ -13720,7 +13720,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 94,
+      "community": 95,
       "norm_label": "contributing.md",
       "id": "verceloptimize_contributing"
     },
@@ -13733,7 +13733,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 94,
+      "community": 95,
       "norm_label": "readme.md",
       "id": "verceloptimize_readme"
     },
@@ -13746,7 +13746,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 94,
+      "community": 95,
       "norm_label": "skill.md",
       "id": "verceloptimize_skill"
     },
@@ -13759,7 +13759,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 94,
+      "community": 95,
       "norm_label": "candidates.md",
       "id": "verceloptimize_candidates"
     },
@@ -13980,7 +13980,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 172,
+      "community": 173,
       "norm_label": "astro edge middleware scope",
       "id": "astroedgemiddlewarescope_astro_edge_middleware_scope"
     },
@@ -13993,7 +13993,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 173,
+      "community": 174,
       "norm_label": "astro output mode and isr",
       "id": "astrooutputmodeandisr_astro_output_mode_and_isr"
     },
@@ -14006,7 +14006,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 314,
+      "community": 315,
       "norm_label": "authorization-preserving parallelization",
       "id": "support_topics_auth_preserving_parallelization_md"
     },
@@ -14019,7 +14019,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 315,
+      "community": 316,
       "norm_label": "bot protection product guardrails",
       "id": "support_topics_bot_protection_product_guardrails_md"
     },
@@ -14032,7 +14032,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 316,
+      "community": 317,
       "norm_label": "build minutes monorepo fanout",
       "id": "support_topics_build_minutes_monorepo_fanout_md"
     },
@@ -14045,7 +14045,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 317,
+      "community": 318,
       "norm_label": "cache components static shell boundaries",
       "id": "support_topics_cache_components_static_shell_boundaries_md"
     },
@@ -14058,7 +14058,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 97,
+      "community": 98,
       "norm_label": "cache components suspense dedupe pitfall",
       "id": "cache-components-suspense-dedupe-pitfall_cache_components_suspense_dedupe_pitfall"
     },
@@ -14071,7 +14071,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 97,
+      "community": 98,
       "norm_label": "use cache directive",
       "id": "cache-components-suspense-dedupe-pitfall_use_cache"
     },
@@ -14084,7 +14084,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 97,
+      "community": 98,
       "norm_label": "cachecomponents config",
       "id": "cache-components-suspense-dedupe-pitfall_cachecomponents_config"
     },
@@ -14097,7 +14097,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 177,
+      "community": 178,
       "norm_label": "cdn cache auth safety",
       "id": "cdn-cache-auth-safety_cdn_cache_auth_safety"
     },
@@ -14110,7 +14110,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 142,
+      "community": 143,
       "norm_label": "cold-start initialization and bundle weight",
       "id": "cold-start-initialization-bundle_cold_start_initialization_and_bundle_weight"
     },
@@ -14123,7 +14123,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 142,
+      "community": 143,
       "norm_label": "core web vitals client bottlenecks",
       "id": "core-web-vitals-client-bottlenecks_core_web_vitals_client_bottlenecks"
     },
@@ -14136,7 +14136,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 184,
+      "community": 185,
       "norm_label": "database region and connection pressure",
       "id": "database-egress-pooling-region_database_region_and_connection_pressure"
     },
@@ -14149,7 +14149,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 97,
+      "community": 98,
       "norm_label": "dynamic rendering traps",
       "id": "dynamic-rendering-traps_dynamic_rendering_traps"
     },
@@ -14162,7 +14162,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 101,
+      "community": 102,
       "norm_label": "cross-framework external api critical path",
       "id": "external-api-critical-path-platform_cross_framework_external_api_critical_path"
     },
@@ -14175,7 +14175,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 101,
+      "community": 102,
       "norm_label": "external api critical path",
       "id": "external-api-critical-path_external_api_critical_path"
     },
@@ -14188,7 +14188,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 101,
+      "community": 102,
       "norm_label": "vercel-react-best-practices async-parallel",
       "id": "external-api-critical-path_vercel_react_best_practices_async_parallel"
     },
@@ -14201,7 +14201,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 101,
+      "community": 102,
       "norm_label": "vercel-react-best-practices server-parallel-fetching",
       "id": "external-api-critical-path_vercel_react_best_practices_server_parallel_fetching"
     },
@@ -14214,7 +14214,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 192,
+      "community": 193,
       "norm_label": "fast data transfer payloads",
       "id": "fast-data-transfer-payloads_fast_data_transfer_payloads"
     },
@@ -14227,7 +14227,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 194,
+      "community": 195,
       "norm_label": "fluid compute caveats",
       "id": "fluid-compute-caveats_fluid_compute_caveats"
     },
@@ -14240,7 +14240,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 195,
+      "community": 196,
       "norm_label": "function duration, i/o, and post-response work",
       "id": "function-duration-io-and-after_function_duration_io_and_after"
     },
@@ -14253,7 +14253,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 196,
+      "community": 197,
       "norm_label": "function invocation reduction",
       "id": "function-invocation-reduction_function_invocation_reduction"
     },
@@ -14266,7 +14266,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 197,
+      "community": 198,
       "norm_label": "function region misconfiguration (ttfb)",
       "id": "function-region-misconfiguration-ttfb_function_region_misconfiguration_ttfb"
     },
@@ -14279,7 +14279,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 202,
+      "community": 203,
       "norm_label": "image optimization cost control",
       "id": "image-optimization-cost-control_image_optimization_cost_control"
     },
@@ -14292,7 +14292,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 206,
+      "community": 207,
       "norm_label": "isr revalidation and static generation",
       "id": "isr-revalidation-static-generation_isr_revalidation_and_static_generation"
     },
@@ -14305,7 +14305,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 221,
+      "community": 222,
       "norm_label": "middleware edge cost",
       "id": "middleware-proxy-edge-cost_middleware_edge_cost"
     },
@@ -14318,7 +14318,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 224,
+      "community": 225,
       "norm_label": "next.js fetch revalidation floor",
       "id": "next-fetch-revalidate-floor_next_fetch_revalidation_floor"
     },
@@ -14331,7 +14331,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 225,
+      "community": 226,
       "norm_label": "next.js font cls guardrail",
       "id": "next-font-cls-self-hosting_next_font_cls_guardrail"
     },
@@ -14344,7 +14344,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 226,
+      "community": 227,
       "norm_label": "next.js heavy ui lazy-load boundaries",
       "id": "next-heavy-ui-lazy-load-boundaries_next_heavy_ui_lazy_load_boundaries"
     },
@@ -14357,7 +14357,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 227,
+      "community": 228,
       "norm_label": "next.js image lcp preload and sizes",
       "id": "next-image-lcp-preload-sizes_next_image_lcp_preload_and_sizes"
     },
@@ -14370,7 +14370,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 228,
+      "community": 229,
       "norm_label": "next.js route handler get cache defaults",
       "id": "next-route-handler-get-cache-defaults_next_route_handler_get_cache_defaults"
     },
@@ -14383,7 +14383,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 229,
+      "community": 230,
       "norm_label": "next.js third-party script strategy",
       "id": "next-script-third-party-strategy_next_script_third_party Ty- party_strategy"
     },
@@ -14396,7 +14396,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 231,
+      "community": 232,
       "norm_label": "next.js cache semantics by version",
       "id": "nextjs-version-cache-semantics_nextjs_cache_semantics_by_version"
     },
@@ -14409,7 +14409,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 232,
+      "community": 233,
       "norm_label": "not-found and catch-all request waste",
       "id": "not-found-catchall-request-waste_not_found_and_catch_all_request_waste"
     },
@@ -14422,7 +14422,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 233,
+      "community": 234,
       "norm_label": "nuxt routerules cache and isr",
       "id": "nuxt-route-rules-cache-isr_nuxt_routules_cache_and_isr"
     },
@@ -14448,7 +14448,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 125,
+      "community": 126,
       "norm_label": "post-response work with waituntil",
       "id": "post_response_work_waituntil"
     },
@@ -14461,7 +14461,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 125,
+      "community": 126,
       "norm_label": "durable offload for timeout-heavy routes",
       "id": "route_error_durable_offload"
     },
@@ -14474,7 +14474,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 125,
+      "community": 126,
       "norm_label": "route errors and runtime limits",
       "id": "route_error_runtime_limits"
     },
@@ -14812,7 +14812,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 114,
+      "community": 115,
       "norm_label": "do not put effect events in dependency arrays",
       "id": "advanced_effect_event_deps"
     },
@@ -14825,7 +14825,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 114,
+      "community": 115,
       "norm_label": "react useeffectevent docs",
       "id": "react_useeffectevent"
     },
@@ -14838,7 +14838,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 114,
+      "community": 115,
       "norm_label": "store event handlers in refs",
       "id": "advanced_event_handler_refs"
     },
@@ -14851,7 +14851,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 136,
+      "community": 137,
       "norm_label": "initialize app once, not per mount",
       "id": "advanced_init_once"
     },
@@ -14864,7 +14864,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 136,
+      "community": 137,
       "norm_label": "react initializing the application docs",
       "id": "react_initializing_application"
     },
@@ -14877,7 +14877,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 167,
+      "community": 168,
       "norm_label": "useeffectevent for stable callback refs",
       "id": "advanced_useeffectevent_for_stable_callback_refs"
     },
@@ -14916,7 +14916,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 138,
+      "community": 139,
       "norm_label": "check cheap conditions before async flags",
       "id": "async_cheap_condition_before_await_check_cheap_conditions_before_async_flags"
     },
@@ -14929,7 +14929,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 138,
+      "community": 139,
       "norm_label": "defer await until needed",
       "id": "async_defer_await_defer_await_until_needed"
     },
@@ -14994,7 +14994,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "statically analyzable paths",
       "id": "bundle_analyzable_paths_statically_analyzable_paths"
     },
@@ -15007,7 +15007,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "next.js",
       "id": "nextjs"
     },
@@ -15020,7 +15020,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "avoid barrel file imports",
       "id": "bundle_barrel_imports_avoid_barrel_file_imports"
     },
@@ -15046,7 +15046,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "@mui/material",
       "id": "mui_material"
     },
@@ -15059,7 +15059,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "conditional module loading",
       "id": "bundle_conditional_conditional_module_loading"
     },
@@ -15072,7 +15072,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "defer non-critical third-party libraries",
       "id": "bundle_defer_third_party_defer_non_critical_third_party_libraries"
     },
@@ -15085,7 +15085,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "@vercel/analytics/react",
       "id": "vercel_analytics_react"
     },
@@ -15098,7 +15098,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "dynamic imports for heavy components",
       "id": "bundle_dynamic_imports_dynamic_imports_for_heavy_components"
     },
@@ -15111,7 +15111,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "next/dynamic",
       "id": "next_dynamic"
     },
@@ -15125,7 +15125,7 @@
       "author": null,
       "\u6210\u5e74\u4eba": null,
       "contributor": null,
-      "community": 54,
+      "community": 53,
       "norm_label": "preload based on user intent",
       "id": "bundle_preload_preload_based_on_user_intent"
     },
@@ -15138,7 +15138,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 141,
+      "community": 142,
       "norm_label": "deduplicate global event listeners",
       "id": "client_event_listeners_deduplicate_global_event_listeners"
     },
@@ -15151,7 +15151,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 141,
+      "community": 142,
       "norm_label": "swr/subscription",
       "id": "swr_subscription"
     },
@@ -15164,7 +15164,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 139,
+      "community": 140,
       "norm_label": "version and minimize localstorage data",
       "id": "client-localstorage-schema"
     },
@@ -15177,7 +15177,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 141,
       "norm_label": "use passive event listeners for scrolling performance",
       "id": "client-passive-event-listeners"
     },
@@ -15190,7 +15190,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 117,
+      "community": 118,
       "norm_label": "use swr for automatic deduplication",
       "id": "client-swr-dedup"
     },
@@ -15203,7 +15203,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 141,
       "norm_label": "avoid layout thrashing",
       "id": "js-batch-dom-css"
     },
@@ -15216,7 +15216,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 117,
+      "community": 118,
       "norm_label": "cache repeated function calls",
       "id": "js-cache-function-results"
     },
@@ -15229,7 +15229,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 117,
+      "community": 118,
       "norm_label": "cache property access in loops",
       "id": "js-cache-property-access"
     },
@@ -15242,7 +15242,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 139,
+      "community": 140,
       "norm_label": "cache storage api calls",
       "id": "js-cache-storage"
     },
@@ -15255,7 +15255,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 145,
+      "community": 146,
       "norm_label": "combine multiple array iterations",
       "id": "js-combine-iterations"
     },
@@ -15268,7 +15268,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 208,
+      "community": 209,
       "norm_label": "early return from functions",
       "id": "js-early-exit"
     },
@@ -15281,7 +15281,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 145,
+      "community": 146,
       "norm_label": "use flatmap to map and filter in one pass",
       "id": "js-flatmap-filter"
     },
@@ -15411,7 +15411,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 210,
       "norm_label": "defer non-critical work with requestidlecallback",
       "id": "js_request_idle_callback"
     },
@@ -15424,7 +15424,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 210,
+      "community": 211,
       "norm_label": "use set/map for o(1) lookups",
       "id": "js_set_map_lookups"
     },
@@ -15437,7 +15437,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 211,
+      "community": 212,
       "norm_label": "use tosorted() instead of sort() for immutability",
       "id": "js_tosorted_immutable"
     },
@@ -15450,7 +15450,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 255,
+      "community": 256,
       "norm_label": "use activity component for show/hide",
       "id": "rendering_activity"
     },
@@ -15463,7 +15463,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 256,
+      "community": 257,
       "norm_label": "animate svg wrapper instead of svg element",
       "id": "rendering_animate_svg_wrapper"
     },
@@ -15489,7 +15489,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 257,
+      "community": 258,
       "norm_label": "css content-visibility for long lists",
       "id": "rendering_content_visibility"
     },
@@ -15502,7 +15502,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 258,
+      "community": 259,
       "norm_label": "hoist static jsx elements",
       "id": "rendering_hoist_jsx"
     },
@@ -15515,7 +15515,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 259,
+      "community": 260,
       "norm_label": "prevent hydration mismatch without flickering",
       "id": "rendering_hydration_no_flicker"
     },
@@ -15528,7 +15528,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 260,
+      "community": 261,
       "norm_label": "suppress expected hydration mismatches",
       "id": "rendering_hydration_suppress_warning"
     },
@@ -15541,7 +15541,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 261,
+      "community": 262,
       "norm_label": "use react dom resource hints",
       "id": "rendering_resource_hints"
     },
@@ -15554,7 +15554,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
+      "community": 263,
       "norm_label": "use defer or async on script tags",
       "id": "rendering_script_defer_async"
     },
@@ -15567,7 +15567,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 263,
+      "community": 264,
       "norm_label": "optimize svg precision",
       "id": "rendering_svg_precision"
     },
@@ -15580,7 +15580,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 264,
+      "community": 265,
       "norm_label": "use usetransition over manual loading states",
       "id": "rendering_usetransition_loading"
     },
@@ -15593,7 +15593,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 266,
+      "community": 267,
       "norm_label": "defer state reads to usage point",
       "id": "rerender_defer_reads"
     },
@@ -15606,7 +15606,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 267,
+      "community": 268,
       "norm_label": "narrow effect dependencies",
       "id": "rerender_dependencies"
     },
@@ -15645,7 +15645,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 149,
+      "community": 150,
       "norm_label": "use functional setstate updates",
       "id": "rerender_functional_setstate"
     },
@@ -15658,7 +15658,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 268,
+      "community": 269,
       "norm_label": "use lazy state initialization",
       "id": "rerender_lazy_state_init"
     },
@@ -15671,7 +15671,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 270,
+      "community": 271,
       "norm_label": "extract default non-primitive parameter value from memoized component to constant",
       "id": "rerender_memo_with_default_value"
     },
@@ -15684,7 +15684,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 269,
+      "community": 270,
       "norm_label": "extract to memoized components",
       "id": "rerender_memo"
     },
@@ -15697,7 +15697,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 271,
+      "community": 272,
       "norm_label": "put interaction logic in event handlers",
       "id": "rerender_move_effect_to_event"
     },
@@ -15723,7 +15723,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 272,
+      "community": 273,
       "norm_label": "do not wrap a simple expression with a primitive result type in usememo",
       "id": "rerender_simple_expression_in_memo"
     },
@@ -15736,7 +15736,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 273,
+      "community": 274,
       "norm_label": "split combined hook computations",
       "id": "rerender_split_combined_hooks"
     },
@@ -15749,7 +15749,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 274,
+      "community": 275,
       "norm_label": "use transitions for non-urgent updates",
       "id": "rerender_transitions"
     },
@@ -15762,7 +15762,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 275,
+      "community": 276,
       "norm_label": "use usedeferredvalue for expensive derived renders",
       "id": "rerender_use_deferred_value"
     },
@@ -15775,7 +15775,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 276,
+      "community": 277,
       "norm_label": "use useref for transient values",
       "id": "rerender_use_ref_transient_values"
     },
@@ -15788,7 +15788,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 294,
+      "community": 295,
       "norm_label": "use after() for non-blocking operations",
       "id": "server_after_nonblocking"
     },
@@ -15801,7 +15801,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 295,
+      "community": 296,
       "norm_label": "authenticate server actions like api routes",
       "id": "server_auth_actions"
     },
@@ -15814,7 +15814,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 296,
+      "community": 297,
       "norm_label": "cross-request lru caching",
       "id": "server_cache_lru"
     },
@@ -15827,7 +15827,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 297,
+      "community": 298,
       "norm_label": "per-request deduplication with react.cache()",
       "id": "server_cache_react"
     },
@@ -15840,7 +15840,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 298,
+      "community": 299,
       "norm_label": "avoid duplicate serialization in rsc props",
       "id": "server_dedup_props"
     },
@@ -15853,7 +15853,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 158,
+      "community": 159,
       "norm_label": "hoist static i/o to module level",
       "id": "server_hoist_static_io"
     },
@@ -15866,7 +15866,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 158,
+      "community": 159,
       "norm_label": "avoid shared module state for request data",
       "id": "server_no_shared_module_state"
     },
@@ -15879,7 +15879,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 299,
+      "community": 300,
       "norm_label": "parallel data fetching with component composition",
       "id": "server_parallel_fetching"
     },
@@ -15892,7 +15892,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 300,
+      "community": 301,
       "norm_label": "parallel nested data fetching",
       "id": "server_parallel_nested_fetching"
     },
@@ -15905,7 +15905,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 301,
+      "community": 302,
       "norm_label": "minimize serialization at rsc boundaries",
       "id": "server_serialization"
     },
@@ -16009,7 +16009,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 91,
+      "community": 92,
       "norm_label": "core rendering",
       "id": "sections_core_rendering"
     },
@@ -16022,7 +16022,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 91,
+      "community": 92,
       "norm_label": "list performance",
       "id": "sections_list_performance"
     },
@@ -16035,7 +16035,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 91,
+      "community": 92,
       "norm_label": "animation",
       "id": "sections_animation"
     },
@@ -16048,7 +16048,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 91,
+      "community": 92,
       "norm_label": "scroll performance",
       "id": "sections_scroll_performance"
     },
@@ -16061,7 +16061,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 287,
+      "community": 288,
       "norm_label": "navigation",
       "id": "sections_navigation"
     },
@@ -16074,7 +16074,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 157,
+      "community": 158,
       "norm_label": "react state",
       "id": "sections_react_state"
     },
@@ -16087,7 +16087,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 157,
+      "community": 158,
       "norm_label": "state architecture",
       "id": "sections_state_architecture"
     },
@@ -16100,7 +16100,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 288,
+      "community": 289,
       "norm_label": "react compiler",
       "id": "sections_react_compiler"
     },
@@ -16113,7 +16113,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 290,
+      "community": 291,
       "norm_label": "user interface",
       "id": "sections_user_interface"
     },
@@ -16126,7 +16126,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 283,
+      "community": 284,
       "norm_label": "design system",
       "id": "sections_design_system"
     },
@@ -16139,7 +16139,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 286,
+      "community": 287,
       "norm_label": "monorepo",
       "id": "sections_monorepo"
     },
@@ -16152,7 +16152,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 289,
+      "community": 290,
       "norm_label": "third-party dependencies",
       "id": "sections_third_party_dependencies"
     },
@@ -16165,7 +16165,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 285,
+      "community": 286,
       "norm_label": "javascript",
       "id": "sections_javascript"
     },
@@ -16178,7 +16178,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 284,
+      "community": 285,
       "norm_label": "fonts",
       "id": "sections_fonts"
     },
@@ -16191,7 +16191,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 91,
+      "community": 92,
       "norm_label": "rule template",
       "id": "template_rule_template"
     },
@@ -16204,7 +16204,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 169,
+      "community": 170,
       "norm_label": "prefer usederivedvalue over useanimatedreaction",
       "id": "animation_derived_value"
     },
@@ -16217,7 +16217,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 115,
+      "community": 116,
       "norm_label": "use gesturedetector for animated press states",
       "id": "animation_gesture_detector_press"
     },
@@ -16230,7 +16230,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 187,
+      "community": 188,
       "norm_label": "use compound components over polymorphic children",
       "id": "design_system_compound_components"
     },
@@ -16256,7 +16256,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 204,
+      "community": 205,
       "norm_label": "import from design system folder",
       "id": "imports_design_system_folder"
     },
@@ -16308,7 +16308,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 214,
+      "community": 215,
       "norm_label": "use compressed images in lists",
       "id": "list_performance_images"
     },
@@ -16386,7 +16386,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 223,
+      "community": 224,
       "norm_label": "use single dependency versions across monorepo",
       "id": "monorepo_single_dependency_versions"
     },
@@ -16412,7 +16412,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 115,
+      "community": 116,
       "norm_label": "use .get() and .set() for reanimated shared values (not .value)",
       "id": "react_compiler_reanimated_shared_values"
     },
@@ -16425,7 +16425,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 149,
+      "community": 150,
       "norm_label": "usestate dispatch updaters for state that depends on current value",
       "id": "react_state_dispatcher"
     },
@@ -16438,7 +16438,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 253,
+      "community": 254,
       "norm_label": "use fallback state instead of initialstate",
       "id": "react_state_fallback"
     },
@@ -16490,7 +16490,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 282,
+      "community": 283,
       "norm_label": "never track scroll position in usestate",
       "id": "scroll_position_no_state"
     },
@@ -16503,7 +16503,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 313,
+      "community": 314,
       "norm_label": "state must represent ground truth",
       "id": "state_ground_truth"
     },
@@ -16516,7 +16516,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 323,
+      "community": 324,
       "norm_label": "use galeria for image galleries and lightbox",
       "id": "ui_image_gallery"
     },
@@ -16529,7 +16529,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 324,
+      "community": 325,
       "norm_label": "measuring view dimensions",
       "id": "ui_measure_views"
     },
@@ -16542,7 +16542,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 325,
+      "community": 326,
       "norm_label": "use native menus for dropdowns and context menus",
       "id": "ui_menus"
     },
@@ -16555,7 +16555,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 326,
+      "community": 327,
       "norm_label": "use native modals over js-based bottom sheets",
       "id": "ui_native_modals"
     },
@@ -16568,7 +16568,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 115,
+      "community": 116,
       "norm_label": "use pressable instead of touchable components",
       "id": "ui_pressable"
     },
@@ -16581,7 +16581,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 327,
+      "community": 328,
       "norm_label": "use contentinsetadjustmentbehavior for safe areas",
       "id": "ui_safe_area_scroll"
     },
@@ -16594,7 +16594,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 328,
+      "community": 329,
       "norm_label": "use contentinset for dynamic scrollview spacing",
       "id": "ui_scrollview_content_inset"
     },
@@ -16607,7 +16607,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 329,
+      "community": 330,
       "norm_label": "modern react native styling patterns",
       "id": "ui_styling"
     },
@@ -16633,7 +16633,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "react view transitions skill",
       "id": "react_view_transitions_skill"
     },
@@ -16646,7 +16646,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "viewtransition component",
       "id": "react_view_transitions_viewtransition_component"
     },
@@ -16659,7 +16659,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "addtransitiontype",
       "id": "react_view_transitions_addtransitiontype"
     },
@@ -16672,7 +16672,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "shared element transitions",
       "id": "react_view_transitions_shared_element_transitions"
     },
@@ -16685,7 +16685,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "view transition events",
       "id": "react_view_transitions_view_transition_events"
     },
@@ -16698,7 +16698,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "css pseudo-elements",
       "id": "react_view_transitions_css_pseudo_elements"
     },
@@ -16711,7 +16711,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "next.js integration",
       "id": "react_view_transitions_nextjs_integration"
     },
@@ -16724,7 +16724,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "accessibility",
       "id": "react_view_transitions_accessibility"
     },
@@ -16737,7 +16737,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "css recipes",
       "id": "react_view_transitions_css_recipes"
     },
@@ -16750,7 +16750,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "implementation workflow",
       "id": "react_view_transitions_implementation"
     },
@@ -16763,7 +16763,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "patterns",
       "id": "react_view_transitions_patterns"
     },
@@ -16776,7 +16776,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 47,
       "norm_label": "next.js-specific patterns",
       "id": "react_view_transitions_nextjs"
     },
@@ -16854,7 +16854,7 @@
       "captured_at": null,
       "author": "vercel",
       "contributor": null,
-      "community": 305,
+      "community": 306,
       "norm_label": "web-design-guidelines",
       "id": "skill_web_design_guidelines"
     },
@@ -16867,7 +16867,7 @@
       "captured_at": null,
       "author": "vercel",
       "contributor": null,
-      "community": 306,
+      "community": 307,
       "norm_label": "writing-guidelines",
       "id": "skill_writing_guidelines"
     },
@@ -16880,7 +16880,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 174,
+      "community": 175,
       "norm_label": "briefing \u2014 2026-06-12t20:23:00z",
       "id": "briefing_sub_orch_e2e"
     },
@@ -16893,7 +16893,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "original user request",
       "id": "original_request_sub_orch_e2e"
     },
@@ -16906,7 +16906,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f1: visual design & styling",
       "id": "original_request_feature_f1"
     },
@@ -16919,7 +16919,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f2: legal/compliance declarations",
       "id": "original_request_feature_f2"
     },
@@ -16932,7 +16932,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f3: room calculator",
       "id": "original_request_feature_f3"
     },
@@ -16945,7 +16945,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f4: review funnel page rating routing",
       "id": "original_request_feature_f4"
     },
@@ -16958,7 +16958,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f5: lead form submission & offline-first local queue",
       "id": "original_request_feature_f5"
     },
@@ -16971,7 +16971,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f6: lead apis",
       "id": "original_request_feature_f6"
     },
@@ -16984,7 +16984,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "f7: static site performance & seo",
       "id": "original_request_feature_f7"
     },
@@ -16997,7 +16997,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "e2e testing track scope",
       "id": "scope_e2e_testing_track"
     },
@@ -17010,7 +17010,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "test plan & feature enumeration",
       "id": "scope_test_plan_feature_enumeration"
     },
@@ -17023,7 +17023,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "test infrastructure setup",
       "id": "scope_test_infrastructure_setup"
     },
@@ -17036,7 +17036,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "implementation of test cases",
       "id": "scope_implementation_test_cases"
     },
@@ -17049,7 +17049,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "verification & execution",
       "id": "scope_verification_execution"
     },
@@ -17062,7 +17062,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "norm_label": "progress tracking",
       "id": "progress_sub_orch_e2e"
     },
@@ -17075,7 +17075,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 96,
+      "community": 97,
       "norm_label": "sub-orchestrator briefing",
       "id": "briefing_sub_orch_briefing"
     },
@@ -17088,7 +17088,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 96,
+      "community": 97,
       "norm_label": "sub-orchestrator original request",
       "id": "original_request_sub_orch_original_request"
     },
@@ -17101,7 +17101,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 96,
+      "community": 97,
       "norm_label": "implementation scope document",
       "id": "scope_scope"
     },
@@ -17309,7 +17309,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 95,
+      "community": 96,
       "norm_label": "m2 compliance & contractor registration audit handoff",
       "id": "handoff_m2_compliance_audit"
     },
@@ -17322,7 +17322,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 96,
+      "community": 97,
       "norm_label": "m2 explorer 1 handoff report",
       "id": "m2_explorer_1_handoff_report"
     },
@@ -17335,7 +17335,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 216,
+      "community": 217,
       "norm_label": "progress - milestone 2: compliance & contractor registration explorer",
       "id": "m2_explorer_1_progress"
     },
@@ -17387,7 +17387,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 217,
+      "community": 218,
       "norm_label": "progress \u2014 milestone 2: compliance & contractor registration",
       "id": "m2_explorer_2_progress"
     },
@@ -17400,7 +17400,7 @@
       "captured_at": "2026-06-12T20:25:00Z",
       "author": null,
       "contributor": null,
-      "community": 95,
+      "community": 96,
       "norm_label": "m2 explorer 3 compliance audit",
       "id": "briefing_m2_explorer_3_compliance_audit"
     },
@@ -17413,7 +17413,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "mission - review code changes in milestone 2",
       "id": "briefing_mission"
     },
@@ -17426,7 +17426,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "archetype: reviewer_and_adversarial_critic",
       "id": "briefing_archetype_reviewer_and_adversarial_critic"
     },
@@ -17439,7 +17439,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "milestone 2: compliance & contractor registration",
       "id": "briefing_milestone_2_compliance_contractor_registration"
     },
@@ -17452,7 +17452,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "public/og-preview.svg",
       "id": "briefing_og_preview_svg"
     },
@@ -17465,7 +17465,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "src/components/layout.tsx",
       "id": "briefing_layout_tsx"
     },
@@ -17478,7 +17478,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "src/components/conversionfootercta.tsx",
       "id": "briefing_conversionfootercta_tsx"
     },
@@ -17491,7 +17491,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "src/pages/refer.tsx",
       "id": "briefing_refer_tsx"
     },
@@ -17504,7 +17504,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "src/pages/estimate.tsx",
       "id": "briefing_estimate_tsx"
     },
@@ -17517,7 +17517,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "project.md",
       "id": "briefing_project_md"
     },
@@ -17530,7 +17530,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "agents.md",
       "id": "briefing_agents_md"
     },
@@ -17543,7 +17543,7 @@
       "captured_at": "2026-06-12T20:30:47Z",
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 48,
       "norm_label": "original_request.md",
       "id": "briefing_original_request_md"
     },
@@ -17559,7 +17559,7 @@
       "label": "progress.md",
       "file_type": "document",
       "source_file": ".agents/sub_orch_impl/m2_reviewer_1/progress.md",
-      "community": 147,
+      "community": 148,
       "norm_label": "progress.md",
       "id": "m2_reviewer_1_progress"
     },
@@ -17591,7 +17591,7 @@
       "label": "progress.md",
       "file_type": "document",
       "source_file": ".agents/sub_orch_impl/m2_reviewer_2/progress.md",
-      "community": 147,
+      "community": 148,
       "norm_label": "progress.md",
       "id": "m2_reviewer_2_progress"
     },
@@ -17697,7 +17697,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 249,
+      "community": 250,
       "norm_label": "read test plan and 82 test cases",
       "id": "progress_read_test_plan"
     },
@@ -17710,7 +17710,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 248,
+      "community": 249,
       "norm_label": "investigate existing codebase, verify f1-f7 features",
       "id": "progress_investigate_codebase"
     },
@@ -17723,7 +17723,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 247,
+      "community": 248,
       "norm_label": "implement e2e test suite",
       "id": "progress_implement_e2e_test_suite"
     },
@@ -17736,7 +17736,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 251,
+      "community": 252,
       "norm_label": "scan and ensure no emojis are present in any source code, components, or markup files",
       "id": "progress_scan_no_emojis"
     },
@@ -17749,7 +17749,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 245,
+      "community": 246,
       "norm_label": "create test_infra.md and test_ready.md at root",
       "id": "progress_create_test_infra_md"
     },
@@ -17762,7 +17762,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 250,
+      "community": 251,
       "norm_label": "run npm test and verify all tests pass",
       "id": "progress_run_npm_test"
     },
@@ -17775,7 +17775,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 246,
+      "community": 247,
       "norm_label": "generate handoff report (handoff.md) and notify caller",
       "id": "progress_generate_handoff_report"
     },
@@ -17788,7 +17788,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "claude.md",
       "id": "claude_claude_md"
     },
@@ -17801,7 +17801,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify skill",
       "id": "graphify_skill_md"
     },
@@ -17814,7 +17814,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify add/watch reference",
       "id": "graphify_add_watch_md"
     },
@@ -17827,7 +17827,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify exports reference",
       "id": "graphify_exports_md"
     },
@@ -17840,7 +17840,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify extraction spec",
       "id": "graphify_extraction_spec_md"
     },
@@ -17853,7 +17853,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify github/merge reference",
       "id": "graphify_github_and_merge_md"
     },
@@ -17866,7 +17866,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify hooks reference",
       "id": "graphify_hooks_md"
     },
@@ -17879,7 +17879,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify query reference",
       "id": "graphify_query_md"
     },
@@ -17892,7 +17892,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify transcribe reference",
       "id": "graphify_transcribe_md"
     },
@@ -17905,7 +17905,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 54,
       "norm_label": "graphify update reference",
       "id": "graphify_update_md"
     },
@@ -17918,7 +17918,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 175,
+      "community": 176,
       "norm_label": "bug report issue template",
       "id": "bug_report_md"
     },
@@ -17931,7 +17931,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 180,
+      "community": 181,
       "norm_label": "issue template config",
       "id": "config_yml"
     },
@@ -17944,7 +17944,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 193,
+      "community": 194,
       "norm_label": "feature request issue template",
       "id": "feature_request_md"
     },
@@ -17957,7 +17957,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 185,
+      "community": 186,
       "norm_label": "dependabot.yml",
       "id": "dependabot_yml"
     },
@@ -17970,7 +17970,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 252,
+      "community": 253,
       "norm_label": "pull request template",
       "id": "pull_request_template_md"
     },
@@ -17983,7 +17983,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 218,
+      "community": 219,
       "norm_label": "maintenance workflow",
       "id": "maintenance_yml"
     },
@@ -17996,7 +17996,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 189,
+      "community": 190,
       "norm_label": "errors log",
       "id": "errors_md"
     },
@@ -18009,7 +18009,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 335,
+      "community": 336,
       "norm_label": "vercel readme",
       "id": "vercel_readme_txt"
     },
@@ -18022,7 +18022,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 168,
+      "community": 169,
       "norm_label": "inspected skills: web-design-guidelines, react-best-practices",
       "id": "agent_source_notes_inspected_skills"
     },
@@ -18035,7 +18035,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": "claude.md developer & agent reference guide",
       "id": "claudemd_developer_reference"
     },
@@ -18048,7 +18048,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 205,
+      "community": 206,
       "norm_label": "repository index: website, skysthelimitpainting1779-collab",
       "id": "indexmd_repository_index"
     },
@@ -18061,7 +18061,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": "project.md: visual redesign & functionality audit",
       "id": "projectmd_project_scope"
     },
@@ -18074,7 +18074,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 265,
+      "community": 266,
       "norm_label": "repository.md: repository configuration",
       "id": "repositorymd_repo_config"
     },
@@ -18087,7 +18087,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 338,
+      "community": 339,
       "norm_label": "visual_asset_map.md: visual asset map",
       "id": "visual_asset_map_assets"
     },
@@ -18100,7 +18100,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 171,
+      "community": 172,
       "norm_label": "archived.hubspot.config.yml",
       "id": "archived_hubspot_config_yml"
     },
@@ -18113,7 +18113,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 182,
+      "community": 183,
       "norm_label": "context.md: website context map / routing",
       "id": "contextmd_website_context_map"
     },
@@ -18126,7 +18126,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 137,
+      "community": 138,
       "norm_label": "architecture",
       "id": "architecture_md"
     },
@@ -18139,7 +18139,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 170,
+      "community": 171,
       "norm_label": "architecture_callflow.html",
       "id": "architecture_callflow_html"
     },
@@ -18152,7 +18152,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 186,
+      "community": 187,
       "norm_label": "deployment protocol",
       "id": "deployment_md"
     },
@@ -18165,7 +18165,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 235,
+      "community": 236,
       "norm_label": "repository organization",
       "id": "organization_md"
     },
@@ -18178,7 +18178,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 244,
+      "community": 245,
       "norm_label": "production audit report",
       "id": "production_audit_md"
     },
@@ -18191,7 +18191,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 279,
+      "community": 280,
       "norm_label": "repository rules",
       "id": "rules_md"
     },
@@ -18204,7 +18204,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 294,
       "norm_label": "self-healing automation",
       "id": "self_healing_agent_md"
     },
@@ -18218,7 +18218,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 307,
+      "community": 308,
       "norm_label": "team skills",
       "id": "skills_md"
     },
@@ -18231,7 +18231,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 137,
+      "community": 138,
       "norm_label": "troubleshooting guide",
       "id": "troubleshooting_md"
     },
@@ -18270,7 +18270,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 200,
+      "community": 201,
       "norm_label": "help.txt",
       "id": "help_txt"
     },
@@ -18296,7 +18296,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 95,
+      "community": 96,
       "norm_label": "notes/copywriting_and_hooks.md",
       "id": "notes_copywriting_and_hooks"
     },
@@ -18309,7 +18309,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 201,
+      "community": 202,
       "norm_label": "hubspot and google sheets integration guide",
       "id": "hubspot_and_sheets_setup_md"
     },
@@ -18335,7 +18335,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 95,
+      "community": 96,
       "norm_label": "notes/landing_page_content.md",
       "id": "notes_landing_page_content"
     },
@@ -18348,7 +18348,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 302,
+      "community": 303,
       "norm_label": "xml sitemap and service-area mapping",
       "id": "sitemap_structure_md"
     },
@@ -18361,7 +18361,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 215,
+      "community": 216,
       "norm_label": "llms.txt - llm context file",
       "id": "llms_txt"
     },
@@ -18374,7 +18374,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 241,
+      "community": 242,
       "norm_label": "pricing.md - pricing document",
       "id": "pricing_md"
     },
@@ -18387,7 +18387,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 277,
+      "community": 278,
       "norm_label": "robots.txt",
       "id": "robots_txt"
     },
@@ -18426,7 +18426,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 181,
+      "community": 182,
       "norm_label": "dynamic operations data",
       "id": "context_dynamic_operations_data"
     },
@@ -18439,7 +18439,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 123,
+      "community": 124,
       "norm_label": "landingpages.ts - landing pages data",
       "id": "landingpages_landing_pages"
     },
@@ -18452,7 +18452,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 123,
+      "community": 124,
       "norm_label": "markets.ts - markets data",
       "id": "markets_markets_data"
     },
@@ -18465,7 +18465,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 123,
+      "community": 124,
       "norm_label": "landingpage.tsx component",
       "id": "landingpage_landing_page_component"
     },
@@ -18478,7 +18478,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 309,
+      "community": 310,
       "norm_label": "analytics.ts",
       "id": "src_lib_context_analytics"
     },
@@ -18491,7 +18491,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 310,
+      "community": 311,
       "norm_label": "contact.ts",
       "id": "src_lib_context_contact"
     },
@@ -18504,7 +18504,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 311,
+      "community": 312,
       "norm_label": "seo.ts",
       "id": "src_lib_context_seo"
     },
@@ -18517,7 +18517,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": "test_out.txt: e2e test failures (app.tsx routing)",
       "id": "test_out_e2e_failures"
     },
@@ -18530,7 +18530,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "norm_label": "test_out_utf8.txt: e2e test failures (utf-8 variant)",
       "id": "test_out_utf8_e2e_failures"
     },
@@ -18540,7 +18540,7 @@
       "source_file": "next-env.d.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 230,
+      "community": 231,
       "norm_label": "next-env.d.ts",
       "id": "next_env_d"
     },
@@ -18550,7 +18550,7 @@
       "source_file": "next.config.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 148,
+      "community": 149,
       "norm_label": "next.config.ts",
       "id": "next_config"
     },
@@ -18560,7 +18560,7 @@
       "source_file": "next.config.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 148,
+      "community": 149,
       "norm_label": "nextconfig",
       "id": "next_config_nextconfig"
     },
@@ -18620,7 +18620,7 @@
       "source_file": "postcss.config.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 240,
+      "community": 241,
       "norm_label": "postcss.config.mjs",
       "id": "postcss_config"
     },
@@ -18630,7 +18630,7 @@
       "source_file": "scripts/rename-imports.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 154,
+      "community": 155,
       "norm_label": "rename-imports.js",
       "id": "scripts_rename_imports"
     },
@@ -18640,7 +18640,7 @@
       "source_file": "scripts/rename-imports.js",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 154,
+      "community": 155,
       "norm_label": "processdirectory()",
       "id": "scripts_rename_imports_processdirectory"
     },
@@ -18780,7 +18780,7 @@
       "source_file": "src/app/about/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 113,
+      "community": 114,
       "norm_label": "page.tsx",
       "id": "about_page"
     },
@@ -18790,7 +18790,7 @@
       "source_file": "src/app/about/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 113,
+      "community": 114,
       "norm_label": "metadata",
       "id": "about_page_metadata"
     },
@@ -18800,7 +18800,7 @@
       "source_file": "src/app/about/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 113,
+      "community": 114,
       "norm_label": "about()",
       "id": "about_page_about"
     },
@@ -19010,7 +19010,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "route.ts",
       "id": "manychat_route"
     },
@@ -19020,7 +19020,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "ipcache",
       "id": "manychat_route_ipcache"
     },
@@ -19030,7 +19030,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "ratelimit()",
       "id": "manychat_route_ratelimit"
     },
@@ -19040,7 +19040,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "astext()",
       "id": "manychat_route_astext"
     },
@@ -19050,7 +19050,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "escapehtml()",
       "id": "manychat_route_escapehtml"
     },
@@ -19060,7 +19060,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "buildleadid()",
       "id": "manychat_route_buildleadid"
     },
@@ -19070,7 +19070,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "buildleadhtml()",
       "id": "manychat_route_buildleadhtml"
     },
@@ -19080,7 +19080,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L60",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "sendwithresend()",
       "id": "manychat_route_sendwithresend"
     },
@@ -19090,7 +19090,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L92",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "sendleadwebhook()",
       "id": "manychat_route_sendleadwebhook"
     },
@@ -19100,7 +19100,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L119",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "sendtohubspot()",
       "id": "manychat_route_sendtohubspot"
     },
@@ -19110,7 +19110,7 @@
       "source_file": "src/app/api/manychat/route.ts",
       "source_location": "L254",
       "_origin": "ast",
-      "community": 51,
+      "community": 50,
       "norm_label": "post()",
       "id": "manychat_route_post"
     },
@@ -19120,7 +19120,7 @@
       "source_file": "src/app/capabilities/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 116,
+      "community": 117,
       "norm_label": "page.tsx",
       "id": "capabilities_page"
     },
@@ -19130,7 +19130,7 @@
       "source_file": "src/app/capabilities/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 116,
+      "community": 117,
       "norm_label": "metadata",
       "id": "capabilities_page_metadata"
     },
@@ -19140,7 +19140,7 @@
       "source_file": "src/app/capabilities/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 116,
+      "community": 117,
       "norm_label": "capabilities()",
       "id": "capabilities_page_capabilities"
     },
@@ -19180,7 +19180,7 @@
       "source_file": "src/app/contact/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 119,
+      "community": 120,
       "norm_label": "page.tsx",
       "id": "contact_page"
     },
@@ -19190,7 +19190,7 @@
       "source_file": "src/app/contact/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 119,
+      "community": 120,
       "norm_label": "metadata",
       "id": "contact_page_metadata"
     },
@@ -19200,7 +19200,7 @@
       "source_file": "src/app/contact/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 119,
+      "community": 120,
       "norm_label": "contact()",
       "id": "contact_page_contact"
     },
@@ -19370,7 +19370,7 @@
       "source_file": "src/app/projects/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 126,
+      "community": 127,
       "norm_label": "page.tsx",
       "id": "projects_page"
     },
@@ -19380,7 +19380,7 @@
       "source_file": "src/app/projects/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 126,
+      "community": 127,
       "norm_label": "metadata",
       "id": "projects_page_metadata"
     },
@@ -19390,7 +19390,7 @@
       "source_file": "src/app/projects/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 126,
+      "community": 127,
       "norm_label": "projects()",
       "id": "projects_page_projects"
     },
@@ -19490,7 +19490,7 @@
       "source_file": "src/app/review/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 127,
+      "community": 128,
       "norm_label": "page.tsx",
       "id": "review_page"
     },
@@ -19500,7 +19500,7 @@
       "source_file": "src/app/review/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 127,
+      "community": 128,
       "norm_label": "metadata",
       "id": "review_page_metadata"
     },
@@ -19510,7 +19510,7 @@
       "source_file": "src/app/review/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 127,
+      "community": 128,
       "norm_label": "review()",
       "id": "review_page_review"
     },
@@ -19520,7 +19520,7 @@
       "source_file": "src/app/service-area/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 110,
+      "community": 111,
       "norm_label": "page.tsx",
       "id": "service_area_page"
     },
@@ -19530,7 +19530,7 @@
       "source_file": "src/app/service-area/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 110,
+      "community": 111,
       "norm_label": "metadata",
       "id": "service_area_page_metadata"
     },
@@ -19540,7 +19540,7 @@
       "source_file": "src/app/service-area/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 110,
+      "community": 111,
       "norm_label": "servicearea()",
       "id": "service_area_page_servicearea"
     },
@@ -19600,7 +19600,7 @@
       "source_file": "src/app/services/commercial/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 118,
+      "community": 119,
       "norm_label": "page.tsx",
       "id": "src_app_services_commercial_page_tsx_commercial_page"
     },
@@ -19610,7 +19610,7 @@
       "source_file": "src/app/services/commercial/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 118,
+      "community": 119,
       "norm_label": "metadata",
       "id": "src_app_services_commercial_page_tsx_commercial_page_metadata"
     },
@@ -19620,7 +19620,7 @@
       "source_file": "src/app/services/commercial/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 118,
+      "community": 119,
       "norm_label": "servicecommercial()",
       "id": "commercial_page_servicecommercial"
     },
@@ -19630,7 +19630,7 @@
       "source_file": "src/app/services/exterior/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 121,
+      "community": 122,
       "norm_label": "page.tsx",
       "id": "exterior_page"
     },
@@ -19640,7 +19640,7 @@
       "source_file": "src/app/services/exterior/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 121,
+      "community": 122,
       "norm_label": "metadata",
       "id": "exterior_page_metadata"
     },
@@ -19650,7 +19650,7 @@
       "source_file": "src/app/services/exterior/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 121,
+      "community": 122,
       "norm_label": "serviceexterior()",
       "id": "exterior_page_serviceexterior"
     },
@@ -19660,7 +19660,7 @@
       "source_file": "src/app/services/interior/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 122,
+      "community": 123,
       "norm_label": "page.tsx",
       "id": "interior_page"
     },
@@ -19670,7 +19670,7 @@
       "source_file": "src/app/services/interior/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 122,
+      "community": 123,
       "norm_label": "metadata",
       "id": "interior_page_metadata"
     },
@@ -19680,7 +19680,7 @@
       "source_file": "src/app/services/interior/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 122,
+      "community": 123,
       "norm_label": "serviceinterior()",
       "id": "interior_page_serviceinterior"
     },
@@ -19690,7 +19690,7 @@
       "source_file": "src/app/services/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 131,
+      "community": 132,
       "norm_label": "page.tsx",
       "id": "services_page"
     },
@@ -19700,7 +19700,7 @@
       "source_file": "src/app/services/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 131,
+      "community": 132,
       "norm_label": "metadata",
       "id": "services_page_metadata"
     },
@@ -19710,7 +19710,7 @@
       "source_file": "src/app/services/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 131,
+      "community": 132,
       "norm_label": "services()",
       "id": "services_page_services"
     },
@@ -19720,7 +19720,7 @@
       "source_file": "src/app/services/striping/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 133,
+      "community": 134,
       "norm_label": "page.tsx",
       "id": "striping_page"
     },
@@ -19730,7 +19730,7 @@
       "source_file": "src/app/services/striping/page.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 133,
+      "community": 134,
       "norm_label": "metadata",
       "id": "striping_page_metadata"
     },
@@ -19740,7 +19740,7 @@
       "source_file": "src/app/services/striping/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 133,
+      "community": 134,
       "norm_label": "servicestriping()",
       "id": "striping_page_servicestriping"
     },
@@ -20170,7 +20170,7 @@
       "source_file": "src/views/ServiceArea.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 110,
+      "community": 111,
       "norm_label": "serviceareapage()",
       "id": "views_servicearea_serviceareapage"
     },
@@ -20353,7 +20353,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
+      "community": 292,
       "norm_label": "security scan workflow",
       "id": "security_scan_workflow"
     },
@@ -20363,7 +20363,7 @@
       "source_file": "scripts/run-db-migrations.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 129,
+      "community": 130,
       "norm_label": "run-db-migrations.js",
       "id": "scripts_run_db_migrations"
     },
@@ -20373,7 +20373,7 @@
       "source_file": "scripts/run-db-migrations.js",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 129,
+      "community": 130,
       "norm_label": "client",
       "id": "scripts_run_db_migrations_client"
     },
@@ -20383,7 +20383,7 @@
       "source_file": "scripts/run-db-migrations.js",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 129,
+      "community": 130,
       "norm_label": "run()",
       "id": "scripts_run_db_migrations_run"
     },
@@ -20396,7 +20396,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 120,
+      "community": 121,
       "norm_label": "visual theme",
       "id": "design_visual_theme"
     },
@@ -20409,7 +20409,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 120,
+      "community": 121,
       "norm_label": "color palette",
       "id": "design_color_palette"
     },
@@ -20422,7 +20422,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 188,
+      "community": 189,
       "norm_label": "typography",
       "id": "design_typography"
     },
@@ -20435,7 +20435,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 143,
+      "community": 144,
       "norm_label": "layout & radius",
       "id": "design_layout_radius"
     },
@@ -20448,7 +20448,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 144,
+      "community": 145,
       "norm_label": "motion & transitions",
       "id": "design_motion_transitions"
     },
@@ -20461,7 +20461,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 120,
+      "community": 121,
       "norm_label": "brand personality",
       "id": "product_brand_personality"
     },
@@ -20474,7 +20474,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 243,
+      "community": 244,
       "norm_label": "users",
       "id": "product_users"
     },
@@ -20487,7 +20487,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 242,
+      "community": 243,
       "norm_label": "product purpose",
       "id": "product_purpose"
     },
@@ -20500,7 +20500,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 143,
+      "community": 144,
       "norm_label": "design principles",
       "id": "product_design_principles"
     },
@@ -20513,7 +20513,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 144,
+      "community": 145,
       "norm_label": "accessibility & inclusion",
       "id": "product_accessibility"
     },
@@ -20526,7 +20526,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 93,
+      "community": 94,
       "norm_label": "reviewpage",
       "id": "test_output_utf8_reviewpage"
     },
@@ -20539,7 +20539,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 93,
+      "community": 94,
       "norm_label": "pagetransition",
       "id": "test_output_utf8_pagetransition"
     },
@@ -20552,7 +20552,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 93,
+      "community": 94,
       "norm_label": "responsiveimage",
       "id": "test_output_utf8_responsiveimage"
     },
@@ -20565,7 +20565,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 93,
+      "community": 94,
       "norm_label": "trackevent",
       "id": "test_output_utf8_trackevent"
     },
@@ -20578,7 +20578,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 93,
+      "community": 94,
       "norm_label": "env",
       "id": "test_output_utf8_env"
     },
@@ -20643,7 +20643,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 179,
+      "community": 180,
       "norm_label": "co-marketing skill",
       "id": "comarketing_skill"
     },
@@ -20682,7 +20682,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 203,
+      "community": 204,
       "norm_label": "impeccable skill",
       "id": "impeccable_skill"
     },
@@ -20901,7 +20901,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 98,
+      "community": 99,
       "norm_label": "ci/cd pipeline",
       "id": "ci_pipeline"
     },
@@ -20914,7 +20914,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 98,
+      "community": 99,
       "norm_label": "lint, test & build job",
       "id": "ci_validate"
     },
@@ -20927,7 +20927,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 98,
+      "community": 99,
       "norm_label": "deploy staging/preview job",
       "id": "ci_deploy_preview"
     },
@@ -20940,7 +20940,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 89,
+      "community": 90,
       "norm_label": "release & deploy pipeline",
       "id": "release_pipeline"
     },
@@ -20953,7 +20953,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 89,
+      "community": 90,
       "norm_label": "validate job",
       "id": "release_validate"
     },
@@ -20966,7 +20966,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 89,
+      "community": 90,
       "norm_label": "deploy to production job",
       "id": "release_deploy_production"
     },
@@ -20979,7 +20979,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 89,
+      "community": 90,
       "norm_label": "create github release job",
       "id": "release_create_release"
     },
@@ -20989,7 +20989,7 @@
       "source_file": "scripts/db_migrate.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 152,
+      "community": 153,
       "norm_label": "db_migrate.js",
       "id": "scripts_db_migrate"
     },
@@ -20999,7 +20999,7 @@
       "source_file": "scripts/db_migrate.js",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 152,
+      "community": 153,
       "norm_label": "runmigrations()",
       "id": "scripts_db_migrate_runmigrations"
     },
@@ -21029,7 +21029,7 @@
       "source_file": "src/lib/supabase/client.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 160,
+      "community": 161,
       "norm_label": "client.ts",
       "id": "supabase_client"
     },
@@ -21039,7 +21039,7 @@
       "source_file": "src/lib/supabase/client.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 160,
+      "community": 161,
       "norm_label": "createclient()",
       "id": "supabase_client_createclient"
     },
@@ -21049,7 +21049,7 @@
       "source_file": "src/lib/supabase/middleware.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 93,
       "norm_label": "middleware.ts",
       "id": "supabase_middleware"
     },
@@ -21059,7 +21059,7 @@
       "source_file": "src/lib/supabase/middleware.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 92,
+      "community": 93,
       "norm_label": "updatesession()",
       "id": "supabase_middleware_updatesession"
     },
@@ -21069,7 +21069,7 @@
       "source_file": "src/lib/supabase/server.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 161,
+      "community": 162,
       "norm_label": "server.ts",
       "id": "supabase_server"
     },
@@ -21079,7 +21079,7 @@
       "source_file": "src/lib/supabase/server.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 161,
+      "community": 162,
       "norm_label": "createclient()",
       "id": "supabase_server_createclient"
     },
@@ -21092,7 +21092,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 98,
+      "community": 99,
       "norm_label": "ci/cd pipeline workflow",
       "id": "ci_workflow"
     },
@@ -21105,7 +21105,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 89,
+      "community": 90,
       "norm_label": "release & deploy workflow",
       "id": "release_workflow"
     },
@@ -21118,7 +21118,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 198,
+      "community": 199,
       "norm_label": "google site verification",
       "id": "googlef6332d71bd3f2a2e_verification"
     },
@@ -21128,7 +21128,7 @@
       "source_file": "src/proxy.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 93,
       "norm_label": "proxy.ts",
       "id": "src_proxy"
     },
@@ -21138,7 +21138,7 @@
       "source_file": "src/proxy.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 92,
+      "community": 93,
       "norm_label": "proxy()",
       "id": "src_proxy_proxy"
     },
@@ -21148,7 +21148,7 @@
       "source_file": "src/proxy.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 92,
+      "community": 93,
       "norm_label": "config",
       "id": "src_proxy_config"
     }
@@ -50607,7 +50607,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L123",
+      "source_location": "L120",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50617,7 +50617,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L217",
+      "source_location": "L215",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50627,7 +50627,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L183",
+      "source_location": "L180",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50637,7 +50637,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L177",
+      "source_location": "L174",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50647,7 +50647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L131",
+      "source_location": "L128",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50657,7 +50657,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L36",
+      "source_location": "L33",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50667,7 +50667,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L140",
+      "source_location": "L137",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50677,7 +50677,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L13",
+      "source_location": "L10",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50687,7 +50687,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L127",
+      "source_location": "L124",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50697,7 +50697,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L436",
+      "source_location": "L434",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50707,7 +50707,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L17",
+      "source_location": "L14",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50717,7 +50717,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L121",
+      "source_location": "L118",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50727,7 +50727,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L101",
+      "source_location": "L98",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50737,7 +50737,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L62",
+      "source_location": "L59",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50747,7 +50747,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L237",
+      "source_location": "L235",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50757,7 +50757,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L268",
+      "source_location": "L266",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50767,7 +50767,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L295",
+      "source_location": "L293",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50777,7 +50777,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L192",
+      "source_location": "L189",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50787,7 +50787,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L148",
+      "source_location": "L145",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route",
@@ -50798,7 +50798,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L438",
+      "source_location": "L436",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_post",
@@ -50809,7 +50809,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L115",
+      "source_location": "L112",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_saveleadeventtodb",
@@ -50820,7 +50820,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L94",
+      "source_location": "L91",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_saveleadtodb",
@@ -50831,7 +50831,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L468",
+      "source_location": "L466",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_post",
@@ -50842,7 +50842,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L73",
+      "source_location": "L70",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_saveleadtodb",
@@ -50853,99 +50853,11 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L218",
+      "source_location": "L216",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_buildautoreplyhtml",
       "target": "leads_route_astext"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L463",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_post",
-      "target": "leads_route_astext"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L253",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_sendautoreplytolead",
-      "target": "leads_route_astext"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L307",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_sendtohubspot",
-      "target": "leads_route_astext"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L205",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_sendwithresend",
-      "target": "leads_route_astext"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L154",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_validate",
-      "target": "leads_route_astext"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L450",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_post",
-      "target": "leads_route_ispayload"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L218",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_buildautoreplyhtml",
-      "target": "leads_route_escapehtml"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L454",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "leads_route_post",
-      "target": "leads_route_validate"
     },
     {
       "relation": "calls",
@@ -50956,6 +50868,94 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_post",
+      "target": "leads_route_astext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L251",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_sendautoreplytolead",
+      "target": "leads_route_astext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L305",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_sendtohubspot",
+      "target": "leads_route_astext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L203",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_sendwithresend",
+      "target": "leads_route_astext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L151",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_validate",
+      "target": "leads_route_astext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L448",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_post",
+      "target": "leads_route_ispayload"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L216",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_buildautoreplyhtml",
+      "target": "leads_route_escapehtml"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L452",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_post",
+      "target": "leads_route_validate"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/leads/route.ts",
+      "source_location": "L459",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "leads_route_post",
       "target": "leads_route_buildleadid"
     },
     {
@@ -50963,7 +50963,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L206",
+      "source_location": "L204",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_sendwithresend",
@@ -50974,7 +50974,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/leads/route.ts",
-      "source_location": "L255",
+      "source_location": "L253",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "leads_route_sendautoreplytolead",
@@ -50984,7 +50984,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L32",
+      "source_location": "L29",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -50994,7 +50994,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L51",
+      "source_location": "L48",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51004,7 +51004,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L45",
+      "source_location": "L42",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51014,7 +51014,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L36",
+      "source_location": "L33",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51024,7 +51024,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L10",
+      "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51034,7 +51034,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L254",
+      "source_location": "L252",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51044,7 +51044,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L14",
+      "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51054,7 +51054,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L92",
+      "source_location": "L90",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51064,7 +51064,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L119",
+      "source_location": "L117",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51074,7 +51074,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L60",
+      "source_location": "L57",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route",
@@ -51085,7 +51085,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L256",
+      "source_location": "L254",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_post",
@@ -51096,7 +51096,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L271",
+      "source_location": "L269",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_post",
@@ -51107,7 +51107,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L131",
+      "source_location": "L129",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_sendtohubspot",
@@ -51118,7 +51118,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L78",
+      "source_location": "L76",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_sendwithresend",
@@ -51129,7 +51129,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L297",
+      "source_location": "L295",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_post",
@@ -51140,7 +51140,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L79",
+      "source_location": "L77",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_sendwithresend",
@@ -51151,7 +51151,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L307",
+      "source_location": "L305",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_post",
@@ -51162,7 +51162,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L308",
+      "source_location": "L306",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_post",
@@ -51173,7 +51173,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/manychat/route.ts",
-      "source_location": "L309",
+      "source_location": "L307",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "manychat_route_post",
@@ -52715,5 +52715,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6c7ebb20adf741644daaa977bd4b3a525d188dee"
+  "built_at_commit": "6f28a25da505fed2fa6a26a8733e8d5121404eb5"
 }

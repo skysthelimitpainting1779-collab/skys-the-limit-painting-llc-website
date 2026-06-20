@@ -3,9 +3,6 @@ import { Resend } from 'resend';
 import pg from 'pg';
 const { Client } = pg;
 
-if (!process.env.RESEND_API_KEY) {
-  console.warn("WARNING: RESEND_API_KEY is not set in the environment variables. Lead emails will not be sent!");
-}
 
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
@@ -194,6 +191,7 @@ async function sendWithResend(payload: Record<string, unknown>) {
   const fromEmail = process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
 
   if (!apiKey) {
+    console.warn("WARNING: RESEND_API_KEY is not set in the environment variables. Lead emails will not be sent!");
     return { configured: false };
   }
 
