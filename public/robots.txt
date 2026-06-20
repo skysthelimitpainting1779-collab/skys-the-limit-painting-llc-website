@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /review
 Sitemap: https://www.skysthelimitpaintingllc.com/sitemap.xml

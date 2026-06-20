@@ -11,7 +11,6 @@ const staticRoutes = [
   '/projects',
   '/about',
   '/contact',
-  '/review',
   '/estimate',
   '/capabilities',
   '/service-area',
@@ -115,7 +114,7 @@ function generateSitemap() {
   // Generate robots.txt
   let robots = `User-agent: *\n`;
   robots += `Allow: /\n`;
-  robots += `Disallow: /review\n`; // Shield the review funnel page from direct crawlers to protect user privacy
+  robots += `Disallow: /review\n`;
   robots += `Sitemap: ${SITE_URL}/sitemap.xml\n`;
   
   const robotsPath = path.normalize(path.join(distDir, 'robots.txt'));

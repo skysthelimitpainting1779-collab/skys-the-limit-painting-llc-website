@@ -24,9 +24,9 @@ const proofItems = [
 export default function ConversionFooterCta() {
   return (
     <section className="relative overflow-hidden border-y border-[#d8c7aa]/16 mesh-gradient-bg px-4 py-20 text-white sm:px-6 lg:px-8">
-      <div className="blueprint-grid absolute inset-0 opacity-10"></div>
-      <div className="measurement-rules absolute inset-0 opacity-12"></div>
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+      <div className="blueprint-grid absolute inset-0 opacity-10 z-10"></div>
+      <div className="measurement-rules absolute inset-0 opacity-12 z-10"></div>
+      <div className="relative z-20 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Ready when the surface is ready</p>
           <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">

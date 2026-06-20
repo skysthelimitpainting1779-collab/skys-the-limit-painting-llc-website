@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "skysthelimitpaintingllc.com" }],
+        destination: "https://www.skysthelimitpaintingllc.com/:path*",
+        permanent: true,
+      },
       { source: "/services", destination: "/residential", permanent: true },
       { source: "/services/interior", destination: "/residential", permanent: true },
       { source: "/services/exterior", destination: "/residential", permanent: true },

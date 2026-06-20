@@ -423,7 +423,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           <span className="text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">
             Step {currentStep + 1} of 3 // {stepTitles[currentStep]}
           </span>
-          <span className="text-xs font-bold text-gray-500">{progressPercent}%</span>
+          <span className="text-xs font-bold text-gray-400">{progressPercent}%</span>
         </div>
         <div className="h-1 bg-white/10 w-full rounded-none">
           <div className="h-full bg-[#f0c067] transition-all duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
@@ -591,7 +591,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                     <div className="flex flex-col items-center justify-center space-y-1">
                       <Upload size={24} className="text-gray-400 group-hover:text-[#f0c067] transition-colors" />
                       <p className="text-xs font-bold text-white uppercase tracking-wider">Drag photos here or tap to select</p>
-                      <p className="text-[10px] text-gray-500">Max size 10MB per image</p>
+                      <p className="text-[10px] text-gray-400">Max size 10MB per image</p>
                     </div>
                   </div>
 
@@ -711,7 +711,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                 <div className="space-y-2">
                   <div className="flex justify-between items-baseline">
                     <label htmlFor="address-input" className={labelClass}>Project address or cross streets</label>
-                    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Optional</span>
+                    <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Optional</span>
                   </div>
                   <input
                     id="address-input"

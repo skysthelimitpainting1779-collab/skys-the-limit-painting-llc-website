@@ -85,7 +85,16 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
           iconAnchor: [7, 7]
         });
 
-        const marker = L.marker([pin.lat, pin.lng], { icon: goldIcon }).addTo(map);
+        const marker = L.marker([pin.lat, pin.lng], {
+          icon: goldIcon,
+          title: pin.name,
+          alt: pin.name,
+        }).addTo(map);
+
+        const el = marker.getElement();
+        if (el) {
+          el.setAttribute('aria-label', `Service Area Map Pin: ${pin.name}`);
+        }
 
         marker.bindPopup(
           `<div style="font-family: 'Outfit', sans-serif; color: #fff; background: #0B0B0D; padding: 4px; line-height: 1.4;">

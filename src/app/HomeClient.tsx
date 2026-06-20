@@ -502,7 +502,7 @@ export default function HomeClient() {
             <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.72),rgba(5,5,5,0.05))]"></div>
           </div>
-          <div className="p-7 md:p-10 lg:col-span-7 lg:p-12">
+          <div className="p-7 md:p-10 lg:col-span-7 lg:p-12 bg-[#0B0B0D]">
             <FadeIn>
               <p className="text-xs font-black tracking-[0.28em] text-[#f0c067] uppercase">Start the scope</p>
               <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl uppercase">

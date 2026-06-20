@@ -381,7 +381,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setDimensionValue('width', Number(e.target.value), 5, 50)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>5 FT</span>
                       <span>50 FT</span>
                     </div>
@@ -402,7 +402,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setDimensionValue('length', Number(e.target.value), 5, 50)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>5 FT</span>
                       <span>50 FT</span>
                     </div>
@@ -423,7 +423,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setDimensionValue('ceilingHeight', Number(e.target.value), 7, 20)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>7 FT</span>
                       <span>20 FT</span>
                     </div>
@@ -486,7 +486,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setTrimValue('doorsCount', Number(e.target.value), 0, 10)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>0</span>
                       <span>10</span>
                     </div>
@@ -507,7 +507,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setTrimValue('windowsCount', Number(e.target.value), 0, 10)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>0</span>
                       <span>10</span>
                     </div>
@@ -529,7 +529,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setTrimValue('trimLength', Number(e.target.value), 0, 200)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>0 FT</span>
                       <span>200 FT</span>
                     </div>
@@ -565,7 +565,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setCabinetValue('cabinetDoors', Number(e.target.value), 0, 60)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>0</span>
                       <span>60</span>
                     </div>
@@ -586,7 +586,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       onChange={(e) => setCabinetValue('cabinetDrawers', Number(e.target.value), 0, 40)}
                       className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                       <span>0</span>
                       <span>40</span>
                     </div>
@@ -787,21 +787,21 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                   <ShieldCheck size={18} className="text-[#f0c067] shrink-0" />
                   <div>
                     <p className="text-white font-black text-[11px] leading-tight uppercase">Fully Insured</p>
-                    <p className="text-[9px] lowercase tracking-normal font-normal text-gray-500 mt-0.5">coi available on request</p>
+                    <p className="text-[9px] lowercase tracking-normal font-normal text-gray-400 mt-0.5">coi available on request</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 border-t border-white/5 pt-3">
                   <ShieldCheck size={18} className="text-[#f0c067] shrink-0" />
                   <div>
                     <p className="text-white font-black text-[11px] leading-tight uppercase">MN Contractor</p>
-                    <p className="text-[9px] tracking-normal font-normal text-gray-500 mt-0.5">reg: ir816596 | painting</p>
+                    <p className="text-[9px] tracking-normal font-normal text-gray-400 mt-0.5">reg: ir816596 | painting</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 border-t border-white/5 pt-3">
                   <ShieldCheck size={18} className="text-[#f0c067] shrink-0" />
                   <div>
                     <p className="text-white font-black text-[11px] leading-tight uppercase">Owner-Operated</p>
-                    <p className="text-[9px] tracking-normal font-normal text-gray-500 mt-0.5">mn statute 176.041 exempt</p>
+                    <p className="text-[9px] tracking-normal font-normal text-gray-400 mt-0.5">mn statute 176.041 exempt</p>
                   </div>
                 </div>
               </div>

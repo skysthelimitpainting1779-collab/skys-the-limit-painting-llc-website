@@ -34,3 +34,11 @@ Sky's the Limit Painting LLC is an insured, owner-operated registered Minnesota 
 2. **Prep:** 90% of a quality finish. Meticulous scraping, sanding, washing, caulking, and priming.
 3. **Execute:** Application of high-grade coatings with owner-led check-ins.
 4. **Verify:** Visual walk-through, final touchups, clean up, and customer sign-off.
+
+## Sitemap
+- **Homepage:** [https://www.skysthelimitpaintingllc.com](https://www.skysthelimitpaintingllc.com/)
+- **Residential Division:** [https://www.skysthelimitpaintingllc.com/residential](https://www.skysthelimitpaintingllc.com/residential)
+- **Commercial Division:** [https://www.skysthelimitpaintingllc.com/commercial](https://www.skysthelimitpaintingllc.com/commercial)
+- **Public Sector & Line Striping:** [https://www.skysthelimitpaintingllc.com/public-sector](https://www.skysthelimitpaintingllc.com/public-sector)
+- **Interactive Estimate Calculator:** [https://www.skysthelimitpaintingllc.com/estimate](https://www.skysthelimitpaintingllc.com/estimate)
+- **Contact Page:** [https://www.skysthelimitpaintingllc.com/contact](https://www.skysthelimitpaintingllc.com/contact)
