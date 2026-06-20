@@ -44,6 +44,7 @@ function generateSitemap() {
   const today = new Date().toISOString().split('T')[0];
   
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
   
   // 1. Static routes
@@ -131,6 +132,19 @@ function generateSitemap() {
     }
     fs.writeFileSync(publicRobotsPath, robots, 'utf8');
     console.log(`Robots.txt written to: ${publicRobotsPath}`);
+  }
+
+  // Copy sitemap.xsl to dist so it is available in build output
+  if (fs.existsSync(publicDir)) {
+    const publicXslPath = path.normalize(path.join(publicDir, 'sitemap.xsl'));
+    const distXslPath = path.normalize(path.join(distDir, 'sitemap.xsl'));
+    if (fs.existsSync(publicXslPath)) {
+      if (!publicXslPath.startsWith(workspaceRoot) || !distXslPath.startsWith(workspaceRoot)) {
+        throw new Error('Path traversal detected');
+      }
+      fs.copyFileSync(publicXslPath, distXslPath);
+      console.log(`Sitemap stylesheet copied to: ${distXslPath}`);
+    }
   }
   
   console.log('Sitemap and robots.txt generated successfully!');
