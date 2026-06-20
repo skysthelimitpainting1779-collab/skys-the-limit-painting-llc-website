@@ -1,6 +1,7 @@
 {
   "communities": {
     "0": [
+      "lib_citations_isknownurl",
       "lib_project_facts_findreccontradictions",
       "lib_verify_claim",
       "lib_verify_claim_asarray",
@@ -158,6 +159,70 @@
       "scripts_scan_codebase_skip_file_patterns"
     ],
     "2": [
+      "lib_dedup_recs",
+      "lib_dedup_recs_affectedfiles",
+      "lib_dedup_recs_appliesalsoentry",
+      "lib_dedup_recs_cachelifeintent",
+      "lib_dedup_recs_dedupedittarget",
+      "lib_dedup_recs_deduperecommendations",
+      "lib_dedup_recs_dedupintent",
+      "lib_dedup_recs_firstaffectedfile",
+      "lib_dedup_recs_fixshape",
+      "lib_dedup_recs_iscacheliferec",
+      "lib_dedup_recs_issmaxagecacheheaderrec",
+      "lib_dedup_recs_mergeduplicaterecs",
+      "lib_dedup_recs_normalizedappliesalsoto",
+      "lib_dedup_recs_normalizefixtext",
+      "lib_dedup_recs_normalizepath",
+      "lib_dedup_recs_numericcount",
+      "lib_dedup_recs_parsenumber",
+      "lib_dedup_recs_primaryskillrule",
+      "lib_dedup_recs_recommendationkey",
+      "lib_dedup_recs_recscore",
+      "lib_dedup_recs_referencedcodefiles",
+      "lib_dedup_recs_sharedfunctiontarget",
+      "lib_dedup_recs_signalmagnitude",
+      "lib_dedup_recs_unique",
+      "lib_dedup_recs_uniqueappliesalsoto",
+      "lib_dedup_recs_withdedupmetadata",
+      "lib_gates_index",
+      "lib_gates_types",
+      "lib_observation_safety",
+      "lib_observation_safety_candidatetarget",
+      "lib_observation_safety_contradictsnochangereason",
+      "lib_observation_safety_evidencetext",
+      "lib_observation_safety_hasimplementationgradeobservationaction",
+      "lib_observation_safety_hasstalenextcacheapiobservation",
+      "lib_observation_safety_hasunsafebotprotectionobservation",
+      "lib_observation_safety_hasunsupportedcachelifecdnclaim",
+      "lib_observation_safety_hasunsupportedcachelifecdntext",
+      "lib_observation_safety_hasunsupportedframeworkcausalclaim",
+      "lib_observation_safety_hasunsupportedruntimerootcauseclaim",
+      "lib_observation_safety_hasunsupportedsourceabsenceclaim",
+      "lib_observation_safety_hasunsupportedstaticgenerationclaim",
+      "lib_observation_safety_hasunsupportedwafbotcategoryclaim",
+      "lib_observation_safety_observationtext",
+      "lib_observation_safety_splitcustomersafeobservations",
+      "lib_observation_safety_unsupportedobservationreason",
+      "scripts_render_report",
+      "scripts_render_report_builddebugartifact",
+      "scripts_render_report_candidatefamily",
+      "scripts_render_report_candidatematchesref",
+      "scripts_render_report_candidatetarget",
+      "scripts_render_report_coerceoptionalstring",
+      "scripts_render_report_flattenobservations",
+      "scripts_render_report_hard_regen_triggers",
+      "scripts_render_report_log",
+      "scripts_render_report_main",
+      "scripts_render_report_parseargs",
+      "scripts_render_report_parsecandidateref",
+      "scripts_render_report_publichardregenreason",
+      "scripts_render_report_publicnochangereason",
+      "scripts_render_report_publicwithheldreason",
+      "scripts_render_report_recommendationmatchesactivecandidate",
+      "scripts_render_report_suppressreadycoveredobservations"
+    ],
+    "3": [
       "lib_util",
       "lib_util_escaperegex",
       "lib_util_extractroute",
@@ -220,69 +285,8 @@
       "scanners_use_cache_date_stamp_metadata",
       "scanners_use_cache_date_stamp_scan"
     ],
-    "3": [
-      "lib_extract_claims",
-      "lib_extract_claims_asarray",
-      "lib_extract_claims_cacherecommendationfiles",
-      "lib_extract_claims_extractclaims",
-      "lib_extract_claims_iscachecandidate",
-      "lib_extract_claims_mentionsauthsensitiveparallelization",
-      "lib_extract_claims_mentionscachednotfoundor404",
-      "lib_extract_claims_mentionscachelifecdnheaderclaim",
-      "lib_extract_claims_mentionscachelifetimechange",
-      "lib_extract_claims_mentionscatchtonotfound",
-      "lib_extract_claims_mentionscpuboundparallelization",
-      "lib_extract_claims_mentionsexistingcachetaginvalidation",
-      "lib_extract_claims_mentionsignoredbuildsteprecommendation",
-      "lib_extract_claims_mentionsimageresponseheaders",
-      "lib_extract_claims_mentionsmultiplecachelifecalls",
-      "lib_extract_claims_mentionsnext16runtimecacheapimismatch",
-      "lib_extract_claims_mentionsnextcachecomponentsroutesegmentconfig",
-      "lib_extract_claims_mentionsnextcachecomponentsstaticshelltarget",
-      "lib_extract_claims_mentionsnextcachednotfound",
-      "lib_extract_claims_mentionsnextimagepriorityrecommendation",
-      "lib_extract_claims_mentionsnextstablecacheapi",
-      "lib_extract_claims_mentionsparallelizationimpactoverclaim",
-      "lib_extract_claims_mentionsroutelevelrevalidate",
-      "lib_extract_claims_mentionsruntimecachewhencachecomponents",
-      "lib_extract_claims_mentionsruntimeerrorcause",
-      "lib_extract_claims_mentionsturbobuildcacherecommendation",
-      "lib_extract_claims_mentionsunsafeimmutabledynamicroute",
-      "lib_extract_claims_mentionsvaryheader",
-      "lib_extract_claims_normalizeprojectrootdirectory",
-      "lib_extract_claims_recommendationfiles",
-      "lib_extract_claims_recommendssharedcache",
-      "lib_extract_claims_rectext",
-      "lib_extract_claims_summarizeclaimresults",
-      "lib_grade_recommendation",
-      "lib_grade_recommendation_applyqualityfloor",
-      "lib_grade_recommendation_grade",
-      "lib_grade_recommendation_graderecommendation",
-      "lib_grade_recommendation_isaccountscope",
-      "lib_grade_recommendation_roundto",
-      "lib_grade_recommendation_scoreactionability",
-      "lib_grade_recommendation_scoreevidence",
-      "lib_grade_recommendation_scoreevidenceaccount",
-      "lib_grade_recommendation_scoregrounding",
-      "lib_grade_recommendation_scoregroundingaccount",
-      "lib_grade_recommendation_scorespecificity",
-      "lib_grade_recommendation_w",
-      "lib_project_facts",
-      "lib_project_facts_deriveprojectfacts",
-      "lib_repo_root",
-      "lib_repo_root_deriverootfromsignals",
-      "lib_repo_root_detectreporoot",
-      "lib_repo_root_fileresolvesat",
-      "lib_repo_root_pickprobefile",
-      "lib_repo_root_resolvereporoot",
-      "lib_sanitizers_index",
-      "scripts_verify_and_regen",
-      "scripts_verify_and_regen_log",
-      "scripts_verify_and_regen_main",
-      "scripts_verify_and_regen_parseargs",
-      "scripts_verify_and_regen_round4"
-    ],
     "4": [
+      "lib_citations_sanitizecitations",
       "lib_impact_label",
       "lib_impact_label_computeimpactlabel",
       "lib_impact_label_cwvissue",
@@ -333,45 +337,6 @@
       "sanitizers_undeclared_dep_pkgroot"
     ],
     "5": [
-      "lib_display_labels_formatpublictext",
-      "lib_display_labels_formatroute",
-      "lib_render_report",
-      "lib_render_report_assertvalidobservations",
-      "lib_render_report_costroundstocents",
-      "lib_render_report_escape",
-      "lib_render_report_formatbytes",
-      "lib_render_report_formatevidencetext",
-      "lib_render_report_formatgatedtargets",
-      "lib_render_report_formatnum",
-      "lib_render_report_formatusage",
-      "lib_render_report_groupgatedcandidates",
-      "lib_render_report_groupgbhoursbycanonicalroute",
-      "lib_render_report_isplatformscope",
-      "lib_render_report_metricstate",
-      "lib_render_report_missingusagesentence",
-      "lib_render_report_observabilitydatagap",
-      "lib_render_report_observabilitylabel",
-      "lib_render_report_priorityscore",
-      "lib_render_report_publicgatedreason",
-      "lib_render_report_publicnorecommendationreason",
-      "lib_render_report_renderconfigurationnotes",
-      "lib_render_report_rendercostbreakdown",
-      "lib_render_report_rendercostheader",
-      "lib_render_report_rendercoverageline",
-      "lib_render_report_renderdatagaps",
-      "lib_render_report_rendergatedtable",
-      "lib_render_report_rendermetadataline",
-      "lib_render_report_renderrectable",
-      "lib_render_report_renderreport",
-      "lib_render_report_renderservicecostrows",
-      "lib_render_report_renderstrengths",
-      "lib_render_report_servicecost",
-      "lib_render_report_serviceeffectivecost",
-      "lib_render_report_signalfromrec",
-      "lib_render_report_splitinvestigationoutcomes",
-      "lib_render_report_tierscore"
-    ],
-    "6": [
       "animations_fadein",
       "animations_fadein_fadein",
       "animations_fadein_fadeinprops",
@@ -409,7 +374,7 @@
       "views_servicestriping",
       "views_servicestriping_servicestriping"
     ],
-    "7": [
+    "6": [
       "app_homeclient",
       "app_homeclient_conversionsteps",
       "app_homeclient_coverageitems",
@@ -446,7 +411,7 @@
       "ui_marqueeticker_marqueeticker",
       "ui_marqueeticker_marqueetickerprops"
     ],
-    "8": [
+    "7": [
       "agents_react_native_skills",
       "animation_gpu_properties",
       "array_sort",
@@ -481,37 +446,167 @@
       "ui_expo_image",
       "usememo"
     ],
+    "8": [
+      "commercial_page_commercialpage",
+      "components_beforeafterslider",
+      "components_beforeafterslider_beforeafterslider",
+      "components_beforeafterslider_beforeaftersliderprops",
+      "components_marketpage",
+      "components_marketpage_marketpage",
+      "components_marketpage_marketpageprops",
+      "components_responsiveimage",
+      "components_responsiveimage_responsiveimage",
+      "components_responsiveimage_responsiveimageprops",
+      "data_markets_market",
+      "data_markets_marketbyslug",
+      "lib_seo",
+      "lib_seo_breadcrumbschema",
+      "lib_seo_businessschema",
+      "lib_seo_localbusinessschema",
+      "lib_seo_serviceschema",
+      "lib_seo_siteurl",
+      "public_sector_page",
+      "public_sector_page_metadata",
+      "public_sector_page_publicsectorpage",
+      "residential_page",
+      "residential_page_metadata",
+      "residential_page_residentialpage",
+      "src_app_commercial_page_tsx_commercial_page",
+      "src_app_commercial_page_tsx_commercial_page_metadata",
+      "views_commercial",
+      "views_commercial_commercialpage",
+      "views_publicsector",
+      "views_publicsector_publicsectorpage",
+      "views_residential",
+      "views_residential_residentialpage"
+    ],
     "9": [
-      "components_layout",
-      "components_layout_layout",
-      "components_layout_layoutprops",
-      "data_landingpages",
-      "data_landingpages_arealandingpages",
-      "data_landingpages_landingpage",
-      "data_landingpages_landingpagebykindandslug",
-      "data_landingpages_landingpagebyslug",
-      "data_landingpages_landingpagekind",
-      "data_landingpages_landingpagepath",
-      "data_landingpages_landingpages",
-      "data_landingpages_servicelandingpages",
-      "lib_analytics_trackevent",
-      "slug_page_paintingservicelandingpage",
-      "slug_page_servicearealandingpage",
-      "src_app_painting_services_slug_page_tsx_slug_page",
-      "src_app_painting_services_slug_page_tsx_slug_page_generatemetadata",
-      "src_app_painting_services_slug_page_tsx_slug_page_generatestaticparams",
-      "src_app_painting_services_slug_page_tsx_slug_page_pageprops",
-      "src_app_service_areas_slug_page_tsx_slug_page",
-      "src_app_service_areas_slug_page_tsx_slug_page_generatemetadata",
-      "src_app_service_areas_slug_page_tsx_slug_page_generatestaticparams",
-      "src_app_service_areas_slug_page_tsx_slug_page_pageprops",
-      "views_landingpage",
-      "views_landingpage_landingpageroute",
-      "views_landingpage_landingpagerouteprops",
-      "views_landingpage_marketpath",
-      "views_landingpage_sectionimages"
+      "lib_extract_claims",
+      "lib_extract_claims_asarray",
+      "lib_extract_claims_cacherecommendationfiles",
+      "lib_extract_claims_extractclaims",
+      "lib_extract_claims_iscachecandidate",
+      "lib_extract_claims_mentionsauthsensitiveparallelization",
+      "lib_extract_claims_mentionscachednotfoundor404",
+      "lib_extract_claims_mentionscachelifecdnheaderclaim",
+      "lib_extract_claims_mentionscachelifetimechange",
+      "lib_extract_claims_mentionscatchtonotfound",
+      "lib_extract_claims_mentionscpuboundparallelization",
+      "lib_extract_claims_mentionsexistingcachetaginvalidation",
+      "lib_extract_claims_mentionsignoredbuildsteprecommendation",
+      "lib_extract_claims_mentionsimageresponseheaders",
+      "lib_extract_claims_mentionsmultiplecachelifecalls",
+      "lib_extract_claims_mentionsnext16runtimecacheapimismatch",
+      "lib_extract_claims_mentionsnextcachecomponentsroutesegmentconfig",
+      "lib_extract_claims_mentionsnextcachecomponentsstaticshelltarget",
+      "lib_extract_claims_mentionsnextcachednotfound",
+      "lib_extract_claims_mentionsnextimagepriorityrecommendation",
+      "lib_extract_claims_mentionsnextstablecacheapi",
+      "lib_extract_claims_mentionsparallelizationimpactoverclaim",
+      "lib_extract_claims_mentionsroutelevelrevalidate",
+      "lib_extract_claims_mentionsruntimecachewhencachecomponents",
+      "lib_extract_claims_mentionsruntimeerrorcause",
+      "lib_extract_claims_mentionsturbobuildcacherecommendation",
+      "lib_extract_claims_mentionsunsafeimmutabledynamicroute",
+      "lib_extract_claims_mentionsvaryheader",
+      "lib_extract_claims_normalizeprojectrootdirectory",
+      "lib_extract_claims_recommendationfiles",
+      "lib_extract_claims_recommendssharedcache",
+      "lib_extract_claims_rectext"
     ],
     "10": [
+      "components_bookingcta",
+      "components_bookingcta_bookingcta",
+      "components_bookingcta_bookingctaprops",
+      "components_bookingcta_bookinglabels",
+      "components_leadform",
+      "components_leadform_budgetoptions",
+      "components_leadform_contactmethods",
+      "components_leadform_leadform",
+      "components_leadform_leadformprops",
+      "components_leadform_projectoptions",
+      "components_leadform_propertyoptions",
+      "components_leadform_status",
+      "components_leadform_timelineoptions",
+      "components_pagemeta",
+      "components_pagemeta_getsiteurl",
+      "components_pagemeta_pagemeta",
+      "components_pagemeta_pagemetaprops",
+      "components_pagemeta_upsertlink",
+      "components_pagemeta_upsertmeta",
+      "components_sociallinks",
+      "components_sociallinks_facebook",
+      "components_sociallinks_instagram",
+      "components_sociallinks_linkedin",
+      "components_sociallinks_sociallinks",
+      "lib_contact",
+      "lib_contact_buildestimatemailto",
+      "lib_contact_openestimateemail",
+      "lib_env",
+      "lib_env_env",
+      "lib_env_getenv"
+    ],
+    "11": [
+      "lib_display_labels_formatcandidatelabel",
+      "lib_render_report",
+      "lib_render_report_asarray",
+      "lib_render_report_buildfinalreportmessage",
+      "lib_render_report_candidatefordisplay",
+      "lib_render_report_compactfinaltext",
+      "lib_render_report_costroundstocents",
+      "lib_render_report_displaycandidate",
+      "lib_render_report_displaycandidateobject",
+      "lib_render_report_displaycandidateref",
+      "lib_render_report_extractcoverageline",
+      "lib_render_report_formatbytes",
+      "lib_render_report_formatnum",
+      "lib_render_report_formatrecommendationtext",
+      "lib_render_report_formatusage",
+      "lib_render_report_impactstring",
+      "lib_render_report_isplatformscope",
+      "lib_render_report_parsecandidateref",
+      "lib_render_report_priorityscore",
+      "lib_render_report_renderfinalrecommendationpreview",
+      "lib_render_report_renderrecdetail",
+      "lib_render_report_renderstrengths",
+      "lib_render_report_servicecost",
+      "lib_render_report_serviceeffectivecost",
+      "lib_render_report_signalfromrec",
+      "lib_render_report_sortrecs",
+      "lib_render_report_stripdetailslink",
+      "lib_render_report_tierscore"
+    ],
+    "12": [
+      "lib_extract_claims_summarizeclaimresults",
+      "lib_grade_recommendation",
+      "lib_grade_recommendation_applyqualityfloor",
+      "lib_grade_recommendation_grade",
+      "lib_grade_recommendation_graderecommendation",
+      "lib_grade_recommendation_isaccountscope",
+      "lib_grade_recommendation_roundto",
+      "lib_grade_recommendation_scoreactionability",
+      "lib_grade_recommendation_scoreevidence",
+      "lib_grade_recommendation_scoreevidenceaccount",
+      "lib_grade_recommendation_scoregrounding",
+      "lib_grade_recommendation_scoregroundingaccount",
+      "lib_grade_recommendation_scorespecificity",
+      "lib_grade_recommendation_w",
+      "lib_project_facts",
+      "lib_project_facts_deriveprojectfacts",
+      "lib_repo_root",
+      "lib_repo_root_deriverootfromsignals",
+      "lib_repo_root_detectreporoot",
+      "lib_repo_root_fileresolvesat",
+      "lib_repo_root_pickprobefile",
+      "lib_repo_root_resolvereporoot",
+      "lib_sanitizers_index",
+      "scripts_verify_and_regen",
+      "scripts_verify_and_regen_log",
+      "scripts_verify_and_regen_main",
+      "scripts_verify_and_regen_parseargs",
+      "scripts_verify_and_regen_round4"
+    ],
+    "13": [
       "agents_md",
       "copywriting_and_hooks_md",
       "data_collection",
@@ -540,92 +635,65 @@
       "verification",
       "voice"
     ],
-    "11": [
+    "14": [
       "animations_magneticbutton",
       "animations_magneticbutton_magneticbutton",
       "animations_magneticbutton_magneticbuttonprops",
       "app_layout",
       "app_layout_metadata",
       "app_layout_rootlayout",
+      "components_context_md",
       "components_conversionfootercta",
       "components_conversionfootercta_conversionfootercta",
       "components_conversionfootercta_proofitems",
+      "components_conversionheader",
+      "components_conversionheader_conversionheader",
+      "components_conversionheader_navlink",
       "components_customcursor",
       "components_customcursor_customcursor",
       "components_heatmapoverlay",
       "components_heatmapoverlay_clickpoint",
       "components_heatmapoverlay_heatmapoverlay",
-      "components_heroleadmagnet",
-      "components_heroleadmagnet_heroleadmagnet",
-      "components_sociallinks",
-      "components_sociallinks_facebook",
-      "components_sociallinks_instagram",
-      "components_sociallinks_linkedin",
-      "components_sociallinks_sociallinks",
+      "components_trustanchors",
+      "components_trustanchors_trustanchors",
       "m2_explorer_2_briefing",
       "m2_explorer_2_handoff",
       "m2_explorer_2_original_request",
       "m2_worker_handoff",
       "remediation_test_mjs",
-      "site_architecture_test_mjs"
+      "site_architecture_test_mjs",
+      "src_context_md"
     ],
-    "12": [
-      "commercial_page_commercialpage",
-      "components_marketpage",
-      "components_marketpage_marketpage",
-      "components_marketpage_marketpageprops",
-      "data_markets_market",
-      "data_markets_marketbyslug",
-      "lib_seo",
-      "lib_seo_breadcrumbschema",
-      "lib_seo_businessschema",
-      "lib_seo_localbusinessschema",
-      "lib_seo_serviceschema",
-      "lib_seo_siteurl",
-      "public_sector_page",
-      "public_sector_page_metadata",
-      "public_sector_page_publicsectorpage",
-      "residential_page",
-      "residential_page_metadata",
-      "residential_page_residentialpage",
-      "src_app_commercial_page_tsx_commercial_page",
-      "src_app_commercial_page_tsx_commercial_page_metadata",
-      "views_commercial",
-      "views_commercial_commercialpage",
-      "views_publicsector",
-      "views_publicsector_publicsectorpage",
-      "views_residential",
-      "views_residential_residentialpage"
+    "15": [
+      "components_layout",
+      "components_layout_layout",
+      "components_layout_layoutprops",
+      "data_landingpages",
+      "data_landingpages_arealandingpages",
+      "data_landingpages_landingpage",
+      "data_landingpages_landingpagebykindandslug",
+      "data_landingpages_landingpagebyslug",
+      "data_landingpages_landingpagekind",
+      "data_landingpages_landingpagepath",
+      "data_landingpages_landingpages",
+      "data_landingpages_servicelandingpages",
+      "slug_page_paintingservicelandingpage",
+      "slug_page_servicearealandingpage",
+      "src_app_painting_services_slug_page_tsx_slug_page",
+      "src_app_painting_services_slug_page_tsx_slug_page_generatemetadata",
+      "src_app_painting_services_slug_page_tsx_slug_page_generatestaticparams",
+      "src_app_painting_services_slug_page_tsx_slug_page_pageprops",
+      "src_app_service_areas_slug_page_tsx_slug_page",
+      "src_app_service_areas_slug_page_tsx_slug_page_generatemetadata",
+      "src_app_service_areas_slug_page_tsx_slug_page_generatestaticparams",
+      "src_app_service_areas_slug_page_tsx_slug_page_pageprops",
+      "views_landingpage",
+      "views_landingpage_landingpageroute",
+      "views_landingpage_landingpagerouteprops",
+      "views_landingpage_marketpath",
+      "views_landingpage_sectionimages"
     ],
-    "13": [
-      "lib_dedup_recs",
-      "lib_dedup_recs_affectedfiles",
-      "lib_dedup_recs_appliesalsoentry",
-      "lib_dedup_recs_cachelifeintent",
-      "lib_dedup_recs_dedupedittarget",
-      "lib_dedup_recs_deduperecommendations",
-      "lib_dedup_recs_dedupintent",
-      "lib_dedup_recs_firstaffectedfile",
-      "lib_dedup_recs_fixshape",
-      "lib_dedup_recs_iscacheliferec",
-      "lib_dedup_recs_issmaxagecacheheaderrec",
-      "lib_dedup_recs_mergeduplicaterecs",
-      "lib_dedup_recs_normalizedappliesalsoto",
-      "lib_dedup_recs_normalizefixtext",
-      "lib_dedup_recs_normalizepath",
-      "lib_dedup_recs_numericcount",
-      "lib_dedup_recs_parsenumber",
-      "lib_dedup_recs_primaryskillrule",
-      "lib_dedup_recs_recommendationkey",
-      "lib_dedup_recs_recscore",
-      "lib_dedup_recs_referencedcodefiles",
-      "lib_dedup_recs_sharedfunctiontarget",
-      "lib_dedup_recs_signalmagnitude",
-      "lib_dedup_recs_unique",
-      "lib_dedup_recs_uniqueappliesalsoto",
-      "lib_dedup_recs_withdedupmetadata"
-    ],
-    "14": [
+    "16": [
       "lib_reconcile_candidates",
       "lib_reconcile_candidates_arrayat",
       "lib_reconcile_candidates_deploymentregressiondecision",
@@ -653,34 +721,7 @@
       "scripts_reconcile_candidates_main",
       "scripts_reconcile_candidates_parseargs"
     ],
-    "15": [
-      "lib_investigation_brief",
-      "lib_investigation_brief_absolutebriefpath",
-      "lib_investigation_brief_briefroots",
-      "lib_investigation_brief_buildbrief",
-      "lib_investigation_brief_cachepolicyguidance",
-      "lib_investigation_brief_capbrieffiles",
-      "lib_investigation_brief_closestancestorlayoutfiles",
-      "lib_investigation_brief_iscatchallplaceholder",
-      "lib_investigation_brief_isdynamicplaceholder",
-      "lib_investigation_brief_isfailureentry",
-      "lib_investigation_brief_islayoutpath",
-      "lib_investigation_brief_isreporelativepath",
-      "lib_investigation_brief_issingledynamicplaceholder",
-      "lib_investigation_brief_kind_interpretation_hints",
-      "lib_investigation_brief_layoutappliestoroute",
-      "lib_investigation_brief_reporelativebriefpath",
-      "lib_investigation_brief_resolvefiles",
-      "lib_investigation_brief_routedepth",
-      "lib_investigation_brief_routepathmatchscore",
-      "lib_investigation_brief_routepathsmatch",
-      "lib_investigation_brief_summarizedeepdivefailures",
-      "lib_investigation_brief_trailingsingledynamicpartialscore",
-      "lib_investigation_brief_uniq",
-      "lib_support_topics_rendersupporttopics",
-      "scripts_gate_investigations_attachdisplayroute"
-    ],
-    "16": [
+    "17": [
       "tsconfig",
       "tsconfig_compileroptions",
       "tsconfig_compileroptions_allowimportingtsextensions",
@@ -707,56 +748,30 @@
       "tsconfig_include",
       "tsconfig_paths"
     ],
-    "17": [
-      "lib_citations",
-      "lib_citations_compareversion",
-      "lib_citations_here",
-      "lib_citations_isknownurl",
-      "lib_citations_library_path",
-      "lib_citations_libraryforstack",
-      "lib_citations_loadlibrary",
-      "lib_citations_lookupskillrule",
-      "lib_citations_lookupurl",
-      "lib_citations_matchesframeworkversion",
-      "lib_citations_parseversion",
-      "lib_citations_sanitizecitations",
-      "lib_support_topics_citationapplies",
-      "lib_support_topics_knowncitation",
-      "lib_support_topics_matchesframeworks",
-      "sanitizers_pre_release",
-      "sanitizers_pre_release_apply",
-      "sanitizers_pre_release_featureavailableforstack",
-      "sanitizers_pre_release_metadata",
-      "sanitizers_pre_release_pre_release_features",
-      "scripts_check_citations",
-      "scripts_check_citations_banned_stale_urls",
-      "scripts_check_citations_main",
-      "scripts_check_citations_validateframeworks"
-    ],
     "18": [
-      "lib_gates_index",
-      "lib_gates_types",
-      "lib_observation_safety_hasunsupportedcachelifecdntext",
-      "lib_observation_safety_splitcustomersafeobservations",
-      "lib_render_report_buildfinalreportmessage",
-      "lib_render_report_extractcoverageline",
-      "lib_render_report_stripdetailslink",
-      "scripts_render_report",
-      "scripts_render_report_builddebugartifact",
-      "scripts_render_report_candidatefamily",
-      "scripts_render_report_candidatetarget",
-      "scripts_render_report_coerceoptionalstring",
-      "scripts_render_report_flattenobservations",
-      "scripts_render_report_hard_regen_triggers",
-      "scripts_render_report_log",
-      "scripts_render_report_main",
-      "scripts_render_report_parseargs",
-      "scripts_render_report_parsecandidateref",
-      "scripts_render_report_publichardregenreason",
-      "scripts_render_report_publicnochangereason",
-      "scripts_render_report_publicwithheldreason",
-      "scripts_render_report_recommendationmatchesactivecandidate",
-      "scripts_render_report_suppressreadycoveredobservations"
+      "lib_investigation_brief",
+      "lib_investigation_brief_absolutebriefpath",
+      "lib_investigation_brief_briefroots",
+      "lib_investigation_brief_buildbrief",
+      "lib_investigation_brief_cachepolicyguidance",
+      "lib_investigation_brief_capbrieffiles",
+      "lib_investigation_brief_closestancestorlayoutfiles",
+      "lib_investigation_brief_iscatchallplaceholder",
+      "lib_investigation_brief_isdynamicplaceholder",
+      "lib_investigation_brief_isfailureentry",
+      "lib_investigation_brief_islayoutpath",
+      "lib_investigation_brief_isreporelativepath",
+      "lib_investigation_brief_issingledynamicplaceholder",
+      "lib_investigation_brief_kind_interpretation_hints",
+      "lib_investigation_brief_layoutappliestoroute",
+      "lib_investigation_brief_reporelativebriefpath",
+      "lib_investigation_brief_routedepth",
+      "lib_investigation_brief_routepathmatchscore",
+      "lib_investigation_brief_routepathsmatch",
+      "lib_investigation_brief_summarizedeepdivefailures",
+      "lib_investigation_brief_trailingsingledynamicpartialscore",
+      "lib_investigation_brief_uniq",
+      "lib_support_topics_rendersupporttopics"
     ],
     "19": [
       "lib_support_topics",
@@ -834,30 +849,54 @@
       "scripts_collect_signals_writeoutput"
     ],
     "22": [
-      "lib_render_report_canonicalrefof",
-      "lib_render_report_enrichrecfromcandidates",
-      "lib_route_normalize",
-      "lib_route_normalize_candidatekey",
-      "lib_route_normalize_canonicalizebranchprefix",
-      "lib_route_normalize_canonicalizeroute",
-      "lib_route_normalize_decodesegmenttoken",
-      "lib_route_normalize_dedupecandidates",
-      "lib_route_normalize_firstroutesegment",
-      "lib_route_normalize_isbase64flagstate",
-      "lib_route_normalize_isdynamicplaceholder",
-      "lib_route_normalize_islikelynextrouteshape",
-      "lib_route_normalize_ismetricleaf",
-      "lib_route_normalize_issegmenttreepath",
-      "lib_route_normalize_knownfirstsegments",
-      "lib_route_normalize_mergecandidates",
-      "lib_route_normalize_replacebase64withdynamic",
-      "lib_route_normalize_routeshapewarning",
-      "lib_route_normalize_routeshapewarnings",
-      "lib_route_normalize_shouldwarnunknownfirstsegment",
-      "lib_route_normalize_striproutegroups",
-      "scripts_render_report_candidatematchesref"
+      "lib_citations",
+      "lib_citations_compareversion",
+      "lib_citations_here",
+      "lib_citations_library_path",
+      "lib_citations_libraryforstack",
+      "lib_citations_loadlibrary",
+      "lib_citations_lookupskillrule",
+      "lib_citations_lookupurl",
+      "lib_citations_matchesframeworkversion",
+      "lib_citations_parseversion",
+      "lib_support_topics_citationapplies",
+      "lib_support_topics_knowncitation",
+      "lib_support_topics_matchesframeworks",
+      "sanitizers_pre_release",
+      "sanitizers_pre_release_apply",
+      "sanitizers_pre_release_featureavailableforstack",
+      "sanitizers_pre_release_metadata",
+      "sanitizers_pre_release_pre_release_features",
+      "scripts_check_citations",
+      "scripts_check_citations_banned_stale_urls",
+      "scripts_check_citations_main",
+      "scripts_check_citations_validateframeworks"
     ],
     "23": [
+      "lib_display_labels",
+      "lib_display_labels_formatcandidateline",
+      "lib_display_labels_formatkind",
+      "lib_display_labels_formatnumberlike",
+      "lib_display_labels_formatpublictext",
+      "lib_display_labels_formatroute",
+      "lib_display_labels_formatsignal",
+      "lib_display_labels_formatsignalpart",
+      "lib_display_labels_formatsignalvalue",
+      "lib_display_labels_humanizekey",
+      "lib_display_labels_kind_labels",
+      "lib_display_labels_normalizeobservedwindowunits",
+      "lib_display_labels_public_assignment_labels",
+      "lib_display_labels_request_count_kinds",
+      "lib_display_labels_signal_labels",
+      "lib_display_labels_signallabel",
+      "lib_render_report_groupgatedcandidates",
+      "lib_render_report_publicgatedreason",
+      "sanitizers_window_units",
+      "sanitizers_window_units_apply",
+      "sanitizers_window_units_metadata",
+      "sanitizers_window_units_string_fields"
+    ],
+    "24": [
       "lib_deep_dive",
       "lib_deep_dive_escapeodatastring",
       "lib_deep_dive_latencypercentiles",
@@ -880,7 +919,30 @@
       "scripts_deep_dive_round4",
       "scripts_deep_dive_tryextractfrombroadpass"
     ],
-    "24": [
+    "25": [
+      "lib_render_report_canonicalrefof",
+      "lib_render_report_enrichrecfromcandidates",
+      "lib_route_normalize",
+      "lib_route_normalize_candidatekey",
+      "lib_route_normalize_canonicalizebranchprefix",
+      "lib_route_normalize_canonicalizeroute",
+      "lib_route_normalize_decodesegmenttoken",
+      "lib_route_normalize_dedupecandidates",
+      "lib_route_normalize_firstroutesegment",
+      "lib_route_normalize_isbase64flagstate",
+      "lib_route_normalize_isdynamicplaceholder",
+      "lib_route_normalize_islikelynextrouteshape",
+      "lib_route_normalize_ismetricleaf",
+      "lib_route_normalize_issegmenttreepath",
+      "lib_route_normalize_knownfirstsegments",
+      "lib_route_normalize_mergecandidates",
+      "lib_route_normalize_replacebase64withdynamic",
+      "lib_route_normalize_routeshapewarning",
+      "lib_route_normalize_routeshapewarnings",
+      "lib_route_normalize_shouldwarnunknownfirstsegment",
+      "lib_route_normalize_striproutegroups"
+    ],
+    "26": [
       "remotion_index",
       "remotion_root",
       "remotion_root_remotionroot",
@@ -903,29 +965,7 @@
       "remotion_skybrandfilms_slowease",
       "remotion_skybrandfilms_stripelanguage"
     ],
-    "25": [
-      "components_leadform",
-      "components_leadform_budgetoptions",
-      "components_leadform_contactmethods",
-      "components_leadform_leadform",
-      "components_leadform_leadformprops",
-      "components_leadform_projectoptions",
-      "components_leadform_propertyoptions",
-      "components_leadform_status",
-      "components_leadform_timelineoptions",
-      "components_reviewcarousel",
-      "components_reviewcarousel_reviewcarousel",
-      "components_reviewcarousel_testimonial",
-      "components_reviewcarousel_testimonials",
-      "lib_analytics",
-      "lib_analytics_analyticspayload",
-      "lib_analytics_readutmparams",
-      "lib_analytics_window",
-      "lib_contact",
-      "lib_contact_buildestimatemailto",
-      "lib_contact_openestimateemail"
-    ],
-    "26": [
+    "27": [
       "leads_route",
       "leads_route_astext",
       "leads_route_buildautoreplyhtml",
@@ -947,7 +987,7 @@
       "leads_route_sendwithresend",
       "leads_route_validate"
     ],
-    "27": [
+    "28": [
       "package_express_path_to_regexp",
       "package_overrides",
       "package_overrides_ajv",
@@ -969,28 +1009,28 @@
       "package_vercel_path_to_regexp",
       "package_vercel_path_to_regexp_updated"
     ],
-    "28": [
-      "lib_display_labels",
-      "lib_display_labels_formatcandidatelabel",
-      "lib_display_labels_formatcandidateline",
-      "lib_display_labels_formatkind",
-      "lib_display_labels_formatnumberlike",
-      "lib_display_labels_formatsignal",
-      "lib_display_labels_formatsignalpart",
-      "lib_display_labels_formatsignalvalue",
-      "lib_display_labels_humanizekey",
-      "lib_display_labels_kind_labels",
-      "lib_display_labels_normalizeobservedwindowunits",
-      "lib_display_labels_public_assignment_labels",
-      "lib_display_labels_request_count_kinds",
-      "lib_display_labels_signal_labels",
-      "lib_display_labels_signallabel",
-      "sanitizers_window_units",
-      "sanitizers_window_units_apply",
-      "sanitizers_window_units_metadata",
-      "sanitizers_window_units_string_fields"
-    ],
     "29": [
+      "components_reviewcarousel",
+      "components_reviewcarousel_reviewcarousel",
+      "components_reviewcarousel_testimonial",
+      "components_reviewcarousel_testimonials",
+      "components_serviceareamap",
+      "components_serviceareamap_proofitems",
+      "components_serviceareamap_serviceareamap",
+      "components_serviceareamap_serviceareamapprops",
+      "components_serviceareamap_serviceareapins",
+      "lib_analytics",
+      "lib_analytics_analyticspayload",
+      "lib_analytics_readutmparams",
+      "lib_analytics_trackevent",
+      "lib_analytics_window",
+      "refer_page",
+      "refer_page_metadata",
+      "refer_page_refer",
+      "views_refer",
+      "views_refer_referpage"
+    ],
+    "30": [
       "package_dependencies",
       "package_dependencies_dotenv",
       "package_dependencies_express",
@@ -1011,47 +1051,7 @@
       "package_dependencies_vite",
       "package_dependencies_vitejs_plugin_react"
     ],
-    "30": [
-      "components_beforeafterslider",
-      "components_beforeafterslider_beforeafterslider",
-      "components_beforeafterslider_beforeaftersliderprops",
-      "components_context_md",
-      "components_conversionheader",
-      "components_conversionheader_conversionheader",
-      "components_conversionheader_navlink",
-      "components_responsiveimage",
-      "components_responsiveimage_responsiveimage",
-      "components_responsiveimage_responsiveimageprops",
-      "components_serviceareamap",
-      "components_serviceareamap_proofitems",
-      "components_serviceareamap_serviceareamap",
-      "components_serviceareamap_serviceareamapprops",
-      "components_serviceareamap_serviceareapins",
-      "components_trustanchors",
-      "components_trustanchors_trustanchors",
-      "src_context_md"
-    ],
     "31": [
-      "components_bookingcta",
-      "components_bookingcta_bookingcta",
-      "components_bookingcta_bookingctaprops",
-      "components_bookingcta_bookinglabels",
-      "components_pagemeta",
-      "components_pagemeta_getsiteurl",
-      "components_pagemeta_pagemeta",
-      "components_pagemeta_pagemetaprops",
-      "components_pagemeta_upsertlink",
-      "components_pagemeta_upsertmeta",
-      "lib_env",
-      "lib_env_env",
-      "lib_env_getenv",
-      "refer_page",
-      "refer_page_metadata",
-      "refer_page_refer",
-      "views_refer",
-      "views_refer_referpage"
-    ],
-    "32": [
       "nextjs_cachelife",
       "nextjs_use_cache",
       "nextjs_use_cache_remote",
@@ -1071,7 +1071,7 @@
       "workflow_sdk_resumable_streams",
       "workflow_sdk_streaming"
     ],
-    "33": [
+    "32": [
       "package_devdependencies",
       "package_devdependencies_autoprefixer",
       "package_devdependencies_jsdom",
@@ -1091,7 +1091,45 @@
       "package_devdependencies_typescript",
       "package_devdependencies_vite"
     ],
+    "33": [
+      "gates_contract",
+      "gates_contract_candidatecontracterror",
+      "gates_contract_candidatecontracterror_constructor",
+      "gates_contract_candidatelabel",
+      "gates_contract_nonemptystring",
+      "gates_contract_valid_scopes",
+      "gates_contract_validatecandidate",
+      "gates_contract_validatecandidates",
+      "lib_auth_route",
+      "lib_auth_route_applyauthdisqualifier",
+      "lib_auth_route_isauthroute",
+      "scripts_gate_investigations",
+      "scripts_gate_investigations_attachdisplayroute",
+      "scripts_gate_investigations_main",
+      "scripts_gate_investigations_parseargs",
+      "scripts_gate_investigations_resolvebudget",
+      "scripts_gate_investigations_stablecompare"
+    ],
     "34": [
+      "lib_investigation_brief_citationsubset",
+      "lib_investigation_brief_inferframeworkplaybook",
+      "lib_investigation_brief_inferplaybook",
+      "lib_investigation_brief_resolvefiles",
+      "lib_reconcile_candidates_candidatereffor",
+      "scripts_prepare_investigation_brief",
+      "scripts_prepare_investigation_brief_buildfanoutplan",
+      "scripts_prepare_investigation_brief_buildmanifest",
+      "scripts_prepare_investigation_brief_candidatefamilykey",
+      "scripts_prepare_investigation_brief_here",
+      "scripts_prepare_investigation_brief_log",
+      "scripts_prepare_investigation_brief_main",
+      "scripts_prepare_investigation_brief_parseargs",
+      "scripts_prepare_investigation_brief_pickcodebase",
+      "scripts_prepare_investigation_brief_playbooks_dir",
+      "scripts_prepare_investigation_brief_tryreadplaybook",
+      "scripts_prepare_investigation_brief_writebrieffile"
+    ],
+    "35": [
       "scripts_collect_sub_agent_outputs",
       "scripts_collect_sub_agent_outputs_collectinputfiles",
       "scripts_collect_sub_agent_outputs_escaperegexp",
@@ -1110,7 +1148,7 @@
       "scripts_collect_sub_agent_outputs_unwrapenvelope",
       "scripts_collect_sub_agent_outputs_walkdir"
     ],
-    "35": [
+    "36": [
       "scripts_merge_signals",
       "scripts_merge_signals_annotatecodebasescan",
       "scripts_merge_signals_annotatefinding",
@@ -1129,43 +1167,7 @@
       "scripts_merge_signals_rows",
       "scripts_merge_signals_writeoutput"
     ],
-    "36": [
-      "gates_contract",
-      "gates_contract_candidatecontracterror",
-      "gates_contract_candidatecontracterror_constructor",
-      "gates_contract_candidatelabel",
-      "gates_contract_nonemptystring",
-      "gates_contract_valid_scopes",
-      "gates_contract_validatecandidate",
-      "gates_contract_validatecandidates",
-      "lib_auth_route",
-      "lib_auth_route_applyauthdisqualifier",
-      "lib_auth_route_isauthroute",
-      "scripts_gate_investigations",
-      "scripts_gate_investigations_main",
-      "scripts_gate_investigations_parseargs",
-      "scripts_gate_investigations_resolvebudget",
-      "scripts_gate_investigations_stablecompare"
-    ],
     "37": [
-      "lib_investigation_brief_citationsubset",
-      "lib_investigation_brief_inferframeworkplaybook",
-      "lib_investigation_brief_inferplaybook",
-      "lib_reconcile_candidates_candidatereffor",
-      "scripts_prepare_investigation_brief",
-      "scripts_prepare_investigation_brief_buildfanoutplan",
-      "scripts_prepare_investigation_brief_buildmanifest",
-      "scripts_prepare_investigation_brief_candidatefamilykey",
-      "scripts_prepare_investigation_brief_here",
-      "scripts_prepare_investigation_brief_log",
-      "scripts_prepare_investigation_brief_main",
-      "scripts_prepare_investigation_brief_parseargs",
-      "scripts_prepare_investigation_brief_pickcodebase",
-      "scripts_prepare_investigation_brief_playbooks_dir",
-      "scripts_prepare_investigation_brief_tryreadplaybook",
-      "scripts_prepare_investigation_brief_writebrieffile"
-    ],
-    "38": [
       "lib_throttle_semaphore",
       "lib_throttle_semaphore_acquire",
       "lib_throttle_semaphore_constructor",
@@ -1183,7 +1185,7 @@
       "vercel_querymetric",
       "vercel_runverceljson"
     ],
-    "39": [
+    "38": [
       "m2_auditor_briefing",
       "m2_auditor_original_request",
       "m2_challenger_1_briefing",
@@ -1201,24 +1203,7 @@
       "src_pages_refer_tsx",
       "tests_site_architecture_test_mjs"
     ],
-    "40": [
-      "lib_observation_safety",
-      "lib_observation_safety_candidatetarget",
-      "lib_observation_safety_contradictsnochangereason",
-      "lib_observation_safety_evidencetext",
-      "lib_observation_safety_hasimplementationgradeobservationaction",
-      "lib_observation_safety_hasstalenextcacheapiobservation",
-      "lib_observation_safety_hasunsafebotprotectionobservation",
-      "lib_observation_safety_hasunsupportedcachelifecdnclaim",
-      "lib_observation_safety_hasunsupportedframeworkcausalclaim",
-      "lib_observation_safety_hasunsupportedruntimerootcauseclaim",
-      "lib_observation_safety_hasunsupportedsourceabsenceclaim",
-      "lib_observation_safety_hasunsupportedstaticgenerationclaim",
-      "lib_observation_safety_hasunsupportedwafbotcategoryclaim",
-      "lib_observation_safety_observationtext",
-      "lib_observation_safety_unsupportedobservationreason"
-    ],
-    "41": [
+    "39": [
       "lib_throttle",
       "lib_throttle_dailyquotaresult",
       "lib_throttle_defaultsleep",
@@ -1235,7 +1220,7 @@
       "lib_throttle_setdailyquotablocked",
       "lib_throttle_utcmidnightafter"
     ],
-    "42": [
+    "40": [
       "compliance_requirement",
       "e2e_parent_conversation",
       "e2e_test_mjs",
@@ -1251,7 +1236,7 @@
       "worker_e2e_0_briefing",
       "worker_e2e_0_originalrequest"
     ],
-    "43": [
+    "41": [
       "estimate_page",
       "estimate_page_estimate",
       "estimate_page_metadata",
@@ -1267,7 +1252,23 @@
       "views_estimate_step",
       "views_estimate_trimprep"
     ],
-    "44": [
+    "42": [
+      "gates_build_minutes_fanout",
+      "gates_build_minutes_fanout_gate",
+      "gates_build_minutes_fanout_metadata",
+      "gates_build_minutes_fanout_unique",
+      "gates_index",
+      "gates_index_gates",
+      "gates_platform_bot_protection",
+      "gates_platform_bot_protection_computebotshare",
+      "gates_platform_bot_protection_gate",
+      "gates_platform_bot_protection_metadata",
+      "gates_platform_bot_protection_totalrequestsfromsignals",
+      "gates_region_misconfig",
+      "gates_region_misconfig_gate",
+      "gates_region_misconfig_metadata"
+    ],
+    "43": [
       "original_request_feature_f1",
       "original_request_feature_f2",
       "original_request_feature_f3",
@@ -1283,7 +1284,7 @@
       "scope_test_plan_feature_enumeration",
       "scope_verification_execution"
     ],
-    "45": [
+    "44": [
       "vercelcompositionpatterns_agents_md",
       "vercelcompositionpatterns_architectureavoidbooleanprops",
       "vercelcompositionpatterns_architecturecompoundcomponents",
@@ -1299,7 +1300,7 @@
       "vercelcompositionpatterns_stateliftstate",
       "vercelcompositionpatterns_template"
     ],
-    "46": [
+    "45": [
       "scanners_index",
       "scanners_index_scanners",
       "scanners_middleware_broad_matcher",
@@ -1314,7 +1315,7 @@
       "scanners_sveltekit_prerender_missing_metadata",
       "scanners_sveltekit_prerender_missing_scan"
     ],
-    "47": [
+    "46": [
       "briefingmd_sentinel_mission",
       "claudemd_developer_reference",
       "handoffmd_sentinel_handoff",
@@ -1328,7 +1329,7 @@
       "test_out_e2e_failures",
       "test_out_utf8_e2e_failures"
     ],
-    "48": [
+    "47": [
       "lib_budget_summary",
       "lib_budget_summary_buildbudgetsummary",
       "lib_budget_summary_buildchatpreview",
@@ -1342,7 +1343,7 @@
       "scripts_budget_summary_main",
       "scripts_budget_summary_parseargs"
     ],
-    "49": [
+    "48": [
       "react_view_transitions_accessibility",
       "react_view_transitions_addtransitiontype",
       "react_view_transitions_css_pseudo_elements",
@@ -1356,7 +1357,7 @@
       "react_view_transitions_view_transition_events",
       "react_view_transitions_viewtransition_component"
     ],
-    "50": [
+    "49": [
       "briefing_agents_md",
       "briefing_archetype_reviewer_and_adversarial_critic",
       "briefing_conversionfootercta_tsx",
@@ -1368,6 +1369,19 @@
       "briefing_original_request_md",
       "briefing_project_md",
       "briefing_refer_tsx"
+    ],
+    "50": [
+      "lib_render_report_assertvalidobservations",
+      "lib_render_report_formatevidencetext",
+      "lib_render_report_observabilitylabel",
+      "lib_render_report_publicnorecommendationreason",
+      "lib_render_report_renderconfigurationnotes",
+      "lib_render_report_rendercostheader",
+      "lib_render_report_rendercoverageline",
+      "lib_render_report_rendermetadataline",
+      "lib_render_report_renderrectable",
+      "lib_render_report_renderreport",
+      "lib_render_report_splitinvestigationoutcomes"
     ],
     "51": [
       "manychat_route",
@@ -1433,6 +1447,18 @@
       "graphify_update_md"
     ],
     "56": [
+      "lib_render_report_escape",
+      "lib_render_report_formatgatedtargets",
+      "lib_render_report_groupgbhoursbycanonicalroute",
+      "lib_render_report_metricstate",
+      "lib_render_report_missingusagesentence",
+      "lib_render_report_observabilitydatagap",
+      "lib_render_report_rendercostbreakdown",
+      "lib_render_report_renderdatagaps",
+      "lib_render_report_rendergatedtable",
+      "lib_render_report_renderservicecostrows"
+    ],
+    "57": [
       "query-composite-indexes_composite_index",
       "query-covering-indexes_covering_index",
       "query-missing-indexes_btree_index",
@@ -1444,7 +1470,7 @@
       "security-rls-basics_row_level_security",
       "security-rls-performance_rls_policy"
     ],
-    "57": [
+    "58": [
       "supabase_changelog_md",
       "supabase_feedback_issue_template_md",
       "supabase_postgres_best_practices_advanced_full_text_search_md",
@@ -1455,17 +1481,6 @@
       "supabase_postgres_best_practices_template_md",
       "supabase_skill_feedback_md",
       "supabase_skill_md"
-    ],
-    "58": [
-      "gates_build_minutes_fanout",
-      "gates_build_minutes_fanout_gate",
-      "gates_build_minutes_fanout_metadata",
-      "gates_build_minutes_fanout_unique",
-      "gates_index",
-      "gates_index_gates",
-      "gates_region_misconfig",
-      "gates_region_misconfig_gate",
-      "gates_region_misconfig_metadata"
     ],
     "59": [
       "gates_hard_gates",
@@ -1531,16 +1546,6 @@
       "scripts_build_docs_trimtrailingblankline"
     ],
     "65": [
-      "lib_render_report_asarray",
-      "lib_render_report_compactfinaltext",
-      "lib_render_report_displaycandidate",
-      "lib_render_report_formatrecommendationtext",
-      "lib_render_report_impactstring",
-      "lib_render_report_renderfinalrecommendationpreview",
-      "lib_render_report_renderrecdetail",
-      "lib_render_report_sortrecs"
-    ],
-    "66": [
       "package_devdependencies_vercel",
       "vercel",
       "vercel_buildcommand",
@@ -1550,7 +1555,7 @@
       "vercel_outputdirectory",
       "vercel_redirects"
     ],
-    "67": [
+    "66": [
       "lib_framework_support",
       "lib_framework_support_classifyframeworksupport",
       "lib_framework_support_core_supported_frameworks",
@@ -1559,7 +1564,7 @@
       "lib_framework_support_limited_frameworks",
       "lib_framework_support_normalizeframework"
     ],
-    "68": [
+    "67": [
       "package",
       "package_engines",
       "package_engines_node",
@@ -1568,7 +1573,7 @@
       "package_type",
       "package_version"
     ],
-    "69": [
+    "68": [
       "scanners_edge_heavy_import",
       "scanners_edge_heavy_import_extractspecifiers",
       "scanners_edge_heavy_import_heavy_patterns",
@@ -1577,7 +1582,7 @@
       "scanners_edge_heavy_import_metadata",
       "scanners_edge_heavy_import_scan"
     ],
-    "70": [
+    "69": [
       "scanners_large_static_asset",
       "scanners_large_static_asset_formatbytes",
       "scanners_large_static_asset_metadata",
@@ -1586,7 +1591,7 @@
       "scanners_large_static_asset_skip_extensions",
       "scanners_large_static_asset_skip_path_prefixes"
     ],
-    "71": [
+    "70": [
       "scanners_turbo_force_bypass",
       "scanners_turbo_force_bypass_detectbuildcachedisabled",
       "scanners_turbo_force_bypass_lineofmatch",
@@ -1595,7 +1600,7 @@
       "scanners_turbo_force_bypass_scan",
       "scanners_turbo_force_bypass_truncate"
     ],
-    "72": [
+    "71": [
       "scripts_check_docs_fresh",
       "scripts_check_docs_fresh_here",
       "scripts_check_docs_fresh_main",
@@ -1604,7 +1609,7 @@
       "scripts_check_docs_fresh_renderscanners",
       "scripts_check_docs_fresh_trimtrailingblankline"
     ],
-    "73": [
+    "72": [
       "agents_react_view_transitions",
       "css_recipes",
       "implementation_workflow",
@@ -1612,7 +1617,7 @@
       "patterns_guidelines",
       "skill_react_view_transitions"
     ],
-    "74": [
+    "73": [
       "async_api_routes_better_all",
       "async_api_routes_prevent_waterfall_chains_in_api_routes",
       "async_dependencies_dependency_based_parallelization",
@@ -1620,7 +1625,7 @@
       "async_suspense_boundaries_strategic_suspense_boundaries",
       "better_all"
     ],
-    "75": [
+    "74": [
       "c_users_johnny_cage_dev_skysthelimit_collab_agents_skills_deploy_to_vercel_resources_deploy_codex_sh__entry",
       "resources_deploy_codex",
       "resources_deploy_codex_cleanup",
@@ -1628,7 +1633,7 @@
       "resources_deploy_codex_has_dep_exact",
       "resources_deploy_codex_has_dep_prefix"
     ],
-    "76": [
+    "75": [
       "c_users_johnny_cage_dev_skysthelimit_collab_agents_skills_deploy_to_vercel_resources_deploy_sh__entry",
       "resources_deploy",
       "resources_deploy_cleanup",
@@ -1636,7 +1641,7 @@
       "resources_deploy_has_dep_exact",
       "resources_deploy_has_dep_prefix"
     ],
-    "77": [
+    "76": [
       "imagegen_frontend_web_skill_md",
       "industrial_brutalist_ui_skill_md",
       "minimalist_ui_skill_md",
@@ -1644,7 +1649,7 @@
       "stitch_design_taste_design_md",
       "stitch_design_taste_skill_md"
     ],
-    "78": [
+    "77": [
       "lib_cost_coverage",
       "lib_cost_coverage_classifyservice",
       "lib_cost_coverage_computecostcoverage",
@@ -1652,7 +1657,7 @@
       "lib_cost_coverage_rendercostcoveragemarkdown",
       "lib_cost_coverage_service_dimension"
     ],
-    "79": [
+    "78": [
       "lib_queries",
       "lib_queries_defaultnormalize",
       "lib_queries_normalizecoldstart",
@@ -1660,7 +1665,7 @@
       "lib_queries_queries",
       "lib_vercel_normalizesummary"
     ],
-    "80": [
+    "79": [
       "scripts_generate_brand_assets",
       "scripts_generate_brand_assets_add_overlays",
       "scripts_generate_brand_assets_composite",
@@ -1668,7 +1673,7 @@
       "scripts_generate_brand_assets_square_composite",
       "scripts_generate_brand_assets_tint"
     ],
-    "81": [
+    "80": [
       "scripts_test_accessibility",
       "scripts_test_accessibility_brandcolors",
       "scripts_test_accessibility_calculatecontrast",
@@ -1676,1127 +1681,1110 @@
       "scripts_test_accessibility_getluminance",
       "scripts_test_accessibility_getrgb"
     ],
-    "82": [
+    "81": [
       "explorer_analysismd_analysis_report",
       "explorer_briefingmd_explorer_mission",
       "explorer_handoffmd_explorer_handoff",
       "explorer_original_request_explorer_task",
       "explorer_progressmd_progress_tracker"
     ],
-    "83": [
+    "82": [
       "gates_external_api_slow",
       "gates_external_api_slow_extractcallcounts",
       "gates_external_api_slow_extractexternalapis",
       "gates_external_api_slow_gate",
       "gates_external_api_slow_metadata"
     ],
-    "84": [
-      "gates_platform_bot_protection",
-      "gates_platform_bot_protection_computebotshare",
-      "gates_platform_bot_protection_gate",
-      "gates_platform_bot_protection_metadata",
-      "gates_platform_bot_protection_totalrequestsfromsignals"
-    ],
-    "85": [
+    "83": [
       "gates_platform_fluid_compute",
       "gates_platform_fluid_compute_extracthighcoldroutes",
       "gates_platform_fluid_compute_extractslowhotroutes",
       "gates_platform_fluid_compute_gate",
       "gates_platform_fluid_compute_metadata"
     ],
-    "86": [
+    "84": [
       "gates_route_errors",
       "gates_route_errors_extracterrors",
       "gates_route_errors_extractfromstatusrows",
       "gates_route_errors_gate",
       "gates_route_errors_metadata"
     ],
-    "87": [
+    "85": [
       "gates_slow_route",
       "gates_slow_route_extracterrorratesbyroute",
       "gates_slow_route_extractfunctionroutes",
       "gates_slow_route_gate",
       "gates_slow_route_metadata"
     ],
-    "88": [
+    "86": [
       "gates_types_d",
       "gates_types_d_candidate",
       "gates_types_d_candidatescope",
       "gates_types_d_gatemetadata",
       "gates_types_d_signals"
     ],
-    "89": [
+    "87": [
       "gates_uncached_route",
       "gates_uncached_route_extractcachehitrates",
       "gates_uncached_route_extractmethodshares",
       "gates_uncached_route_gate",
       "gates_uncached_route_metadata"
     ],
-    "90": [
+    "88": [
       "gates_usage_spike_triage",
       "gates_usage_spike_triage_aggregateskustats",
       "gates_usage_spike_triage_daytotal",
       "gates_usage_spike_triage_gate",
       "gates_usage_spike_triage_metadata"
     ],
-    "91": [
+    "89": [
       "release_create_release",
       "release_deploy_production",
       "release_pipeline",
       "release_validate",
       "release_workflow"
     ],
-    "92": [
+    "90": [
       "scripts_generate_sitemap",
       "scripts_generate_sitemap_generatesitemap",
       "scripts_generate_sitemap_paintingservicesslugs",
       "scripts_generate_sitemap_serviceareasslugs",
       "scripts_generate_sitemap_staticroutes"
     ],
-    "93": [
+    "91": [
       "sections_animation",
       "sections_core_rendering",
       "sections_list_performance",
       "sections_scroll_performance",
       "template_rule_template"
     ],
-    "94": [
+    "92": [
       "src_proxy",
       "src_proxy_config",
       "src_proxy_proxy",
       "supabase_middleware",
       "supabase_middleware_updatesession"
     ],
-    "95": [
+    "93": [
       "test_output_utf8_env",
       "test_output_utf8_pagetransition",
       "test_output_utf8_responsiveimage",
       "test_output_utf8_reviewpage",
       "test_output_utf8_trackevent"
     ],
-    "96": [
+    "94": [
       "verceloptimize_agents",
       "verceloptimize_candidates",
       "verceloptimize_contributing",
       "verceloptimize_readme",
       "verceloptimize_skill"
     ],
-    "97": [
+    "95": [
       "briefing_m2_explorer_3_compliance_audit",
       "handoff_m2_compliance_audit",
       "notes_copywriting_and_hooks",
       "notes_landing_page_content"
     ],
-    "98": [
+    "96": [
       "briefing_sub_orch_briefing",
       "m2_explorer_1_handoff_report",
       "original_request_sub_orch_original_request",
       "scope_scope"
     ],
-    "99": [
+    "97": [
       "cache-components-suspense-dedupe-pitfall_cache_components_suspense_dedupe_pitfall",
       "cache-components-suspense-dedupe-pitfall_cachecomponents_config",
       "cache-components-suspense-dedupe-pitfall_use_cache",
       "dynamic-rendering-traps_dynamic_rendering_traps"
     ],
-    "100": [
+    "98": [
       "ci_deploy_preview",
       "ci_pipeline",
       "ci_validate",
       "ci_workflow"
     ],
-    "101": [
+    "99": [
       "conn_idle_timeout_idle_connection_timeouts",
       "conn_limits_connection_limits",
       "conn_pooling_connection_pooling",
       "conn_prepared_statements_prepared_statements_pooling"
     ],
-    "102": [
+    "100": [
       "data_batch_inserts_batch_inserts",
       "data_n_plus_one_eliminate_n_plus_one",
       "data_pagination_cursor_pagination",
       "data_upsert_upsert_operations"
     ],
-    "103": [
+    "101": [
       "external-api-critical-path-platform_cross_framework_external_api_critical_path",
       "external-api-critical-path_external_api_critical_path",
       "external-api-critical-path_vercel_react_best_practices_async_parallel",
       "external-api-critical-path_vercel_react_best_practices_server_parallel_fetching"
     ],
-    "104": [
+    "102": [
       "gates_cold_start",
       "gates_cold_start_extractcoldstarts",
       "gates_cold_start_gate",
       "gates_cold_start_metadata"
     ],
-    "105": [
+    "103": [
       "gates_isr_overrevalidation",
       "gates_isr_overrevalidation_extractrows",
       "gates_isr_overrevalidation_gate",
       "gates_isr_overrevalidation_metadata"
     ],
-    "106": [
+    "104": [
       "gates_middleware_heavy",
       "gates_middleware_heavy_gate",
       "gates_middleware_heavy_metadata",
       "gates_middleware_heavy_sumrows"
     ],
-    "107": [
+    "105": [
       "gates_observability_events_attribution",
       "gates_observability_events_attribution_gate",
       "gates_observability_events_attribution_metadata",
       "gates_observability_events_attribution_sumbilled"
     ],
-    "108": [
+    "106": [
       "inspect_images",
       "inspect_images_ai",
       "inspect_images_analyze",
       "inspect_images_main"
     ],
-    "109": [
-      "lib_render_report_candidatefordisplay",
-      "lib_render_report_displaycandidateobject",
-      "lib_render_report_displaycandidateref",
-      "lib_render_report_parsecandidateref"
-    ],
-    "110": [
+    "107": [
       "lock_advisory_advisory_locks",
       "lock_deadlock_prevention_deadlock_prevention",
       "lock_short_transactions_short_transactions",
       "lock_skip_locked_skip_locked_queues"
     ],
-    "111": [
+    "108": [
       "query-index-types_brin_index",
       "query-index-types_gin_index",
       "query-index-types_gist_index",
       "query-index-types_hash_index"
     ],
-    "112": [
+    "109": [
       "scripts_verify_dns",
       "scripts_verify_dns_resolveany",
       "scripts_verify_dns_resolvecname",
       "scripts_verify_dns_verifydns"
     ],
-    "113": [
+    "110": [
       "service_area_page",
       "service_area_page_metadata",
       "service_area_page_servicearea",
       "views_servicearea_serviceareapage"
     ],
-    "114": [
+    "111": [
       "strings",
       "strings_backupdir",
       "strings_findstrings",
       "strings_workspaceroot"
     ],
-    "115": [
+    "112": [
       "tests_e2e_test",
       "tests_e2e_test_calculatesimulatedcosts",
       "tests_e2e_test_exists",
       "tests_e2e_test_read"
     ],
-    "116": [
+    "113": [
       "about_page",
       "about_page_about",
       "about_page_metadata"
     ],
-    "117": [
+    "114": [
       "advanced_effect_event_deps",
       "advanced_event_handler_refs",
       "react_useeffectevent"
     ],
-    "118": [
+    "115": [
       "animation_gesture_detector_press",
       "react_compiler_reanimated_shared_values",
       "ui_pressable"
     ],
-    "119": [
+    "116": [
       "capabilities_page",
       "capabilities_page_capabilities",
       "capabilities_page_metadata"
     ],
-    "120": [
+    "117": [
       "client-swr-dedup",
       "js-cache-function-results",
       "js-cache-property-access"
     ],
-    "121": [
+    "118": [
       "commercial_page_servicecommercial",
       "src_app_services_commercial_page_tsx_commercial_page",
       "src_app_services_commercial_page_tsx_commercial_page_metadata"
     ],
-    "122": [
+    "119": [
       "contact_page",
       "contact_page_contact",
       "contact_page_metadata"
     ],
-    "123": [
+    "120": [
       "design_color_palette",
       "design_visual_theme",
       "product_brand_personality"
     ],
-    "124": [
+    "121": [
       "exterior_page",
       "exterior_page_metadata",
       "exterior_page_serviceexterior"
     ],
-    "125": [
+    "122": [
       "interior_page",
       "interior_page_metadata",
       "interior_page_serviceinterior"
     ],
-    "126": [
+    "123": [
       "landingpage_landing_page_component",
       "landingpages_landing_pages",
       "markets_markets_data"
     ],
-    "127": [
+    "124": [
       "monitor_explain_analyze_explain_analyze",
       "monitor_pg_stat_statements_pg_stat_statements",
       "monitor_vacuum_analyze_vacuum_analyze"
     ],
-    "128": [
+    "125": [
       "post_response_work_waituntil",
       "route_error_durable_offload",
       "route_error_runtime_limits"
     ],
-    "129": [
+    "126": [
       "projects_page",
       "projects_page_metadata",
       "projects_page_projects"
     ],
-    "130": [
+    "127": [
       "review_page",
       "review_page_metadata",
       "review_page_review"
     ],
-    "131": [
+    "128": [
       "scripts_ci_check",
       "scripts_ci_check_runcicheck",
       "scripts_ci_check_runstep"
     ],
-    "132": [
+    "129": [
       "scripts_run_db_migrations",
       "scripts_run_db_migrations_client",
       "scripts_run_db_migrations_run"
     ],
-    "133": [
+    "130": [
       "scripts_validate_schemas",
       "scripts_validate_schemas_gethtmlfiles",
       "scripts_validate_schemas_validateschemas"
     ],
-    "134": [
+    "131": [
       "services_page",
       "services_page_metadata",
       "services_page_services"
     ],
-    "135": [
+    "132": [
       "skill_design_taste_frontend_design_taste_skill",
       "skill_gpt_taste_gsap_motion_skill",
       "skill_high_end_visual_design_agency_skill"
     ],
-    "136": [
+    "133": [
       "striping_page",
       "striping_page_metadata",
       "striping_page_servicestriping"
     ],
-    "137": [
+    "134": [
       "taskmd_e2e_testing_suite",
       "taskmd_test_infra_md",
       "taskmd_test_ready_md"
     ],
-    "138": [
+    "135": [
       "taskmd_estimate_tsx",
       "taskmd_leadform_tsx",
       "taskmd_offline_first_lead_queue_calculator_review_routing"
     ],
-    "139": [
+    "136": [
       "advanced_init_once",
       "react_initializing_application"
     ],
-    "140": [
+    "137": [
       "architecture_md",
       "troubleshooting_md"
     ],
-    "141": [
+    "138": [
       "async_cheap_condition_before_await_check_cheap_conditions_before_async_flags",
       "async_defer_await_defer_await_until_needed"
     ],
-    "142": [
+    "139": [
       "client-localstorage-schema",
       "js-cache-storage"
     ],
-    "143": [
+    "140": [
       "client-passive-event-listeners",
       "js-batch-dom-css"
     ],
-    "144": [
+    "141": [
       "client_event_listeners_deduplicate_global_event_listeners",
       "swr_subscription"
     ],
-    "145": [
+    "142": [
       "cold-start-initialization-bundle_cold_start_initialization_and_bundle_weight",
       "core-web-vitals-client-bottlenecks_core_web_vitals_client_bottlenecks"
     ],
-    "146": [
-      "components_scrolltotop",
-      "components_scrolltotop_scrolltotop"
-    ],
-    "147": [
+    "143": [
       "design_layout_radius",
       "product_design_principles"
     ],
-    "148": [
+    "144": [
       "design_motion_transitions",
       "product_accessibility"
     ],
-    "149": [
+    "145": [
       "js-combine-iterations",
       "js-flatmap-filter"
     ],
-    "150": [
+    "146": [
       "lead_events_table",
       "leads_table"
     ],
-    "151": [
+    "147": [
       "m2_reviewer_1_progress",
       "m2_reviewer_2_progress"
     ],
-    "152": [
+    "148": [
       "next_config",
       "next_config_nextconfig"
     ],
-    "153": [
+    "149": [
       "react_state_dispatcher",
       "rerender_functional_setstate"
     ],
-    "154": [
+    "150": [
       "schema-data-types_bigint_identity",
       "schema-primary-keys_uuidv7"
     ],
-    "155": [
+    "151": [
       "scripts_compress_images",
       "scripts_compress_images_compress_images"
     ],
-    "156": [
+    "152": [
       "scripts_db_migrate",
       "scripts_db_migrate_runmigrations"
     ],
-    "157": [
+    "153": [
       "scripts_ping_google",
       "scripts_ping_google_verifysitemapingestion"
     ],
-    "158": [
+    "154": [
       "scripts_rename_imports",
       "scripts_rename_imports_processdirectory"
     ],
-    "159": [
+    "155": [
       "scripts_replace_image_refs",
       "scripts_replace_image_refs_replace_image_refs"
     ],
-    "160": [
+    "156": [
       "scripts_verify_csp",
       "scripts_verify_csp_verifycsp"
     ],
-    "161": [
+    "157": [
       "sections_react_state",
       "sections_state_architecture"
     ],
-    "162": [
+    "158": [
       "server_hoist_static_io",
       "server_no_shared_module_state"
     ],
-    "163": [
+    "159": [
       "skill_image_to_code_image_to_code_skill",
       "skill_imagegen_frontend_mobile_mobile_skill"
     ],
-    "164": [
+    "160": [
       "supabase_client",
       "supabase_client_createclient"
     ],
-    "165": [
+    "161": [
       "supabase_server",
       "supabase_server_createclient"
     ],
-    "166": [
+    "162": [
       "taskmd_api_leads_ts",
       "taskmd_performance_seo_build_hygiene"
     ],
-    "167": [
+    "163": [
       "tests_remediation_test",
       "tests_remediation_test_read"
     ],
-    "168": [
+    "164": [
       "tests_site_architecture_test",
       "tests_site_architecture_test_read"
     ],
-    "169": [
+    "165": [
       "vercel-cli-with-tokens_vercel_cli",
       "vercel-composition-patterns_composercontext"
     ],
-    "170": [
+    "166": [
       "advanced_jsonb_indexing_jsonb_indexing"
     ],
-    "171": [
+    "167": [
       "advanced_useeffectevent_for_stable_callback_refs"
     ],
-    "172": [
+    "168": [
       "agent_source_notes_inspected_skills"
     ],
-    "173": [
+    "169": [
       "animation_derived_value"
     ],
-    "174": [
+    "170": [
       "architecture_callflow_html"
     ],
-    "175": [
+    "171": [
       "archived_hubspot_config_yml"
     ],
-    "176": [
+    "172": [
       "astroedgemiddlewarescope_astro_edge_middleware_scope"
     ],
-    "177": [
+    "173": [
       "astrooutputmodeandisr_astro_output_mode_and_isr"
     ],
-    "178": [
+    "174": [
       "briefing_sub_orch_e2e"
     ],
-    "179": [
+    "175": [
       "bug_report_md"
     ],
-    "180": [
+    "176": [
       "buildminutesfanout_gate"
     ],
-    "181": [
+    "177": [
       "cdn-cache-auth-safety_cdn_cache_auth_safety"
     ],
-    "182": [
+    "178": [
       "coldstart_gate"
     ],
-    "183": [
+    "179": [
       "comarketing_skill"
     ],
-    "184": [
+    "180": [
       "config_yml"
     ],
-    "185": [
+    "181": [
       "context_dynamic_operations_data"
     ],
-    "186": [
+    "182": [
       "contextmd_website_context_map"
     ],
-    "187": [
+    "183": [
       "cwvpoor_gate"
     ],
-    "188": [
+    "184": [
       "database-egress-pooling-region_database_region_and_connection_pressure"
     ],
-    "189": [
+    "185": [
       "dependabot_yml"
     ],
-    "190": [
+    "186": [
       "deployment_md"
     ],
-    "191": [
+    "187": [
       "design_system_compound_components"
     ],
-    "192": [
+    "188": [
       "design_typography"
     ],
-    "193": [
+    "189": [
       "errors_md"
     ],
-    "194": [
+    "190": [
       "externalapislow_gate"
     ],
-    "195": [
+    "191": [
       "fadein_fadein"
     ],
-    "196": [
+    "192": [
       "fast-data-transfer-payloads_fast_data_transfer_payloads"
     ],
-    "197": [
+    "193": [
       "feature_request_md"
     ],
-    "198": [
+    "194": [
       "fluid-compute-caveats_fluid_compute_caveats"
     ],
-    "199": [
+    "195": [
       "function-duration-io-and-after_function_duration_io_and_after"
     ],
-    "200": [
+    "196": [
       "function-invocation-reduction_function_invocation_reduction"
     ],
-    "201": [
+    "197": [
       "function-region-misconfiguration-ttfb_function_region_misconfiguration_ttfb"
     ],
-    "202": [
+    "198": [
       "googlef6332d71bd3f2a2e_verification"
     ],
-    "203": [
+    "199": [
       "hardgates_applyhardgates"
     ],
-    "204": [
+    "200": [
       "help_txt"
     ],
-    "205": [
+    "201": [
       "hubspot_and_sheets_setup_md"
     ],
-    "206": [
+    "202": [
       "image-optimization-cost-control_image_optimization_cost_control"
     ],
-    "207": [
+    "203": [
       "impeccable_skill"
     ],
-    "208": [
+    "204": [
       "imports_design_system_folder"
     ],
-    "209": [
+    "205": [
       "indexmd_repository_index"
     ],
-    "210": [
+    "206": [
       "isr-revalidation-static-generation_isr_revalidation_and_static_generation"
     ],
-    "211": [
+    "207": [
       "isroverrevalidation_gate"
     ],
-    "212": [
+    "208": [
       "js-early-exit"
     ],
-    "213": [
+    "209": [
       "js_request_idle_callback"
     ],
-    "214": [
+    "210": [
       "js_set_map_lookups"
     ],
-    "215": [
+    "211": [
       "js_tosorted_immutable"
     ],
-    "216": [
+    "212": [
       "lib_throttle_getmetricsemaphore"
     ],
-    "217": [
+    "213": [
       "lighthouserc_json"
     ],
-    "218": [
+    "214": [
       "list_performance_images"
     ],
-    "219": [
+    "215": [
       "llms_txt"
     ],
-    "220": [
+    "216": [
       "m2_explorer_1_progress"
     ],
-    "221": [
+    "217": [
       "m2_explorer_2_progress"
     ],
-    "222": [
+    "218": [
       "maintenance_yml"
     ],
-    "223": [
+    "219": [
       "markets_ts"
     ],
-    "224": [
+    "220": [
       "metadata_json"
     ],
-    "225": [
+    "221": [
       "middleware-proxy-edge-cost_middleware_edge_cost"
     ],
-    "226": [
+    "222": [
       "middlewareheavy_gate"
     ],
-    "227": [
+    "223": [
       "monorepo_single_dependency_versions"
     ],
-    "228": [
+    "224": [
       "next-fetch-revalidate-floor_next_fetch_revalidation_floor"
     ],
-    "229": [
+    "225": [
       "next-font-cls-self-hosting_next_font_cls_guardrail"
     ],
-    "230": [
+    "226": [
       "next-heavy-ui-lazy-load-boundaries_next_heavy_ui_lazy_load_boundaries"
     ],
-    "231": [
+    "227": [
       "next-image-lcp-preload-sizes_next_image_lcp_preload_and_sizes"
     ],
-    "232": [
+    "228": [
       "next-route-handler-get-cache-defaults_next_route_handler_get_cache_defaults"
     ],
-    "233": [
+    "229": [
       "next-script-third-party-strategy_next_script_third_party Ty- party_strategy"
     ],
-    "234": [
+    "230": [
       "next_env_d"
     ],
-    "235": [
+    "231": [
       "nextjs-version-cache-semantics_nextjs_cache_semantics_by_version"
     ],
-    "236": [
+    "232": [
       "not-found-catchall-request-waste_not_found_and_catch_all_request_waste"
     ],
-    "237": [
+    "233": [
       "nuxt-route-rules-cache-isr_nuxt_routules_cache_and_isr"
     ],
-    "238": [
+    "234": [
       "observabilityeventsattribution_gate"
     ],
-    "239": [
+    "235": [
       "organization_md"
     ],
-    "240": [
+    "236": [
       "pagemeta_pagemeta"
     ],
-    "241": [
+    "237": [
       "pagetransition_pagetransition"
     ],
-    "242": [
+    "238": [
       "platformbotprotection_gate"
     ],
-    "243": [
+    "239": [
       "platformfluidcompute_gate"
     ],
-    "244": [
+    "240": [
       "postcss_config"
     ],
-    "245": [
+    "241": [
       "pricing_md"
     ],
-    "246": [
+    "242": [
       "product_purpose"
     ],
-    "247": [
+    "243": [
       "product_users"
     ],
-    "248": [
+    "244": [
       "production_audit_md"
     ],
-    "249": [
+    "245": [
       "progress_create_test_infra_md"
     ],
-    "250": [
+    "246": [
       "progress_generate_handoff_report"
     ],
-    "251": [
+    "247": [
       "progress_implement_e2e_test_suite"
     ],
-    "252": [
+    "248": [
       "progress_investigate_codebase"
     ],
-    "253": [
+    "249": [
       "progress_read_test_plan"
     ],
-    "254": [
+    "250": [
       "progress_run_npm_test"
     ],
-    "255": [
+    "251": [
       "progress_scan_no_emojis"
     ],
-    "256": [
+    "252": [
       "pull_request_template_md"
     ],
-    "257": [
+    "253": [
       "react_state_fallback"
     ],
-    "258": [
+    "254": [
       "regionmisconfig_gate"
     ],
-    "259": [
+    "255": [
       "rendering_activity"
     ],
-    "260": [
+    "256": [
       "rendering_animate_svg_wrapper"
     ],
-    "261": [
+    "257": [
       "rendering_content_visibility"
     ],
-    "262": [
+    "258": [
       "rendering_hoist_jsx"
     ],
-    "263": [
+    "259": [
       "rendering_hydration_no_flicker"
     ],
-    "264": [
+    "260": [
       "rendering_hydration_suppress_warning"
     ],
-    "265": [
+    "261": [
       "rendering_resource_hints"
     ],
-    "266": [
+    "262": [
       "rendering_script_defer_async"
     ],
-    "267": [
+    "263": [
       "rendering_svg_precision"
     ],
-    "268": [
+    "264": [
       "rendering_usetransition_loading"
     ],
-    "269": [
+    "265": [
       "repositorymd_repo_config"
     ],
-    "270": [
+    "266": [
       "rerender_defer_reads"
     ],
-    "271": [
+    "267": [
       "rerender_dependencies"
     ],
-    "272": [
+    "268": [
       "rerender_lazy_state_init"
     ],
-    "273": [
+    "269": [
       "rerender_memo"
     ],
-    "274": [
+    "270": [
       "rerender_memo_with_default_value"
     ],
-    "275": [
+    "271": [
       "rerender_move_effect_to_event"
     ],
-    "276": [
+    "272": [
       "rerender_simple_expression_in_memo"
     ],
-    "277": [
+    "273": [
       "rerender_split_combined_hooks"
     ],
-    "278": [
+    "274": [
       "rerender_transitions"
     ],
-    "279": [
+    "275": [
       "rerender_use_deferred_value"
     ],
-    "280": [
+    "276": [
       "rerender_use_ref_transient_values"
     ],
-    "281": [
+    "277": [
       "robots_txt"
     ],
-    "282": [
+    "278": [
       "routeerrors_gate"
     ],
-    "283": [
+    "279": [
       "rules_md"
     ],
-    "284": [
+    "280": [
       "scannerdriven_gate"
     ],
-    "285": [
+    "281": [
       "schemalowercaseidentifiers_use_lowercase_identifiers_for_compatibility"
     ],
-    "286": [
+    "282": [
       "scroll_position_no_state"
     ],
-    "287": [
+    "283": [
       "sections_design_system"
     ],
-    "288": [
+    "284": [
       "sections_fonts"
     ],
-    "289": [
+    "285": [
       "sections_javascript"
     ],
-    "290": [
+    "286": [
       "sections_monorepo"
     ],
-    "291": [
+    "287": [
       "sections_navigation"
     ],
-    "292": [
+    "288": [
       "sections_react_compiler"
     ],
-    "293": [
+    "289": [
       "sections_third_party_dependencies"
     ],
-    "294": [
+    "290": [
       "sections_user_interface"
     ],
-    "295": [
+    "291": [
       "security_scan_workflow"
     ],
-    "296": [
+    "292": [
       "selectcandidates_selectlaunchcandidates"
     ],
-    "297": [
+    "293": [
       "self_healing_agent_md"
     ],
-    "298": [
+    "294": [
       "server_after_nonblocking"
     ],
-    "299": [
+    "295": [
       "server_auth_actions"
     ],
-    "300": [
+    "296": [
       "server_cache_lru"
     ],
-    "301": [
+    "297": [
       "server_cache_react"
     ],
-    "302": [
+    "298": [
       "server_dedup_props"
     ],
-    "303": [
+    "299": [
       "server_parallel_fetching"
     ],
-    "304": [
+    "300": [
       "server_parallel_nested_fetching"
     ],
-    "305": [
+    "301": [
       "server_serialization"
     ],
-    "306": [
+    "302": [
       "sitemap_structure_md"
     ],
-    "307": [
+    "303": [
       "skill_brandkit_brandkit_skill"
     ],
-    "308": [
+    "304": [
       "skill_deploy_to_vercel_vercel_deploy_skill"
     ],
-    "309": [
+    "305": [
       "skill_web_design_guidelines"
     ],
-    "310": [
+    "306": [
       "skill_writing_guidelines"
     ],
-    "311": [
+    "307": [
       "skills_md"
     ],
-    "312": [
+    "308": [
       "slowroute_gate"
     ],
-    "313": [
+    "309": [
       "src_lib_context_analytics"
     ],
-    "314": [
+    "310": [
       "src_lib_context_contact"
     ],
-    "315": [
+    "311": [
       "src_lib_context_seo"
     ],
-    "316": [
+    "312": [
       "src_types_d"
     ],
-    "317": [
+    "313": [
       "state_ground_truth"
     ],
-    "318": [
+    "314": [
       "support_topics_auth_preserving_parallelization_md"
     ],
-    "319": [
+    "315": [
       "support_topics_bot_protection_product_guardrails_md"
     ],
-    "320": [
+    "316": [
       "support_topics_build_minutes_monorepo_fanout_md"
     ],
-    "321": [
+    "317": [
       "support_topics_cache_components_static_shell_boundaries_md"
     ],
-    "322": [
+    "318": [
       "task md_api_manychat_ts"
     ],
-    "323": [
+    "319": [
       "taskmd_compliance_contractor_registration"
     ],
-    "324": [
+    "320": [
       "taskmd_final_verification_adversarial_hardening"
     ],
-    "325": [
+    "321": [
       "taskmd_tasks_checklist"
     ],
-    "326": [
+    "322": [
       "taskmd_visual_redesign_contrast_emoji_ban"
     ],
-    "327": [
+    "323": [
       "ui_image_gallery"
     ],
-    "328": [
+    "324": [
       "ui_measure_views"
     ],
-    "329": [
+    "325": [
       "ui_menus"
     ],
-    "330": [
+    "326": [
       "ui_native_modals"
     ],
-    "331": [
+    "327": [
       "ui_safe_area_scroll"
     ],
-    "332": [
+    "328": [
       "ui_scrollview_content_inset"
     ],
-    "333": [
+    "329": [
       "ui_styling"
     ],
-    "334": [
+    "330": [
       "uncachedroute_gate"
     ],
-    "335": [
+    "331": [
       "usagespiketriage_gate"
     ],
-    "336": [
+    "332": [
       "util_extractroute"
     ],
-    "337": [
+    "333": [
       "util_lineof"
     ],
-    "338": [
+    "334": [
       "vercel_optimize_metadata"
     ],
-    "339": [
+    "335": [
       "vercel_readme_txt"
     ],
-    "340": [
+    "336": [
       "vercel_repo_config"
     ],
-    "341": [
+    "337": [
       "verifyclaim_verifyclaim"
     ],
-    "342": [
+    "338": [
       "visual_asset_map_assets"
     ],
-    "343": [
+    "339": [
       "workspaceresolver_resolveworkspaceimports"
     ]
   },
   "cohesion": {
-    "0": 0.05690834473324213,
+    "0": 0.056134723336006415,
     "1": 0.052464947987336044,
-    "2": 0.055191256830601096,
-    "3": 0.08587570621468926,
-    "4": 0.06028368794326241,
-    "5": 0.1066066066066066,
-    "6": 0.14285714285714285,
-    "7": 0.06554621848739496,
-    "8": 0.06818181818181818,
-    "9": 0.10317460317460317,
-    "10": 0.09686609686609686,
-    "11": 0.09116809116809117,
-    "12": 0.11076923076923077,
-    "13": 0.16615384615384615,
-    "14": 0.24923076923076923,
-    "15": 0.16,
-    "16": 0.08,
-    "17": 0.15217391304347827,
-    "18": 0.1422924901185771,
+    "2": 0.06874669487043893,
+    "3": 0.055191256830601096,
+    "4": 0.05952380952380952,
+    "5": 0.14285714285714285,
+    "6": 0.06554621848739496,
+    "7": 0.06818181818181818,
+    "8": 0.08870967741935484,
+    "9": 0.17943548387096775,
+    "10": 0.08275862068965517,
+    "11": 0.13227513227513227,
+    "12": 0.15608465608465608,
+    "13": 0.09686609686609686,
+    "14": 0.08831908831908832,
+    "15": 0.10541310541310542,
+    "16": 0.24923076923076923,
+    "17": 0.08,
+    "18": 0.16996047430830039,
     "19": 0.13438735177865613,
     "20": 0.16600790513833993,
     "21": 0.17391304347826086,
-    "22": 0.1645021645021645,
-    "23": 0.17142857142857143,
-    "24": 0.10952380952380952,
-    "25": 0.11578947368421053,
-    "26": 0.18947368421052632,
-    "27": 0.1,
-    "28": 0.15789473684210525,
-    "29": 0.10526315789473684,
-    "30": 0.11764705882352941,
-    "31": 0.13725490196078433,
+    "22": 0.15584415584415584,
+    "23": 0.14285714285714285,
+    "24": 0.17142857142857143,
+    "25": 0.1761904761904762,
+    "26": 0.10952380952380952,
+    "27": 0.18947368421052632,
+    "28": 0.1,
+    "29": 0.1286549707602339,
+    "30": 0.10526315789473684,
+    "31": 0.1111111111111111,
     "32": 0.1111111111111111,
-    "33": 0.1111111111111111,
-    "34": 0.22058823529411764,
+    "33": 0.18382352941176472,
+    "34": 0.22794117647058823,
     "35": 0.22058823529411764,
-    "36": 0.2,
-    "37": 0.23333333333333334,
-    "38": 0.16666666666666666,
-    "39": 0.175,
-    "40": 0.3333333333333333,
-    "41": 0.18095238095238095,
-    "42": 0.25274725274725274,
-    "43": 0.15384615384615385,
-    "44": 0.18681318681318682,
-    "45": 0.4065934065934066,
-    "46": 0.1794871794871795,
-    "47": 0.21212121212121213,
-    "48": 0.3333333333333333,
-    "49": 0.19696969696969696,
-    "50": 0.18181818181818182,
+    "36": 0.22058823529411764,
+    "37": 0.16666666666666666,
+    "38": 0.175,
+    "39": 0.18095238095238095,
+    "40": 0.25274725274725274,
+    "41": 0.15384615384615385,
+    "42": 0.17582417582417584,
+    "43": 0.18681318681318682,
+    "44": 0.4065934065934066,
+    "45": 0.1794871794871795,
+    "46": 0.21212121212121213,
+    "47": 0.3333333333333333,
+    "48": 0.19696969696969696,
+    "49": 0.18181818181818182,
+    "50": 0.2,
     "51": 0.34545454545454546,
     "52": 0.18181818181818182,
     "53": 0.21818181818181817,
     "54": 0.24444444444444444,
     "55": 0.2,
-    "56": 0.2,
-    "57": 0.2222222222222222,
-    "58": 0.25,
+    "56": 0.2222222222222222,
+    "57": 0.2,
+    "58": 0.2222222222222222,
     "59": 0.3888888888888889,
     "60": 0.3333333333333333,
     "61": 0.25,
     "62": 0.42857142857142855,
     "63": 0.39285714285714285,
     "64": 0.39285714285714285,
-    "65": 0.32142857142857145,
-    "66": 0.25,
-    "67": 0.42857142857142855,
-    "68": 0.2857142857142857,
-    "69": 0.47619047619047616,
-    "70": 0.38095238095238093,
+    "65": 0.25,
+    "66": 0.42857142857142855,
+    "67": 0.2857142857142857,
+    "68": 0.47619047619047616,
+    "69": 0.38095238095238093,
+    "70": 0.47619047619047616,
     "71": 0.47619047619047616,
-    "72": 0.47619047619047616,
-    "73": 0.6,
-    "74": 0.4,
+    "72": 0.6,
+    "73": 0.4,
+    "74": 0.3333333333333333,
     "75": 0.3333333333333333,
-    "76": 0.3333333333333333,
-    "77": 0.4,
-    "78": 0.4666666666666667,
-    "79": 0.5333333333333333,
-    "80": 0.7333333333333333,
-    "81": 0.4666666666666667,
-    "82": 0.4,
+    "76": 0.4,
+    "77": 0.4666666666666667,
+    "78": 0.5333333333333333,
+    "79": 0.7333333333333333,
+    "80": 0.4666666666666667,
+    "81": 0.4,
+    "82": 0.6,
     "83": 0.6,
     "84": 0.6,
     "85": 0.6,
-    "86": 0.6,
+    "86": 0.4,
     "87": 0.6,
-    "88": 0.4,
-    "89": 0.6,
-    "90": 0.5,
-    "91": 0.8,
+    "88": 0.5,
+    "89": 0.8,
+    "90": 0.4,
+    "91": 0.4,
     "92": 0.4,
     "93": 0.4,
-    "94": 0.4,
-    "95": 0.4,
-    "96": 0.6,
-    "97": 0.6666666666666666,
-    "98": 0.6666666666666666,
-    "99": 0.5,
-    "100": 0.8333333333333334,
-    "101": 0.6666666666666666,
-    "102": 0.5,
-    "103": 0.5,
+    "94": 0.6,
+    "95": 0.6666666666666666,
+    "96": 0.6666666666666666,
+    "97": 0.5,
+    "98": 0.8333333333333334,
+    "99": 0.6666666666666666,
+    "100": 0.5,
+    "101": 0.5,
+    "102": 0.6666666666666666,
+    "103": 0.6666666666666666,
     "104": 0.6666666666666666,
     "105": 0.6666666666666666,
     "106": 0.6666666666666666,
     "107": 0.6666666666666666,
-    "108": 0.6666666666666666,
-    "109": 0.6666666666666666,
-    "110": 0.6666666666666666,
+    "108": 0.5,
+    "109": 0.8333333333333334,
+    "110": 0.5,
     "111": 0.5,
-    "112": 0.8333333333333334,
-    "113": 0.5,
-    "114": 0.5,
-    "115": 0.5,
+    "112": 0.5,
+    "113": 0.6666666666666666,
+    "114": 1.0,
+    "115": 0.6666666666666666,
     "116": 0.6666666666666666,
-    "117": 1.0,
+    "117": 0.6666666666666666,
     "118": 0.6666666666666666,
     "119": 0.6666666666666666,
     "120": 0.6666666666666666,
     "121": 0.6666666666666666,
     "122": 0.6666666666666666,
-    "123": 0.6666666666666666,
-    "124": 0.6666666666666666,
+    "123": 1.0,
+    "124": 1.0,
     "125": 0.6666666666666666,
-    "126": 1.0,
-    "127": 1.0,
-    "128": 0.6666666666666666,
+    "126": 0.6666666666666666,
+    "127": 0.6666666666666666,
+    "128": 1.0,
     "129": 0.6666666666666666,
-    "130": 0.6666666666666666,
-    "131": 1.0,
-    "132": 0.6666666666666666,
-    "133": 1.0,
+    "130": 1.0,
+    "131": 0.6666666666666666,
+    "132": 1.0,
+    "133": 0.6666666666666666,
     "134": 0.6666666666666666,
-    "135": 1.0,
-    "136": 0.6666666666666666,
-    "137": 0.6666666666666666,
-    "138": 0.6666666666666666,
+    "135": 0.6666666666666666,
+    "136": 1.0,
+    "137": 1.0,
+    "138": 1.0,
     "139": 1.0,
     "140": 1.0,
     "141": 1.0,
@@ -2997,11 +2985,7 @@
     "336": 1.0,
     "337": 1.0,
     "338": 1.0,
-    "339": 1.0,
-    "340": 1.0,
-    "341": 1.0,
-    "342": 1.0,
-    "343": 1.0
+    "339": 1.0
   },
   "gods": [
     {
@@ -3010,13 +2994,13 @@
       "degree": 42
     },
     {
-      "id": "lucide_react",
-      "label": "lucide-react",
-      "degree": 32
-    },
-    {
       "id": "lib_extract_claims_extractclaims",
       "label": "extractClaims()",
+      "degree": 31
+    },
+    {
+      "id": "lucide_react",
+      "label": "lucide-react",
       "degree": 31
     },
     {

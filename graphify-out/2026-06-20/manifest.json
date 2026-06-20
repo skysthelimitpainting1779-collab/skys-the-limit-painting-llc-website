@@ -515,9 +515,9 @@
     "semantic_hash": "0e9d87e975602be659032cbcc63b6e83"
   },
   "package.json": {
-    "mtime": 1781952444.304747,
-    "ast_hash": "64637ecb1f36e3cb37d1c17459217e87",
-    "semantic_hash": "64637ecb1f36e3cb37d1c17459217e87"
+    "mtime": 1781953371.4820547,
+    "ast_hash": "7508298e5418a2f45238377d816c2256",
+    "semantic_hash": "7508298e5418a2f45238377d816c2256"
   },
   "remotion/Root.tsx": {
     "mtime": 1781276089.406053,
@@ -619,11 +619,6 @@
     "ast_hash": "b26a7e23110c5705ccc6ef7dcdc4a609",
     "semantic_hash": "b26a7e23110c5705ccc6ef7dcdc4a609"
   },
-  "src/components/HeroLeadMagnet.tsx": {
-    "mtime": 1781276089.4818962,
-    "ast_hash": "285aaed941bb390e6a4a8e04dd3997a2",
-    "semantic_hash": "285aaed941bb390e6a4a8e04dd3997a2"
-  },
   "src/components/Layout.tsx": {
     "mtime": 1781635332.2138922,
     "ast_hash": "821a2fbad790f7b3f3e2fcdf5c148e16",
@@ -658,11 +653,6 @@
     "mtime": 1781653923.5389626,
     "ast_hash": "9163629b1133afd52912ae22ed110003",
     "semantic_hash": "9163629b1133afd52912ae22ed110003"
-  },
-  "src/components/ScrollToTop.tsx": {
-    "mtime": 1781276089.4858963,
-    "ast_hash": "f0f8b275ee169fb84bf394cb16942b96",
-    "semantic_hash": "f0f8b275ee169fb84bf394cb16942b96"
   },
   "src/components/ServiceAreaMap.tsx": {
     "mtime": 1781653988.2140622,

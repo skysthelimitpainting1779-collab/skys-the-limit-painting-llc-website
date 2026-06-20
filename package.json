@@ -20,10 +20,8 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",
-    "@tailwindcss/vite": "4.3.1",
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
-    "@vitejs/plugin-react": "5.0.4",
     "dotenv": "17.4.2",
     "express": "5.2.1",
     "leaflet": "1.9.4",
@@ -35,8 +33,7 @@
     "react-router-dom": "7.18.0",
     "@supabase/ssr": "0.12.0",
     "@supabase/supabase-js": "2.108.2",
-    "resend": "6.14.0",
-    "vite": "6.4.3"
+    "resend": "6.14.0"
   },
   "devDependencies": {
     "@remotion/cli": "4.0.481",
@@ -54,8 +51,7 @@
     "remotion": "4.0.481",
     "tailwindcss": "4.3.1",
     "tsx": "4.22.4",
-    "typescript": "6.0.3",
-    "vite": "6.4.3"
+    "typescript": "6.0.3"
   },
   "overrides": {
     "source-map": "0.7.6",
@@ -72,10 +68,6 @@
     "esbuild": ">=0.28.1",
     "path-to-regexp": "8.4.2",
     "path-to-regexp-updated": "npm:path-to-regexp@8.4.2",
-    "vercel": {
-      "path-to-regexp": "8.4.2",
-      "path-to-regexp-updated": "npm:path-to-regexp@8.4.2"
-    },
     "express": {
       "path-to-regexp": "0.1.13"
     }
