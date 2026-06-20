@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -8,19 +8,19 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 env:
   VITE_SITE_URL: https://skysthelimitpaintingllc.com
   LEAD_TO_EMAIL: skysthelimitpainting1779@gmail.com
   LEAD_FROM_EMAIL: Sky Leads <onboarding@resend.dev>
+  VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
+  VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
 
 jobs:
   validate:
-    name: Validate
+    name: Lint, Test & Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x, 22.x]
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -28,17 +28,103 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22.x
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Type check
+      - name: Type check & Lint
         run: npm run lint
 
-      - name: Run tests
+      - name: Run unit & integration tests
         run: npm test
 
-      - name: Build
+      - name: Restore Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Build Next.js app
         run: npm run build
+
+  deploy-preview:
+    name: Deploy Staging/Preview
+    needs: validate
+    if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' }}
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - name: Install dependencies
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        run: npm ci
+
+      - name: Restore Next.js build cache
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Pull Vercel Environment Information
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        run: npx vercel pull --yes --environment=preview
+
+      - name: Build Prebuilt Vercel Deployment Artifacts
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        run: npx vercel build
+
+      - name: Deploy prebuilt artifact to Vercel
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        id: deploy
+        run: |
+          DEPLOY_URL=$(npx vercel deploy --prebuilt)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+
+      - name: Comment Preview URL on PR
+        if: ${{ github.event_name == 'pull_request' && env.VERCEL_TOKEN != '' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const deployUrl = '${{ steps.deploy.outputs.url }}';
+            const body = `🚀 **Vercel Preview Deployment is ready!**\n\n🔗 [Visit Preview Site](${deployUrl})\n\n*(Built and validated on GitHub Actions)*`;
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber
+            });
+            
+            const existingComment = comments.find(c => c.body.includes('Vercel Preview Deployment is ready!'));
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: body
+              });
+            }

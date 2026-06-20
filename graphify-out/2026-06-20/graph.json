@@ -5197,7 +5197,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 47,
+      "community": 116,
       "norm_label": "middleware-broad-matcher.mjs",
       "id": "scanners_middleware_broad_matcher"
     },
@@ -5207,7 +5207,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 47,
+      "community": 116,
       "norm_label": "metadata",
       "id": "scanners_middleware_broad_matcher_metadata"
     },
@@ -5217,7 +5217,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 47,
+      "community": 116,
       "norm_label": "scan()",
       "id": "scanners_middleware_broad_matcher_scan"
     },
@@ -5227,7 +5227,7 @@
       "source_file": ".agents/skills/vercel-optimize/lib/scanners/middleware-broad-matcher.mjs",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 47,
+      "community": 116,
       "norm_label": "isapplicable()",
       "id": "scanners_middleware_broad_matcher_isapplicable"
     },
@@ -21188,9 +21188,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "googlef6332d71bd3f2a2e_verification",
       "community": 209,
-      "norm_label": "google site verification",
-      "id": "googlef6332d71bd3f2a2e_verification"
+      "norm_label": "google site verification"
     }
   ],
   "links": [
