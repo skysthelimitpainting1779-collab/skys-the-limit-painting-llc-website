@@ -515,9 +515,9 @@
     "semantic_hash": "0e9d87e975602be659032cbcc63b6e83"
   },
   "package.json": {
-    "mtime": 1781946882.6269417,
-    "ast_hash": "856fca77ff129cc3c750f536182ea7a8",
-    "semantic_hash": "856fca77ff129cc3c750f536182ea7a8"
+    "mtime": 1781952444.304747,
+    "ast_hash": "64637ecb1f36e3cb37d1c17459217e87",
+    "semantic_hash": "64637ecb1f36e3cb37d1c17459217e87"
   },
   "remotion/Root.tsx": {
     "mtime": 1781276089.406053,
@@ -2935,13 +2935,18 @@
     "semantic_hash": "e2904536ca94e1bc66e9b5ef0947c27c"
   },
   "src/lib/supabase/server.ts": {
-    "mtime": 1781947226.5634937,
-    "ast_hash": "ddceb52ba1ec99829859b4bc17543030",
-    "semantic_hash": "ddceb52ba1ec99829859b4bc17543030"
+    "mtime": 1781952440.034737,
+    "ast_hash": "c2bb1bfaaa552f51107e5e36c817db6a",
+    "semantic_hash": "c2bb1bfaaa552f51107e5e36c817db6a"
   },
-  "src/middleware.ts": {
-    "mtime": 1781947240.2447464,
-    "ast_hash": "4128ab8491de104cd11879d2abebfeb2",
-    "semantic_hash": "4128ab8491de104cd11879d2abebfeb2"
+  "src/proxy.ts": {
+    "mtime": 1781952421.5691817,
+    "ast_hash": "40155698e659f48355a25801a3f7f35c",
+    "semantic_hash": "40155698e659f48355a25801a3f7f35c"
+  },
+  "public/googlef6332d71bd3f2a2e.html": {
+    "mtime": 1781949489.8478432,
+    "ast_hash": "f974564fc4b6589df18522d51adf4eff",
+    "semantic_hash": "f974564fc4b6589df18522d51adf4eff"
   }
 }

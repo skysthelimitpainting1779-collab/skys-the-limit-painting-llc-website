@@ -158,6 +158,69 @@
       "scripts_scan_codebase_skip_file_patterns"
     ],
     "2": [
+      "lib_util",
+      "lib_util_escaperegex",
+      "lib_util_extractroute",
+      "lib_util_lineof",
+      "sanitizers_count_correct",
+      "sanitizers_count_correct_apply",
+      "sanitizers_count_correct_count_claim_types",
+      "sanitizers_count_correct_metadata",
+      "sanitizers_count_correct_rewritecount",
+      "sanitizers_middleware_conflict",
+      "sanitizers_middleware_conflict_apply",
+      "sanitizers_middleware_conflict_metadata",
+      "sanitizers_rendering_mode_mislabel",
+      "sanitizers_rendering_mode_mislabel_apply",
+      "sanitizers_rendering_mode_mislabel_metadata",
+      "sanitizers_rendering_mode_mislabel_mode_patterns",
+      "sanitizers_vercel_directive_strip",
+      "sanitizers_vercel_directive_strip_apply",
+      "sanitizers_vercel_directive_strip_metadata",
+      "sanitizers_vercel_directive_strip_strip_directives",
+      "scanners_cache_components_suspense_dedupe",
+      "scanners_cache_components_suspense_dedupe_countmatches",
+      "scanners_cache_components_suspense_dedupe_findrepeated",
+      "scanners_cache_components_suspense_dedupe_metadata",
+      "scanners_cache_components_suspense_dedupe_record",
+      "scanners_cache_components_suspense_dedupe_scan",
+      "scanners_cache_components_suspense_dedupe_truncate",
+      "scanners_force_dynamic",
+      "scanners_force_dynamic_isapplicable",
+      "scanners_force_dynamic_metadata",
+      "scanners_force_dynamic_scan",
+      "scanners_headers_in_page",
+      "scanners_headers_in_page_isapplicable",
+      "scanners_headers_in_page_metadata",
+      "scanners_headers_in_page_scan",
+      "scanners_max_age_without_s_maxage",
+      "scanners_max_age_without_s_maxage_metadata",
+      "scanners_max_age_without_s_maxage_scan",
+      "scanners_prisma_include_tree",
+      "scanners_prisma_include_tree_metadata",
+      "scanners_prisma_include_tree_scan",
+      "scanners_region_pin_in_config",
+      "scanners_region_pin_in_config_metadata",
+      "scanners_region_pin_in_config_parseregionlist",
+      "scanners_region_pin_in_config_scan",
+      "scanners_source_maps_production",
+      "scanners_source_maps_production_metadata",
+      "scanners_source_maps_production_scan",
+      "scanners_unoptimized_image",
+      "scanners_unoptimized_image_isjsxlike",
+      "scanners_unoptimized_image_isnextconfig",
+      "scanners_unoptimized_image_metadata",
+      "scanners_unoptimized_image_scan",
+      "scanners_unoptimized_image_snippet",
+      "scanners_use_cache_date_stamp",
+      "scanners_use_cache_date_stamp_classifysubtype",
+      "scanners_use_cache_date_stamp_collectranges",
+      "scanners_use_cache_date_stamp_findmatchingparen",
+      "scanners_use_cache_date_stamp_isinsideanyrange",
+      "scanners_use_cache_date_stamp_metadata",
+      "scanners_use_cache_date_stamp_scan"
+    ],
+    "3": [
       "lib_extract_claims",
       "lib_extract_claims_asarray",
       "lib_extract_claims_cacherecommendationfiles",
@@ -219,7 +282,7 @@
       "scripts_verify_and_regen_parseargs",
       "scripts_verify_and_regen_round4"
     ],
-    "3": [
+    "4": [
       "lib_impact_label",
       "lib_impact_label_computeimpactlabel",
       "lib_impact_label_cwvissue",
@@ -269,7 +332,7 @@
       "sanitizers_undeclared_dep_node_builtins",
       "sanitizers_undeclared_dep_pkgroot"
     ],
-    "4": [
+    "5": [
       "lib_display_labels_formatpublictext",
       "lib_display_labels_formatroute",
       "lib_render_report",
@@ -308,7 +371,7 @@
       "lib_render_report_splitinvestigationoutcomes",
       "lib_render_report_tierscore"
     ],
-    "5": [
+    "6": [
       "animations_fadein",
       "animations_fadein_fadein",
       "animations_fadein_fadeinprops",
@@ -346,7 +409,7 @@
       "views_servicestriping",
       "views_servicestriping_servicestriping"
     ],
-    "6": [
+    "7": [
       "app_homeclient",
       "app_homeclient_conversionsteps",
       "app_homeclient_coverageitems",
@@ -383,7 +446,7 @@
       "ui_marqueeticker_marqueeticker",
       "ui_marqueeticker_marqueetickerprops"
     ],
-    "7": [
+    "8": [
       "agents_react_native_skills",
       "animation_gpu_properties",
       "array_sort",
@@ -418,7 +481,7 @@
       "ui_expo_image",
       "usememo"
     ],
-    "8": [
+    "9": [
       "components_layout",
       "components_layout_layout",
       "components_layout_layoutprops",
@@ -448,7 +511,7 @@
       "views_landingpage_marketpath",
       "views_landingpage_sectionimages"
     ],
-    "9": [
+    "10": [
       "agents_md",
       "copywriting_and_hooks_md",
       "data_collection",
@@ -477,7 +540,7 @@
       "verification",
       "voice"
     ],
-    "10": [
+    "11": [
       "animations_magneticbutton",
       "animations_magneticbutton_magneticbutton",
       "animations_magneticbutton_magneticbuttonprops",
@@ -506,7 +569,7 @@
       "remediation_test_mjs",
       "site_architecture_test_mjs"
     ],
-    "11": [
+    "12": [
       "commercial_page_commercialpage",
       "components_marketpage",
       "components_marketpage_marketpage",
@@ -534,7 +597,7 @@
       "views_residential",
       "views_residential_residentialpage"
     ],
-    "12": [
+    "13": [
       "lib_dedup_recs",
       "lib_dedup_recs_affectedfiles",
       "lib_dedup_recs_appliesalsoentry",
@@ -562,7 +625,7 @@
       "lib_dedup_recs_uniqueappliesalsoto",
       "lib_dedup_recs_withdedupmetadata"
     ],
-    "13": [
+    "14": [
       "lib_reconcile_candidates",
       "lib_reconcile_candidates_arrayat",
       "lib_reconcile_candidates_deploymentregressiondecision",
@@ -589,33 +652,6 @@
       "scripts_reconcile_candidates_log",
       "scripts_reconcile_candidates_main",
       "scripts_reconcile_candidates_parseargs"
-    ],
-    "14": [
-      "lib_citations_lookupurl",
-      "lib_support_topics",
-      "lib_support_topics_here",
-      "lib_support_topics_known_candidate_kinds",
-      "lib_support_topics_knowncitation",
-      "lib_support_topics_loadsupporttopics",
-      "lib_support_topics_matchescandidatekind",
-      "lib_support_topics_matchescandidatemetrics",
-      "lib_support_topics_matchescandidateroutepatterns",
-      "lib_support_topics_matchesoptionallist",
-      "lib_support_topics_matchesrouter",
-      "lib_support_topics_matchesscannerpatterns",
-      "lib_support_topics_nonemptyarray",
-      "lib_support_topics_nonemptystring",
-      "lib_support_topics_normalizetopic",
-      "lib_support_topics_parsefrontmatter",
-      "lib_support_topics_parsefrontmattervalue",
-      "lib_support_topics_parsesupporttopic",
-      "lib_support_topics_splitfrontmatter",
-      "lib_support_topics_supporttopicsubset",
-      "lib_support_topics_topiccitationsapply",
-      "lib_support_topics_topics_dir",
-      "lib_support_topics_tostringarray",
-      "lib_support_topics_validatesupporttopic",
-      "lib_support_topics_validatesupporttopics"
     ],
     "15": [
       "lib_investigation_brief",
@@ -672,6 +708,32 @@
       "tsconfig_paths"
     ],
     "17": [
+      "lib_citations",
+      "lib_citations_compareversion",
+      "lib_citations_here",
+      "lib_citations_isknownurl",
+      "lib_citations_library_path",
+      "lib_citations_libraryforstack",
+      "lib_citations_loadlibrary",
+      "lib_citations_lookupskillrule",
+      "lib_citations_lookupurl",
+      "lib_citations_matchesframeworkversion",
+      "lib_citations_parseversion",
+      "lib_citations_sanitizecitations",
+      "lib_support_topics_citationapplies",
+      "lib_support_topics_knowncitation",
+      "lib_support_topics_matchesframeworks",
+      "sanitizers_pre_release",
+      "sanitizers_pre_release_apply",
+      "sanitizers_pre_release_featureavailableforstack",
+      "sanitizers_pre_release_metadata",
+      "sanitizers_pre_release_pre_release_features",
+      "scripts_check_citations",
+      "scripts_check_citations_banned_stale_urls",
+      "scripts_check_citations_main",
+      "scripts_check_citations_validateframeworks"
+    ],
+    "18": [
       "lib_gates_index",
       "lib_gates_types",
       "lib_observation_safety_hasunsupportedcachelifecdntext",
@@ -696,7 +758,32 @@
       "scripts_render_report_recommendationmatchesactivecandidate",
       "scripts_render_report_suppressreadycoveredobservations"
     ],
-    "18": [
+    "19": [
+      "lib_support_topics",
+      "lib_support_topics_here",
+      "lib_support_topics_known_candidate_kinds",
+      "lib_support_topics_loadsupporttopics",
+      "lib_support_topics_matchescandidatekind",
+      "lib_support_topics_matchescandidatemetrics",
+      "lib_support_topics_matchescandidateroutepatterns",
+      "lib_support_topics_matchesoptionallist",
+      "lib_support_topics_matchesrouter",
+      "lib_support_topics_matchesscannerpatterns",
+      "lib_support_topics_nonemptyarray",
+      "lib_support_topics_nonemptystring",
+      "lib_support_topics_normalizetopic",
+      "lib_support_topics_parsefrontmatter",
+      "lib_support_topics_parsefrontmattervalue",
+      "lib_support_topics_parsesupporttopic",
+      "lib_support_topics_splitfrontmatter",
+      "lib_support_topics_supporttopicsubset",
+      "lib_support_topics_topiccitationsapply",
+      "lib_support_topics_topics_dir",
+      "lib_support_topics_tostringarray",
+      "lib_support_topics_validatesupporttopic",
+      "lib_support_topics_validatesupporttopics"
+    ],
+    "20": [
       "lib_throttle_isdailyquotaexceeded",
       "lib_vercel",
       "lib_vercel_baselinestack",
@@ -721,7 +808,7 @@
       "lib_vercel_redactsensitivetext",
       "lib_vercel_runverceljson"
     ],
-    "19": [
+    "21": [
       "lib_vercel_aggregateservicesbyname",
       "lib_vercel_checkauth",
       "lib_vercel_checkcliversion",
@@ -746,31 +833,7 @@
       "scripts_collect_signals_validateprojectscope",
       "scripts_collect_signals_writeoutput"
     ],
-    "20": [
-      "lib_citations",
-      "lib_citations_compareversion",
-      "lib_citations_here",
-      "lib_citations_isknownurl",
-      "lib_citations_library_path",
-      "lib_citations_libraryforstack",
-      "lib_citations_loadlibrary",
-      "lib_citations_lookupskillrule",
-      "lib_citations_matchesframeworkversion",
-      "lib_citations_parseversion",
-      "lib_citations_sanitizecitations",
-      "lib_support_topics_citationapplies",
-      "lib_support_topics_matchesframeworks",
-      "sanitizers_pre_release",
-      "sanitizers_pre_release_apply",
-      "sanitizers_pre_release_featureavailableforstack",
-      "sanitizers_pre_release_metadata",
-      "sanitizers_pre_release_pre_release_features",
-      "scripts_check_citations",
-      "scripts_check_citations_banned_stale_urls",
-      "scripts_check_citations_main",
-      "scripts_check_citations_validateframeworks"
-    ],
-    "21": [
+    "22": [
       "lib_render_report_canonicalrefof",
       "lib_render_report_enrichrecfromcandidates",
       "lib_route_normalize",
@@ -794,7 +857,7 @@
       "lib_route_normalize_striproutegroups",
       "scripts_render_report_candidatematchesref"
     ],
-    "22": [
+    "23": [
       "lib_deep_dive",
       "lib_deep_dive_escapeodatastring",
       "lib_deep_dive_latencypercentiles",
@@ -817,7 +880,7 @@
       "scripts_deep_dive_round4",
       "scripts_deep_dive_tryextractfrombroadpass"
     ],
-    "23": [
+    "24": [
       "remotion_index",
       "remotion_root",
       "remotion_root_remotionroot",
@@ -840,7 +903,7 @@
       "remotion_skybrandfilms_slowease",
       "remotion_skybrandfilms_stripelanguage"
     ],
-    "24": [
+    "25": [
       "components_leadform",
       "components_leadform_budgetoptions",
       "components_leadform_contactmethods",
@@ -862,7 +925,7 @@
       "lib_contact_buildestimatemailto",
       "lib_contact_openestimateemail"
     ],
-    "25": [
+    "26": [
       "leads_route",
       "leads_route_astext",
       "leads_route_buildautoreplyhtml",
@@ -884,7 +947,7 @@
       "leads_route_sendwithresend",
       "leads_route_validate"
     ],
-    "26": [
+    "27": [
       "package_express_path_to_regexp",
       "package_overrides",
       "package_overrides_ajv",
@@ -906,7 +969,7 @@
       "package_vercel_path_to_regexp",
       "package_vercel_path_to_regexp_updated"
     ],
-    "27": [
+    "28": [
       "lib_display_labels",
       "lib_display_labels_formatcandidatelabel",
       "lib_display_labels_formatcandidateline",
@@ -926,27 +989,6 @@
       "sanitizers_window_units_apply",
       "sanitizers_window_units_metadata",
       "sanitizers_window_units_string_fields"
-    ],
-    "28": [
-      "lib_util",
-      "lib_util_escaperegex",
-      "lib_util_extractroute",
-      "sanitizers_count_correct",
-      "sanitizers_count_correct_apply",
-      "sanitizers_count_correct_count_claim_types",
-      "sanitizers_count_correct_metadata",
-      "sanitizers_count_correct_rewritecount",
-      "sanitizers_middleware_conflict",
-      "sanitizers_middleware_conflict_apply",
-      "sanitizers_middleware_conflict_metadata",
-      "sanitizers_rendering_mode_mislabel",
-      "sanitizers_rendering_mode_mislabel_apply",
-      "sanitizers_rendering_mode_mislabel_metadata",
-      "sanitizers_rendering_mode_mislabel_mode_patterns",
-      "sanitizers_vercel_directive_strip",
-      "sanitizers_vercel_directive_strip_apply",
-      "sanitizers_vercel_directive_strip_metadata",
-      "sanitizers_vercel_directive_strip_strip_directives"
     ],
     "29": [
       "package_dependencies",
@@ -1010,26 +1052,6 @@
       "views_refer_referpage"
     ],
     "32": [
-      "lib_util_lineof",
-      "scanners_force_dynamic",
-      "scanners_force_dynamic_isapplicable",
-      "scanners_force_dynamic_metadata",
-      "scanners_force_dynamic_scan",
-      "scanners_headers_in_page",
-      "scanners_headers_in_page_isapplicable",
-      "scanners_headers_in_page_metadata",
-      "scanners_headers_in_page_scan",
-      "scanners_max_age_without_s_maxage",
-      "scanners_max_age_without_s_maxage_metadata",
-      "scanners_max_age_without_s_maxage_scan",
-      "scanners_prisma_include_tree",
-      "scanners_prisma_include_tree_metadata",
-      "scanners_prisma_include_tree_scan",
-      "scanners_source_maps_production",
-      "scanners_source_maps_production_metadata",
-      "scanners_source_maps_production_scan"
-    ],
-    "33": [
       "nextjs_cachelife",
       "nextjs_use_cache",
       "nextjs_use_cache_remote",
@@ -1049,7 +1071,7 @@
       "workflow_sdk_resumable_streams",
       "workflow_sdk_streaming"
     ],
-    "34": [
+    "33": [
       "package_devdependencies",
       "package_devdependencies_autoprefixer",
       "package_devdependencies_jsdom",
@@ -1069,7 +1091,7 @@
       "package_devdependencies_typescript",
       "package_devdependencies_vite"
     ],
-    "35": [
+    "34": [
       "scripts_collect_sub_agent_outputs",
       "scripts_collect_sub_agent_outputs_collectinputfiles",
       "scripts_collect_sub_agent_outputs_escaperegexp",
@@ -1088,7 +1110,7 @@
       "scripts_collect_sub_agent_outputs_unwrapenvelope",
       "scripts_collect_sub_agent_outputs_walkdir"
     ],
-    "36": [
+    "35": [
       "scripts_merge_signals",
       "scripts_merge_signals_annotatecodebasescan",
       "scripts_merge_signals_annotatefinding",
@@ -1107,7 +1129,7 @@
       "scripts_merge_signals_rows",
       "scripts_merge_signals_writeoutput"
     ],
-    "37": [
+    "36": [
       "gates_contract",
       "gates_contract_candidatecontracterror",
       "gates_contract_candidatecontracterror_constructor",
@@ -1125,7 +1147,7 @@
       "scripts_gate_investigations_resolvebudget",
       "scripts_gate_investigations_stablecompare"
     ],
-    "38": [
+    "37": [
       "lib_investigation_brief_citationsubset",
       "lib_investigation_brief_inferframeworkplaybook",
       "lib_investigation_brief_inferplaybook",
@@ -1143,7 +1165,7 @@
       "scripts_prepare_investigation_brief_tryreadplaybook",
       "scripts_prepare_investigation_brief_writebrieffile"
     ],
-    "39": [
+    "38": [
       "lib_throttle_semaphore",
       "lib_throttle_semaphore_acquire",
       "lib_throttle_semaphore_constructor",
@@ -1161,7 +1183,7 @@
       "vercel_querymetric",
       "vercel_runverceljson"
     ],
-    "40": [
+    "39": [
       "m2_auditor_briefing",
       "m2_auditor_original_request",
       "m2_challenger_1_briefing",
@@ -1179,7 +1201,7 @@
       "src_pages_refer_tsx",
       "tests_site_architecture_test_mjs"
     ],
-    "41": [
+    "40": [
       "lib_observation_safety",
       "lib_observation_safety_candidatetarget",
       "lib_observation_safety_contradictsnochangereason",
@@ -1196,7 +1218,7 @@
       "lib_observation_safety_observationtext",
       "lib_observation_safety_unsupportedobservationreason"
     ],
-    "42": [
+    "41": [
       "lib_throttle",
       "lib_throttle_dailyquotaresult",
       "lib_throttle_defaultsleep",
@@ -1213,7 +1235,7 @@
       "lib_throttle_setdailyquotablocked",
       "lib_throttle_utcmidnightafter"
     ],
-    "43": [
+    "42": [
       "compliance_requirement",
       "e2e_parent_conversation",
       "e2e_test_mjs",
@@ -1229,7 +1251,7 @@
       "worker_e2e_0_briefing",
       "worker_e2e_0_originalrequest"
     ],
-    "44": [
+    "43": [
       "estimate_page",
       "estimate_page_estimate",
       "estimate_page_metadata",
@@ -1245,7 +1267,7 @@
       "views_estimate_step",
       "views_estimate_trimprep"
     ],
-    "45": [
+    "44": [
       "original_request_feature_f1",
       "original_request_feature_f2",
       "original_request_feature_f3",
@@ -1261,7 +1283,7 @@
       "scope_test_plan_feature_enumeration",
       "scope_verification_execution"
     ],
-    "46": [
+    "45": [
       "vercelcompositionpatterns_agents_md",
       "vercelcompositionpatterns_architectureavoidbooleanprops",
       "vercelcompositionpatterns_architecturecompoundcomponents",
@@ -1277,22 +1299,22 @@
       "vercelcompositionpatterns_stateliftstate",
       "vercelcompositionpatterns_template"
     ],
-    "47": [
-      "gates_index_max_code_candidates",
+    "46": [
       "scanners_index",
       "scanners_index_scanners",
+      "scanners_middleware_broad_matcher",
+      "scanners_middleware_broad_matcher_isapplicable",
+      "scanners_middleware_broad_matcher_metadata",
+      "scanners_middleware_broad_matcher_scan",
+      "scanners_missing_cache_headers",
+      "scanners_missing_cache_headers_isapplicable",
+      "scanners_missing_cache_headers_metadata",
+      "scanners_missing_cache_headers_scan",
       "scanners_sveltekit_prerender_missing",
       "scanners_sveltekit_prerender_missing_metadata",
-      "scanners_sveltekit_prerender_missing_scan",
-      "scripts_build_docs",
-      "scripts_build_docs_here",
-      "scripts_build_docs_main",
-      "scripts_build_docs_refs",
-      "scripts_build_docs_rendercandidates",
-      "scripts_build_docs_renderscanners",
-      "scripts_build_docs_trimtrailingblankline"
+      "scanners_sveltekit_prerender_missing_scan"
     ],
-    "48": [
+    "47": [
       "briefingmd_sentinel_mission",
       "claudemd_developer_reference",
       "handoffmd_sentinel_handoff",
@@ -1306,7 +1328,7 @@
       "test_out_e2e_failures",
       "test_out_utf8_e2e_failures"
     ],
-    "49": [
+    "48": [
       "lib_budget_summary",
       "lib_budget_summary_buildbudgetsummary",
       "lib_budget_summary_buildchatpreview",
@@ -1320,7 +1342,7 @@
       "scripts_budget_summary_main",
       "scripts_budget_summary_parseargs"
     ],
-    "50": [
+    "49": [
       "react_view_transitions_accessibility",
       "react_view_transitions_addtransitiontype",
       "react_view_transitions_css_pseudo_elements",
@@ -1334,7 +1356,7 @@
       "react_view_transitions_view_transition_events",
       "react_view_transitions_viewtransition_component"
     ],
-    "51": [
+    "50": [
       "briefing_agents_md",
       "briefing_archetype_reviewer_and_adversarial_critic",
       "briefing_conversionfootercta_tsx",
@@ -1347,7 +1369,7 @@
       "briefing_project_md",
       "briefing_refer_tsx"
     ],
-    "52": [
+    "51": [
       "manychat_route",
       "manychat_route_astext",
       "manychat_route_buildleadhtml",
@@ -1360,7 +1382,7 @@
       "manychat_route_sendtohubspot",
       "manychat_route_sendwithresend"
     ],
-    "53": [
+    "52": [
       "package_scripts",
       "package_scripts_build",
       "package_scripts_ci",
@@ -1373,7 +1395,7 @@
       "package_scripts_render_markets",
       "package_scripts_test"
     ],
-    "54": [
+    "53": [
       "scripts_prerender",
       "scripts_prerender_breadcrumbschema",
       "scripts_prerender_businessschema",
@@ -1386,7 +1408,7 @@
       "scripts_prerender_serviceschema",
       "scripts_prerender_siteurl"
     ],
-    "55": [
+    "54": [
       "bundle_analyzable_paths_statically_analyzable_paths",
       "bundle_barrel_imports_avoid_barrel_file_imports",
       "bundle_conditional_conditional_module_loading",
@@ -1398,7 +1420,7 @@
       "nextjs",
       "vercel_analytics_react"
     ],
-    "56": [
+    "55": [
       "claude_claude_md",
       "graphify_add_watch_md",
       "graphify_exports_md",
@@ -1410,7 +1432,7 @@
       "graphify_transcribe_md",
       "graphify_update_md"
     ],
-    "57": [
+    "56": [
       "query-composite-indexes_composite_index",
       "query-covering-indexes_covering_index",
       "query-missing-indexes_btree_index",
@@ -1422,7 +1444,7 @@
       "security-rls-basics_row_level_security",
       "security-rls-performance_rls_policy"
     ],
-    "58": [
+    "57": [
       "supabase_changelog_md",
       "supabase_feedback_issue_template_md",
       "supabase_postgres_best_practices_advanced_full_text_search_md",
@@ -1433,6 +1455,17 @@
       "supabase_postgres_best_practices_template_md",
       "supabase_skill_feedback_md",
       "supabase_skill_md"
+    ],
+    "58": [
+      "gates_build_minutes_fanout",
+      "gates_build_minutes_fanout_gate",
+      "gates_build_minutes_fanout_metadata",
+      "gates_build_minutes_fanout_unique",
+      "gates_index",
+      "gates_index_gates",
+      "gates_region_misconfig",
+      "gates_region_misconfig_gate",
+      "gates_region_misconfig_metadata"
     ],
     "59": [
       "gates_hard_gates",
@@ -1488,6 +1521,16 @@
       "lib_route_normalize_withrouteshapewarnings"
     ],
     "64": [
+      "gates_index_max_code_candidates",
+      "scripts_build_docs",
+      "scripts_build_docs_here",
+      "scripts_build_docs_main",
+      "scripts_build_docs_refs",
+      "scripts_build_docs_rendercandidates",
+      "scripts_build_docs_renderscanners",
+      "scripts_build_docs_trimtrailingblankline"
+    ],
+    "65": [
       "lib_render_report_asarray",
       "lib_render_report_compactfinaltext",
       "lib_render_report_displaycandidate",
@@ -1497,7 +1540,7 @@
       "lib_render_report_renderrecdetail",
       "lib_render_report_sortrecs"
     ],
-    "65": [
+    "66": [
       "package_devdependencies_vercel",
       "vercel",
       "vercel_buildcommand",
@@ -1507,7 +1550,7 @@
       "vercel_outputdirectory",
       "vercel_redirects"
     ],
-    "66": [
+    "67": [
       "lib_framework_support",
       "lib_framework_support_classifyframeworksupport",
       "lib_framework_support_core_supported_frameworks",
@@ -1516,7 +1559,7 @@
       "lib_framework_support_limited_frameworks",
       "lib_framework_support_normalizeframework"
     ],
-    "67": [
+    "68": [
       "package",
       "package_engines",
       "package_engines_node",
@@ -1524,15 +1567,6 @@
       "package_private",
       "package_type",
       "package_version"
-    ],
-    "68": [
-      "scanners_cache_components_suspense_dedupe",
-      "scanners_cache_components_suspense_dedupe_countmatches",
-      "scanners_cache_components_suspense_dedupe_findrepeated",
-      "scanners_cache_components_suspense_dedupe_metadata",
-      "scanners_cache_components_suspense_dedupe_record",
-      "scanners_cache_components_suspense_dedupe_scan",
-      "scanners_cache_components_suspense_dedupe_truncate"
     ],
     "69": [
       "scanners_edge_heavy_import",
@@ -1562,15 +1596,6 @@
       "scanners_turbo_force_bypass_truncate"
     ],
     "72": [
-      "scanners_use_cache_date_stamp",
-      "scanners_use_cache_date_stamp_classifysubtype",
-      "scanners_use_cache_date_stamp_collectranges",
-      "scanners_use_cache_date_stamp_findmatchingparen",
-      "scanners_use_cache_date_stamp_isinsideanyrange",
-      "scanners_use_cache_date_stamp_metadata",
-      "scanners_use_cache_date_stamp_scan"
-    ],
-    "73": [
       "scripts_check_docs_fresh",
       "scripts_check_docs_fresh_here",
       "scripts_check_docs_fresh_main",
@@ -1579,7 +1604,7 @@
       "scripts_check_docs_fresh_renderscanners",
       "scripts_check_docs_fresh_trimtrailingblankline"
     ],
-    "74": [
+    "73": [
       "agents_react_view_transitions",
       "css_recipes",
       "implementation_workflow",
@@ -1587,7 +1612,7 @@
       "patterns_guidelines",
       "skill_react_view_transitions"
     ],
-    "75": [
+    "74": [
       "async_api_routes_better_all",
       "async_api_routes_prevent_waterfall_chains_in_api_routes",
       "async_dependencies_dependency_based_parallelization",
@@ -1595,7 +1620,7 @@
       "async_suspense_boundaries_strategic_suspense_boundaries",
       "better_all"
     ],
-    "76": [
+    "75": [
       "c_users_johnny_cage_dev_skysthelimit_collab_agents_skills_deploy_to_vercel_resources_deploy_codex_sh__entry",
       "resources_deploy_codex",
       "resources_deploy_codex_cleanup",
@@ -1603,7 +1628,7 @@
       "resources_deploy_codex_has_dep_exact",
       "resources_deploy_codex_has_dep_prefix"
     ],
-    "77": [
+    "76": [
       "c_users_johnny_cage_dev_skysthelimit_collab_agents_skills_deploy_to_vercel_resources_deploy_sh__entry",
       "resources_deploy",
       "resources_deploy_cleanup",
@@ -1611,7 +1636,7 @@
       "resources_deploy_has_dep_exact",
       "resources_deploy_has_dep_prefix"
     ],
-    "78": [
+    "77": [
       "imagegen_frontend_web_skill_md",
       "industrial_brutalist_ui_skill_md",
       "minimalist_ui_skill_md",
@@ -1619,7 +1644,7 @@
       "stitch_design_taste_design_md",
       "stitch_design_taste_skill_md"
     ],
-    "79": [
+    "78": [
       "lib_cost_coverage",
       "lib_cost_coverage_classifyservice",
       "lib_cost_coverage_computecostcoverage",
@@ -1627,7 +1652,7 @@
       "lib_cost_coverage_rendercostcoveragemarkdown",
       "lib_cost_coverage_service_dimension"
     ],
-    "80": [
+    "79": [
       "lib_queries",
       "lib_queries_defaultnormalize",
       "lib_queries_normalizecoldstart",
@@ -1635,15 +1660,7 @@
       "lib_queries_queries",
       "lib_vercel_normalizesummary"
     ],
-    "81": [
-      "scanners_unoptimized_image",
-      "scanners_unoptimized_image_isjsxlike",
-      "scanners_unoptimized_image_isnextconfig",
-      "scanners_unoptimized_image_metadata",
-      "scanners_unoptimized_image_scan",
-      "scanners_unoptimized_image_snippet"
-    ],
-    "82": [
+    "80": [
       "scripts_generate_brand_assets",
       "scripts_generate_brand_assets_add_overlays",
       "scripts_generate_brand_assets_composite",
@@ -1651,7 +1668,7 @@
       "scripts_generate_brand_assets_square_composite",
       "scripts_generate_brand_assets_tint"
     ],
-    "83": [
+    "81": [
       "scripts_test_accessibility",
       "scripts_test_accessibility_brandcolors",
       "scripts_test_accessibility_calculatecontrast",
@@ -1659,1165 +1676,1134 @@
       "scripts_test_accessibility_getluminance",
       "scripts_test_accessibility_getrgb"
     ],
-    "84": [
+    "82": [
       "explorer_analysismd_analysis_report",
       "explorer_briefingmd_explorer_mission",
       "explorer_handoffmd_explorer_handoff",
       "explorer_original_request_explorer_task",
       "explorer_progressmd_progress_tracker"
     ],
-    "85": [
+    "83": [
       "gates_external_api_slow",
       "gates_external_api_slow_extractcallcounts",
       "gates_external_api_slow_extractexternalapis",
       "gates_external_api_slow_gate",
       "gates_external_api_slow_metadata"
     ],
-    "86": [
-      "gates_index",
-      "gates_index_gates",
-      "gates_region_misconfig",
-      "gates_region_misconfig_gate",
-      "gates_region_misconfig_metadata"
-    ],
-    "87": [
+    "84": [
       "gates_platform_bot_protection",
       "gates_platform_bot_protection_computebotshare",
       "gates_platform_bot_protection_gate",
       "gates_platform_bot_protection_metadata",
       "gates_platform_bot_protection_totalrequestsfromsignals"
     ],
-    "88": [
+    "85": [
       "gates_platform_fluid_compute",
       "gates_platform_fluid_compute_extracthighcoldroutes",
       "gates_platform_fluid_compute_extractslowhotroutes",
       "gates_platform_fluid_compute_gate",
       "gates_platform_fluid_compute_metadata"
     ],
-    "89": [
+    "86": [
       "gates_route_errors",
       "gates_route_errors_extracterrors",
       "gates_route_errors_extractfromstatusrows",
       "gates_route_errors_gate",
       "gates_route_errors_metadata"
     ],
-    "90": [
+    "87": [
       "gates_slow_route",
       "gates_slow_route_extracterrorratesbyroute",
       "gates_slow_route_extractfunctionroutes",
       "gates_slow_route_gate",
       "gates_slow_route_metadata"
     ],
-    "91": [
+    "88": [
       "gates_types_d",
       "gates_types_d_candidate",
       "gates_types_d_candidatescope",
       "gates_types_d_gatemetadata",
       "gates_types_d_signals"
     ],
-    "92": [
+    "89": [
       "gates_uncached_route",
       "gates_uncached_route_extractcachehitrates",
       "gates_uncached_route_extractmethodshares",
       "gates_uncached_route_gate",
       "gates_uncached_route_metadata"
     ],
-    "93": [
+    "90": [
       "gates_usage_spike_triage",
       "gates_usage_spike_triage_aggregateskustats",
       "gates_usage_spike_triage_daytotal",
       "gates_usage_spike_triage_gate",
       "gates_usage_spike_triage_metadata"
     ],
-    "94": [
+    "91": [
       "release_create_release",
       "release_deploy_production",
       "release_pipeline",
       "release_validate",
       "release_workflow"
     ],
-    "95": [
+    "92": [
       "scripts_generate_sitemap",
       "scripts_generate_sitemap_generatesitemap",
       "scripts_generate_sitemap_paintingservicesslugs",
       "scripts_generate_sitemap_serviceareasslugs",
       "scripts_generate_sitemap_staticroutes"
     ],
-    "96": [
+    "93": [
       "sections_animation",
       "sections_core_rendering",
       "sections_list_performance",
       "sections_scroll_performance",
       "template_rule_template"
     ],
-    "97": [
-      "src_middleware",
-      "src_middleware_config",
-      "src_middleware_middleware",
+    "94": [
+      "src_proxy",
+      "src_proxy_config",
+      "src_proxy_proxy",
       "supabase_middleware",
       "supabase_middleware_updatesession"
     ],
-    "98": [
+    "95": [
       "test_output_utf8_env",
       "test_output_utf8_pagetransition",
       "test_output_utf8_responsiveimage",
       "test_output_utf8_reviewpage",
       "test_output_utf8_trackevent"
     ],
-    "99": [
+    "96": [
       "verceloptimize_agents",
       "verceloptimize_candidates",
       "verceloptimize_contributing",
       "verceloptimize_readme",
       "verceloptimize_skill"
     ],
-    "100": [
+    "97": [
       "briefing_m2_explorer_3_compliance_audit",
       "handoff_m2_compliance_audit",
       "notes_copywriting_and_hooks",
       "notes_landing_page_content"
     ],
-    "101": [
+    "98": [
       "briefing_sub_orch_briefing",
       "m2_explorer_1_handoff_report",
       "original_request_sub_orch_original_request",
       "scope_scope"
     ],
-    "102": [
+    "99": [
       "cache-components-suspense-dedupe-pitfall_cache_components_suspense_dedupe_pitfall",
       "cache-components-suspense-dedupe-pitfall_cachecomponents_config",
       "cache-components-suspense-dedupe-pitfall_use_cache",
       "dynamic-rendering-traps_dynamic_rendering_traps"
     ],
-    "103": [
+    "100": [
       "ci_deploy_preview",
       "ci_pipeline",
       "ci_validate",
       "ci_workflow"
     ],
-    "104": [
+    "101": [
       "conn_idle_timeout_idle_connection_timeouts",
       "conn_limits_connection_limits",
       "conn_pooling_connection_pooling",
       "conn_prepared_statements_prepared_statements_pooling"
     ],
-    "105": [
+    "102": [
       "data_batch_inserts_batch_inserts",
       "data_n_plus_one_eliminate_n_plus_one",
       "data_pagination_cursor_pagination",
       "data_upsert_upsert_operations"
     ],
-    "106": [
+    "103": [
       "external-api-critical-path-platform_cross_framework_external_api_critical_path",
       "external-api-critical-path_external_api_critical_path",
       "external-api-critical-path_vercel_react_best_practices_async_parallel",
       "external-api-critical-path_vercel_react_best_practices_server_parallel_fetching"
     ],
-    "107": [
-      "gates_build_minutes_fanout",
-      "gates_build_minutes_fanout_gate",
-      "gates_build_minutes_fanout_metadata",
-      "gates_build_minutes_fanout_unique"
-    ],
-    "108": [
+    "104": [
       "gates_cold_start",
       "gates_cold_start_extractcoldstarts",
       "gates_cold_start_gate",
       "gates_cold_start_metadata"
     ],
-    "109": [
+    "105": [
       "gates_isr_overrevalidation",
       "gates_isr_overrevalidation_extractrows",
       "gates_isr_overrevalidation_gate",
       "gates_isr_overrevalidation_metadata"
     ],
-    "110": [
+    "106": [
       "gates_middleware_heavy",
       "gates_middleware_heavy_gate",
       "gates_middleware_heavy_metadata",
       "gates_middleware_heavy_sumrows"
     ],
-    "111": [
+    "107": [
       "gates_observability_events_attribution",
       "gates_observability_events_attribution_gate",
       "gates_observability_events_attribution_metadata",
       "gates_observability_events_attribution_sumbilled"
     ],
-    "112": [
+    "108": [
       "inspect_images",
       "inspect_images_ai",
       "inspect_images_analyze",
       "inspect_images_main"
     ],
-    "113": [
+    "109": [
       "lib_render_report_candidatefordisplay",
       "lib_render_report_displaycandidateobject",
       "lib_render_report_displaycandidateref",
       "lib_render_report_parsecandidateref"
     ],
-    "114": [
+    "110": [
       "lock_advisory_advisory_locks",
       "lock_deadlock_prevention_deadlock_prevention",
       "lock_short_transactions_short_transactions",
       "lock_skip_locked_skip_locked_queues"
     ],
-    "115": [
+    "111": [
       "query-index-types_brin_index",
       "query-index-types_gin_index",
       "query-index-types_gist_index",
       "query-index-types_hash_index"
     ],
-    "116": [
-      "scanners_middleware_broad_matcher",
-      "scanners_middleware_broad_matcher_isapplicable",
-      "scanners_middleware_broad_matcher_metadata",
-      "scanners_middleware_broad_matcher_scan"
-    ],
-    "117": [
-      "scanners_missing_cache_headers",
-      "scanners_missing_cache_headers_isapplicable",
-      "scanners_missing_cache_headers_metadata",
-      "scanners_missing_cache_headers_scan"
-    ],
-    "118": [
-      "scanners_region_pin_in_config",
-      "scanners_region_pin_in_config_metadata",
-      "scanners_region_pin_in_config_parseregionlist",
-      "scanners_region_pin_in_config_scan"
-    ],
-    "119": [
+    "112": [
       "scripts_verify_dns",
       "scripts_verify_dns_resolveany",
       "scripts_verify_dns_resolvecname",
       "scripts_verify_dns_verifydns"
     ],
-    "120": [
+    "113": [
       "service_area_page",
       "service_area_page_metadata",
       "service_area_page_servicearea",
       "views_servicearea_serviceareapage"
     ],
-    "121": [
+    "114": [
       "strings",
       "strings_backupdir",
       "strings_findstrings",
       "strings_workspaceroot"
     ],
-    "122": [
+    "115": [
       "tests_e2e_test",
       "tests_e2e_test_calculatesimulatedcosts",
       "tests_e2e_test_exists",
       "tests_e2e_test_read"
     ],
-    "123": [
+    "116": [
       "about_page",
       "about_page_about",
       "about_page_metadata"
     ],
-    "124": [
+    "117": [
       "advanced_effect_event_deps",
       "advanced_event_handler_refs",
       "react_useeffectevent"
     ],
-    "125": [
+    "118": [
       "animation_gesture_detector_press",
       "react_compiler_reanimated_shared_values",
       "ui_pressable"
     ],
-    "126": [
+    "119": [
       "capabilities_page",
       "capabilities_page_capabilities",
       "capabilities_page_metadata"
     ],
-    "127": [
+    "120": [
       "client-swr-dedup",
       "js-cache-function-results",
       "js-cache-property-access"
     ],
-    "128": [
+    "121": [
       "commercial_page_servicecommercial",
       "src_app_services_commercial_page_tsx_commercial_page",
       "src_app_services_commercial_page_tsx_commercial_page_metadata"
     ],
-    "129": [
+    "122": [
       "contact_page",
       "contact_page_contact",
       "contact_page_metadata"
     ],
-    "130": [
+    "123": [
       "design_color_palette",
       "design_visual_theme",
       "product_brand_personality"
     ],
-    "131": [
+    "124": [
       "exterior_page",
       "exterior_page_metadata",
       "exterior_page_serviceexterior"
     ],
-    "132": [
+    "125": [
       "interior_page",
       "interior_page_metadata",
       "interior_page_serviceinterior"
     ],
-    "133": [
+    "126": [
       "landingpage_landing_page_component",
       "landingpages_landing_pages",
       "markets_markets_data"
     ],
-    "134": [
+    "127": [
       "monitor_explain_analyze_explain_analyze",
       "monitor_pg_stat_statements_pg_stat_statements",
       "monitor_vacuum_analyze_vacuum_analyze"
     ],
-    "135": [
+    "128": [
       "post_response_work_waituntil",
       "route_error_durable_offload",
       "route_error_runtime_limits"
     ],
-    "136": [
+    "129": [
       "projects_page",
       "projects_page_metadata",
       "projects_page_projects"
     ],
-    "137": [
+    "130": [
       "review_page",
       "review_page_metadata",
       "review_page_review"
     ],
-    "138": [
+    "131": [
       "scripts_ci_check",
       "scripts_ci_check_runcicheck",
       "scripts_ci_check_runstep"
     ],
-    "139": [
+    "132": [
       "scripts_run_db_migrations",
       "scripts_run_db_migrations_client",
       "scripts_run_db_migrations_run"
     ],
-    "140": [
+    "133": [
       "scripts_validate_schemas",
       "scripts_validate_schemas_gethtmlfiles",
       "scripts_validate_schemas_validateschemas"
     ],
-    "141": [
+    "134": [
       "services_page",
       "services_page_metadata",
       "services_page_services"
     ],
-    "142": [
+    "135": [
       "skill_design_taste_frontend_design_taste_skill",
       "skill_gpt_taste_gsap_motion_skill",
       "skill_high_end_visual_design_agency_skill"
     ],
-    "143": [
+    "136": [
       "striping_page",
       "striping_page_metadata",
       "striping_page_servicestriping"
     ],
-    "144": [
+    "137": [
       "taskmd_e2e_testing_suite",
       "taskmd_test_infra_md",
       "taskmd_test_ready_md"
     ],
-    "145": [
+    "138": [
       "taskmd_estimate_tsx",
       "taskmd_leadform_tsx",
       "taskmd_offline_first_lead_queue_calculator_review_routing"
     ],
-    "146": [
+    "139": [
       "advanced_init_once",
       "react_initializing_application"
     ],
-    "147": [
+    "140": [
       "architecture_md",
       "troubleshooting_md"
     ],
-    "148": [
+    "141": [
       "async_cheap_condition_before_await_check_cheap_conditions_before_async_flags",
       "async_defer_await_defer_await_until_needed"
     ],
-    "149": [
+    "142": [
       "client-localstorage-schema",
       "js-cache-storage"
     ],
-    "150": [
+    "143": [
       "client-passive-event-listeners",
       "js-batch-dom-css"
     ],
-    "151": [
+    "144": [
       "client_event_listeners_deduplicate_global_event_listeners",
       "swr_subscription"
     ],
-    "152": [
+    "145": [
       "cold-start-initialization-bundle_cold_start_initialization_and_bundle_weight",
       "core-web-vitals-client-bottlenecks_core_web_vitals_client_bottlenecks"
     ],
-    "153": [
+    "146": [
       "components_scrolltotop",
       "components_scrolltotop_scrolltotop"
     ],
-    "154": [
+    "147": [
       "design_layout_radius",
       "product_design_principles"
     ],
-    "155": [
+    "148": [
       "design_motion_transitions",
       "product_accessibility"
     ],
-    "156": [
+    "149": [
       "js-combine-iterations",
       "js-flatmap-filter"
     ],
-    "157": [
+    "150": [
       "lead_events_table",
       "leads_table"
     ],
-    "158": [
+    "151": [
       "m2_reviewer_1_progress",
       "m2_reviewer_2_progress"
     ],
-    "159": [
+    "152": [
       "next_config",
       "next_config_nextconfig"
     ],
-    "160": [
+    "153": [
       "react_state_dispatcher",
       "rerender_functional_setstate"
     ],
-    "161": [
+    "154": [
       "schema-data-types_bigint_identity",
       "schema-primary-keys_uuidv7"
     ],
-    "162": [
+    "155": [
       "scripts_compress_images",
       "scripts_compress_images_compress_images"
     ],
-    "163": [
+    "156": [
       "scripts_db_migrate",
       "scripts_db_migrate_runmigrations"
     ],
-    "164": [
+    "157": [
       "scripts_ping_google",
       "scripts_ping_google_verifysitemapingestion"
     ],
-    "165": [
+    "158": [
       "scripts_rename_imports",
       "scripts_rename_imports_processdirectory"
     ],
-    "166": [
+    "159": [
       "scripts_replace_image_refs",
       "scripts_replace_image_refs_replace_image_refs"
     ],
-    "167": [
+    "160": [
       "scripts_verify_csp",
       "scripts_verify_csp_verifycsp"
     ],
-    "168": [
+    "161": [
       "sections_react_state",
       "sections_state_architecture"
     ],
-    "169": [
+    "162": [
       "server_hoist_static_io",
       "server_no_shared_module_state"
     ],
-    "170": [
+    "163": [
       "skill_image_to_code_image_to_code_skill",
       "skill_imagegen_frontend_mobile_mobile_skill"
     ],
-    "171": [
+    "164": [
       "supabase_client",
       "supabase_client_createclient"
     ],
-    "172": [
+    "165": [
       "supabase_server",
       "supabase_server_createclient"
     ],
-    "173": [
+    "166": [
       "taskmd_api_leads_ts",
       "taskmd_performance_seo_build_hygiene"
     ],
-    "174": [
+    "167": [
       "tests_remediation_test",
       "tests_remediation_test_read"
     ],
-    "175": [
+    "168": [
       "tests_site_architecture_test",
       "tests_site_architecture_test_read"
     ],
-    "176": [
+    "169": [
       "vercel-cli-with-tokens_vercel_cli",
       "vercel-composition-patterns_composercontext"
     ],
-    "177": [
+    "170": [
       "advanced_jsonb_indexing_jsonb_indexing"
     ],
-    "178": [
+    "171": [
       "advanced_useeffectevent_for_stable_callback_refs"
     ],
-    "179": [
+    "172": [
       "agent_source_notes_inspected_skills"
     ],
-    "180": [
+    "173": [
       "animation_derived_value"
     ],
-    "181": [
+    "174": [
       "architecture_callflow_html"
     ],
-    "182": [
+    "175": [
       "archived_hubspot_config_yml"
     ],
-    "183": [
+    "176": [
       "astroedgemiddlewarescope_astro_edge_middleware_scope"
     ],
-    "184": [
+    "177": [
       "astrooutputmodeandisr_astro_output_mode_and_isr"
     ],
-    "185": [
+    "178": [
       "briefing_sub_orch_e2e"
     ],
-    "186": [
+    "179": [
       "bug_report_md"
     ],
-    "187": [
+    "180": [
       "buildminutesfanout_gate"
     ],
-    "188": [
+    "181": [
       "cdn-cache-auth-safety_cdn_cache_auth_safety"
     ],
-    "189": [
+    "182": [
       "coldstart_gate"
     ],
-    "190": [
+    "183": [
       "comarketing_skill"
     ],
-    "191": [
+    "184": [
       "config_yml"
     ],
-    "192": [
+    "185": [
       "context_dynamic_operations_data"
     ],
-    "193": [
+    "186": [
       "contextmd_website_context_map"
     ],
-    "194": [
+    "187": [
       "cwvpoor_gate"
     ],
-    "195": [
+    "188": [
       "database-egress-pooling-region_database_region_and_connection_pressure"
     ],
-    "196": [
+    "189": [
       "dependabot_yml"
     ],
-    "197": [
+    "190": [
       "deployment_md"
     ],
-    "198": [
+    "191": [
       "design_system_compound_components"
     ],
-    "199": [
+    "192": [
       "design_typography"
     ],
-    "200": [
+    "193": [
       "errors_md"
     ],
-    "201": [
+    "194": [
       "externalapislow_gate"
     ],
-    "202": [
+    "195": [
       "fadein_fadein"
     ],
-    "203": [
+    "196": [
       "fast-data-transfer-payloads_fast_data_transfer_payloads"
     ],
-    "204": [
+    "197": [
       "feature_request_md"
     ],
-    "205": [
+    "198": [
       "fluid-compute-caveats_fluid_compute_caveats"
     ],
-    "206": [
+    "199": [
       "function-duration-io-and-after_function_duration_io_and_after"
     ],
-    "207": [
+    "200": [
       "function-invocation-reduction_function_invocation_reduction"
     ],
-    "208": [
+    "201": [
       "function-region-misconfiguration-ttfb_function_region_misconfiguration_ttfb"
     ],
-    "209": [
+    "202": [
       "googlef6332d71bd3f2a2e_verification"
     ],
-    "210": [
+    "203": [
       "hardgates_applyhardgates"
     ],
-    "211": [
+    "204": [
       "help_txt"
     ],
-    "212": [
+    "205": [
       "hubspot_and_sheets_setup_md"
     ],
-    "213": [
+    "206": [
       "image-optimization-cost-control_image_optimization_cost_control"
     ],
-    "214": [
+    "207": [
       "impeccable_skill"
     ],
-    "215": [
+    "208": [
       "imports_design_system_folder"
     ],
-    "216": [
+    "209": [
       "indexmd_repository_index"
     ],
-    "217": [
+    "210": [
       "isr-revalidation-static-generation_isr_revalidation_and_static_generation"
     ],
-    "218": [
+    "211": [
       "isroverrevalidation_gate"
     ],
-    "219": [
+    "212": [
       "js-early-exit"
     ],
-    "220": [
+    "213": [
       "js_request_idle_callback"
     ],
-    "221": [
+    "214": [
       "js_set_map_lookups"
     ],
-    "222": [
+    "215": [
       "js_tosorted_immutable"
     ],
-    "223": [
+    "216": [
       "lib_throttle_getmetricsemaphore"
     ],
-    "224": [
+    "217": [
       "lighthouserc_json"
     ],
-    "225": [
+    "218": [
       "list_performance_images"
     ],
-    "226": [
+    "219": [
       "llms_txt"
     ],
-    "227": [
+    "220": [
       "m2_explorer_1_progress"
     ],
-    "228": [
+    "221": [
       "m2_explorer_2_progress"
     ],
-    "229": [
+    "222": [
       "maintenance_yml"
     ],
-    "230": [
+    "223": [
       "markets_ts"
     ],
-    "231": [
+    "224": [
       "metadata_json"
     ],
-    "232": [
+    "225": [
       "middleware-proxy-edge-cost_middleware_edge_cost"
     ],
-    "233": [
+    "226": [
       "middlewareheavy_gate"
     ],
-    "234": [
+    "227": [
       "monorepo_single_dependency_versions"
     ],
-    "235": [
+    "228": [
       "next-fetch-revalidate-floor_next_fetch_revalidation_floor"
     ],
-    "236": [
+    "229": [
       "next-font-cls-self-hosting_next_font_cls_guardrail"
     ],
-    "237": [
+    "230": [
       "next-heavy-ui-lazy-load-boundaries_next_heavy_ui_lazy_load_boundaries"
     ],
-    "238": [
+    "231": [
       "next-image-lcp-preload-sizes_next_image_lcp_preload_and_sizes"
     ],
-    "239": [
+    "232": [
       "next-route-handler-get-cache-defaults_next_route_handler_get_cache_defaults"
     ],
-    "240": [
+    "233": [
       "next-script-third-party-strategy_next_script_third_party Ty- party_strategy"
     ],
-    "241": [
+    "234": [
       "next_env_d"
     ],
-    "242": [
+    "235": [
       "nextjs-version-cache-semantics_nextjs_cache_semantics_by_version"
     ],
-    "243": [
+    "236": [
       "not-found-catchall-request-waste_not_found_and_catch_all_request_waste"
     ],
-    "244": [
+    "237": [
       "nuxt-route-rules-cache-isr_nuxt_routules_cache_and_isr"
     ],
-    "245": [
+    "238": [
       "observabilityeventsattribution_gate"
     ],
-    "246": [
+    "239": [
       "organization_md"
     ],
-    "247": [
+    "240": [
       "pagemeta_pagemeta"
     ],
-    "248": [
+    "241": [
       "pagetransition_pagetransition"
     ],
-    "249": [
+    "242": [
       "platformbotprotection_gate"
     ],
-    "250": [
+    "243": [
       "platformfluidcompute_gate"
     ],
-    "251": [
+    "244": [
       "postcss_config"
     ],
-    "252": [
+    "245": [
       "pricing_md"
     ],
-    "253": [
+    "246": [
       "product_purpose"
     ],
-    "254": [
+    "247": [
       "product_users"
     ],
-    "255": [
+    "248": [
       "production_audit_md"
     ],
-    "256": [
+    "249": [
       "progress_create_test_infra_md"
     ],
-    "257": [
+    "250": [
       "progress_generate_handoff_report"
     ],
-    "258": [
+    "251": [
       "progress_implement_e2e_test_suite"
     ],
-    "259": [
+    "252": [
       "progress_investigate_codebase"
     ],
-    "260": [
+    "253": [
       "progress_read_test_plan"
     ],
-    "261": [
+    "254": [
       "progress_run_npm_test"
     ],
-    "262": [
+    "255": [
       "progress_scan_no_emojis"
     ],
-    "263": [
+    "256": [
       "pull_request_template_md"
     ],
-    "264": [
+    "257": [
       "react_state_fallback"
     ],
-    "265": [
+    "258": [
       "regionmisconfig_gate"
     ],
-    "266": [
+    "259": [
       "rendering_activity"
     ],
-    "267": [
+    "260": [
       "rendering_animate_svg_wrapper"
     ],
-    "268": [
+    "261": [
       "rendering_content_visibility"
     ],
-    "269": [
+    "262": [
       "rendering_hoist_jsx"
     ],
-    "270": [
+    "263": [
       "rendering_hydration_no_flicker"
     ],
-    "271": [
+    "264": [
       "rendering_hydration_suppress_warning"
     ],
-    "272": [
+    "265": [
       "rendering_resource_hints"
     ],
-    "273": [
+    "266": [
       "rendering_script_defer_async"
     ],
-    "274": [
+    "267": [
       "rendering_svg_precision"
     ],
-    "275": [
+    "268": [
       "rendering_usetransition_loading"
     ],
-    "276": [
+    "269": [
       "repositorymd_repo_config"
     ],
-    "277": [
+    "270": [
       "rerender_defer_reads"
     ],
-    "278": [
+    "271": [
       "rerender_dependencies"
     ],
-    "279": [
+    "272": [
       "rerender_lazy_state_init"
     ],
-    "280": [
+    "273": [
       "rerender_memo"
     ],
-    "281": [
+    "274": [
       "rerender_memo_with_default_value"
     ],
-    "282": [
+    "275": [
       "rerender_move_effect_to_event"
     ],
-    "283": [
+    "276": [
       "rerender_simple_expression_in_memo"
     ],
-    "284": [
+    "277": [
       "rerender_split_combined_hooks"
     ],
-    "285": [
+    "278": [
       "rerender_transitions"
     ],
-    "286": [
+    "279": [
       "rerender_use_deferred_value"
     ],
-    "287": [
+    "280": [
       "rerender_use_ref_transient_values"
     ],
-    "288": [
+    "281": [
       "robots_txt"
     ],
-    "289": [
+    "282": [
       "routeerrors_gate"
     ],
-    "290": [
+    "283": [
       "rules_md"
     ],
-    "291": [
+    "284": [
       "scannerdriven_gate"
     ],
-    "292": [
+    "285": [
       "schemalowercaseidentifiers_use_lowercase_identifiers_for_compatibility"
     ],
-    "293": [
+    "286": [
       "scroll_position_no_state"
     ],
-    "294": [
+    "287": [
       "sections_design_system"
     ],
-    "295": [
+    "288": [
       "sections_fonts"
     ],
-    "296": [
+    "289": [
       "sections_javascript"
     ],
-    "297": [
+    "290": [
       "sections_monorepo"
     ],
-    "298": [
+    "291": [
       "sections_navigation"
     ],
-    "299": [
+    "292": [
       "sections_react_compiler"
     ],
-    "300": [
+    "293": [
       "sections_third_party_dependencies"
     ],
-    "301": [
+    "294": [
       "sections_user_interface"
     ],
-    "302": [
+    "295": [
       "security_scan_workflow"
     ],
-    "303": [
+    "296": [
       "selectcandidates_selectlaunchcandidates"
     ],
-    "304": [
+    "297": [
       "self_healing_agent_md"
     ],
-    "305": [
+    "298": [
       "server_after_nonblocking"
     ],
-    "306": [
+    "299": [
       "server_auth_actions"
     ],
-    "307": [
+    "300": [
       "server_cache_lru"
     ],
-    "308": [
+    "301": [
       "server_cache_react"
     ],
-    "309": [
+    "302": [
       "server_dedup_props"
     ],
-    "310": [
+    "303": [
       "server_parallel_fetching"
     ],
-    "311": [
+    "304": [
       "server_parallel_nested_fetching"
     ],
-    "312": [
+    "305": [
       "server_serialization"
     ],
-    "313": [
+    "306": [
       "sitemap_structure_md"
     ],
-    "314": [
+    "307": [
       "skill_brandkit_brandkit_skill"
     ],
-    "315": [
+    "308": [
       "skill_deploy_to_vercel_vercel_deploy_skill"
     ],
-    "316": [
+    "309": [
       "skill_web_design_guidelines"
     ],
-    "317": [
+    "310": [
       "skill_writing_guidelines"
     ],
-    "318": [
+    "311": [
       "skills_md"
     ],
-    "319": [
+    "312": [
       "slowroute_gate"
     ],
-    "320": [
+    "313": [
       "src_lib_context_analytics"
     ],
-    "321": [
+    "314": [
       "src_lib_context_contact"
     ],
-    "322": [
+    "315": [
       "src_lib_context_seo"
     ],
-    "323": [
+    "316": [
       "src_types_d"
     ],
-    "324": [
+    "317": [
       "state_ground_truth"
     ],
-    "325": [
+    "318": [
       "support_topics_auth_preserving_parallelization_md"
     ],
-    "326": [
+    "319": [
       "support_topics_bot_protection_product_guardrails_md"
     ],
-    "327": [
+    "320": [
       "support_topics_build_minutes_monorepo_fanout_md"
     ],
-    "328": [
+    "321": [
       "support_topics_cache_components_static_shell_boundaries_md"
     ],
-    "329": [
+    "322": [
       "task md_api_manychat_ts"
     ],
-    "330": [
+    "323": [
       "taskmd_compliance_contractor_registration"
     ],
-    "331": [
+    "324": [
       "taskmd_final_verification_adversarial_hardening"
     ],
-    "332": [
+    "325": [
       "taskmd_tasks_checklist"
     ],
-    "333": [
+    "326": [
       "taskmd_visual_redesign_contrast_emoji_ban"
     ],
-    "334": [
+    "327": [
       "ui_image_gallery"
     ],
-    "335": [
+    "328": [
       "ui_measure_views"
     ],
-    "336": [
+    "329": [
       "ui_menus"
     ],
-    "337": [
+    "330": [
       "ui_native_modals"
     ],
-    "338": [
+    "331": [
       "ui_safe_area_scroll"
     ],
-    "339": [
+    "332": [
       "ui_scrollview_content_inset"
     ],
-    "340": [
+    "333": [
       "ui_styling"
     ],
-    "341": [
+    "334": [
       "uncachedroute_gate"
     ],
-    "342": [
+    "335": [
       "usagespiketriage_gate"
     ],
-    "343": [
+    "336": [
       "util_extractroute"
     ],
-    "344": [
+    "337": [
       "util_lineof"
     ],
-    "345": [
+    "338": [
       "vercel_optimize_metadata"
     ],
-    "346": [
+    "339": [
       "vercel_readme_txt"
     ],
-    "347": [
+    "340": [
       "vercel_repo_config"
     ],
-    "348": [
+    "341": [
       "verifyclaim_verifyclaim"
     ],
-    "349": [
+    "342": [
       "visual_asset_map_assets"
     ],
-    "350": [
+    "343": [
       "workspaceresolver_resolveworkspaceimports"
     ]
   },
   "cohesion": {
     "0": 0.05690834473324213,
     "1": 0.052464947987336044,
-    "2": 0.08587570621468926,
-    "3": 0.06028368794326241,
-    "4": 0.1066066066066066,
-    "5": 0.14285714285714285,
-    "6": 0.06554621848739496,
-    "7": 0.06818181818181818,
-    "8": 0.10317460317460317,
-    "9": 0.09686609686609686,
-    "10": 0.09116809116809117,
-    "11": 0.11076923076923077,
-    "12": 0.16615384615384615,
-    "13": 0.24923076923076923,
-    "14": 0.12666666666666668,
+    "2": 0.055191256830601096,
+    "3": 0.08587570621468926,
+    "4": 0.06028368794326241,
+    "5": 0.1066066066066066,
+    "6": 0.14285714285714285,
+    "7": 0.06554621848739496,
+    "8": 0.06818181818181818,
+    "9": 0.10317460317460317,
+    "10": 0.09686609686609686,
+    "11": 0.09116809116809117,
+    "12": 0.11076923076923077,
+    "13": 0.16615384615384615,
+    "14": 0.24923076923076923,
     "15": 0.16,
     "16": 0.08,
-    "17": 0.1422924901185771,
-    "18": 0.16600790513833993,
-    "19": 0.17391304347826086,
-    "20": 0.1645021645021645,
-    "21": 0.1645021645021645,
-    "22": 0.17142857142857143,
-    "23": 0.10952380952380952,
-    "24": 0.11578947368421053,
-    "25": 0.18947368421052632,
-    "26": 0.1,
-    "27": 0.15789473684210525,
+    "17": 0.15217391304347827,
+    "18": 0.1422924901185771,
+    "19": 0.13438735177865613,
+    "20": 0.16600790513833993,
+    "21": 0.17391304347826086,
+    "22": 0.1645021645021645,
+    "23": 0.17142857142857143,
+    "24": 0.10952380952380952,
+    "25": 0.11578947368421053,
+    "26": 0.18947368421052632,
+    "27": 0.1,
     "28": 0.15789473684210525,
     "29": 0.10526315789473684,
     "30": 0.11764705882352941,
     "31": 0.13725490196078433,
-    "32": 0.1568627450980392,
+    "32": 0.1111111111111111,
     "33": 0.1111111111111111,
-    "34": 0.1111111111111111,
+    "34": 0.22058823529411764,
     "35": 0.22058823529411764,
-    "36": 0.22058823529411764,
-    "37": 0.2,
-    "38": 0.23333333333333334,
-    "39": 0.16666666666666666,
-    "40": 0.175,
-    "41": 0.3333333333333333,
-    "42": 0.18095238095238095,
-    "43": 0.25274725274725274,
-    "44": 0.15384615384615385,
-    "45": 0.18681318681318682,
-    "46": 0.4065934065934066,
-    "47": 0.21794871794871795,
-    "48": 0.21212121212121213,
-    "49": 0.3333333333333333,
-    "50": 0.19696969696969696,
-    "51": 0.18181818181818182,
-    "52": 0.34545454545454546,
-    "53": 0.18181818181818182,
-    "54": 0.21818181818181817,
-    "55": 0.24444444444444444,
+    "36": 0.2,
+    "37": 0.23333333333333334,
+    "38": 0.16666666666666666,
+    "39": 0.175,
+    "40": 0.3333333333333333,
+    "41": 0.18095238095238095,
+    "42": 0.25274725274725274,
+    "43": 0.15384615384615385,
+    "44": 0.18681318681318682,
+    "45": 0.4065934065934066,
+    "46": 0.1794871794871795,
+    "47": 0.21212121212121213,
+    "48": 0.3333333333333333,
+    "49": 0.19696969696969696,
+    "50": 0.18181818181818182,
+    "51": 0.34545454545454546,
+    "52": 0.18181818181818182,
+    "53": 0.21818181818181817,
+    "54": 0.24444444444444444,
+    "55": 0.2,
     "56": 0.2,
-    "57": 0.2,
-    "58": 0.2222222222222222,
+    "57": 0.2222222222222222,
+    "58": 0.25,
     "59": 0.3888888888888889,
     "60": 0.3333333333333333,
     "61": 0.25,
     "62": 0.42857142857142855,
     "63": 0.39285714285714285,
-    "64": 0.32142857142857145,
-    "65": 0.25,
-    "66": 0.42857142857142855,
-    "67": 0.2857142857142857,
-    "68": 0.47619047619047616,
+    "64": 0.39285714285714285,
+    "65": 0.32142857142857145,
+    "66": 0.25,
+    "67": 0.42857142857142855,
+    "68": 0.2857142857142857,
     "69": 0.47619047619047616,
     "70": 0.38095238095238093,
     "71": 0.47619047619047616,
     "72": 0.47619047619047616,
-    "73": 0.47619047619047616,
-    "74": 0.6,
-    "75": 0.4,
+    "73": 0.6,
+    "74": 0.4,
+    "75": 0.3333333333333333,
     "76": 0.3333333333333333,
-    "77": 0.3333333333333333,
-    "78": 0.4,
-    "79": 0.4666666666666667,
-    "80": 0.5333333333333333,
-    "81": 0.5333333333333333,
-    "82": 0.7333333333333333,
-    "83": 0.4666666666666667,
-    "84": 0.4,
+    "77": 0.4,
+    "78": 0.4666666666666667,
+    "79": 0.5333333333333333,
+    "80": 0.7333333333333333,
+    "81": 0.4666666666666667,
+    "82": 0.4,
+    "83": 0.6,
+    "84": 0.6,
     "85": 0.6,
-    "86": 0.4,
+    "86": 0.6,
     "87": 0.6,
-    "88": 0.6,
+    "88": 0.4,
     "89": 0.6,
-    "90": 0.6,
-    "91": 0.4,
-    "92": 0.6,
-    "93": 0.5,
-    "94": 0.8,
+    "90": 0.5,
+    "91": 0.8,
+    "92": 0.4,
+    "93": 0.4,
+    "94": 0.4,
     "95": 0.4,
-    "96": 0.4,
-    "97": 0.6,
-    "98": 0.4,
-    "99": 0.6,
-    "100": 0.6666666666666666,
+    "96": 0.6,
+    "97": 0.6666666666666666,
+    "98": 0.6666666666666666,
+    "99": 0.5,
+    "100": 0.8333333333333334,
     "101": 0.6666666666666666,
     "102": 0.5,
-    "103": 0.8333333333333334,
+    "103": 0.5,
     "104": 0.6666666666666666,
-    "105": 0.5,
-    "106": 0.5,
+    "105": 0.6666666666666666,
+    "106": 0.6666666666666666,
     "107": 0.6666666666666666,
     "108": 0.6666666666666666,
     "109": 0.6666666666666666,
     "110": 0.6666666666666666,
-    "111": 0.6666666666666666,
-    "112": 0.6666666666666666,
-    "113": 0.6666666666666666,
-    "114": 0.6666666666666666,
+    "111": 0.5,
+    "112": 0.8333333333333334,
+    "113": 0.5,
+    "114": 0.5,
     "115": 0.5,
     "116": 0.6666666666666666,
-    "117": 0.6666666666666666,
+    "117": 1.0,
     "118": 0.6666666666666666,
-    "119": 0.8333333333333334,
-    "120": 0.5,
-    "121": 0.5,
-    "122": 0.5,
+    "119": 0.6666666666666666,
+    "120": 0.6666666666666666,
+    "121": 0.6666666666666666,
+    "122": 0.6666666666666666,
     "123": 0.6666666666666666,
-    "124": 1.0,
+    "124": 0.6666666666666666,
     "125": 0.6666666666666666,
-    "126": 0.6666666666666666,
-    "127": 0.6666666666666666,
+    "126": 1.0,
+    "127": 1.0,
     "128": 0.6666666666666666,
     "129": 0.6666666666666666,
     "130": 0.6666666666666666,
-    "131": 0.6666666666666666,
+    "131": 1.0,
     "132": 0.6666666666666666,
     "133": 1.0,
-    "134": 1.0,
-    "135": 0.6666666666666666,
+    "134": 0.6666666666666666,
+    "135": 1.0,
     "136": 0.6666666666666666,
     "137": 0.6666666666666666,
-    "138": 1.0,
-    "139": 0.6666666666666666,
+    "138": 0.6666666666666666,
+    "139": 1.0,
     "140": 1.0,
-    "141": 0.6666666666666666,
+    "141": 1.0,
     "142": 1.0,
-    "143": 0.6666666666666666,
-    "144": 0.6666666666666666,
-    "145": 0.6666666666666666,
+    "143": 1.0,
+    "144": 1.0,
+    "145": 1.0,
     "146": 1.0,
     "147": 1.0,
     "148": 1.0,
@@ -3015,14 +3001,7 @@
     "340": 1.0,
     "341": 1.0,
     "342": 1.0,
-    "343": 1.0,
-    "344": 1.0,
-    "345": 1.0,
-    "346": 1.0,
-    "347": 1.0,
-    "348": 1.0,
-    "349": 1.0,
-    "350": 1.0
+    "343": 1.0
   },
   "gods": [
     {
@@ -3134,7 +3113,7 @@
     }
   ],
   "tokens": {
-    "input": 654,
-    "output": 165
+    "input": 0,
+    "output": 0
   }
 }
