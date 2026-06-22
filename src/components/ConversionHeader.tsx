@@ -59,6 +59,22 @@ export default function ConversionHeader() {
     }
   }, []);
 
+  const handleBlur = (e: React.FocusEvent) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setDropdownOpen(false);
+      const button = e.currentTarget.querySelector('button');
+      if (button) {
+        (button as HTMLElement).focus();
+      }
+    }
+  };
+
   return (
     <>
       <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/85 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}>
@@ -93,48 +109,56 @@ export default function ConversionHeader() {
               
               {/* Dropdown Menu */}
               <div 
-                className="relative group py-2"
+                className="relative py-2"
                 onMouseEnter={() => setDropdownOpen(true)}
                 onMouseLeave={() => setDropdownOpen(false)}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
               >
                 <button 
-                  className="relative whitespace-nowrap text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1 cursor-pointer focus:outline-none"
+                  onClick={() => setDropdownOpen(prev => !prev)}
+                  className={`relative whitespace-nowrap text-xs font-bold uppercase tracking-widest transition-colors duration-200 flex items-center gap-1 cursor-pointer focus:outline-none hover:text-white ${dropdownOpen ? 'text-white' : 'text-gray-400'}`}
                   aria-haspopup="true"
                   aria-expanded={dropdownOpen}
                 >
                   More
-                  <ChevronDown size={12} className="transition-transform duration-200 group-hover:rotate-180" />
+                  <ChevronDown size={12} className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 
-                <div 
-                  className="absolute left-0 mt-2 w-48 bg-[#050505] border border-white/10 p-2 flex flex-col gap-1 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
-                  style={{ borderRadius: '0px' }}
-                >
-                  <Link 
-                    href="/service-area" 
-                    data-track="nav_click"
-                    data-track-payload='{"path":"/service-area","label":"Areas"}'
-                    className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                {dropdownOpen && (
+                  <div 
+                    className="absolute left-0 mt-2 w-48 bg-[#050505] border border-white/10 p-2 flex flex-col gap-1 shadow-xl z-50"
+                    style={{ borderRadius: '0px' }}
                   >
-                    Areas
-                  </Link>
-                  <Link 
-                    href="/refer" 
-                    data-track="nav_click"
-                    data-track-payload='{"path":"/refer","label":"Referral"}'
-                    className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
-                  >
-                    Referral
-                  </Link>
-                  <Link 
-                    href="/about" 
-                    data-track="nav_click"
-                    data-track-payload='{"path":"/about","label":"About"}'
-                    className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
-                  >
-                    About
-                  </Link>
-                </div>
+                    <Link 
+                      href="/service-area" 
+                      data-track="nav_click"
+                      data-track-payload={JSON.stringify({ path: '/service-area', label: 'Areas' })}
+                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Areas
+                    </Link>
+                    <Link 
+                      href="/refer" 
+                      data-track="nav_click"
+                      data-track-payload={JSON.stringify({ path: '/refer', label: 'Referral' })}
+                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Referral
+                    </Link>
+                    <Link 
+                      href="/about" 
+                      data-track="nav_click"
+                      data-track-payload={JSON.stringify({ path: '/about', label: 'About' })}
+                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      About
+                    </Link>
+                  </div>
+                )}
               </div>
 
               <NavLink to="/contact">Contact</NavLink>

@@ -65,12 +65,14 @@ powershell -ExecutionPolicy Bypass -File "C:\Users\Johnny Cage\DEV\compile-all.p
 ```
 
 To update or query the project graph directly using the official Graphify CLI:
+
 - **AST-only local update (fast/free):** `graphify update .`
 - **Full semantic extraction (LLM-based):** `graphify extract . --backend gemini`
 - **Re-run clustering & report generation:** `graphify cluster-only .`
 - **Query the graph structure:** `graphify query "question"`
 
 Keep the wiki interlinked:
+
 - Every entity gets a page
 - Every page links back to `INDEX.md` within two hops
 - Every factual code or architecture claim cites a path or evidence ID

@@ -30,7 +30,7 @@ function rateLimit(ip: string): boolean {
 }
 
 // Database Ingestion and Event Logging Helpers
-async function executeDbQuery(queryText: string, params: any[]) {
+async function executeDbQuery(queryText: string, params: unknown[]) {
   const rawConnectionString = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
   if (!rawConnectionString) {
     console.warn("Database connection string missing. Skipping database execution.");
@@ -56,7 +56,37 @@ async function executeDbQuery(queryText: string, params: any[]) {
   }
 }
 
-async function saveLeadToDb(lead: any) {
+interface LeadPayload extends Record<string, unknown> {
+  leadId: string;
+  source?: unknown;
+  name?: unknown;
+  phone?: unknown;
+  email?: unknown;
+  city?: unknown;
+  projectAddress?: unknown;
+  project_address?: unknown;
+  market?: unknown;
+  projectType?: unknown;
+  project_type?: unknown;
+  propertyType?: unknown;
+  property_type?: unknown;
+  timeline?: unknown;
+  budget?: unknown;
+  contactMethod?: unknown;
+  contact_method?: unknown;
+  notes?: unknown;
+  utm_source?: unknown;
+  utmSource?: unknown;
+  utm_medium?: unknown;
+  utmMedium?: unknown;
+  utm_campaign?: unknown;
+  utmCampaign?: unknown;
+  page?: unknown;
+  photosUrl?: unknown;
+  photos_url?: unknown;
+}
+
+async function saveLeadToDb(lead: LeadPayload) {
   const query = `
     INSERT INTO public.leads (
       lead_id, source, name, phone, email, city, project_address, market, 
@@ -338,7 +368,7 @@ async function sendToHubspot(payload: Record<string, unknown>) {
         });
 
         if (searchRes.ok) {
-          const searchData = await searchRes.json() as any;
+          const searchData = (await searchRes.json()) as { results?: { id: string }[] };
           if (searchData.results && searchData.results.length > 0) {
             contactId = searchData.results[0].id;
           }
@@ -509,7 +539,7 @@ export async function POST(req: NextRequest) {
       })()
     ]);
 
-    const configured = results.some((result) => result.status === 'fulfilled' && (result.value as any).configured);
+    const configured = results.some((result) => result.status === 'fulfilled' && (result.value as { configured: boolean }).configured);
     const failed = results.find((result) => result.status === 'rejected');
 
     if (failed) {

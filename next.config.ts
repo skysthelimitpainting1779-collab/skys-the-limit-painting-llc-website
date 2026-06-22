@@ -18,7 +18,6 @@ const nextConfig: NextConfig = {
       { source: "/services/commercial", destination: "/commercial", permanent: true },
       { source: "/services/striping", destination: "/public-sector", permanent: true },
       { source: "/services/pavement-marking", destination: "/public-sector", permanent: true },
-      { source: "/service-area", destination: "/public-sector", permanent: true },
     ];
   },
 };

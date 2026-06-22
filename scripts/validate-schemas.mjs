@@ -26,7 +26,7 @@ async function getHtmlFiles(dir) {
 
 async function validateSchemas() {
   const distDir = path.resolve('dist');
-  console.log(`\n${BLUE}🧬 [Schema Validator] Scanning directory: ${distDir}${RESET}`);
+  console.log(`\n${BLUE}[Schema Validator] Scanning directory: ${distDir}${RESET}`);
 
   let htmlFiles;
   try {
@@ -41,7 +41,7 @@ async function validateSchemas() {
     process.exit(1);
   }
 
-  console.log(`🧬 [Schema Validator] Found ${htmlFiles.length} HTML files to inspect.`);
+  console.log(`[Schema Validator] Found ${htmlFiles.length} HTML files to inspect.`);
   let totalSchemasChecked = 0;
   let invalidSchemasCount = 0;
 
@@ -112,7 +112,7 @@ async function validateSchemas() {
     }
   }
 
-  console.log(`\n${BLUE}🧬 [Schema Validator] Validation complete:${RESET}`);
+  console.log(`\n${BLUE}[Schema Validator] Validation complete:${RESET}`);
   console.log(`  - Total HTML files parsed: ${htmlFiles.length}`);
   console.log(`  - Total JSON-LD schemas validated: ${totalSchemasChecked}`);
 

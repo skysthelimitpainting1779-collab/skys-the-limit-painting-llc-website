@@ -17,8 +17,18 @@ const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     {children}
   </span>
 );
+interface CaseStudyCardProps {
+  type: string;
+  location: string;
+  problem: string;
+  prep: string[];
+  result: string;
+  image?: string;
+  beforeImage?: string;
+  afterImage?: string;
+}
 
-const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeImage, afterImage }: any) => (
+const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeImage, afterImage }: CaseStudyCardProps) => (
   <div className="bg-[#0B0B0D] rounded-none overflow-hidden border border-white/10 shadow-sm flex flex-col group h-full mb-12 transition duration-500 hover:-translate-y-1 hover:border-[#f0c067]/55">
     <div className="relative overflow-hidden">
       {beforeImage && afterImage ? (

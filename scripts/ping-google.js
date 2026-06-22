@@ -10,21 +10,19 @@ function verifySitemapIngestion() {
   
   const workspaceRoot = path.resolve(process.cwd());
 
-  // 1. Verify sitemap.xml exists in the compiled directories
-  const distPath = path.normalize(path.resolve(workspaceRoot, 'dist/sitemap.xml'));
+  // 1. Verify sitemap.xml exists in the public directory
   const publicPath = path.normalize(path.resolve(workspaceRoot, 'public/sitemap.xml'));
   
-  if (!distPath.startsWith(workspaceRoot) || !publicPath.startsWith(workspaceRoot)) {
+  if (!publicPath.startsWith(workspaceRoot)) {
     throw new Error('Path traversal detected');
   }
 
-  const distExists = fs.existsSync(distPath);
   const publicExists = fs.existsSync(publicPath);
   
-  if (distExists || publicExists) {
+  if (publicExists) {
     console.log('Sitemap Asset Integrity: SUCCESS (Sitemap exists and is properly structured)');
   } else {
-    console.warn('Sitemap Asset Integrity: WARNING (Sitemap not found in compiled output)');
+    console.warn('Sitemap Asset Integrity: WARNING (Sitemap not found in public output)');
   }
   
   // 2. Verify robots.txt contains the Sitemap directive

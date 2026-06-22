@@ -1,11 +1,11 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./dist",
+      "startServerCommand": "npm run preview",
       "url": [
-        "http://localhost/",
-        "http://localhost/residential/",
-        "http://localhost/contact/"
+        "http://localhost:3000/",
+        "http://localhost:3000/residential",
+        "http://localhost:3000/contact"
       ],
       "numberOfRuns": 1
     },

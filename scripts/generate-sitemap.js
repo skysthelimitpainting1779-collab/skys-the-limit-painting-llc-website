@@ -80,71 +80,33 @@ function generateSitemap() {
   
   xml += '</urlset>\n';
   
-  // Ensure dist directory exists
   const workspaceRoot = path.resolve(process.cwd());
-  const distDir = path.normalize(path.resolve(workspaceRoot, 'dist'));
-  if (!distDir.startsWith(workspaceRoot)) {
-    throw new Error('Path traversal detected');
-  }
-  if (!fs.existsSync(distDir)) {
-    fs.mkdirSync(distDir, { recursive: true });
-  }
-  
-  // Write sitemap.xml to dist
-  const sitemapPath = path.normalize(path.join(distDir, 'sitemap.xml'));
-  if (!sitemapPath.startsWith(workspaceRoot)) {
-    throw new Error('Path traversal detected');
-  }
-  fs.writeFileSync(sitemapPath, xml, 'utf8');
-  console.log(`Sitemap written to: ${sitemapPath}`);
-  
-  // Write sitemap.xml to public so it is copied in other processes
   const publicDir = path.normalize(path.resolve(workspaceRoot, 'public'));
   if (!publicDir.startsWith(workspaceRoot)) {
     throw new Error('Path traversal detected');
   }
+  
   if (fs.existsSync(publicDir)) {
+    // Write sitemap.xml to public
     const publicSitemapPath = path.normalize(path.join(publicDir, 'sitemap.xml'));
     if (!publicSitemapPath.startsWith(workspaceRoot)) {
       throw new Error('Path traversal detected');
     }
     fs.writeFileSync(publicSitemapPath, xml, 'utf8');
     console.log(`Sitemap written to: ${publicSitemapPath}`);
-  }
-  
-  // Generate robots.txt
-  let robots = `User-agent: *\n`;
-  robots += `Allow: /\n`;
-  robots += `Disallow: /review\n`;
-  robots += `Sitemap: ${SITE_URL}/sitemap.xml\n`;
-  
-  const robotsPath = path.normalize(path.join(distDir, 'robots.txt'));
-  if (!robotsPath.startsWith(workspaceRoot)) {
-    throw new Error('Path traversal detected');
-  }
-  fs.writeFileSync(robotsPath, robots, 'utf8');
-  console.log(`Robots.txt written to: ${robotsPath}`);
-  
-  if (fs.existsSync(publicDir)) {
+
+    // Generate robots.txt
+    let robots = `User-agent: *\n`;
+    robots += `Allow: /\n`;
+    robots += `Disallow: /review\n`;
+    robots += `Sitemap: ${SITE_URL}/sitemap.xml\n`;
+
     const publicRobotsPath = path.normalize(path.join(publicDir, 'robots.txt'));
     if (!publicRobotsPath.startsWith(workspaceRoot)) {
       throw new Error('Path traversal detected');
     }
     fs.writeFileSync(publicRobotsPath, robots, 'utf8');
     console.log(`Robots.txt written to: ${publicRobotsPath}`);
-  }
-
-  // Copy sitemap.xsl to dist so it is available in build output
-  if (fs.existsSync(publicDir)) {
-    const publicXslPath = path.normalize(path.join(publicDir, 'sitemap.xsl'));
-    const distXslPath = path.normalize(path.join(distDir, 'sitemap.xsl'));
-    if (fs.existsSync(publicXslPath)) {
-      if (!publicXslPath.startsWith(workspaceRoot) || !distXslPath.startsWith(workspaceRoot)) {
-        throw new Error('Path traversal detected');
-      }
-      fs.copyFileSync(publicXslPath, distXslPath);
-      console.log(`Sitemap stylesheet copied to: ${distXslPath}`);
-    }
   }
   
   console.log('Sitemap and robots.txt generated successfully!');
