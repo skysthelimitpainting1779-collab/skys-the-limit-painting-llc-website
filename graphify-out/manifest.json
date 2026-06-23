@@ -1885,9 +1885,9 @@
     "semantic_hash": "d69529cf6b0f88ac0f3c0858cb45cb15"
   },
   "public/llms.txt": {
-    "mtime": 1781972312.4311428,
-    "ast_hash": "e0920e645ae702bb02dc8d1c7aa13e73",
-    "semantic_hash": "e0920e645ae702bb02dc8d1c7aa13e73"
+    "mtime": 1782174258.612858,
+    "ast_hash": "aaef117c0cb67e6bac55ace7dfc173a1",
+    "semantic_hash": "aaef117c0cb67e6bac55ace7dfc173a1"
   },
   "public/pricing.md": {
     "mtime": 1781291906.095718,
@@ -1895,9 +1895,9 @@
     "semantic_hash": "91d002231aca0f0a1e219a86a61dbf4b"
   },
   "public/robots.txt": {
-    "mtime": 1782157041.477244,
-    "ast_hash": "1fd2621f69f52ecc83e22a12c089d7e8",
-    "semantic_hash": "1fd2621f69f52ecc83e22a12c089d7e8"
+    "mtime": 1782175771.6168704,
+    "ast_hash": "2b7117f561790e86f118b8acb29b566e",
+    "semantic_hash": "2b7117f561790e86f118b8acb29b566e"
   },
   "src/components/context.md": {
     "mtime": 1781276089.4909053,
@@ -2410,14 +2410,14 @@
     "semantic_hash": "fe86176fa8348b70184d44cc9b2708eb"
   },
   "src/app/page.tsx": {
-    "mtime": 1782151203.3665183,
-    "ast_hash": "c3aa9c00be804dbca72d8bd34e092ec3",
-    "semantic_hash": "c3aa9c00be804dbca72d8bd34e092ec3"
+    "mtime": 1782175709.444741,
+    "ast_hash": "b1e98febbb3dbb8f9bd5a3ae58be25b0",
+    "semantic_hash": "b1e98febbb3dbb8f9bd5a3ae58be25b0"
   },
   "src/app/painting-services/[slug]/page.tsx": {
-    "mtime": 1782174228.7627757,
-    "ast_hash": "a2ec2d4deb1b9065549835fb11b3bbd6",
-    "semantic_hash": "a2ec2d4deb1b9065549835fb11b3bbd6"
+    "mtime": 1782175705.1691406,
+    "ast_hash": "e4fd6f905d43f85ece5e85d9d8770466",
+    "semantic_hash": "e4fd6f905d43f85ece5e85d9d8770466"
   },
   "src/app/projects/page.tsx": {
     "mtime": 1782174132.0443406,
@@ -2450,9 +2450,9 @@
     "semantic_hash": "4f74454d5ff5c6752b8878a909f100fe"
   },
   "src/app/service-areas/[slug]/page.tsx": {
-    "mtime": 1782174219.4552095,
-    "ast_hash": "ee0c9afa4ea267f9a0252499d796f4ec",
-    "semantic_hash": "ee0c9afa4ea267f9a0252499d796f4ec"
+    "mtime": 1782175691.2405212,
+    "ast_hash": "3c09981ad13fa7c18af83f88ce4cf260",
+    "semantic_hash": "3c09981ad13fa7c18af83f88ce4cf260"
   },
   "src/lib/env.ts": {
     "mtime": 1781969511.4989736,

@@ -20,11 +20,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!page) {
     return {};
   }
+  const imageUrl = `https://www.skysthelimitpaintingllc.com${page.image}`;
   return {
     title: page.metaTitle,
     description: page.metaDescription,
     alternates: {
       canonical: `https://www.skysthelimitpaintingllc.com/painting-services/${slug}`,
+    },
+    openGraph: {
+      title: page.metaTitle,
+      description: page.metaDescription,
+      url: `https://www.skysthelimitpaintingllc.com/painting-services/${slug}`,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${page.shortTitle} Painting Services | Sky's the Limit Painting LLC`,
+        },
+      ],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: page.metaTitle,
+      description: page.metaDescription,
+      images: [imageUrl],
     },
   };
 }
