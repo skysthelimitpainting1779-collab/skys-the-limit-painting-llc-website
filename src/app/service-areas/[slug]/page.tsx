@@ -2,6 +2,7 @@ import LandingPageRoute from '../../../views/LandingPage';
 import { areaLandingPages } from '../../../data/landingPages';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { localBusinessSchema, breadcrumbSchema } from '../../../lib/seo';
 
 export function generateStaticParams() {
   return areaLandingPages.map((page) => ({
@@ -22,6 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: page.metaTitle,
     description: page.metaDescription,
+    alternates: {
+      canonical: `https://www.skysthelimitpaintingllc.com/service-areas/${slug}`,
+    },
   };
 }
 
@@ -31,5 +35,25 @@ export default async function ServiceAreaLandingPage({ params }: PageProps) {
   if (!page) {
     notFound();
   }
-  return <LandingPageRoute kind="area" />;
+
+  const businessJson = localBusinessSchema(page.shortTitle, page.slug);
+  const breadcrumbJson = breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Service Area', path: '/service-area' },
+    { name: page.shortTitle, path: `/service-areas/${page.slug}` },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJson) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJson) }}
+      />
+      <LandingPageRoute kind="area" />
+    </>
+  );
 }

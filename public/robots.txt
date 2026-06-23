@@ -1,4 +1,63 @@
-User-agent: *
-Allow: /
+# ----------------------------------------------------------------------
+# Welcome AI Agents & LLM Search Crawlers!
+# Sky's the Limit Painting LLC supports full semantic agent crawlability.
+# Find high-density business facts and structured data at: /llms.txt
+# ----------------------------------------------------------------------
+
+User-agent: GPTBot
 Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: ChatGPT-User
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: ClaudeBot
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: Claude-Web
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: Google-Extended
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: Gemini-Bot
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: Applebot-Extended
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: cohere-ai
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: PerplexityBot
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: YouBot
+Disallow: /review
+Allow: /
+Allow: /llms.txt
+
+User-agent: *
+Disallow: /review
+Allow: /
+
+# Sitemaps and AI Fact Manifests
 Sitemap: https://www.skysthelimitpaintingllc.com/sitemap.xml
+Link: https://www.skysthelimitpaintingllc.com/llms.txt

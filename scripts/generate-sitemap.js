@@ -96,10 +96,39 @@ function generateSitemap() {
     console.log(`Sitemap written to: ${publicSitemapPath}`);
 
     // Generate robots.txt
-    let robots = `User-agent: *\n`;
-    robots += `Allow: /\n`;
+    let robots = `# ----------------------------------------------------------------------\n`;
+    robots += `# Welcome AI Agents & LLM Search Crawlers!\n`;
+    robots += `# Sky's the Limit Painting LLC supports full semantic agent crawlability.\n`;
+    robots += `# Find high-density business facts and structured data at: /llms.txt\n`;
+    robots += `# ----------------------------------------------------------------------\n\n`;
+
+    const aiAgents = [
+      'GPTBot',
+      'ChatGPT-User',
+      'ClaudeBot',
+      'Claude-Web',
+      'Google-Extended',
+      'Gemini-Bot',
+      'Applebot-Extended',
+      'cohere-ai',
+      'PerplexityBot',
+      'YouBot'
+    ];
+
+    aiAgents.forEach(agent => {
+      robots += `User-agent: ${agent}\n`;
+      robots += `Disallow: /review\n`;
+      robots += `Allow: /\n`;
+      robots += `Allow: /llms.txt\n\n`;
+    });
+
+    robots += `User-agent: *\n`;
     robots += `Disallow: /review\n`;
+    robots += `Allow: /\n\n`;
+
+    robots += `# Sitemaps and AI Fact Manifests\n`;
     robots += `Sitemap: ${SITE_URL}/sitemap.xml\n`;
+    robots += `Link: ${SITE_URL}/llms.txt\n`;
 
     const publicRobotsPath = path.normalize(path.join(publicDir, 'robots.txt'));
     if (!publicRobotsPath.startsWith(workspaceRoot)) {

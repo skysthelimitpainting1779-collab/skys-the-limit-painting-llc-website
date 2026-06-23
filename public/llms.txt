@@ -1,15 +1,16 @@
 # Sky's the Limit Painting LLC
 
-Sky's the Limit Painting LLC is an insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities from Inver Grove Heights across the Twin Cities Metro.
+Sky's the Limit Painting LLC is an owner-operated, registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities from Inver Grove Heights across the Twin Cities Metro.
 
-## Key Information
+## Key Information & Legal Compliance
 - **Founder & Operator:** Anthony Briseno
-- **Contractor ID:** MN Contractor ID: IR816596
+- **Contractor Registration ID:** MN Contractor ID: IR816596 (Required near all contractor references)
+- **Workers' Compensation Exemption:** Under Minnesota Statute 176.041, the owner-operator has zero payroll and is exempt from workers' compensation.
 - **NAICS Code:** 238320 (Painting and Wall Covering Contractors)
 - **UNSPSC Code:** 72151300
-- **Phone:** +16514104196 (Call or Text)
+- **Phone:** +1-651-410-4196 (Call or Text)
 - **Email:** skysthelimitpainting1779@gmail.com
-- **Website:** https://www.skysthelimitpaintingllc.com
+- **Main Website:** https://www.skysthelimitpaintingllc.com
 - **Base Location:** Inver Grove Heights, MN
 - **Service Area:** Twin Cities Metro Area (including Inver Grove Heights, Eagan, Woodbury, Minneapolis, St. Paul, Edina, etc.)
 
@@ -35,10 +36,36 @@ Sky's the Limit Painting LLC is an insured, owner-operated registered Minnesota 
 3. **Execute:** Application of high-grade coatings with owner-led check-ins.
 4. **Verify:** Visual walk-through, final touchups, clean up, and customer sign-off.
 
-## Sitemap
-- **Homepage:** [https://www.skysthelimitpaintingllc.com](https://www.skysthelimitpaintingllc.com/)
-- **Residential Division:** [https://www.skysthelimitpaintingllc.com/residential](https://www.skysthelimitpaintingllc.com/residential)
-- **Commercial Division:** [https://www.skysthelimitpaintingllc.com/commercial](https://www.skysthelimitpaintingllc.com/commercial)
-- **Public Sector & Line Striping:** [https://www.skysthelimitpaintingllc.com/public-sector](https://www.skysthelimitpaintingllc.com/public-sector)
-- **Interactive Estimate Calculator:** [https://www.skysthelimitpaintingllc.com/estimate](https://www.skysthelimitpaintingllc.com/estimate)
-- **Contact Page:** [https://www.skysthelimitpaintingllc.com/contact](https://www.skysthelimitpaintingllc.com/contact)
+## Complete Sitemap & Crawl Inventory
+
+### Static Base Pages
+- **Homepage:** https://www.skysthelimitpaintingllc.com/
+- **About Anthony Briseno:** https://www.skysthelimitpaintingllc.com/about
+- **Capabilities Statement:** https://www.skysthelimitpaintingllc.com/capabilities
+- **Commercial Painting Division:** https://www.skysthelimitpaintingllc.com/commercial
+- **Contact Page & Office:** https://www.skysthelimitpaintingllc.com/contact
+- **Interactive Estimate Calculator:** https://www.skysthelimitpaintingllc.com/estimate
+- **Projects Gallery & Showcase:** https://www.skysthelimitpaintingllc.com/projects
+- **Public Sector & Line Striping:** https://www.skysthelimitpaintingllc.com/public-sector
+- **Referral Rewards Program:** https://www.skysthelimitpaintingllc.com/refer
+- **Residential Painting Division:** https://www.skysthelimitpaintingllc.com/residential
+- **Service Area Directory:** https://www.skysthelimitpaintingllc.com/service-area
+
+### Dynamic Service Area Landing Pages
+- **Inver Grove Heights Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/inver-grove-heights
+- **South St. Paul Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/south-st-paul
+- **St. Paul Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/st-paul
+- **Eagan Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/eagan
+- **Woodbury Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/woodbury
+- **Minneapolis Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/minneapolis
+- **Twin Cities Regional Coverage:** https://www.skysthelimitpaintingllc.com/service-areas/twin-cities
+
+### Dynamic Painting Service Landing Pages
+- **Interior Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/interior-painting
+- **Exterior Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/exterior-painting
+- **Commercial Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/commercial-painting
+- **Cabinet Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/cabinet-painting
+- **Paint-Ready Drywall Repair:** https://www.skysthelimitpaintingllc.com/painting-services/drywall-repair
+- **Deck & Fence Staining:** https://www.skysthelimitpaintingllc.com/painting-services/deck-fence-staining
+- **Parking Lot Striping:** https://www.skysthelimitpaintingllc.com/painting-services/parking-lot-striping
+- **Pavement Marking Services:** https://www.skysthelimitpaintingllc.com/painting-services/pavement-marking
