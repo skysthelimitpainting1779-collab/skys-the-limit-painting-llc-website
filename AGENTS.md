@@ -176,3 +176,56 @@ For complex changes, update `implementation_plan.md` before editing and keep `ta
 ## External research
 
 Search the web or use the correct domain skill when information can change or comes from external docs. Do not guess API parameters, dependency behavior, Google requirements, Vercel settings, Supabase settings, or current platform rules.
+
+---
+
+## AI Agent Crawlability and LLM Optimization Standard
+
+Always optimize the website's architecture to support direct, lightweight, and high-density indexing by both traditional search engines (Google, Bing) and AI crawlers (Gemini, Claude, GPTBot).
+
+### 1. Mandatory Server-Side Rendering (Server Components)
+- All routed pages, dynamic routes, and SEO-critical layout components MUST remain strictly Next.js Server Components.
+- Do NOT use the `"use client"` directive on pages. If interactive features (e.g., forms, sliders, custom cursors) are needed, encapsulate them inside dedicated leaf components and import them, keeping the main page shell completely server-side rendered.
+- All HTML markup, metadata, and JSON-LD schemas MUST be fully baked and delivered in the initial server response.
+
+### 2. Absolute Canonicalization
+- Every route (static or dynamic) MUST declare a unique, absolute canonical alternate in its metadata.
+- For dynamic routes (`/service-areas/[slug]` and `/painting-services/[slug]`), dynamically export the canonical URL inside `generateMetadata` using:
+  ```typescript
+  alternates: {
+    canonical: `https://www.skysthelimitpaintingllc.com/service-areas/${slug}`,
+  }
+  ```
+
+### 3. Server-Side Injected JSON-LD
+- Do NOT rely on client-side JS to render structured data schemas; simple AI bots and search spiders skip execution.
+- Inject schema.org JSON-LD scripts server-side directly inside Next.js Server Component pages.
+- Standard schemas to export:
+  - **Service Area Pages**: `localBusinessSchema` and `breadcrumbSchema` (Home -> Service Area -> Specific Area).
+  - **Painting Service Pages**: `serviceSchema` and `breadcrumbSchema` (Home -> Capabilities -> Specific Service).
+- Render script tags cleanly within a React fragment:
+  ```typescript
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
+      />
+      <LandingPageRoute ... />
+    </>
+  );
+  ```
+
+### 4. AI Crawler robots.txt Welcoming
+- Maintain an advanced, welcoming `robots.txt` that explicitly welcomes AI crawlers and lists them with clear permissions.
+- Explicitly welcome: `GPTBot`, `ChatGPT-User`, `ClaudeBot`, `Claude-Web`, `Google-Extended`, `Gemini-Bot`, `Applebot-Extended`, `cohere-ai`, `PerplexityBot`, and `YouBot`.
+- Include an explicit reference to the high-density `/llms.txt` manifest:
+  ```text
+  Link: https://www.skysthelimitpaintingllc.com/llms.txt
+  ```
+
+### 5. High-Density llms.txt Manifest
+- Maintain a structured `public/llms.txt` file at the root.
+- The manifest must contain absolute, qualified links to all active static and dynamic pages.
+- Critical legal and licensing compliance (such as Contractor ID `IR816596` and MN Statute 176.041 owner-operator workers' compensation exemption) MUST be explicitly listed in the key metadata of `llms.txt`.
+
