@@ -74,7 +74,7 @@ export default async function PaintingServiceLandingPage({ params }: PageProps) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJson) }}
       />
-      <LandingPageRoute kind="service" />
+      <LandingPageRoute kind="service" initialPageData={page} />
     </>
   );
 }

@@ -23,6 +23,7 @@ import { trackEvent } from '../lib/analytics';
 
 interface LandingPageRouteProps {
   kind: LandingPageKind;
+  initialPageData?: LandingPage;
 }
 
 const marketPath = {
@@ -37,9 +38,9 @@ const sectionImages = [
   '/brand/generated/sky-public-authority.webp',
 ] as const;
 
-export default function LandingPageRoute({ kind }: LandingPageRouteProps) {
+export default function LandingPageRoute({ kind, initialPageData }: LandingPageRouteProps) {
   const { slug } = useParams();
-  const pageData = landingPageByKindAndSlug(kind, typeof slug === 'string' ? slug : undefined);
+  const pageData = initialPageData || landingPageByKindAndSlug(kind, typeof slug === 'string' ? slug : undefined);
 
   if (!pageData) {
     notFound();

@@ -447,4 +447,139 @@ statsEl.innerText = `\${matchCount} / \${conceptNodes.length} Files`;
 - Root cause: Unescaped nested backticks inside outer backtick template literal
 - Prevention: Always escape nested template literal backticks as `\`` inside outer template literals
 
+---
+
+## [ERR-20260623-001] Target file path mismatch during task.md update
+
+**Logged**: 2026-06-23T02:23:00Z
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary [ERR-20260623-001]
+
+An attempt to update the `task.md` file failed because the file was specified at the workspace root (`c:\Users\Johnny Cage\DEV\skysthelimit-collab\task.md`) instead of the active artifact directory (`C:\Users\Johnny Cage\.gemini\antigravity\brain\63cc26d4-e890-4757-829e-f6b7704720aa\task.md`).
+
+### Error [ERR-20260623-001]
+
+```text
+C:\Users\Johnny Cage\DEV\skysthelimit-collab\task.md does not exist in the current location. Make sure the file path correct.
+```
+
+### Fix / Learning [ERR-20260623-001]
+
+Always double-check the absolute directory location of the file to edit. For active session-specific checklists and implementation files (like `task.md` or `implementation_plan.md`), they are created inside the session-specific brain folder (`<appDataDir>\brain\<conversation-id>\`) and must be edited there.
+
+```powershell
+# CORRECT
+TargetFile: "C:\Users\Johnny Cage\.gemini\antigravity\brain\63cc26d4-e890-4757-829e-f6b7704720aa\task.md"
+
+# WRONG
+TargetFile: "c:\Users\Johnny Cage\DEV\skysthelimit-collab\task.md"
+```
+
+### Metadata [ERR-20260623-001]
+
+- Root cause: Target file specified in workspace directory instead of artifact directory
+- Prevention: Always refer to planning documents using their correct, absolute artifact-directory paths
+
+---
+
+## [ERR-20260623-002] Non-existent Lucide-React Icon Reference (FolderCanvas)
+
+**Logged**: 2026-06-23T02:39:00Z
+**Priority**: high
+**Status**: resolved
+**Area**: frontend-typescript
+
+### Summary [ERR-20260623-002]
+
+TypeScript compilation during `npm run lint` failed because `src/app/admin/page.tsx` imported and referenced `FolderCanvas` from `'lucide-react'`, which is not an exported member of that library.
+
+### Error [ERR-20260623-002]
+
+```text
+src/app/admin/page.tsx(11,3): error TS2305: Module '"lucide-react"' has no exported member 'FolderCanvas'.
+```
+
+### Context [ERR-20260623-002]
+
+- Operation attempted: Running TypeScript type-checking / ESLint validation using `npm run lint`.
+- Code state: `src/app/admin/page.tsx` had an active import of `FolderCanvas` from `'lucide-react'` and used it as `<FolderCanvas size={14} />`.
+
+### Fix / Learning [ERR-20260623-002]
+
+Verify the exact icon names exported by `lucide-react` before implementing them. When an invalid icon is referenced, replace it with a valid standard icon (such as `Folder` or `FolderOpen`) that matches the intended visual metaphor.
+
+```typescript
+# CORRECT
+import { Folder } from 'lucide-react';
+// ...
+<Folder size={14} />
+
+# WRONG
+import { FolderCanvas } from 'lucide-react';
+// ...
+<FolderCanvas size={14} />
+```
+
+### Prevention Rule
+
+Always double-check the official Lucide catalog or typings when using less common icon names, and run local type-checks before pushing code.
+
+### Metadata [ERR-20260623-002]
+
+- Root cause: Referenced a non-existent export `FolderCanvas` from `lucide-react`
+- Prevention: Stick to standard, verified Lucide icons; run type checks locally to find icon reference issues early
+
+---
+
+## [ERR-20260623-003] next/dynamic ssr: false is not allowed in Server Components
+
+**Logged**: 2026-06-23T02:40:00Z
+**Priority**: high
+**Status**: resolved
+**Area**: frontend-nextjs-rendering
+
+### Summary [ERR-20260623-003]
+
+The Turbopack production build (`npm run build`) failed because `src/views/ServiceArea.tsx` (a Server Component) used `next/dynamic` to dynamically import `ServiceAreaMap` with the `{ ssr: false }` option. Next.js Server Components are evaluated server-side and do not allow client-only dynamic imports natively inside them.
+
+### Error [ERR-20260623-003]
+
+```text
+Error: Turbopack build failed with 1 errors:
+./src/views/ServiceArea.tsx:6:24
+`ssr: false` is not allowed with `next/dynamic` in Server Components. Please move it into a Client Component.
+```
+
+### Context [ERR-20260623-003]
+
+- Operation attempted: Compiling production build using `npm run build`
+- Code state: `src/views/ServiceArea.tsx` statically imported nothing from `ServiceAreaMap` and loaded it dynamically instead:
+  `const ServiceAreaMap = dynamic(() => import('../components/ServiceAreaMap'), { ssr: false });`
+
+### Fix / Learning [ERR-20260623-003]
+
+Since `ServiceAreaMap` is a Client Component that already wraps its browser-only code (Leaflet/Map loading) entirely inside `useEffect`, it can be imported statically inside Server Components. React/Next.js will safely render its static container on the server and hydrate the browser-only leaflet interactions on the client side.
+
+```typescript
+# CORRECT
+import ServiceAreaMap from '../components/ServiceAreaMap';
+
+# WRONG
+import dynamic from 'next/dynamic';
+const ServiceAreaMap = dynamic(() => import('../components/ServiceAreaMap'), { ssr: false });
+```
+
+### Prevention Rule
+
+Never use `next/dynamic` with `ssr: false` inside a Server Component. If a component must be imported dynamically with `ssr: false`, wrap it inside a leaf Client Component instead of a Server Component, or ensure that the component is safe to render its skeleton on the server (i.e., using `useEffect` for all browser-only APIs).
+
+### Metadata [ERR-20260623-003]
+
+- Root cause: Used `next/dynamic` with `{ ssr: false }` directly inside a Server Component
+- Prevention: Statically import client components that safe-guard browser-only APIs in `useEffect`; use dynamic imports with `ssr: false` only inside client-side components
+
+
 

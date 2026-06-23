@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ArrowRight, MapPin, Navigation2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
-import 'leaflet/dist/leaflet.css';
 
 const serviceAreaPins = [
   { name: 'Minneapolis', slug: 'minneapolis', region: 'West metro', lat: 44.9778, lng: -93.2650 },
@@ -47,7 +46,11 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
     let active = true;
 
-    import('leaflet').then((LModule) => {
+    // Load leaflet CSS dynamically on client-side only
+    Promise.all([
+      import('leaflet'),
+      import('leaflet/dist/leaflet.css')
+    ]).then(([LModule]) => {
       const L = LModule.default || LModule;
       if (!active || !mapContainerRef.current) return;
 
@@ -67,7 +70,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
       mapInstanceRef.current = map;
 
-      // Add zoom control at bottom right (gold/black styled via CSS if needed)
+      // Add zoom control at bottom right (styled via CSS)
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
       // CartoDB Dark Matter tile layer
@@ -78,15 +81,15 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
       // Add custom styled markers
       serviceAreaPins.forEach((pin) => {
-        const goldIcon = L.divIcon({
+        const orangeIcon = L.divIcon({
           className: 'custom-map-marker',
-          html: `<div style="background-color: ${pin.primary ? '#f0c067' : '#0B0B0D'}; border: 2px solid #f0c067; width: 14px; height: 14px; box-shadow: 0 0 10px rgba(240,192,103,0.35);"></div>`,
+          html: `<div style="background-color: ${pin.primary ? '#FF5A00' : '#0B0B0D'}; border: 2px solid #FF5A00; width: 14px; height: 14px; box-shadow: 0 0 10px rgba(255,90,0,0.5);"></div>`,
           iconSize: [14, 14],
           iconAnchor: [7, 7]
         });
 
         const marker = L.marker([pin.lat, pin.lng], {
-          icon: goldIcon,
+          icon: orangeIcon,
           title: pin.name,
           alt: pin.name,
         }).addTo(map);
@@ -98,9 +101,9 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
         marker.bindPopup(
           `<div style="font-family: 'Outfit', sans-serif; color: #fff; background: #0B0B0D; padding: 4px; line-height: 1.4;">
-            <h5 style="margin: 0; font-size: 13px; font-weight: 900; text-transform: uppercase; color: #f0c067; letter-spacing: 0.05em;">${pin.name}</h5>
+            <h5 style="margin: 0; font-size: 13px; font-weight: 900; text-transform: uppercase; color: #FF5A00; letter-spacing: 0.05em;">${pin.name}</h5>
             <p style="margin: 3px 0 0 0; font-size: 10px; color: #c9c1b4; text-transform: uppercase; font-weight: 600;">${pin.region}</p>
-            <a href="/service-areas/${pin.slug}" style="display: inline-block; margin-top: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; color: #f0c067; text-decoration: none; border-bottom: 1px solid #f0c067;">View Area Scope &rarr;</a>
+            <a href="/service-areas/${pin.slug}" style="display: inline-block; margin-top: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; color: #FF5A00; text-decoration: none; border-bottom: 1px solid #FF5A00;">View Area Scope &rarr;</a>
            </div>`,
           {
             closeButton: false,
@@ -126,11 +129,11 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
       className={`relative overflow-hidden border-y border-[#d8c7aa]/12 bg-[#050505] px-4 text-white sm:px-6 lg:px-8 ${compact ? 'py-16' : 'py-20'}`}
     >
       <div className="blueprint-grid absolute inset-0 opacity-8"></div>
-      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#D9AE43,#f0c067,transparent)] opacity-70"></div>
+      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#FF5A00,#FF5A00,transparent)] opacity-70"></div>
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
         <motion.div {...mapMotion} className="lg:col-span-5">
-          <p className="text-xs font-black uppercase tracking-[0.26em] text-[#f0c067]">Service-area map</p>
+          <p className="text-xs font-black uppercase tracking-[0.26em] text-[#FF5A00]">Service-area map</p>
           <h2 id="service-area-map-heading" className="mt-4 text-3xl font-black leading-tight text-white md:text-5xl">
             Twin Cities coverage with live interactive mapping.
           </h2>
@@ -140,8 +143,8 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
 
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             {proofItems.map((item) => (
-              <div key={item} className="flex items-start gap-3 border-l border-[#f0c067]/35 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-[#eef7f4]">
-                <MapPin aria-hidden="true" className="mt-0.5 shrink-0 text-[#f0c067]" size={16} />
+              <div key={item} className="flex items-start gap-3 border-l border-[#FF5A00]/35 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-[#eef7f4]">
+                <MapPin aria-hidden="true" className="mt-0.5 shrink-0 text-[#FF5A00]" size={16} />
                 <span>{item}</span>
               </div>
             ))}
@@ -151,7 +154,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
             <Link
               href="/contact"
               onClick={() => trackEvent('service_area_map_cta_click', { action: 'estimate' })}
-              className="inline-flex items-center justify-center gap-2 bg-[#f0c067] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white"
+              className="inline-flex items-center justify-center gap-2 bg-[#FF5A00] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white"
             >
               Check My Address <ArrowRight aria-hidden="true" size={17} />
             </Link>
@@ -160,7 +163,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
               target="_blank"
               rel="noreferrer"
               onClick={() => trackEvent('service_area_map_cta_click', { action: 'directions' })}
-              className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/28 bg-white/[0.04] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
+              className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/28 bg-white/[0.04] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
             >
               <Navigation2 aria-hidden="true" size={17} /> Open Directions
             </a>
@@ -192,7 +195,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
                 href={`/service-areas/${pin.slug}`}
                 aria-label={`View ${pin.name} painting service area`}
                 onClick={() => trackEvent('service_area_map_list_click', { area: pin.slug })}
-                className="flex items-center justify-between gap-3 border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-[#eef7f4] transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
+                className="flex items-center justify-between gap-3 border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-[#eef7f4] transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
               >
                 <span>
                   {pin.name}

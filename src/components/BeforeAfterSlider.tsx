@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue } from 'motion/react';
+import React, { useState } from 'react';
 import ResponsiveImage from './ResponsiveImage';
 
 interface BeforeAfterSliderProps {
@@ -17,87 +16,58 @@ export default function BeforeAfterSlider({
   beforeLabel = 'Before', 
   afterLabel = 'After' 
 }: BeforeAfterSliderProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [sliderPosition, setSliderPosition] = useState(50);
-  
-  // Motion values for hardware acceleration
-  const x = useMotionValue(0);
-
-  const setSliderPercent = (position: number) => {
-    const nextPosition = Math.max(0, Math.min(100, position));
-    setSliderPosition(nextPosition);
-
-    if (containerRef.current) {
-      const width = containerRef.current.offsetWidth;
-      x.set((nextPosition / 100) * width);
-    }
-  };
-  
-  // Set initial position once container is measured
-  useEffect(() => {
-    if (containerRef.current) {
-      const width = containerRef.current.offsetWidth;
-      x.set(width / 2);
-    }
-  }, [x]);
-
-  const handleDrag = () => {
-    if (!containerRef.current) return;
-    const width = containerRef.current.offsetWidth;
-    const currentX = x.get();
-    const percent = Math.max(0, Math.min(100, (currentX / width) * 100));
-    setSliderPercent(percent);
-  };
-
-  // Sync width on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const width = containerRef.current.offsetWidth;
-        x.set((sliderPosition / 100) * width);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [sliderPosition, x]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    let newPosition = sliderPosition;
     if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
       event.preventDefault();
-      newPosition = Math.max(0, sliderPosition - 5);
+      setSliderPosition((pos) => Math.max(0, pos - 5));
     } else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
       event.preventDefault();
-      newPosition = Math.min(100, sliderPosition + 5);
+      setSliderPosition((pos) => Math.min(100, pos + 5));
     } else if (event.key === 'Home') {
       event.preventDefault();
-      newPosition = 0;
+      setSliderPosition(0);
     } else if (event.key === 'End') {
       event.preventDefault();
-      newPosition = 100;
+      setSliderPosition(100);
     }
-    setSliderPercent(newPosition);
   };
 
   return (
     <div className="space-y-4">
       <div
-        ref={containerRef}
-        className="relative h-[350px] w-full overflow-hidden rounded-none border border-white/10 select-none cursor-ew-resize focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none"
+        className="relative h-[350px] w-full overflow-hidden rounded-none border border-white/10 select-none cursor-ew-resize focus-visible:ring-2 focus-visible:ring-[#FF5A00] focus:outline-none"
       >
-        <ResponsiveImage src={afterImage} alt={afterLabel} width={1200} height={700} className="absolute inset-0 h-full w-full object-cover pointer-events-none" />
-
-        <div
-          className="absolute inset-0 overflow-hidden pointer-events-none"
-          style={{ width: `${sliderPosition}%` }}
-        >
-          <ResponsiveImage src={beforeImage} alt={beforeLabel} width={1200} height={700} className="absolute inset-0 h-full w-full object-cover max-w-none" style={{ width: containerRef.current?.offsetWidth || '100vw' }} />
+        {/* Underlay Image: After */}
+        <div className="absolute inset-0 h-full w-full">
+          <ResponsiveImage 
+            src={afterImage} 
+            alt={afterLabel} 
+            width={1200} 
+            height={700} 
+            className="h-full w-full object-cover pointer-events-none" 
+          />
         </div>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-none border border-white/20 text-white text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
+        {/* Overlay Image: Before (clipped) */}
+        <div 
+          className="absolute inset-0 h-full w-full pointer-events-none overflow-hidden"
+          style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+        >
+          <ResponsiveImage 
+            src={beforeImage} 
+            alt={beforeLabel} 
+            width={1200} 
+            height={700} 
+            className="h-full w-full object-cover pointer-events-none" 
+          />
+        </div>
+
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-none border border-white/20 text-white text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10">
           {beforeLabel}
         </div>
-        <div className="absolute top-4 right-4 bg-[#f0c067] backdrop-blur-sm px-3 py-1 rounded-none border border-[#f0c067] text-[#050505] text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10 transition-opacity">
+        <div className="absolute top-4 right-4 bg-[#FF5A00] backdrop-blur-sm px-3 py-1 rounded-none border border-[#FF5A00] text-[#050505] text-xs font-bold uppercase tracking-wider pointer-events-none shadow-md z-10">
           {afterLabel}
         </div>
 
@@ -108,7 +78,7 @@ export default function BeforeAfterSlider({
           value={Math.round(sliderPosition)}
           aria-label="Before and after image comparison slider"
           aria-valuetext={`${Math.round(sliderPosition)} percent ${beforeLabel} visible`}
-          onChange={(event) => setSliderPercent(Number(event.target.value))}
+          onChange={(event) => setSliderPosition(Number(event.target.value))}
           onKeyDown={handleKeyDown}
           onMouseDown={(event) => event.currentTarget.focus()}
           onTouchStart={(event) => event.currentTarget.focus()}
@@ -116,23 +86,16 @@ export default function BeforeAfterSlider({
         />
 
         {/* Draggable Divider Handle */}
-        <motion.div
-          drag="x"
-          dragMomentum={false}
-          dragElastic={0}
-          dragConstraints={containerRef}
-          onDrag={handleDrag}
-          style={{ x }}
-          className="absolute top-0 bottom-0 w-1 bg-[#f0c067] cursor-ew-resize z-20 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+        <div
+          style={{ left: `${sliderPosition}%` }}
+          className="absolute top-0 bottom-0 w-1 bg-[#FF5A00] cursor-ew-resize z-20 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)] -translate-x-1/2"
         >
-          <motion.div 
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
-            className="w-8 h-8 bg-[#f0c067] border border-white/20 shadow-lg flex items-center justify-center text-[#050505] font-black"
+          <div 
+            className="w-8 h-8 bg-[#FF5A00] border border-white/20 shadow-lg flex items-center justify-center text-[#050505] font-black transition-transform duration-100 active:scale-95 hover:scale-110"
           >
             <span aria-hidden="true" className="font-mono text-xs select-none">||</span>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-gray-400" aria-hidden="true">

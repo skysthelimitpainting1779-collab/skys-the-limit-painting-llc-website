@@ -89,7 +89,7 @@
   select:focus-visible,
   textarea:focus-visible,
   [tabindex]:focus-visible {
-    outline: 2px solid #f0c067;
+    outline: 2px solid #FF5A00;
     outline-offset: 4px;
   }
 
@@ -141,7 +141,7 @@
 
   .measurement-rules {
     background-image:
-      linear-gradient(90deg, rgba(240, 192, 103, 0.22) 0 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 90, 0, 0.22) 0 1px, transparent 1px),
       linear-gradient(rgba(216, 199, 170, 0.14) 0 1px, transparent 1px);
     background-size: 96px 100%, 100% 96px;
     mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.85), transparent 75%);
@@ -174,6 +174,24 @@
       opacity: 0;
       transform: translateY(30px) scale(0.98);
       filter: blur(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  .animate-premium-fade-in {
+    animation: premium-fade-in 0.8s var(--ease-premium) forwards;
+    will-change: transform, opacity, filter;
+  }
+
+  @keyframes premium-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.99);
+      filter: blur(4px);
     }
     to {
       opacity: 1;
@@ -215,7 +233,7 @@
 
   /* Spotlight card ambient glow */
   .spotlight-card {
-    --spotlight-color: rgba(240, 192, 103, 0.12);
+    --spotlight-color: rgba(255, 90, 0, 0.12);
   }
 
   /* Pulse ring for badge */
@@ -277,7 +295,7 @@
 .leaflet-popup-content-wrapper {
   background: #0B0B0D !important;
   color: #F7F7F7 !important;
-  border: 1px solid rgba(240, 192, 103, 0.25) !important;
+  border: 1px solid rgba(255, 90, 0, 0.25) !important;
   border-radius: 0px !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
 }
@@ -286,8 +304,8 @@
 }
 .leaflet-popup-tip {
   background: #0B0B0D !important;
-  border-left: 1px solid rgba(240, 192, 103, 0.25) !important;
-  border-bottom: 1px solid rgba(240, 192, 103, 0.25) !important;
+  border-left: 1px solid rgba(255, 90, 0, 0.25) !important;
+  border-bottom: 1px solid rgba(255, 90, 0, 0.25) !important;
 }
 .custom-map-marker {
   transition: transform 0.2s ease-in-out;
@@ -301,19 +319,19 @@
 }
 .leaflet-bar a {
   background-color: #0B0B0D !important;
-  color: #f0c067 !important;
+  color: #FF5A00 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 0px !important;
   transition: background-color 0.2s;
 }
 .leaflet-bar a:hover {
-  background-color: #f0c067 !important;
+  background-color: #FF5A00 !important;
   color: #050505 !important;
 }
 
 /* Spec Inspector mode active style overrides */
 .spec-mode-active * {
-  outline: 1px dashed rgba(240, 192, 103, 0.22) !important;
+  outline: 1px dashed rgba(255, 90, 0, 0.22) !important;
   outline-offset: -1px;
 }
 .spec-mode-active a, 
@@ -321,7 +339,7 @@
 .spec-mode-active input,
 .spec-mode-active select,
 .spec-mode-active textarea {
-  outline: 1px dashed #f0c067 !important;
+  outline: 1px dashed #FF5A00 !important;
   outline-offset: 2px;
 }
 

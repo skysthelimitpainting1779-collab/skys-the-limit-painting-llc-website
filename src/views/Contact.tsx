@@ -106,7 +106,38 @@ export default function ContactPage() {
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-8">
             <div className="border border-white/10 bg-[#0B0B0D] p-5 md:p-8 shadow-sm rounded-none">
-              <LeadForm source="Contact page lead form" compact />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-7">
+                  <LeadForm source="Contact page lead form" compact />
+                </div>
+                
+                {/* Social Proof & Testimonials Column */}
+                <div className="lg:col-span-5 flex flex-col justify-start space-y-6 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-6">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067]">Local Service Proof</h4>
+                  <div className="space-y-4">
+                    <div className="border border-white/5 bg-white/[0.02] p-4 text-[11px] leading-relaxed text-gray-300">
+                      <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
+                      <p className="italic">"Anthony arrived exactly when he said he would. The lines are incredibly sharp and the cleanup was so thorough you couldn't tell any painting had been done."</p>
+                      <p className="mt-2 font-bold text-white">— David R., Saint Paul</p>
+                    </div>
+                    <div className="border border-white/5 bg-white/[0.02] p-4 text-[11px] leading-relaxed text-gray-300">
+                      <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
+                      <p className="italic">"We appreciated the direct owner communication. Anthony answered every question, gave a fair price, and executed everything flawlessly."</p>
+                      <p className="mt-2 font-bold text-white">— Jessica T., Burnsville</p>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-2 space-y-2 border-t border-white/5">
+                    <div className="text-[10px] text-gray-400 font-mono flex items-center gap-1.5">
+                      <span className="inline-block w-1.5 h-1.5 bg-orange-safety"></span>
+                      <span>MN Reg ID: IR816596</span>
+                    </div>
+                    <p className="text-[9px] text-gray-500 leading-normal font-mono">
+                      Owner-operator zero-payroll structure. Exempt from Workers' Compensation under Minnesota Statute 176.041.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </FadeIn>
         </div>

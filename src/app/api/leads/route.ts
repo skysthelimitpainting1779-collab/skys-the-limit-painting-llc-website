@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import pg from 'pg';
-const { Client } = pg;
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const supabase = supabaseUrl && supabaseServiceKey 
+  ? createClient(supabaseUrl, supabaseServiceKey) 
+  : null;
 
 
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
@@ -30,31 +36,7 @@ function rateLimit(ip: string): boolean {
 }
 
 // Database Ingestion and Event Logging Helpers
-async function executeDbQuery(queryText: string, params: unknown[]) {
-  const rawConnectionString = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
-  if (!rawConnectionString) {
-    console.warn("Database connection string missing. Skipping database execution.");
-    return null;
-  }
-  
-  // Strip query parameters to prevent overriding ssl config
-  const connectionString = rawConnectionString.split('?')[0];
-  
-  const client = new Client({
-    connectionString,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-  
-  await client.connect();
-  try {
-    const res = await client.query(queryText, params);
-    return res;
-  } finally {
-    await client.end();
-  }
-}
+// (Refactored to use high-performance pooled HTTP connections via supabase-js client)
 
 interface LeadPayload extends Record<string, unknown> {
   leadId: string;
@@ -87,61 +69,55 @@ interface LeadPayload extends Record<string, unknown> {
 }
 
 async function saveLeadToDb(lead: LeadPayload) {
-  const query = `
-    INSERT INTO public.leads (
-      lead_id, source, name, phone, email, city, project_address, market, 
-      project_type, property_type, timeline, budget, contact_method, notes, 
-      utm_source, utm_medium, utm_campaign, page, status, photos_url
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
-    ON CONFLICT (lead_id) DO NOTHING;
-  `;
-  const params = [
-    lead.leadId,
-    asText(lead.source) || 'website',
-    asText(lead.name),
-    asText(lead.phone),
-    asText(lead.email),
-    asText(lead.city),
-    asText(lead.projectAddress || lead.project_address),
-    asText(lead.market),
-    asText(lead.projectType || lead.project_type),
-    asText(lead.propertyType || lead.property_type),
-    asText(lead.timeline),
-    asText(lead.budget),
-    asText(lead.contactMethod || lead.contact_method),
-    asText(lead.notes),
-    asText(lead.utm_source || lead.utmSource),
-    asText(lead.utm_medium || lead.utmMedium),
-    asText(lead.utm_campaign || lead.utmCampaign),
-    asText(lead.page),
-    'new',
-    asText(lead.photosUrl || lead.photos_url)
-  ];
-  try {
-    await executeDbQuery(query, params);
+  if (!supabase) {
+    console.warn("Supabase client not initialized. Skipping database insertion.");
+    return;
+  }
+  const { error } = await supabase.from('leads').insert({
+    lead_id: lead.leadId,
+    source: asText(lead.source) || 'website',
+    name: asText(lead.name),
+    phone: asText(lead.phone),
+    email: asText(lead.email),
+    city: asText(lead.city),
+    project_address: asText(lead.projectAddress || lead.project_address),
+    market: asText(lead.market),
+    project_type: asText(lead.projectType || lead.project_type),
+    property_type: asText(lead.propertyType || lead.property_type),
+    timeline: asText(lead.timeline),
+    budget: asText(lead.budget),
+    contact_method: asText(lead.contactMethod || lead.contact_method),
+    notes: asText(lead.notes),
+    utm_source: asText(lead.utm_source || lead.utmSource),
+    utm_medium: asText(lead.utm_medium || lead.utmMedium),
+    utm_campaign: asText(lead.utm_campaign || lead.utmCampaign),
+    page: asText(lead.page),
+    status: 'new',
+    photos_url: asText(lead.photosUrl || lead.photos_url)
+  });
+
+  if (error) {
+    console.error("Failed to store lead in Supabase:", error);
+  } else {
     console.log(`Lead stored in Supabase: ${lead.leadId}`);
-  } catch (err) {
-    console.error("Failed to store lead in Supabase:", err);
   }
 }
 
 async function saveLeadEventToDb(leadId: string, eventType: string, provider: string, status: string, message?: string) {
-  const query = `
-    INSERT INTO public.lead_events (
-      lead_id, event_type, provider, status, message
-    ) VALUES ($1, $2, $3, $4, $5);
-  `;
-  const params = [
-    leadId,
-    eventType,
-    provider,
-    status,
-    message || null
-  ];
-  try {
-    await executeDbQuery(query, params);
-  } catch (err) {
-    console.error(`Failed to store lead event in Supabase for lead ${leadId}:`, err);
+  if (!supabase) {
+    console.warn("Supabase client not initialized. Skipping lead event insertion.");
+    return;
+  }
+  const { error } = await supabase.from('lead_events').insert({
+    lead_id: leadId,
+    event_type: eventType,
+    provider: provider,
+    status: status,
+    message: message || null
+  });
+
+  if (error) {
+    console.error(`Failed to store lead event in Supabase for lead ${leadId}:`, error);
   }
 }
 

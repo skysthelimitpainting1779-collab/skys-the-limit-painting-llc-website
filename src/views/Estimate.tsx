@@ -653,121 +653,148 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
               {/* Card 6: Live contact capture Form */}
               <div className="border border-white/10 bg-[#0B0B0D]/95 p-6 backdrop-blur-md">
                 {status !== 'sent' ? (
-                  <form onSubmit={handleFinalSubmit} className="space-y-4">
-                    <h3 className="text-sm font-black uppercase text-[#f0c067] tracking-widest border-b border-white/5 pb-2">LOCK IN THIS RANGE</h3>
-                    <p className="text-xs text-gray-300">
-                      Send the calculated range with your details to request an on-site walkthrough and secure your rate.
-                    </p>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <form onSubmit={handleFinalSubmit} className="lg:col-span-7 space-y-4">
+                      <h3 className="text-sm font-black uppercase text-[#f0c067] tracking-widest border-b border-white/5 pb-2">LOCK IN THIS RANGE</h3>
+                      <p className="text-xs text-gray-300">
+                        Send the calculated range with your details to request an on-site walkthrough and secure your rate.
+                      </p>
 
-                    {/* Honeypot field */}
-                    <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+                      {/* Honeypot field */}
+                      <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
-                    <div className="space-y-3">
-                      <div>
-                        <label htmlFor="client-name" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
-                          Full Name
-                        </label>
-                        <input
-                          id="client-name"
-                          type="text"
-                          required
-                          aria-label="Full name"
-                          placeholder="John Doe"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
-                        />
+                      <div className="space-y-3">
+                        <div>
+                          <label htmlFor="client-name" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
+                            Full Name
+                          </label>
+                          <input
+                            id="client-name"
+                            type="text"
+                            required
+                            aria-label="Full name"
+                            placeholder="John Doe"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
+                          />
+                        </div>
+                        
+                        <div>
+                          <label htmlFor="client-phone" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
+                            Phone Number
+                          </label>
+                          <input
+                            id="client-phone"
+                            type="tel"
+                            required
+                            aria-label="Phone"
+                            placeholder="651-555-0199"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="client-email" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
+                            Email Address
+                          </label>
+                          <input
+                            id="client-email"
+                            type="email"
+                            required
+                            aria-label="Email"
+                            spellCheck={false}
+                            placeholder="john@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="client-city" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
+                            City
+                          </label>
+                          <input
+                            id="client-city"
+                            type="text"
+                            required
+                            aria-label="City"
+                            placeholder="Eagan"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="client-address" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
+                            Street Address (Optional)
+                          </label>
+                          <input
+                            id="client-address"
+                            type="text"
+                            name="projectAddress"
+                            aria-label="Project address or cross streets"
+                            placeholder="123 Main St"
+                            className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
+                          />
+                        </div>
                       </div>
-                      
-                      <div>
-                        <label htmlFor="client-phone" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
-                          Phone Number
-                        </label>
-                        <input
-                          id="client-phone"
-                          type="tel"
-                          required
-                          aria-label="Phone"
-                          placeholder="651-555-0199"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
-                        />
-                      </div>
 
-                      <div>
-                        <label htmlFor="client-email" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
-                          Email Address
-                        </label>
-                        <input
-                          id="client-email"
-                          type="email"
-                          required
-                          aria-label="Email"
-                          spellCheck={false}
-                          placeholder="john@example.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
-                        />
-                      </div>
+                      {status === 'fallback' && (
+                        <button
+                          type="button"
+                          onClick={handleEmailFallback}
+                          className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-3.5 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white transition-all cursor-pointer"
+                        >
+                          Open Email Draft
+                        </button>
+                      )}
 
-                      <div>
-                        <label htmlFor="client-city" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
-                          City
-                        </label>
-                        <input
-                          id="client-city"
-                          type="text"
-                          required
-                          aria-label="City"
-                          placeholder="Eagan"
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
-                        />
-                      </div>
+                      {status !== 'fallback' && (
+                        <button
+                          type="submit"
+                          disabled={status === 'submitting'}
+                          className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-3.5 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white hover:text-black transition-all disabled:opacity-55 cursor-pointer"
+                        >
+                          {status === 'submitting' ? 'Saving…' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={14} />
+                        </button>
+                      )}
 
-                      <div>
-                        <label htmlFor="client-address" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1">
-                          Street Address (Optional)
-                        </label>
-                        <input
-                          id="client-address"
-                          type="text"
-                          name="projectAddress"
-                          aria-label="Project address or cross streets"
-                          placeholder="123 Main St"
-                          className="w-full border border-white/10 bg-[#050505] p-3 text-sm text-white outline-none focus:border-[#f0c067]"
-                        />
+                      <p className="text-center text-[10px] font-black uppercase tracking-wider text-orange-safety py-1">
+                        ★ Secure this linear price range for 30 days once submitted
+                      </p>
+
+                      <p className="flex items-start gap-2 text-[11px] leading-relaxed text-[#b9b2a6]" aria-live="polite">
+                        <ShieldCheck size={14} className="mt-0.5 shrink-0 text-[#f0c067]" />
+                        {message || 'Your planning range routes with the room details. Final estimates are confirmed after surface condition and scope are reviewed.'}
+                      </p>
+                    </form>
+
+                    {/* Testimonials Column */}
+                    <div className="lg:col-span-5 flex flex-col justify-start space-y-4 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-6">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067]">Local Service Proof</h4>
+                      <div className="space-y-4">
+                        <div className="border border-white/5 bg-white/2 p-4 text-[11px] leading-relaxed text-gray-300">
+                          <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
+                          <p className="italic">"Anthony’s prep work is second to none. He kept the site perfectly clean and delivered flawless lines."</p>
+                          <p className="mt-2 font-bold text-white">— Mark D., Inver Grove Heights</p>
+                        </div>
+                        <div className="border border-white/5 bg-white/2 p-4 text-[11px] leading-relaxed text-gray-300">
+                          <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
+                          <p className="italic">"Extremely professional owner-operator. No middleman, great pricing, and outstanding finish quality."</p>
+                          <p className="mt-2 font-bold text-white">— Sarah K., Eagan</p>
+                        </div>
+                      </div>
+                      <div className="pt-2 text-[10px] text-gray-400 font-mono flex items-center gap-1.5">
+                        <span className="inline-block w-1.5 h-1.5 bg-orange-safety"></span>
+                        <span>MN Reg ID: IR816596</span>
                       </div>
                     </div>
-
-                    {status === 'fallback' && (
-                      <button
-                        type="button"
-                        onClick={handleEmailFallback}
-                        className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-3.5 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white transition-all cursor-pointer"
-                      >
-                        Open Email Draft
-                      </button>
-                    )}
-
-                    {status !== 'fallback' && (
-                      <button
-                        type="submit"
-                        disabled={status === 'submitting'}
-                        className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-3.5 text-xs font-black uppercase tracking-[0.16em] text-[#050505] hover:bg-white hover:text-black transition-all disabled:opacity-55 cursor-pointer"
-                      >
-                        {status === 'submitting' ? 'Saving…' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={14} />
-                      </button>
-                    )}
-
-                    <p className="flex items-start gap-2 text-[11px] leading-relaxed text-[#b9b2a6]" aria-live="polite">
-                      <ShieldCheck size={14} className="mt-0.5 shrink-0 text-[#f0c067]" />
-                      {message || 'Your planning range routes with the room details. Final estimates are confirmed after surface condition and scope are reviewed.'}
-                    </p>
-                  </form>
+                  </div>
                 ) : (
                   <div className="text-center py-6">
                     <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#f0c067]/10 text-[#f0c067] mb-6">

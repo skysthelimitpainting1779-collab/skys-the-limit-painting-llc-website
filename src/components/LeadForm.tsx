@@ -118,12 +118,24 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       const bucketName = 'lead-photos';
 
       try {
-        const uploadUrl = `${ENV.SUPABASE_URL}/storage/v1/object/${bucketName}/${fileName}`;
-        const response = await fetch(uploadUrl, {
+        // Fetch presigned upload URL from secure backend endpoint
+        const urlResponse = await fetch('/api/storage/upload-url', {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileName }),
+        });
+
+        if (!urlResponse.ok) {
+          const errMsg = await urlResponse.text();
+          throw new Error(`Failed to generate upload URL: ${errMsg}`);
+        }
+
+        const { uploadUrl, publicUrl } = await urlResponse.json();
+
+        // Upload directly using authorized signed URL via PUT
+        const response = await fetch(uploadUrl, {
+          method: 'PUT',
           headers: {
-            'apikey': ENV.SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${ENV.SUPABASE_ANON_KEY}`,
             'Content-Type': file.type,
           },
           body: file,
@@ -134,10 +146,9 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           throw new Error(errMsg);
         }
 
-        const publicUrl = `${ENV.SUPABASE_URL}/storage/v1/object/public/${bucketName}/${fileName}`;
         urls.push(publicUrl);
       } catch (err) {
-        console.error('Failed to upload file to Supabase:', err);
+        console.error('Failed to upload file via presigned URL:', err);
         setValidationError(`Failed to upload ${file.name}. Please try again.`);
       }
     }

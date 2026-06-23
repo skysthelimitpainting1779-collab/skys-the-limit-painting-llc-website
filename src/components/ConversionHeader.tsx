@@ -227,7 +227,7 @@ export default function ConversionHeader() {
               <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
                 Get A Price Range
               </Link>
-              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-none font-black text-lg uppercase tracking-wide">
                 Call / Text 651-410-4196
               </a>
             </div>

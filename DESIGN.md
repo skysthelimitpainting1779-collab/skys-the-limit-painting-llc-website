@@ -13,8 +13,8 @@ The site uses a premium, dark, industrial craftsman design language featuring hi
 - **Golden Accent**: `#f0c067` - Outline highlights and links
 
 ## Typography
-- **Display Headings**: `"Outfit", "Oswald", sans-serif` (`--font-display`) - bold, modern uppercase structure.
-- **Body Text**: `"Inter", sans-serif` (`--font-body`) - clear readability.
+- **Display Headings**: `"Satoshi", sans-serif` (`--font-display`) - bold, modern uppercase structure.
+- **Body Text**: `"Geist", sans-serif` (`--font-body`) - clear readability.
 - **Technical/Numeric UI**: `"Fira Code", monospace` (`--font-mono`) - precise monospace details.
 
 ## Layout & Radius
