@@ -17,7 +17,7 @@ const proofItems = [
   {
     icon: ShieldCheck,
     title: 'Verified contractor language',
-    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers\' comp exempt under MN Statute 176.041.',
+    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers\' comp exempt under MN Statute 176.041. MN ID: IR816596',
   },
 ];
 

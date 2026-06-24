@@ -34,7 +34,7 @@ const corePositioningLine = 'Residential detail. Commercial discipline. Public-s
 const customerPromise =
   'Interior and exterior painting for homes, businesses, and facilities across the Twin Cities Metro Area.';
 const verifiedContractorLine =
-  'Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting).';
+  "Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting). MN ID: IR816596 | MN Statute 176.041 Worker's Comp Exemption for owner-operators.";
 
 const homeStats = [
   { target: 340, suffix: '+', label: 'Projects Completed' },
@@ -225,8 +225,8 @@ export default function HomeClient() {
                 <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-[#f0c067]/40" />
                 <ShieldCheck size={16} className="relative z-10" />
               </span>
-              <span className="sm:hidden">Insured MN Contractor</span>
-              <span className="hidden sm:inline">Insured Minnesota Painting Contractor</span>
+              <span className="sm:hidden">Insured MN Contractor (MN ID: IR816596, MN Stat 176.041 Exempt)</span>
+              <span className="hidden sm:inline">Insured Minnesota Painting Contractor (MN ID: IR816596 | MN Statute 176.041 Worker's Comp Exemption for owner-operators)</span>
             </div>
             <h1 aria-label={`${customerPromise} ${corePositioningLine}`} className="max-w-[calc(100vw-2rem)] text-[2.45rem] font-black leading-[0.98] uppercase text-white sm:max-w-4xl sm:text-6.5xl lg:text-7.5xl xl:text-8xl tracking-tight">
               <span className="block">Prep-First Elite</span>
@@ -296,7 +296,7 @@ export default function HomeClient() {
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="text-lg leading-relaxed text-[#c9c1b4]">
-              We believe in exceptional craftsmanship from the ground up. Sky’s the Limit Painting is an owner-operated, fully insured registered MN specialty contractor serving the Twin Cities Metro. We serve homeowners, business managers, and public agencies across the region with a dedication to structural prep, neatness, and flawless execution.
+              We believe in exceptional craftsmanship from the ground up. Sky’s the Limit Painting is an owner-operated, fully insured registered MN specialty contractor serving the Twin Cities Metro. MN ID: IR816596 | MN Statute 176.041 Worker's Comp Exemption for owner-operators. We serve homeowners, business managers, and public agencies across the region with a dedication to structural prep, neatness, and flawless execution.
             </p>
           </FadeIn>
         </div>

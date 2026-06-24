@@ -175,7 +175,7 @@ export default function MarketPage({ slug }: MarketPageProps) {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-7">
             <h2 className="max-w-3xl text-4xl font-black uppercase leading-tight text-white md:text-5xl">
-              Insured, owner-led, and built for real scope clarity.
+              Insured, owner-led, and built for real scope clarity. (MN ID: IR816596 | MN Statute 176.041 Worker's Comp Exemption for owner-operators)
             </h2>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-300">{market.description}</p>
           </FadeIn>
