@@ -389,7 +389,7 @@ export default function HomeClient() {
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div className="mx-auto max-w-[60ch]xl border border-white/10 p-4 bg-[#0b0b0a]">
+            <div className="mx-auto max-w-[60ch] border border-white/10 p-4 bg-[#0b0b0a]">
               <BeforeAfterSlider
                 beforeImage="/images/site/iphone-interior-painting-progress.webp"
                 afterImage="/images/services/interior/sky-work-02-finished-living-room.webp"

@@ -81,7 +81,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
 
         <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
           <FadeIn className="w-full overflow-hidden lg:col-span-7">
-            <div className="font-display mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/65 px-4 py-3 text-xs font-semibold text-white backdrop-blur sm:text-xs sm:]">
+            <div className="font-display mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/65 px-4 py-3 text-xs font-semibold text-white backdrop-blur sm:text-xs">
               {page.kind === 'area' ? <MapPin size={16} /> : <PaintRoller size={16} />}
               <span>{page.eyebrow}</span>
             </div>
@@ -120,7 +120,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
                 {page.proof.map((item) => (
                   <div key={item} className="flex gap-3 border-t border-white/10 pt-4">
                     <CheckCircle2 className="mt-0.5 shrink-0 text-white" size={18} />
-                    <span className="min-w-0 break-words text-base font-medium text-white sm:]">{item}</span>
+                    <span className="min-w-0 break-words text-base font-medium text-white">{item}</span>
                   </div>
                 ))}
               </div>
