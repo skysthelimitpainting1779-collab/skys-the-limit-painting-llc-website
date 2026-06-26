@@ -73,7 +73,7 @@ jobs:
       # ── Boomerang catch ──────────────────────────────────────
       - name: "⚠ Boomerang — Commit CI Incident on Lint Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -184,7 +184,7 @@ jobs:
       # ── Boomerang catch ──────────────────────────────────────
       - name: "⚠ Boomerang — Commit CI Incident on Test Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -305,7 +305,7 @@ jobs:
       # ── Boomerang catch ──────────────────────────────────────
       - name: "⚠ Boomerang — Commit CI Incident on Build Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -435,7 +435,7 @@ jobs:
 
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request' && env.VERCEL_TOKEN != ''
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
             const prNumber  = context.payload.pull_request.number;
@@ -477,7 +477,7 @@ jobs:
       # ── Boomerang catch ──────────────────────────────────────
       - name: "⚠ Boomerang — Commit CI Incident on Deploy Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -600,7 +600,7 @@ jobs:
       # ── Boomerang catch ──────────────────────────────────────
       - name: "⚠ Boomerang — Commit CI Incident on Production Deploy Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
