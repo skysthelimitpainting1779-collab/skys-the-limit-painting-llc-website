@@ -28,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -54,7 +54,7 @@ jobs:
 
       - name: "⚠ Boomerang — Commit CI Incident on Lint Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -133,10 +133,10 @@ jobs:
     needs: lint
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -159,7 +159,7 @@ jobs:
 
       - name: "⚠ Boomerang — Commit CI Incident on Test Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -229,10 +229,10 @@ jobs:
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -273,7 +273,7 @@ jobs:
 
       - name: "⚠ Boomerang — Commit CI Incident on Build Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -354,10 +354,10 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -399,7 +399,7 @@ jobs:
 
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request' && env.VERCEL_TOKEN != ''
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@v7
         with:
           script: |
             const prNumber  = context.payload.pull_request.number;
@@ -440,7 +440,7 @@ jobs:
 
       - name: "⚠ Boomerang — Commit CI Incident on Deploy Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -516,10 +516,10 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -558,7 +558,7 @@ jobs:
 
       - name: "⚠ Boomerang — Commit CI Incident on Production Deploy Failure"
         if: failure()
-        uses: actions/github-script@60a0d83039f74a4aee543508d474c4e34f0ab84d # v7.0.1
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
