@@ -82,8 +82,8 @@ export default function ConversionHeader() {
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[12px] md:text-sm text-white/70 font-bold">
-            <span className="truncate">Prep-first painting across the Twin Cities</span>
-            <span className="hidden sm:inline truncate">Price range, scope review, and schedule conversation in one path.</span>
+            <span className="truncate">(651) 410-4196 • info@skysthelimitpaintingllc.com</span>
+            <span className="hidden sm:inline truncate">Prep-first painting across the Twin Cities</span>
           </div>
         </div>
 
