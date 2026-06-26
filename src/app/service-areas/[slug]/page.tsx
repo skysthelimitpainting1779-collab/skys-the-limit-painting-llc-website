@@ -8,12 +8,14 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 // Create safe, cookie-less public client for build/static rendering tasks
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const publicSupabase = createSupabaseClient(supabaseUrl, supabaseAnonKey);
+const publicSupabase = supabaseUrl && supabaseAnonKey
+  ? createSupabaseClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 export async function getServiceAreaPage(slug: string): Promise<LandingPage | null> {
   // 1. Try fetching from the database first
   try {
-    if (supabaseUrl && supabaseAnonKey) {
+    if (publicSupabase) {
       const { data: dbArea, error } = await publicSupabase
         .from('service_areas')
         .select('*')
@@ -61,7 +63,7 @@ export async function generateStaticParams() {
   }));
 
   try {
-    if (supabaseUrl && supabaseAnonKey) {
+    if (publicSupabase) {
       const { data: dbAreas } = await publicSupabase
         .from('service_areas')
         .select('slug');
