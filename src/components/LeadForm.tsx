@@ -67,15 +67,30 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         if (!Array.isArray(leads) || leads.length === 0) return;
 
         console.log(`[Offline Sync] Syncing ${leads.length} pending leads...`);
+        const remaining: typeof leads = [];
         for (const lead of leads) {
-          await fetch('/api/leads', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(lead),
-          });
+          try {
+            const res = await fetch('/api/leads', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(lead),
+            });
+            if (!res.ok) {
+              console.warn(`[Offline Sync] Lead delivery returned ${res.status}, will retry later`);
+              remaining.push(lead);
+            }
+          } catch (fetchErr) {
+            console.warn('[Offline Sync] Network error syncing lead, will retry later:', fetchErr);
+            remaining.push(lead);
+          }
         }
-        localStorage.removeItem('pending_leads');
-        trackEvent('lead_offline_sync_success', { count: leads.length });
+        if (remaining.length > 0) {
+          localStorage.setItem('pending_leads', JSON.stringify(remaining));
+          trackEvent('lead_offline_sync_partial', { synced: leads.length - remaining.length, remaining: remaining.length });
+        } else {
+          localStorage.removeItem('pending_leads');
+          trackEvent('lead_offline_sync_success', { count: leads.length });
+        }
       } catch (err) {
         console.error('Failed to sync offline leads:', err);
       }

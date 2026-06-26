@@ -321,9 +321,9 @@ export async function POST(req: NextRequest) {
       console.error('ManyChat lead delivery error: Lead delivery is not configured yet.');
       return NextResponse.json({ error: 'Lead delivery platforms not configured in .env', fallback: 'email' }, { status: 500 });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error('ManyChat lead delivery failed with error:', error);
-    return NextResponse.json({ error: error.message || 'ManyChat lead delivery failed.', fallback: 'email' }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'ManyChat lead delivery failed.', fallback: 'email' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, leadId: lead.leadId }, { status: 201 });

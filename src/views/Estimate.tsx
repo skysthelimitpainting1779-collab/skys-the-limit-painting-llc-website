@@ -91,7 +91,8 @@ export default function EstimatePage() {
         if (parsed.message) setMessage(parsed.message);
       }
     } catch (err) {
-      console.error('Failed to load saved estimate progress:', err);
+      console.error('Failed to load saved estimate progress, resetting:', err);
+      localStorage.removeItem('sky_estimate_progress');
     }
   }, []);
 
@@ -110,7 +111,7 @@ export default function EstimatePage() {
       };
       localStorage.setItem('sky_estimate_progress', JSON.stringify(progress));
     } catch (err) {
-      console.error('Failed to save estimate progress:', err);
+      console.warn('Failed to save estimate progress (storage may be full):', err);
     }
   }, [step, dimensions, trimPrep, cabinets, name, phone, email, city, message]);
 

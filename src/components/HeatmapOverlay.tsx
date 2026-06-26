@@ -25,7 +25,8 @@ export default function HeatmapOverlay() {
       try {
         setClicks(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to parse heatmap clicks:', e);
+        console.error('Failed to parse heatmap clicks, resetting stored data:', e);
+        localStorage.removeItem('sky_heatmap_clicks');
       }
     }
 

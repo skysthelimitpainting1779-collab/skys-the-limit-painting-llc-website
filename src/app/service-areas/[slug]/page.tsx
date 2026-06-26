@@ -47,7 +47,8 @@ export async function getServiceAreaPage(slug: string): Promise<LandingPage | nu
       }
     }
   } catch (err) {
-    console.warn(`Error fetching service area slug "${slug}" from DB:`, err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`Service area DB lookup failed for "${slug}": ${message}`);
   }
 
   // 2. Fall back to static configuration
@@ -81,7 +82,8 @@ export async function generateStaticParams() {
       }
     }
   } catch (err) {
-    console.warn('Error fetching service area slugs for static params:', err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`Service area static params fetch failed: ${message}`);
   }
 
   return staticParams;
