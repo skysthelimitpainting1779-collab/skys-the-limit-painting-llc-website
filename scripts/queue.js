@@ -16,7 +16,7 @@ export function claimNextTask() {
   const db = loadDb();
   const pending = (db.tasks || []).find(t => t.status === 'pending');
   if (!pending) return null;
-  pending.status = 'in_progress';
+  pending.status = 'running';
   pending.claimed_at = new Date().toISOString();
   saveDb(db);
   return pending;
