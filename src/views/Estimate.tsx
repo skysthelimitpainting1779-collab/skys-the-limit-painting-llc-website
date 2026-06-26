@@ -758,6 +758,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                 )}
               </div>
 
+              {/* Trust Badges & Registration Disclosures (Fogg Motivation) */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 border-t border-white/10 pt-6 mt-2">
                 <div className="lg:col-span-7 space-y-4 text-sm text-gray-400">
                   <div className="flex items-center gap-2">
@@ -785,7 +786,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                   </div>
                   <div className="pt-2 text-xs text-gray-400 font-mono flex items-center gap-1.5">
                     <span className="inline-block w-1.5 h-1.5 bg-white"></span>
-                    <span>MN Reg ID: IR816596</span>
+                    <span>reg: ir816596 | painting</span>
                   </div>
                 </div>
               </div>

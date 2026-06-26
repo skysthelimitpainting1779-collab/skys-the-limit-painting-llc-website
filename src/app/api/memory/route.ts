@@ -19,7 +19,7 @@ import { NextRequest, NextResponse } from 'next/server';
 async function getHarness() {
   // Use process.cwd() to build absolute path — safe in Next.js Node runtime
   const harnessPath = `${process.cwd()}/scripts/memory-harness.js`;
-  return await import(harnessPath);
+  return await import(/* webpackIgnore: true */ harnessPath);
 }
 
 export const runtime = 'nodejs'; // explicitly: memory files live on disk, not edge
