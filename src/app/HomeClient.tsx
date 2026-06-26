@@ -18,7 +18,7 @@ import {
 import FadeIn from '../components/animations/FadeIn';
 import MagneticButton from '../components/animations/MagneticButton';
 import LeadForm from '../components/LeadForm';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
 import Balancer from 'react-wrap-balancer';
 import ResponsiveImage from '../components/ResponsiveImage';
 import ServiceAreaMap from '../components/ServiceAreaMap';
@@ -28,6 +28,7 @@ import AnimatedStatsBar from '../components/ui/AnimatedCounter';
 import ReviewCarousel from '../components/ReviewCarousel';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import SpecInspector from '../components/SpecInspector';
+import IconFeatureCard from '../components/IconFeatureCard';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { trackEvent } from '../lib/analytics';
 
@@ -492,21 +493,24 @@ export default function HomeClient() {
         </div>
         <div className="relative mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-3">
           {[
-            [FileCheck2, 'Detailed Documentation', 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.'],
-            [ShieldCheck, 'Comprehensive Coverage', 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.'],
-            [Ruler, 'Infrastructure Services', 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.'],
-          ].map(([Icon, title, body]) => {
-            const ReadinessIcon = Icon as typeof ClipboardCheck;
-            return (
-              <FadeIn key={title as string}>
-                <div className="flex flex-col border-t border-[#dce5e4]/20 pt-10">
-                  <ReadinessIcon className="mb-10 text-white" size={30} strokeWidth={1.5} />
-                  <h3 className="text-2xl font-black leading-tight text-white">{title as string}</h3>
-                  <p className="mt-5 max-w-[65ch] text-base leading-relaxed text-[#cbd4d3]">{body as string}</p>
-                </div>
-              </FadeIn>
-            );
-          })}
+            { icon: FileCheck2, title: 'Detailed Documentation', body: 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.' },
+            { icon: ShieldCheck, title: 'Comprehensive Coverage', body: 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.' },
+            { icon: Ruler, title: 'Infrastructure Services', body: 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.' },
+          ].map((card) => (
+            <FadeIn key={card.title}>
+              <IconFeatureCard
+                icon={card.icon}
+                title={card.title}
+                body={card.body}
+                className="flex flex-col border-t border-[#dce5e4]/20 pt-10"
+                iconSize={30}
+                iconClassName="mb-10 text-white"
+                titleClassName="text-2xl font-black leading-tight text-white"
+                bodyClassName="mt-5 max-w-[65ch] text-base leading-relaxed text-[#cbd4d3]"
+                as="div"
+              />
+            </FadeIn>
+          ))}
         </div>
       </section>
 
