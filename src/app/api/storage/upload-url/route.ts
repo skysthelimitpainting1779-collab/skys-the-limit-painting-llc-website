@@ -85,6 +85,6 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error('Storage upload URL generation failed:', err);
-    return NextResponse.json({ error: err instanceof Error ? err.message : 'Storage upload URL generation failed.' }, { status: 500 });
+    return NextResponse.json({ error: 'Storage upload URL generation failed.' }, { status: 500 });
   }
 }
