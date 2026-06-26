@@ -3,6 +3,8 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { Calculator, ArrowRight, CheckCircle2, ShieldCheck, HelpCircle, Layers, Sliders, Settings } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
+import RangeSlider from '../components/RangeSlider';
+import TestimonialCard from '../components/TestimonialCard';
 import { trackEvent } from '../lib/analytics';
 import { buildEstimateMailto } from '../lib/contact';
 import { motion, AnimatePresence } from 'motion/react';
@@ -367,67 +369,13 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
 
                 <div className="space-y-6">
                   {/* Width Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Width</span>
-                      <span className="text-[#f0c067] font-mono">{dimensions.width} FT</span>
-                    </div>
-                    <input
-                      id="room-width"
-                      type="range"
-                      min={5}
-                      max={50}
-                      value={dimensions.width}
-                      onChange={(e) => setDimensionValue('width', Number(e.target.value), 5, 50)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>5 FT</span>
-                      <span>50 FT</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="room-width" label="Width" value={dimensions.width} min={5} max={50} suffix="FT" onChange={(v) => setDimensionValue('width', v, 5, 50)} />
 
                   {/* Length Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Length</span>
-                      <span className="text-[#f0c067] font-mono">{dimensions.length} FT</span>
-                    </div>
-                    <input
-                      id="room-length"
-                      type="range"
-                      min={5}
-                      max={50}
-                      value={dimensions.length}
-                      onChange={(e) => setDimensionValue('length', Number(e.target.value), 5, 50)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>5 FT</span>
-                      <span>50 FT</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="room-length" label="Length" value={dimensions.length} min={5} max={50} suffix="FT" onChange={(v) => setDimensionValue('length', v, 5, 50)} />
 
                   {/* Ceiling Height Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Ceiling Height</span>
-                      <span className="text-[#f0c067] font-mono">{dimensions.ceilingHeight} FT</span>
-                    </div>
-                    <input
-                      id="room-height"
-                      type="range"
-                      min={7}
-                      max={20}
-                      value={dimensions.ceilingHeight}
-                      onChange={(e) => setDimensionValue('ceilingHeight', Number(e.target.value), 7, 20)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>7 FT</span>
-                      <span>20 FT</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="room-height" label="Ceiling Height" value={dimensions.ceilingHeight} min={7} max={20} suffix="FT" onChange={(v) => setDimensionValue('ceilingHeight', v, 7, 20)} />
                 </div>
               </div>
 
@@ -472,68 +420,13 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                   </div>
 
                   {/* Doors Count Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Doors Count</span>
-                      <span className="text-[#f0c067] font-mono">{trimPrep.doorsCount}</span>
-                    </div>
-                    <input
-                      id="doors-count"
-                      type="range"
-                      min={0}
-                      max={10}
-                      value={trimPrep.doorsCount}
-                      onChange={(e) => setTrimValue('doorsCount', Number(e.target.value), 0, 10)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>0</span>
-                      <span>10</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="doors-count" label="Doors Count" value={trimPrep.doorsCount} min={0} max={10} onChange={(v) => setTrimValue('doorsCount', v, 0, 10)} />
 
                   {/* Windows Count Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Windows Count</span>
-                      <span className="text-[#f0c067] font-mono">{trimPrep.windowsCount}</span>
-                    </div>
-                    <input
-                      id="windows-count"
-                      type="range"
-                      min={0}
-                      max={10}
-                      value={trimPrep.windowsCount}
-                      onChange={(e) => setTrimValue('windowsCount', Number(e.target.value), 0, 10)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>0</span>
-                      <span>10</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="windows-count" label="Windows Count" value={trimPrep.windowsCount} min={0} max={10} onChange={(v) => setTrimValue('windowsCount', v, 0, 10)} />
 
                   {/* Est. Trim Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Est. Trim (linear ft)</span>
-                      <span className="text-[#f0c067] font-mono">{trimPrep.trimLength} FT</span>
-                    </div>
-                    <input
-                      id="trim-length"
-                      type="range"
-                      min={0}
-                      max={200}
-                      step={5}
-                      value={trimPrep.trimLength}
-                      onChange={(e) => setTrimValue('trimLength', Number(e.target.value), 0, 200)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>0 FT</span>
-                      <span>200 FT</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="trim-length" label="Est. Trim (linear ft)" value={trimPrep.trimLength} min={0} max={200} step={5} suffix="FT" onChange={(v) => setTrimValue('trimLength', v, 0, 200)} />
                 </div>
               </div>
 
@@ -551,46 +444,10 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
 
                 <div className="space-y-6">
                   {/* Cabinet Doors Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Cabinet Doors</span>
-                      <span className="text-[#f0c067] font-mono">{cabinets.cabinetDoors}</span>
-                    </div>
-                    <input
-                      id="cabinet-doors"
-                      type="range"
-                      min={0}
-                      max={60}
-                      value={cabinets.cabinetDoors}
-                      onChange={(e) => setCabinetValue('cabinetDoors', Number(e.target.value), 0, 60)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>0</span>
-                      <span>60</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="cabinet-doors" label="Cabinet Doors" value={cabinets.cabinetDoors} min={0} max={60} onChange={(v) => setCabinetValue('cabinetDoors', v, 0, 60)} />
 
                   {/* Cabinet Drawers Slider */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#c9c1b4]">Cabinet Drawers</span>
-                      <span className="text-[#f0c067] font-mono">{cabinets.cabinetDrawers}</span>
-                    </div>
-                    <input
-                      id="cabinet-drawers"
-                      type="range"
-                      min={0}
-                      max={40}
-                      value={cabinets.cabinetDrawers}
-                      onChange={(e) => setCabinetValue('cabinetDrawers', Number(e.target.value), 0, 40)}
-                      className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
-                    />
-                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                      <span>0</span>
-                      <span>40</span>
-                    </div>
-                  </div>
+                  <RangeSlider id="cabinet-drawers" label="Cabinet Drawers" value={cabinets.cabinetDrawers} min={0} max={40} onChange={(v) => setCabinetValue('cabinetDrawers', v, 0, 40)} />
                 </div>
               </div>
             </div>
@@ -778,16 +635,14 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                     <div className="lg:col-span-5 flex flex-col justify-start space-y-4 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-6">
                       <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067]">Local Service Proof</h4>
                       <div className="space-y-4">
-                        <div className="border border-white/5 bg-white/2 p-4 text-[11px] leading-relaxed text-gray-300">
-                          <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
-                          <p className="italic">"Anthony’s prep work is second to none. He kept the site perfectly clean and delivered flawless lines."</p>
-                          <p className="mt-2 font-bold text-white">— Mark D., Inver Grove Heights</p>
-                        </div>
-                        <div className="border border-white/5 bg-white/2 p-4 text-[11px] leading-relaxed text-gray-300">
-                          <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
-                          <p className="italic">"Extremely professional owner-operator. No middleman, great pricing, and outstanding finish quality."</p>
-                          <p className="mt-2 font-bold text-white">— Sarah K., Eagan</p>
-                        </div>
+                        <TestimonialCard
+                          quote="Anthony’s prep work is second to none. He kept the site perfectly clean and delivered flawless lines."
+                          author="Mark D., Inver Grove Heights"
+                        />
+                        <TestimonialCard
+                          quote="Extremely professional owner-operator. No middleman, great pricing, and outstanding finish quality."
+                          author="Sarah K., Eagan"
+                        />
                       </div>
                       <div className="pt-2 text-[10px] text-gray-400 font-mono flex items-center gap-1.5">
                         <span className="inline-block w-1.5 h-1.5 bg-orange-safety"></span>

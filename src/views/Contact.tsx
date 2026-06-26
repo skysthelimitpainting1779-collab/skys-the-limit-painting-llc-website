@@ -7,6 +7,8 @@ import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
 import BookingCta from '../components/BookingCta';
 import ResponsiveImage from '../components/ResponsiveImage';
+import HeroOverlays from '../components/HeroOverlays';
+import TestimonialCard from '../components/TestimonialCard';
 import { businessEmail, businessPhone, smsPhone } from '../lib/contact';
 import { breadcrumbSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -15,17 +17,11 @@ export default function ContactPage() {
   return (
     <PageTransition>
       <section className="relative overflow-hidden bg-[#050505] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <ResponsiveImage
-          src="/images/site/marketing-hero-exterior-painting.webp"
-          alt="Premium painting service contact background"
-          width={1600}
-          height={900}
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        <HeroOverlays
+          imageSrc="/images/site/marketing-hero-exterior-painting.webp"
+          imageAlt="Premium painting service contact background"
+          imageClassName="absolute inset-0 h-full w-full object-cover opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
-        <div className="blueprint-grid absolute inset-0 opacity-12"></div>
-        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
         
         <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
@@ -115,16 +111,14 @@ export default function ContactPage() {
                 <div className="lg:col-span-5 flex flex-col justify-start space-y-6 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-6">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f0c067]">Local Service Proof</h4>
                   <div className="space-y-4">
-                    <div className="border border-white/5 bg-white/[0.02] p-4 text-[11px] leading-relaxed text-gray-300">
-                      <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
-                      <p className="italic">"Anthony arrived exactly when he said he would. The lines are incredibly sharp and the cleanup was so thorough you couldn't tell any painting had been done."</p>
-                      <p className="mt-2 font-bold text-white">— David R., Saint Paul</p>
-                    </div>
-                    <div className="border border-white/5 bg-white/[0.02] p-4 text-[11px] leading-relaxed text-gray-300">
-                      <div className="flex gap-1 text-[#f0c067] mb-1">★★★★★</div>
-                      <p className="italic">"We appreciated the direct owner communication. Anthony answered every question, gave a fair price, and executed everything flawlessly."</p>
-                      <p className="mt-2 font-bold text-white">— Jessica T., Burnsville</p>
-                    </div>
+                    <TestimonialCard
+                      quote="Anthony arrived exactly when he said he would. The lines are incredibly sharp and the cleanup was so thorough you couldn't tell any painting had been done."
+                      author="David R., Saint Paul"
+                    />
+                    <TestimonialCard
+                      quote="We appreciated the direct owner communication. Anthony answered every question, gave a fair price, and executed everything flawlessly."
+                      author="Jessica T., Burnsville"
+                    />
                   </div>
                   
                   <div className="pt-2 space-y-2 border-t border-white/5">

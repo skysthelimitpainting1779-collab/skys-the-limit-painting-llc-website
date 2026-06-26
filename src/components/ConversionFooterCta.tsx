@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';
 import MagneticButton from './animations/MagneticButton';
+import IconFeatureCard from './IconFeatureCard';
 
 const proofItems = [
   {
@@ -61,12 +62,14 @@ export default function ConversionFooterCta() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 lg:col-span-7">
-          {proofItems.map(({ icon: Icon, title, body }) => (
-            <article key={title} className="min-h-[240px] border-l border-[#f0c067]/35 bg-[#11100d]/88 p-6">
-              <Icon className="mb-8 text-[#f0c067]" size={28} strokeWidth={1.5} />
-              <h3 className="text-xl font-black leading-tight text-white">{title}</h3>
-              <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{body}</p>
-            </article>
+          {proofItems.map(({ icon, title, body }) => (
+            <IconFeatureCard
+              key={title}
+              icon={icon}
+              title={title}
+              body={body}
+              className="min-h-[240px] border-l border-[#f0c067]/35 bg-[#11100d]/88 p-6"
+            />
           ))}
         </div>
       </div>

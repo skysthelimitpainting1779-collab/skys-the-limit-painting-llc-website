@@ -6,6 +6,7 @@ import PageTransition from '../components/PageTransition';
 import LeadForm from '../components/LeadForm';
 import FadeIn from '../components/animations/FadeIn';
 import ResponsiveImage from '../components/ResponsiveImage';
+import HeroOverlays from '../components/HeroOverlays';
 
 export default function NotFoundPage() {
   return (
@@ -13,17 +14,13 @@ export default function NotFoundPage() {
       
       {/* 404 Dark Section */}
       <section className="relative overflow-hidden bg-[#070706] px-6 py-24">
-        <ResponsiveImage
-          src="/brand/generated/sky-service-proof.webp"
-          alt="Premium painting service proof and trade detailing"
-          width={1600}
-          height={900}
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        <HeroOverlays
+          imageSrc="/brand/generated/sky-service-proof.webp"
+          imageAlt="Premium painting service proof and trade detailing"
+          bgColor="#070706"
+          imageClassName="absolute inset-0 h-full w-full object-cover opacity-20"
+          blueprintOpacity="opacity-18"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#070706] via-transparent to-transparent"></div>
-        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
-        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
  
         <div className="relative mx-auto max-w-4xl text-center md:text-left z-10">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#f0c067]">404 / Page not found</p>

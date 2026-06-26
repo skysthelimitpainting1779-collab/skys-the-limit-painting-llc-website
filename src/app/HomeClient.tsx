@@ -26,6 +26,7 @@ import AnimatedStatsBar from '../components/ui/AnimatedCounter';
 import ReviewCarousel from '../components/ReviewCarousel';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import SpecInspector from '../components/SpecInspector';
+import IconFeatureCard from '../components/IconFeatureCard';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { trackEvent } from '../lib/analytics';
 
@@ -473,21 +474,24 @@ export default function HomeClient() {
         </div>
         <div className="relative mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-px bg-white/15 md:grid-cols-3">
           {[
-            [FileCheck2, 'Detailed Documentation', 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.'],
-            [ShieldCheck, 'Comprehensive Coverage', 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.'],
-            [Ruler, 'Infrastructure Services', 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.'],
-          ].map(([Icon, title, body]) => {
-            const ReadinessIcon = Icon as typeof ClipboardCheck;
-            return (
-              <FadeIn key={title as string}>
-                <div className="min-h-[260px] bg-[#182023] p-7">
-                  <ReadinessIcon className="mb-10 text-[#f0c067]" size={30} strokeWidth={1.5} />
-                  <h3 className="text-2xl font-black leading-tight text-white">{title as string}</h3>
-                  <p className="mt-4 text-sm leading-relaxed text-[#cbd4d3]">{body as string}</p>
-                </div>
-              </FadeIn>
-            );
-          })}
+            { icon: FileCheck2, title: 'Detailed Documentation', body: 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.' },
+            { icon: ShieldCheck, title: 'Comprehensive Coverage', body: 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.' },
+            { icon: Ruler, title: 'Infrastructure Services', body: 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.' },
+          ].map((card) => (
+            <FadeIn key={card.title}>
+              <IconFeatureCard
+                icon={card.icon}
+                title={card.title}
+                body={card.body}
+                className="min-h-[260px] bg-[#182023] p-7"
+                iconSize={30}
+                iconClassName="mb-10 text-[#f0c067]"
+                titleClassName="text-2xl font-black leading-tight text-white"
+                bodyClassName="mt-4 text-sm leading-relaxed text-[#cbd4d3]"
+                as="div"
+              />
+            </FadeIn>
+          ))}
         </div>
       </section>
 

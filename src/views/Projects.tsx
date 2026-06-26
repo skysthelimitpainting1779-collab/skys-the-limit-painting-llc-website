@@ -4,6 +4,8 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { createClient } from '../lib/supabase/server';
+import JsonLd from '../components/JsonLd';
+import HeroOverlays from '../components/HeroOverlays';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -163,19 +165,17 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
+      <JsonLd data={schemaJson} />
 
       <main className="animate-premium-fade-in">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#050505] py-24 px-6 border-b border-white/10">
-          <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="Sky's the Limit Painting LLC premium work proof" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-20 pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.92)_44%,rgba(5,5,5,0.5)_100%)]"></div>
-          <div className="blueprint-grid absolute inset-0 opacity-12"></div>
-          <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
-          <div className="measurement-rules absolute inset-0 opacity-16"></div>
+          <HeroOverlays
+            imageSrc="/brand/generated/sky-service-proof.webp"
+            imageAlt="Sky's the Limit Painting LLC premium work proof"
+            gradients={['bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.92)_44%,rgba(5,5,5,0.5)_100%)]']}
+            showMeasurementRules
+          />
           
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-3xl">
