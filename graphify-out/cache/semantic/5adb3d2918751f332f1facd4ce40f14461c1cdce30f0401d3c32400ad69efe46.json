@@ -1,1 +1,0 @@
-{"nodes": [{"id": "buildminutesfanout_gate", "label": "gate", "file_type": "code", "source_file": ".agents/skills/vercel-optimize/lib/gates/build-minutes-fanout.mjs", "source_location": null}], "edges": [], "hyperedges": []}

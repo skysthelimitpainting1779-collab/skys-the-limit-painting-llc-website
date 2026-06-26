@@ -1,6 +1,6 @@
 # Website Context Map
 
-**Directory Path:** `C:\Users\finan\New folder\website`  
+**Directory Path:** `c:\Users\Johnny Cage\DEV\skysthelimit-collab`  
 **Purpose:** Token-efficient routing map for the public Sky's the Limit Painting LLC React/Vite website.
 
 > [!NOTE]
@@ -8,7 +8,7 @@
 > * **Full generated code index:** `business_vault/marketing/website_codebase_index.md`.
 > * **Framework:** React 19, Vite, TypeScript, React Router 7, Tailwind CSS 4.
 > * **Primary app source:** `src/` with local routing maps in `src/context.md`, `src/pages/context.md`, `src/components/context.md`, `src/lib/context.md`, and `src/data/context.md`.
-> * **Agent routing:** `AGENTS.md` and `CLAUDE.md` are compatibility routers into root `AGENTS.md` and `business_vault/vault_index.md`.
+> * **Agent routing:** `.agents/AGENTS.md` and `CLAUDE.md` are compatibility routers into `.agents/AGENTS.md` and `business_vault/vault_index.md`.
 > * **Website docs:** `docs/context.md` routes local website documentation back to the Obsidian brain.
 > * **Website skillpacks:** reusable design, Vercel, CRO, SEO, and marketing skills live under `../.agents/skills/`; old temp bundles are not active sources.
 > * **Lead intake APIs:** `api/leads.ts` and `api/manychat.ts`.
@@ -51,7 +51,7 @@
 | Review funnel | `src/pages/Review.tsx` |
 | Compliance/public-sector claims | `src/pages/Capabilities.tsx`, `src/data/markets.ts`, `business_vault/reality_register.md` |
 | SEO/prerender/sitemap | `scripts/prerender.mjs`, `scripts/generate-sitemap.js`, `public/sitemap.xml` |
-| Website docs and agent routing | `AGENTS.md`, `CLAUDE.md`, `docs/context.md`, `docs/*.md` |
+| Website docs and agent routing | `.agents/AGENTS.md`, `CLAUDE.md`, `docs/context.md`, `docs/*.md` |
 
 ---
 
@@ -68,7 +68,7 @@ Superpowers planning docs now live in `../business_vault/marketing/superpowers/`
 Run after website edits:
 
 ```powershell
-Set-Location "C:\Users\finan\New folder\website"
+Set-Location "c:\Users\Johnny Cage\DEV\skysthelimit-collab"
 npm run lint
 npm test
 npm run build
@@ -77,11 +77,11 @@ npm run build
 Run after any workspace edit:
 
 ```powershell
-python "C:\Users\finan\New folder\scratch\index_codebase.py"
+powershell -ExecutionPolicy Bypass -File "C:\Users\Johnny Cage\DEV\compile-all.ps1"
 ```
 
 Run after any vault Markdown edit:
 
 ```powershell
-python "C:\Users\finan\New folder\scratch\verify_links.py"
+graphify update .
 ```

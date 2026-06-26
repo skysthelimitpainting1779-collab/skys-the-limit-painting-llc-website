@@ -12,4 +12,9 @@ tmp/
 .next/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+graphify-out/
+components/
+lib/
+wiki/
+*.cjs
 

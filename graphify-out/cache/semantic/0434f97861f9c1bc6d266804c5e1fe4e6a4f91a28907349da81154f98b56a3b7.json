@@ -1,1 +1,0 @@
-{"nodes": [{"id": "regionmisconfig_gate", "label": "gate", "file_type": "code", "source_file": ".agents/skills/vercel-optimize/lib/gates/region-misconfig.mjs", "source_location": null}], "edges": [], "hyperedges": []}

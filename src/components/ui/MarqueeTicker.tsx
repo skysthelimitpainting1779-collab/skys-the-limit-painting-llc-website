@@ -27,7 +27,7 @@ export default function MarqueeTicker({
     return (
       <div className={`flex flex-wrap gap-4 px-4 py-3 ${className}`}>
         {items.map((item) => (
-          <span key={item} className="text-xs font-black uppercase tracking-[0.22em] text-[#d8c7aa]">
+          <span key={item} className="text-xs font-semibold text-[#d8c7aa]">
             {item}
           </span>
         ))}
@@ -47,10 +47,10 @@ export default function MarqueeTicker({
         {allItems.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="flex shrink-0 items-center gap-5 px-5 text-[11px] font-black uppercase tracking-[0.22em] text-[#d8c7aa]/80"
+            className="flex shrink-0 items-center gap-5 px-5 text-xs font-semibold text-[#d8c7aa]/80"
           >
             {item}
-            <span className="text-[#f0c067]/50">{separator}</span>
+            <span className="text-white/50">{separator}</span>
           </span>
         ))}
       </div>

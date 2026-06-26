@@ -77,7 +77,7 @@ export default function SocialLinks() {
           aria-label={label}
           data-track="social_click"
           data-track-payload={JSON.stringify({ label })}
-          className="grid h-11 w-11 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-orange-safety hover:text-orange-safety"
+          className="grid h-11 w-11 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-white hover:text-white"
         >
           <Icon size={19} />
         </a>

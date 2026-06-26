@@ -36,8 +36,8 @@ export default function AboutPage() {
           
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-3xl">
-              <span className="inline-block text-[#FF5A00] font-black tracking-[0.24em] text-xs uppercase mb-4">About Us</span>
-              <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white uppercase tracking-normal leading-[0.96]">Trade-Built Painting.<br/>Owner-Led Care.</h1>
+              <span className="inline-block text-white font-semibold text-xs mb-4">About Us</span>
+              <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white leading-[0.96]">Trade-Built Painting.<br/>Owner-Led Care.</h1>
               <p className="text-xl text-gray-300 max-w-xl">
                 Serving the Twin Cities with proper surface preparation and a focus on lasting results.
               </p>
@@ -49,11 +49,11 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
               {/* Branded Equipment Bento Card */}
-              <div className="relative group overflow-hidden border border-white/10 bg-[#0B0B0D] shadow-md transition duration-500 hover:border-[#FF5A00]/45">
+              <div className="relative group overflow-hidden border border-white/10 bg-[#0B0B0D] shadow-md transition duration-500 hover:border-white/45">
                 <ResponsiveImage src="/brand/generated/sky-owner-proof.webp" alt="Sky's the Limit branded equipment and owner-led proof" width={1200} height={1200} className="w-full aspect-[4/3] object-cover" />
                 <div className="absolute inset-0 bg-black-primary/10"></div>
                 <div className="absolute bottom-0 left-0 right-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.92),transparent)] p-6">
-                  <p className="text-xs font-black uppercase tracking-[0.24em] text-[#FF5A00]">Branded Equipment</p>
+                  <p className="text-xs font-semibold text-white">Branded Equipment</p>
                   <p className="mt-1 text-sm font-bold text-white">Owner-operated trade tools</p>
                 </div>
               </div>
@@ -61,14 +61,14 @@ export default function AboutPage() {
               {/* Anthony Briseno Portrait/Trust Bento Card */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 border border-white/10 bg-[#0B0B0D] p-6">
                 <div className="md:col-span-4 relative aspect-square overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center">
-                  <div className="absolute inset-0 flex items-center justify-center bg-[#FF5A00]/5 text-[#FF5A00] font-display text-2xl font-black">
+                  <div className="absolute inset-0 flex items-center justify-center bg-white/5 text-white font-display text-2xl font-black">
                     AB
                   </div>
                   <ResponsiveImage src="/images/site/anthony-portrait.webp" alt="Anthony Briseno" width={400} height={400} className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale hover:grayscale-0 transition duration-500" />
                 </div>
                 <div className="md:col-span-8 flex flex-col justify-center">
-                  <p className="text-[10px] font-black uppercase tracking-wider text-[#FF5A00]">Founder & Operator</p>
-                  <h3 className="text-lg font-black text-white uppercase mt-1">Anthony Briseno</h3>
+                  <p className="text-xs font-black text-white">Founder & Operator</p>
+                  <h3 className="text-lg font-black text-white mt-1">Anthony Briseno</h3>
                   <p className="text-xs text-[#b9b2a6] mt-2 leading-relaxed">
                     Minnesota Journeyworker Painter & Decorator. Direct lead on every site, ensuring absolute prep and finish compliance.
                   </p>
@@ -77,8 +77,8 @@ export default function AboutPage() {
             </div>
 
             <div>
-              <h2 className="text-4xl font-display font-bold mb-6 leading-tight uppercase tracking-wide">Sky's the Limit Painting LLC</h2>
-              <div className="w-12 h-1 bg-[#FF5A00] mb-8"></div>
+              <h2 className="text-4xl font-display font-bold mb-6 leading-tight">Sky's the Limit Painting LLC</h2>
+              <div className="w-12 h-1 bg-white mb-8"></div>
               
               <div className="space-y-6 text-lg text-[#e4ded2] leading-relaxed">
                 <p>
@@ -93,7 +93,7 @@ export default function AboutPage() {
               </div>
 
               <div className="mt-12">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-[#FF5A00] hover:bg-white text-[#050505] px-8 py-4 rounded-none font-black transition-colors uppercase tracking-widest text-sm cursor-pointer">
+                <Link href="/contact" className="inline-flex items-center gap-2 bg-white hover:bg-white text-[#050505] px-8 py-4 rounded-none font-black transition-colors text-sm cursor-pointer">
                   Work With Us <ArrowRight size={18} />
                 </Link>
               </div>
@@ -111,9 +111,9 @@ export default function AboutPage() {
             ].map(([Icon, title, body]) => {
               const AboutIcon = Icon as typeof ShieldCheck;
               return (
-                <article key={title as string} className="h-full border-l border-[#FF5A00]/35 bg-[#0B0B0D] p-7 transition duration-500 hover:-translate-y-1 hover:border-[#FF5A00]/55">
-                  <AboutIcon className="mb-8 text-[#FF5A00]" size={30} strokeWidth={1.5} />
-                  <h2 className="text-2xl font-black uppercase leading-tight text-white">{title as string}</h2>
+                <article key={title as string} className="h-full border-l border-white/35 bg-[#0B0B0D] p-7 transition duration-500 hover:-translate-y-1 hover:border-white/55">
+                  <AboutIcon className="mb-8 text-white" size={30} strokeWidth={1.5} />
+                  <h2 className="text-2xl font-black leading-tight text-white">{title as string}</h2>
                   <p className="mt-5 text-sm leading-relaxed text-[#b9b2a6]">{body as string}</p>
                 </article>
               );

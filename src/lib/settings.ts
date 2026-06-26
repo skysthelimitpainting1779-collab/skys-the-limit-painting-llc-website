@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   phone: "+1-651-410-4196",
   email: "skysthelimitpainting1779@gmail.com",
   logo_url: null,
-  primary_color: "#FF5A00",
+  primary_color: "white",
   tagline: "Residential detail. Commercial discipline. Public-sector ready.",
   service_areas: ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'],
   services: ['Residential Painting', 'Commercial Painting', 'Interior Painting', 'Exterior Painting', 'Pavement Marking', 'Parking-Lot Striping'],

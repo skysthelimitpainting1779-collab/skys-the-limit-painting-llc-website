@@ -40,16 +40,16 @@ function AnimatedCounterItem({ target, suffix = '', prefix = '', label, duration
     <div ref={ref} className="flex flex-col items-start gap-2">
       <div className="flex items-baseline gap-1">
         {prefix && (
-          <span className="font-display text-xl font-black text-[#f0c067]">{prefix}</span>
+          <span className="font-display text-xl font-black text-white">{prefix}</span>
         )}
         <span className="font-display text-5xl font-black leading-none text-white md:text-6xl">
           {displayValue}
         </span>
         {suffix && (
-          <span className="font-display text-2xl font-black text-[#f0c067]">{suffix}</span>
+          <span className="font-display text-2xl font-black text-white">{suffix}</span>
         )}
       </div>
-      <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#9ca3af]">{label}</p>
+      <p className="text-xs font-medium text-[#9ca3af]">{label}</p>
     </div>
   );
 }

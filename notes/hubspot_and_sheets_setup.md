@@ -63,3 +63,30 @@ Every lead routed through the website form or Facebook lead capture will automat
 7. **Service**: `{{contact.service_type}}`
 8. **Notes**: Initial project description
 9. **Status**: Set defaults to "New"
+
+---
+
+## 4. DocuSign Contract Routing & Webhooks 🧬
+
+When a lead transitions to `Deal Stage: Closed Won` in HubSpot, a contract generation webhook fires to the Next.js `/api/docusign` route.
+
+### Payload Structure:
+The HubSpot webhook must post the following JSON to trigger the eSignature flow:
+```json
+{
+  "clientName": "{{contact.firstname}} {{contact.lastname}}",
+  "clientEmail": "{{contact.email}}",
+  "projectAddress": "{{deal.project_address}}",
+  "serviceType": "{{deal.service_type}}",
+  "totalPrice": "{{deal.amount}}",
+  "contractorId": "IR816596",
+  "insuranceNote": "Exempt from standard workers' comp rules under MN Statute 176.041"
+}
+```
+
+### Automation Flow:
+1. Hubspot fires webhook -> Next.js Edge Function
+2. Next.js creates DocuSign Envelope using the master `PaintingContract_Template_v2`.
+3. Auto-populates dynamic fields (Price, Service, Address, Contractor ID).
+4. Emails contract to `clientEmail`.
+5. Upon signing, DocuSign Connect updates the HubSpot Deal properties (`Contract Signed: True`, `Sign Date`).

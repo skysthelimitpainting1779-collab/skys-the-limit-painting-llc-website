@@ -8,15 +8,21 @@ import SocialLinks from '../components/SocialLinks';
 import HeatmapOverlay from '../components/HeatmapOverlay';
 import Script from 'next/script';
 import Link from 'next/link';
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.skysthelimitpaintingllc.com"),
-  title: "Sky’s the Limit Painting LLC | Minnesota Painting Contractor",
-  description: "Sky’s the Limit Painting LLC is an insured, owner-operated Minnesota painting contractor built for residential painting, commercial work, and public-sector opportunities.",
+  title: "Twin Cities Painting Contractor | Sky's the Limit Painting LLC",
+  description: "Owner-operated painting contractor serving Twin Cities homes and businesses. Interior and exterior painting, prep-first standards, fully insured. Get a free estimate today.",
   keywords: [
+    "Twin Cities painting contractor",
     "Minnesota painting contractor",
     "Inver Grove Heights painting contractor",
-    "Twin Cities painting contractor",
+    "interior painting Twin Cities",
+    "exterior painting Twin Cities",
     "residential painting Minnesota",
     "commercial painting Minnesota",
     "parking lot striping Minnesota",
@@ -26,9 +32,9 @@ export const metadata: Metadata = {
     canonical: "https://www.skysthelimitpaintingllc.com",
   },
   openGraph: {
-    title: "Sky’s the Limit Painting LLC | Minnesota Painting Contractor",
-    description: "Residential detail. Commercial discipline. Public-sector ready.",
-    images: [{ url: "/og-preview.svg" }],
+    title: "Twin Cities Painting Contractor | Sky's the Limit Painting LLC",
+    description: "Owner-operated, prep-first painting for Twin Cities homes, businesses, and facilities. Fully insured. MN ID: IR816596.",
+    images: [{ url: "/brand/generated/sky-local-authority.webp", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
@@ -46,7 +52,7 @@ export default function RootLayout({
   const currentYear = new Date().getFullYear();
 
   return (
-    <html lang="en">
+    <html lang="en" className={cn("font-sans", geist.variable)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -60,7 +66,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "HousePainter",
+              "@type": "PaintingContractor",
+              "@id": "https://www.skysthelimitpaintingllc.com/#business",
               "name": "Sky's the Limit Painting LLC",
               "founder": "Anthony Briseno",
               "telephone": "+1-651-410-4196",
@@ -69,16 +76,34 @@ export default function RootLayout({
               "logo": "https://www.skysthelimitpaintingllc.com/brand/SkyLLP_BrandLogo.svg",
               "image": "https://www.skysthelimitpaintingllc.com/brand/generated/sky-local-authority.webp",
               "priceRange": "$$",
+              "serviceType": [
+                "Interior Painting",
+                "Exterior Painting",
+                "Cabinet Refinishing",
+                "Commercial Painting",
+                "Parking Lot Striping",
+                "Pavement Marking",
+                "Deck & Fence Staining"
+              ],
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Inver Grove Heights",
                 "addressRegion": "MN",
-                "addressCountry": "US",
+                "postalCode": "55076",
+                "addressCountry": "US"
               },
               "areaServed": [
-                { "@type": "Place", "name": "Twin Cities Metro" },
-                { "@type": "AdministrativeArea", "name": "Minnesota" },
+                { "@type": "City", "name": "Minneapolis" },
+                { "@type": "City", "name": "St. Paul" },
+                { "@type": "City", "name": "Inver Grove Heights" },
+                { "@type": "City", "name": "Eagan" },
+                { "@type": "City", "name": "Woodbury" },
+                { "@type": "City", "name": "South St. Paul" },
+                { "@type": "AdministrativeArea", "name": "Twin Cities Metro" }
               ],
+              "sameAs": [
+                "https://www.facebook.com/skysthelimitpaintingllc"
+              ]
             }),
           }}
         />
@@ -91,7 +116,7 @@ export default function RootLayout({
 
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-orange-safety focus:px-4 focus:py-3 focus:text-sm focus:font-black focus:uppercase focus:tracking-wide focus:text-[#050505]"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-white focus:px-4 focus:py-3 focus:text-sm focus:font-black focus: focus: focus:text-[#050505]"
           >
             Skip to content
           </a>
@@ -116,7 +141,7 @@ export default function RootLayout({
               href="/estimate"
               data-track="hero_cta_click"
               data-track-payload='{"source":"mobile_sticky","label":"Price Range"}'
-              className="min-w-0 basis-0 flex-1 bg-orange-safety text-[#050505] py-4 px-2 rounded-none font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap"
+              className="min-w-0 basis-0 flex-1 bg-white text-[#050505] py-4 px-2 rounded-none font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center text-xs whitespace-nowrap"
             >
               Price Range
             </Link>
@@ -126,11 +151,11 @@ export default function RootLayout({
 
           {/* Footer */}
           <footer className="bg-black-primary text-white py-20 px-6 mt-12 relative overflow-hidden">
-            <div className="absolute right-0 bottom-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-safety/10 via-black-charcoal/0 to-transparent pointer-events-none rounded-full blur-3xl"></div>
+            <div className="absolute right-0 bottom-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 via-black-charcoal/0 to-transparent pointer-events-none rounded-full blur-3xl"></div>
             <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6 relative z-10">
               <div className="col-span-1 lg:col-span-2">
-                <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
-                <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 tracking-wide">
+                <h2 className="text-3xl font-display font-bold mb-4">Sky&apos;s the Limit Painting LLC</h2>
+                <h3 className="text-xl font-display font-semibold text-gray-300 mb-4">
                   Residential detail. Commercial discipline. Public-sector ready.
                 </h3>
                 <p className="text-gray-400 max-w-md text-lg">
@@ -142,7 +167,7 @@ export default function RootLayout({
                     href="tel:+16514104196"
                     data-track="call_click"
                     data-track-payload='{"source":"footer"}'
-                    className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2"
+                    className="text-xl font-bold text-white hover:text-white transition-colors block mb-2"
                   >
                     651-410-4196
                   </a>
@@ -161,16 +186,16 @@ export default function RootLayout({
               <div>
                 <h4 className="font-bold mb-6 text-lg">Markets</h4>
                 <nav className="flex flex-col gap-4 text-gray-400">
-                  <Link href="/residential" className="hover:text-orange-safety transition-colors">
+                  <Link href="/residential" className="hover:text-white transition-colors">
                     Residential
                   </Link>
-                  <Link href="/commercial" className="hover:text-orange-safety transition-colors">
+                  <Link href="/commercial" className="hover:text-white transition-colors">
                     Commercial
                   </Link>
-                  <Link href="/public-sector" className="hover:text-orange-safety transition-colors">
+                  <Link href="/public-sector" className="hover:text-white transition-colors">
                     Public Sector
                   </Link>
-                  <Link href="/projects" className="hover:text-orange-safety transition-colors">
+                  <Link href="/projects" className="hover:text-white transition-colors">
                     Recent Work
                   </Link>
                 </nav>
@@ -179,19 +204,19 @@ export default function RootLayout({
               <div>
                 <h4 className="font-bold mb-6 text-lg">Services</h4>
                 <nav className="flex flex-col gap-4 text-gray-400">
-                  <Link href="/painting-services/interior-painting" className="hover:text-orange-safety transition-colors">
+                  <Link href="/painting-services/interior-painting" className="hover:text-white transition-colors">
                     Interior Painting
                   </Link>
-                  <Link href="/painting-services/exterior-painting" className="hover:text-orange-safety transition-colors">
+                  <Link href="/painting-services/exterior-painting" className="hover:text-white transition-colors">
                     Exterior Painting
                   </Link>
-                  <Link href="/painting-services/cabinet-refinishing" className="hover:text-orange-safety transition-colors">
+                  <Link href="/painting-services/cabinet-refinishing" className="hover:text-white transition-colors">
                     Cabinet Refinishing
                   </Link>
-                  <Link href="/painting-services/deck-fence-staining" className="hover:text-orange-safety transition-colors">
-                    Deck & Fence Staining
+                  <Link href="/painting-services/deck-fence-staining" className="hover:text-white transition-colors">
+                    Deck &amp; Fence Staining
                   </Link>
-                  <Link href="/painting-services/commercial-repaints" className="hover:text-orange-safety transition-colors">
+                  <Link href="/painting-services/commercial-repaints" className="hover:text-white transition-colors">
                     Commercial Repaints
                   </Link>
                 </nav>
@@ -200,19 +225,19 @@ export default function RootLayout({
               <div>
                 <h4 className="font-bold mb-6 text-lg">Service Areas</h4>
                 <nav className="flex flex-col gap-4 text-gray-400">
-                  <Link href="/service-area" className="hover:text-orange-safety transition-colors">
+                  <Link href="/service-area" className="hover:text-white transition-colors">
                     Coverage Map
                   </Link>
-                  <Link href="/service-areas/inver-grove-heights" className="hover:text-orange-safety transition-colors">
+                  <Link href="/service-areas/inver-grove-heights" className="hover:text-white transition-colors">
                     Inver Grove Heights
                   </Link>
-                  <Link href="/service-areas/eagan" className="hover:text-orange-safety transition-colors">
+                  <Link href="/service-areas/eagan" className="hover:text-white transition-colors">
                     Eagan
                   </Link>
-                  <Link href="/service-areas/woodbury" className="hover:text-orange-safety transition-colors">
+                  <Link href="/service-areas/woodbury" className="hover:text-white transition-colors">
                     Woodbury
                   </Link>
-                  <Link href="/service-areas/st-paul" className="hover:text-orange-safety transition-colors">
+                  <Link href="/service-areas/st-paul" className="hover:text-white transition-colors">
                     St. Paul
                   </Link>
                 </nav>
@@ -221,22 +246,22 @@ export default function RootLayout({
               <div>
                 <h4 className="font-bold mb-6 text-lg">Company</h4>
                 <nav className="flex flex-col gap-4 text-gray-400">
-                  <Link href="/about" className="hover:text-orange-safety transition-colors">
+                  <Link href="/about" className="hover:text-white transition-colors">
                     About Us
                   </Link>
-                  <Link href="/capabilities" className="hover:text-orange-safety transition-colors">
+                  <Link href="/capabilities" className="hover:text-white transition-colors">
                     Capabilities Statement
                   </Link>
-                  <Link href="/estimate" className="hover:text-orange-safety transition-colors">
+                  <Link href="/estimate" className="hover:text-white transition-colors">
                     Room Cost Calculator
                   </Link>
-                  <Link href="/refer" className="hover:text-orange-safety transition-colors">
+                  <Link href="/refer" className="hover:text-white transition-colors">
                     Referral Program
                   </Link>
-                  <Link href="/review" className="hover:text-orange-safety transition-colors">
+                  <Link href="/review" className="hover:text-white transition-colors">
                     Google Review Funnel
                   </Link>
-                  <Link href="/contact" className="hover:text-orange-safety transition-colors">
+                  <Link href="/contact" className="hover:text-white transition-colors">
                     Get an Estimate
                   </Link>
                 </nav>
@@ -244,9 +269,9 @@ export default function RootLayout({
             </div>
 
             <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-              <p>© {currentYear} Sky's the Limit Painting LLC. All rights reserved.</p>
+              <p>&copy; {currentYear} Sky&apos;s the Limit Painting LLC. All rights reserved.</p>
               <p>
-                Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers’ comp under MN Statute
+                Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers&apos; comp under MN Statute
                 176.041 | Fully Insured
               </p>
               <p>Twin Cities Metro Area, MN</p>
