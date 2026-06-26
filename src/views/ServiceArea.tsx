@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import ServiceAreaMap from '../components/ServiceAreaMap';
+import JsonLd from '../components/JsonLd';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 export default function ServiceAreaPage() {
@@ -14,10 +15,7 @@ export default function ServiceAreaPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
+      <JsonLd data={schemaJson} />
 
       <main className="animate-premium-fade-in">
         {/* Hero */}

@@ -3138,8 +3138,8 @@ function runQueueLoop() {
     // Explicit Verification
     console.log(`[Agent OS] Verifying task ${task.id} execution via MCP read...`);
     
-    // Resolve task as completed
-    resolveTask(task.id, 'completed');
+    // Resolve task as verified
+    resolveTask(task.id, 'verified');
     console.log(`[Agent OS] Task ${task.id} successfully completed and verified.`);
     
   } catch (err) {

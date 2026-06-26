@@ -35,6 +35,9 @@ jobs:
       - name: Type check & Lint
         run: npm run lint
 
+      - name: Bootstrap agent OS artifacts
+        run: node scripts/agent-os.js bootstrap
+
       - name: Run unit & integration tests
         run: npm test
 
