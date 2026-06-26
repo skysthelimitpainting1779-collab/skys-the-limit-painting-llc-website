@@ -216,7 +216,7 @@
 
   /* Spotlight card ambient glow */
   .spotlight-card {
-    --spotlight-color: rgba(255, 255, 255, 0.05);
+    --spotlight-color: rgba(255, 255, 255, 0.02);
   }
 
   /* Pulse ring for badge */
