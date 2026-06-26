@@ -108,9 +108,9 @@ export default function ReviewCarousel() {
       
       <div className="relative z-10 flex flex-col justify-between h-full min-h-[220px]">
         {/* Rating Stars */}
-        <div className="flex gap-1 text-[#f0c067]">
+        <div className="flex gap-1 text-white">
           {Array.from({ length: activeTestimonial.rating }).map((_, i) => (
-            <Star key={i} size={18} className="fill-[#f0c067]" />
+            <Star key={i} size={18} className="fill-[white]" />
           ))}
         </div>
 
@@ -137,7 +137,7 @@ export default function ReviewCarousel() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 pt-6 border-t border-white/10">
           <div>
             <h4 className="text-lg font-black text-white">{activeTestimonial.name}</h4>
-            <p className="text-xs text-[#f0c067] font-semibold mt-1 uppercase tracking-wider">
+            <p className="text-xs text-white font-semibold mt-1">
               {activeTestimonial.project} &mdash; {activeTestimonial.location}
             </p>
           </div>
@@ -147,7 +147,7 @@ export default function ReviewCarousel() {
             <button
               onClick={handlePrev}
               aria-label="Previous testimonial"
-              className="grid h-10 w-10 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
+              className="grid h-10 w-10 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-white hover:text-white"
             >
               <ChevronLeft size={20} />
             </button>
@@ -157,7 +157,7 @@ export default function ReviewCarousel() {
             <button
               onClick={() => handleNext(false)}
               aria-label="Next testimonial"
-              className="grid h-10 w-10 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
+              className="grid h-10 w-10 place-items-center border border-white/15 bg-white/5 text-white transition-colors hover:border-white hover:text-white"
             >
               <ChevronRight size={20} />
             </button>

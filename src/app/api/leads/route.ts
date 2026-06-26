@@ -534,7 +534,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Lead delivery failed with error:', error);
     // res.status(500).json({ error: 'Lead delivery failed.', fallback: 'email' })
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Lead delivery failed.', fallback: 'email' }, { status: 500 });
+    return NextResponse.json({ error: 'Lead delivery failed. Please email us directly at skysthelimitpainting1779@gmail.com', fallback: 'email' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, leadId: lead.leadId }, { status: 201 });
