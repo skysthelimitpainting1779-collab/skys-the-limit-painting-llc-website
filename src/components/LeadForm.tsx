@@ -93,6 +93,11 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         }
       } catch (err) {
         console.error('Failed to sync offline leads:', err);
+        // Preserve corrupted lead data under a backup key so it can be
+        // recovered manually, then remove the broken entry to stop
+        // repeated parse errors on every page load.
+        localStorage.setItem('pending_leads_backup', pending);
+        localStorage.removeItem('pending_leads');
       }
     };
 
