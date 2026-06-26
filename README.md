@@ -4,7 +4,7 @@ This repository contains the complete, production-ready website for **Sky's the 
 
 ## Agent Operating Manual
 
-Use [AGENTS.md](AGENTS.md) as the source of truth for agent work. It defines the wiki-first workflow, verification gate, claim guardrails, and Google Open Knowledge standard.
+Use [.agents/AGENTS.md](.agents/AGENTS.md) as the source of truth for agent work. It defines the wiki-first workflow, verification gate, claim guardrails, and Google Open Knowledge standard.
 
 ## Setup Instructions
 

@@ -5,12 +5,11 @@ import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { createClient } from '../lib/supabase/server';
 import JsonLd from '../components/JsonLd';
-import HeroOverlays from '../components/HeroOverlays';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-none uppercase tracking-wider">
-    <CheckCircle2 size={12} className="text-[#FF5A00]" />
+  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded-none font-bold">
+    <CheckCircle2 size={12} className="text-white" />
     {children}
   </span>
 );
@@ -27,7 +26,7 @@ interface CaseStudyCardProps {
 }
 
 const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeImage, afterImage }: CaseStudyCardProps) => (
-  <div className="bg-[#0B0B0D] rounded-none overflow-hidden border border-white/10 shadow-sm flex flex-col group h-full mb-12 transition duration-500 hover:-translate-y-1 hover:border-[#FF5A00]/55">
+  <div className="bg-[#0B0B0D] rounded-none overflow-hidden border border-white/10 shadow-sm flex flex-col group h-full mb-12 transition duration-500 hover:border-white/30">
     <div className="relative overflow-hidden">
       {beforeImage && afterImage ? (
         <BeforeAfterSlider beforeImage={beforeImage} afterImage={afterImage} beforeLabel="The Challenge" afterLabel="The Result" />
@@ -36,29 +35,29 @@ const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeIma
           {image && (
             <ResponsiveImage src={image} alt={`${type} in ${location}`} width={1200} height={700} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
           )}
-          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-none">
+          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold px-3 py-1 rounded-none">
             {location}
           </div>
         </div>
       )}
       <div className="absolute top-4 left-4 z-10 pointer-events-none">
-        <span className="bg-[#FF5A00] text-[#050505] text-xs font-black uppercase tracking-widest px-3 py-1 rounded-none shadow-md">
+        <span className="bg-white text-[#050505] text-xs font-black px-3 py-1 rounded-none shadow-md">
           {type}
         </span>
       </div>
     </div>
     <div className="p-8 flex flex-col flex-1">
-      <h3 className="text-xl font-display font-black text-white uppercase tracking-wide mb-6 group-hover:text-[#FF5A00] transition-colors">{type}</h3>
+      <h3 className="text-xl font-display font-black text-white mb-6 group-hover:text-gray-300 transition-colors">{type}</h3>
       <div className="space-y-6 mb-8 flex-grow">
         <div>
-          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+          <h4 className="text-gray-400 text-xs font-bold mb-2 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500"></span> The Challenge
           </h4>
           <p className="text-white text-sm leading-relaxed">{problem}</p>
         </div>
         <div className="w-full h-px bg-white/5"></div>
         <div>
-          <h4 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+          <h4 className="text-gray-400 text-xs font-bold mb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-yellow-500"></span> The Prep
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -69,8 +68,8 @@ const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeIma
         </div>
         <div className="w-full h-px bg-white/5"></div>
         <div>
-          <h4 className="text-[#FF5A00] text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FF5A00]"></span> The Result
+          <h4 className="text-white text-xs font-bold mb-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-white"></span> The Result
           </h4>
           <p className="text-white text-sm font-medium leading-relaxed">{result}</p>
         </div>
@@ -78,7 +77,7 @@ const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeIma
       <div className="mt-auto pt-6 border-t border-white/5">
         <Link 
           href="/contact" 
-          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-[#FF5A00] hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-black text-white hover:text-gray-300 transition-colors"
         >
           Inquire About A Similar Scope <ArrowRight size={14} />
         </Link>
@@ -170,17 +169,10 @@ export default async function ProjectsPage() {
       <main className="animate-premium-fade-in">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#050505] py-24 px-6 border-b border-white/10">
-          <HeroOverlays
-            imageSrc="/brand/generated/sky-service-proof.webp"
-            imageAlt="Sky's the Limit Painting LLC premium work proof"
-            gradients={['bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.92)_44%,rgba(5,5,5,0.5)_100%)]']}
-            showMeasurementRules
-          />
-          
+          <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="Sky's the Limit Painting LLC premium work proof" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-20 pointer-events-none" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-3xl">
-              <span className="inline-block text-[#FF5A00] font-black tracking-[0.24em] text-xs uppercase mb-4">Our Work</span>
-              <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white uppercase tracking-normal leading-[0.96]">Real Surfaces.<br/>Real Finish.</h1>
+              <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white leading-[0.96]">Real Surfaces.<br/>Real Finish.</h1>
               <p className="text-xl text-gray-300 max-w-xl">
                 Take a look at some of our recent verifiable interior, exterior, and commercial painting projects across the Twin Cities.
               </p>
@@ -202,13 +194,12 @@ export default async function ProjectsPage() {
 
         <section className="py-24 px-6 bg-[#050505] border-t border-white/10">
           <div className="max-w-4xl mx-auto bg-[#0B0B0D] border border-white/10 rounded-none p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="blueprint-grid absolute inset-0 opacity-10"></div>
             <div className="relative z-10">
-              <h2 className="text-3xl font-display font-black text-white mb-4 uppercase tracking-wide">Have a Similar Project?</h2>
+              <h2 className="text-3xl font-display font-black text-white mb-4">Have a Similar Project?</h2>
               <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
                 We're ready to put the same level of care into your next project. Contact us today for a free estimate.
               </p>
-              <Link href="/contact" className="inline-flex items-center gap-2 bg-[#FF5A00] hover:bg-white text-[#050505] px-8 py-4 rounded-none font-black transition-colors uppercase tracking-widest text-sm cursor-pointer">
+              <Link href="/contact" className="inline-flex items-center gap-2 bg-white hover:bg-gray-200 text-[#050505] px-8 py-4 rounded-none font-black transition-colors text-sm cursor-pointer">
                 Get Your Free Estimate <ArrowRight size={18} />
               </Link>
             </div>

@@ -1,1 +1,0 @@
-{"nodes": [{"id": "workspaceresolver_resolveworkspaceimports", "label": "resolveWorkspaceImports", "file_type": "code", "source_file": ".agents/skills/vercel-optimize/lib/workspace-resolver.mjs", "source_location": null}], "edges": [], "hyperedges": []}

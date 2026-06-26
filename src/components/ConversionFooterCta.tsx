@@ -18,18 +18,15 @@ const proofItems = [
   {
     icon: ShieldCheck,
     title: 'Verified contractor language',
-    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers\' comp exempt under MN Statute 176.041.',
+    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers\' comp exempt under MN Statute 176.041. MN ID: IR816596',
   },
 ];
 
 export default function ConversionFooterCta() {
   return (
-    <section className="relative overflow-hidden border-y border-[#d8c7aa]/16 mesh-gradient-bg px-4 py-20 text-white sm:px-6 lg:px-8">
-      <div className="blueprint-grid absolute inset-0 opacity-10 z-10"></div>
-      <div className="measurement-rules absolute inset-0 opacity-12 z-10"></div>
+    <section className="relative overflow-hidden bg-[#050505] px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="relative z-20 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
-          <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Ready when the surface is ready</p>
           <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
             Get a tighter scope before paint ever opens.
           </h2>
@@ -42,7 +39,7 @@ export default function ConversionFooterCta() {
                 href="/estimate"
                 data-track="footer_conversion_cta_click"
                 data-track-payload='{"action":"calculator"}'
-                className="shimmer-cta inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] transition-colors hover:bg-white"
+                className="inline-flex items-center justify-center gap-2 bg-white px-7 py-4 text-sm font-black text-[#15110a] transition-colors hover:bg-gray-200"
               >
                 <Calculator size={18} />
                 Get A Price Range
@@ -52,7 +49,7 @@ export default function ConversionFooterCta() {
               href={`tel:${businessPhone}`}
               data-track="call_click"
               data-track-payload='{"source":"conversion_footer"}'
-              className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#11100d]/80 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]"
+              className="inline-flex items-center justify-center gap-2 border border-white/30 bg-[#11100d]/80 px-7 py-4 text-sm font-black text-white transition-colors hover:border-white hover:text-white"
             >
               <Phone size={18} />
               Call / Text
@@ -68,7 +65,8 @@ export default function ConversionFooterCta() {
               icon={icon}
               title={title}
               body={body}
-              className="min-h-[240px] border-l border-[#f0c067]/35 bg-[#11100d]/88 p-6"
+              className="min-h-[240px] bg-[#111] p-8"
+              iconClassName="mb-8 text-white"
             />
           ))}
         </div>

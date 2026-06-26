@@ -25,9 +25,9 @@ export default function RangeSlider({
 
   return (
     <div className="space-y-2">
-      <div className="flex justify-between text-xs font-black uppercase tracking-wider">
+      <div className="flex justify-between text-xs font-black">
         <span className="text-[#c9c1b4]">{label}</span>
-        <span className="text-[#f0c067] font-mono">{displayValue}</span>
+        <span className="text-white font-mono">{displayValue}</span>
       </div>
       <input
         id={id}
@@ -37,9 +37,9 @@ export default function RangeSlider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[#f0c067] bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
+        className="w-full accent-white bg-white/10 h-1 cursor-ew-resize focus-visible:outline-none"
       />
-      <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+      <div className="flex justify-between text-xs text-gray-400 font-mono">
         <span>{minLabel}</span>
         <span>{maxLabel}</span>
       </div>
