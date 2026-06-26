@@ -23,7 +23,7 @@ const proofItems = [
 
 export default function ConversionFooterCta() {
   return (
-    <section className="relative overflow-hidden bg-[#050505] px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-[#050505] px-4 py-28 text-white sm:px-6 lg:px-8 lg:py-36">
       <div className="relative z-20 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
@@ -62,7 +62,7 @@ export default function ConversionFooterCta() {
             <article key={title} className="min-h-[240px] bg-[#111] p-8">
               <Icon className="mb-8 text-white" size={28} strokeWidth={1.5} />
               <h3 className="text-xl font-black leading-tight text-white">{title}</h3>
-              <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{body}</p>
+              <p className="mt-4 text-base leading-relaxed text-[#b9b2a6]">{body}</p>
             </article>
           ))}
         </div>

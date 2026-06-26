@@ -83,7 +83,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
       serviceAreaPins.forEach((pin) => {
         const orangeIcon = L.divIcon({
           className: 'custom-map-marker',
-          html: `<div style="background-color: ${pin.primary ? 'white' : '#0B0B0D'}; border: 2px solid white; width: 14px; height: 14px; box-shadow: 0 0 10px rgba(255,90,0,0.5);"></div>`,
+          html: `<div style="background-color: ${pin.primary ? 'white' : '#0B0B0D'}; border: 2px solid white; width: 14px; height: 14px; box-shadow: 0 0 10px rgba(255,255,255,0.18);"></div>`,
           iconSize: [14, 14],
           iconAnchor: [7, 7]
         });
@@ -126,14 +126,14 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
     <section
       id="service-area-map"
       aria-labelledby="service-area-map-heading"
-      className={`relative overflow-hidden border-y border-[#d8c7aa]/12 bg-[#050505] px-4 text-white sm:px-6 lg:px-8 ${compact ? 'py-16' : 'py-20'}`}
+      className={`relative overflow-hidden border-y border-[#d8c7aa]/12 bg-[#050505] px-4 text-white sm:px-6 lg:px-8 ${compact ? 'py-16' : 'py-28 lg:py-36'}`}
     >
       <div className="blueprint-grid absolute inset-0 opacity-8"></div>
-      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,white,white,transparent)] opacity-70"></div>
+      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,white,white,transparent)] opacity-35"></div>
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
         <motion.div {...mapMotion} className="lg:col-span-5">
-          <p className="text-xs font-semibold text-white">Service-area map</p>
+          <p className="font-display text-xs font-semibold text-white">Service-area map</p>
           <h2 id="service-area-map-heading" className="mt-4 text-3xl font-black leading-tight text-white md:text-5xl">
             Twin Cities coverage with live interactive mapping.
           </h2>
