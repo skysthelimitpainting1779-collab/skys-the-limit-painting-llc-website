@@ -3,45 +3,47 @@ import ResponsiveImage from './ResponsiveImage';
 interface HeroOverlaysProps {
   imageSrc: string;
   imageAlt: string;
-  bgColor?: string;
   imageOpacity?: string;
   imageClassName?: string;
-  gradients?: string[];
+  imageWidth?: number;
+  imageHeight?: number;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
+  gradients: string[];
   blueprintOpacity?: string;
   roadRuleOpacity?: string;
   showMeasurementRules?: boolean;
   measurementRulesOpacity?: string;
 }
 
-const defaultGradients = (bg: string) => [
-  `bg-gradient-to-r from-[${bg}] via-[${bg}]/94 to-transparent`,
-  `bg-gradient-to-t from-[${bg}] via-transparent to-transparent`,
-];
-
 export default function HeroOverlays({
   imageSrc,
   imageAlt,
-  bgColor = '#050505',
   imageOpacity = 'opacity-20',
   imageClassName,
+  imageWidth = 1600,
+  imageHeight = 900,
+  loading,
+  fetchPriority,
   gradients,
   blueprintOpacity = 'opacity-12',
   roadRuleOpacity = 'opacity-70',
   showMeasurementRules = false,
   measurementRulesOpacity = 'opacity-16',
 }: HeroOverlaysProps) {
-  const resolvedGradients = gradients ?? defaultGradients(bgColor);
 
   return (
     <>
       <ResponsiveImage
         src={imageSrc}
         alt={imageAlt}
-        width={1600}
-        height={900}
+        width={imageWidth}
+        height={imageHeight}
+        loading={loading}
+        fetchPriority={fetchPriority}
         className={imageClassName ?? `absolute inset-0 h-full w-full object-cover ${imageOpacity} pointer-events-none`}
       />
-      {resolvedGradients.map((cls) => (
+      {gradients.map((cls) => (
         <div key={cls} className={`absolute inset-0 ${cls}`} />
       ))}
       <div className={`blueprint-grid absolute inset-0 ${blueprintOpacity}`} />

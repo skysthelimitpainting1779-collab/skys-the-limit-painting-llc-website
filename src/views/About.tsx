@@ -25,6 +25,10 @@ export default function AboutPage() {
           <HeroOverlays
             imageSrc="/brand/generated/sky-service-proof.webp"
             imageAlt="Premium painting service proof and trade detailing"
+            gradients={[
+              'bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent',
+              'bg-gradient-to-t from-[#050505] via-transparent to-transparent',
+            ]}
           />
           
           <div className="relative z-10 max-w-7xl mx-auto">
@@ -112,6 +116,7 @@ export default function AboutPage() {
                 iconClassName="mb-8 text-[#FF5A00]"
                 titleClassName="text-2xl font-black uppercase leading-tight text-white"
                 bodyClassName="mt-5 text-sm leading-relaxed text-[#b9b2a6]"
+                headingLevel="h2"
               />
             ))}
           </div>

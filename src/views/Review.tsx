@@ -73,8 +73,11 @@ export default function ReviewPage() {
         <HeroOverlays
           imageSrc="/brand/generated/sky-service-proof.webp"
           imageAlt="Premium painting service proof and trade detailing"
-          bgColor="#070706"
           imageClassName="absolute inset-0 h-full w-full object-cover opacity-20"
+          gradients={[
+            'bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent',
+            'bg-gradient-to-t from-[#070706] via-transparent to-transparent',
+          ]}
           blueprintOpacity="opacity-18"
         />
         

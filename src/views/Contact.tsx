@@ -21,6 +21,10 @@ export default function ContactPage() {
           imageSrc="/images/site/marketing-hero-exterior-painting.webp"
           imageAlt="Premium painting service contact background"
           imageClassName="absolute inset-0 h-full w-full object-cover opacity-20"
+          gradients={[
+            'bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent',
+            'bg-gradient-to-t from-[#050505] via-transparent to-transparent',
+          ]}
         />
         
         <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">

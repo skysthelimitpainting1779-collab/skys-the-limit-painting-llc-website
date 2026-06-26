@@ -23,6 +23,10 @@ export default function CapabilitiesPage() {
           <HeroOverlays
             imageSrc="/images/services/striping/SkyLLP_ParkingLot_Striping.webp"
             imageAlt="Procurement and commercial parking lot striping"
+            gradients={[
+              'bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent',
+              'bg-gradient-to-t from-[#050505] via-transparent to-transparent',
+            ]}
           />
           
           <div className="max-w-7xl mx-auto relative z-10">

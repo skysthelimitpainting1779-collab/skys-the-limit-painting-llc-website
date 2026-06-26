@@ -36,6 +36,8 @@ export default function MarketPage({ slug }: MarketPageProps) {
           imageSrc={market.heroImage}
           imageAlt={`${market.title} project atmosphere`}
           imageClassName="absolute inset-0 h-full w-full object-cover opacity-56"
+          loading="eager"
+          fetchPriority="high"
           gradients={[
             'bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.95)_36%,rgba(7,7,6,0.62)_68%,rgba(7,7,6,0.28)_100%)]',
             'bg-[linear-gradient(0deg,#070706_0%,rgba(7,7,6,0.08)_45%,rgba(7,7,6,0.2)_100%)]',

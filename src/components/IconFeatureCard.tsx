@@ -9,6 +9,7 @@ interface IconFeatureCardProps {
   iconClassName?: string;
   titleClassName?: string;
   bodyClassName?: string;
+  headingLevel?: 'h2' | 'h3';
   as?: 'article' | 'div';
 }
 
@@ -21,12 +22,13 @@ export default function IconFeatureCard({
   iconClassName = 'mb-8 text-[#f0c067]',
   titleClassName = 'text-xl font-black leading-tight text-white',
   bodyClassName = 'mt-4 text-sm leading-relaxed text-[#b9b2a6]',
+  headingLevel: Heading = 'h3',
   as: Tag = 'article',
 }: IconFeatureCardProps) {
   return (
     <Tag className={className}>
       <Icon className={iconClassName} size={iconSize} strokeWidth={1.5} />
-      <h3 className={titleClassName}>{title}</h3>
+      <Heading className={titleClassName}>{title}</Heading>
       <p className={bodyClassName}>{body}</p>
     </Tag>
   );
