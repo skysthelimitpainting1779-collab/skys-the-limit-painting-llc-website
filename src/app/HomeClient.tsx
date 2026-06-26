@@ -182,7 +182,7 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
                 visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } }
               }}
             >
-              <div className="grid gap-4 text-sm sm:grid-cols-2">
+              <div className="grid gap-4 text-base sm:grid-cols-2">
                 {market.proof.slice(0, 2).map((item) => (
                   <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} key={item} className="flex gap-2 border-t border-zinc-800 pt-3">
                     <CheckCircle2 className="mt-0.5 shrink-0 text-zinc-400" size={16} />
@@ -247,7 +247,7 @@ export default function HomeClient() {
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-6 py-12 sm:px-8 lg:px-12 lg:py-16">
           <FadeIn className="w-full pt-8 md:pt-16">
-            <p className="mb-8 text-sm font-semibold text-zinc-500">
+            <p className="font-display mb-8 text-sm font-semibold text-zinc-500">
               Twin Cities Metro — MN ID: IR816596
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] text-white">
@@ -298,7 +298,7 @@ export default function HomeClient() {
             <div className="grid gap-10 border-t border-[#d8c7aa]/20 pt-12 md:grid-cols-3">
               {conversionSteps.map((item) => (
                 <div key={item.step} className="flex flex-col">
-                  <p className="text-sm font-semibold text-zinc-500">{item.step} / Customer path</p>
+                  <p className="font-display text-sm font-semibold text-zinc-500">{item.step} / Customer path</p>
                   <h2 className="mt-4 text-xl font-black leading-tight text-white">{item.title}</h2>
                   <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-300">{item.body}</p>
                 </div>
@@ -313,10 +313,10 @@ export default function HomeClient() {
         stats={homeStats}
         className="border-b border-[#d8c7aa]/10"
       />
-      <section className="border-t border-white/[0.05] bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12">
+      <section className="border-t border-white/[0.05] bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
-            <p className="mb-6 text-sm font-semibold text-zinc-500">The standard</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The standard</p>
             <h2 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl text-white">
               Most homeowners don&apos;t end up with a bad paint job because of the color.
             </h2>
@@ -329,7 +329,7 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#11100d] px-6 py-28 text-white sm:px-8 lg:px-12">
+      <section className="relative overflow-hidden bg-[#11100d] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-32">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-5">
             <div className="relative min-h-[500px] overflow-hidden">
@@ -341,7 +341,7 @@ export default function HomeClient() {
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
-            <p className="mb-6 text-sm font-semibold text-zinc-500">The difference</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The difference</p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Prep is 90% of a finish that actually lasts.
             </h2>
@@ -372,12 +372,12 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-t border-white/10 bg-[#050505] px-6 py-28 sm:px-8 lg:px-12">
+      <section className="relative overflow-hidden border-t border-white/10 bg-[#050505] px-6 py-28 sm:px-8 lg:px-12 lg:py-32">
         <div className="relative mx-auto max-w-7xl">
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="mb-6 text-sm font-semibold text-zinc-500">Before &amp; after</p>
+                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Before &amp; after</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   Prep work is the entire secret.
                 </h2>
@@ -401,12 +401,12 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <section id="markets" className="relative overflow-hidden bg-[#080807] px-6 py-28 sm:px-8 lg:px-12">
+      <section id="markets" className="relative overflow-hidden bg-[#080807] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto max-w-7xl">
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="mb-6 text-sm font-semibold text-zinc-500">Who we serve</p>
+                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Who we serve</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   Three markets. One standard.
                 </h2>
@@ -435,10 +435,10 @@ export default function HomeClient() {
 
       <ServiceAreaMap />
 
-      <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-28 sm:px-8 lg:px-12">
+      <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
-            <p className="mb-6 text-sm font-semibold text-zinc-500">Credentials</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Credentials</p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">Owner-operated. Journeyworker-trained. Prep-first by design.</h2>
             <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-[#b9b2a6]">
               No sales team, no subcontractors, no handoffs. Anthony handles every estimate, every walkthrough, and every final inspection personally — backed by general liability, commercial auto, and tools coverage.
@@ -457,10 +457,10 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <section className="bg-[#080807] px-6 py-28 sm:px-8 lg:px-12">
+      <section className="bg-[#080807] px-6 py-28 sm:px-8 lg:px-12 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-start">
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
-            <p className="mb-6 text-sm font-semibold text-zinc-500">The process</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The process</p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
               Prep. Paint. Verify. That&apos;s the whole job.
             </h2>
@@ -548,10 +548,10 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#182023] px-6 py-28 text-white sm:px-8 lg:px-12">
+      <section className="relative overflow-hidden bg-[#182023] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-6">
-            <p className="mb-6 text-sm font-semibold text-[#dce5e4]/50">Public sector</p>
+            <p className="font-display mb-6 text-sm font-semibold text-[#dce5e4]/50">Public sector</p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Already documented. Ready to bid.
             </h2>
@@ -590,7 +590,7 @@ export default function HomeClient() {
         <MarqueeTicker items={marqueeItems.map(item => item.text)} speed="normal" />
       </div>
 
-      <section className="border-t border-white/10 bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12">
+      <section className="border-t border-white/10 bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden bg-[#0B0B0D] lg:grid-cols-12">
           <div className="relative min-h-[480px] lg:col-span-5">
             <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
@@ -598,7 +598,7 @@ export default function HomeClient() {
           </div>
           <div className="p-12 lg:col-span-7 lg:p-16 bg-[#0B0B0D]">
             <FadeIn>
-              <p className="mb-6 text-sm font-semibold text-zinc-500">Get started</p>
+              <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Get started</p>
               <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                 Request Your Free Scope Walkthrough
               </h2>
