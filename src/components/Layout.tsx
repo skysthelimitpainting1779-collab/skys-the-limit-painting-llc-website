@@ -43,7 +43,7 @@ export default function Layout({ children }: LayoutProps) {
       <HeatmapOverlay />
       <div className="noise-overlay"></div>
       
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-orange-safety focus:px-4 focus:py-3 focus:text-sm focus:font-black focus:uppercase focus:tracking-wide focus:text-[#050505]">Skip to content</a>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-white focus:px-4 focus:py-3 focus:text-sm focus:font-black focus:text-[#050505]">Skip to content</a>
       <ConversionHeader />
 
       <main id="main-content" className="flex-grow pt-[117px] pb-20 md:pb-0">{children ?? <Outlet />}</main>
@@ -51,10 +51,10 @@ export default function Layout({ children }: LayoutProps) {
       {/* Mobile Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex max-w-[calc(100vw-2rem)] gap-2 overflow-hidden">
         <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_sticky"}' className="min-w-0 basis-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-none font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs">
-          <Phone size={16} className="text-orange-safety shrink-0" />
+          <Phone size={16} className="text-white shrink-0" />
           Call/Text
         </a>
-        <Link to="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_sticky","label":"Price Range"}' className="min-w-0 basis-0 flex-1 bg-orange-safety text-[#050505] py-4 px-2 rounded-none font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center uppercase text-xs tracking-wide whitespace-nowrap">
+        <Link to="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_sticky","label":"Price Range"}' className="min-w-0 basis-0 flex-1 bg-white text-[#050505] py-4 px-2 rounded-none font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center text-sm whitespace-nowrap">
           Price Range
         </Link>
       </div>
@@ -63,16 +63,15 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Footer */}
       <footer className="bg-black-primary text-white py-20 px-6 mt-12 relative overflow-hidden">
-        <div className="absolute right-0 bottom-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-safety/10 via-black-charcoal/0 to-transparent pointer-events-none rounded-full blur-3xl"></div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6 relative z-10">
           <div className="col-span-1 lg:col-span-2">
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
-            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4 tracking-wide">Residential detail. Commercial discipline. Public-sector ready.</h3>
+            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4">Residential detail. Commercial discipline. Public-sector ready.</h3>
             <p className="text-gray-400 max-w-md text-lg">
               A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities across the Twin Cities Metro area.
             </p>
             <div className="mt-8">
-               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"footer"}' className="text-xl font-bold text-orange-safety hover:text-white transition-colors block mb-2">651-410-4196</a>
+               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"footer"}' className="text-xl font-bold text-white hover:text-gray-300 transition-colors block mb-2">651-410-4196</a>
                <a href="mailto:skysthelimitpainting1779@gmail.com" data-track="lead_mailto_fallback_opened" data-track-payload='{"source":"footer"}' className="text-gray-400 hover:text-white transition-colors">skysthelimitpainting1779@gmail.com</a>
             </div>
             <SocialLinks />
@@ -81,10 +80,10 @@ export default function Layout({ children }: LayoutProps) {
           <div>
             <h4 className="font-bold mb-6 text-lg">Markets</h4>
             <nav className="flex flex-col gap-4 text-gray-400">
-              <Link to="/residential" className="hover:text-orange-safety transition-colors">Residential</Link>
-              <Link to="/commercial" className="hover:text-orange-safety transition-colors">Commercial</Link>
-              <Link to="/public-sector" className="hover:text-orange-safety transition-colors">Public Sector</Link>
-              <Link to="/projects" className="hover:text-orange-safety transition-colors">Recent Work</Link>
+              <Link to="/residential" className="hover:text-white transition-colors">Residential</Link>
+              <Link to="/commercial" className="hover:text-white transition-colors">Commercial</Link>
+              <Link to="/public-sector" className="hover:text-white transition-colors">Public Sector</Link>
+              <Link to="/projects" className="hover:text-white transition-colors">Recent Work</Link>
             </nav>
           </div>
 
@@ -92,7 +91,7 @@ export default function Layout({ children }: LayoutProps) {
             <h4 className="font-bold mb-6 text-lg">Services</h4>
             <nav className="flex flex-col gap-4 text-gray-400">
               {serviceLandingPages.slice(0, 5).map((page) => (
-                <Link key={page.slug} to={landingPagePath(page)} className="hover:text-orange-safety transition-colors">
+                <Link key={page.slug} to={landingPagePath(page)} className="hover:text-white transition-colors">
                   {page.shortTitle}
                 </Link>
               ))}
@@ -102,9 +101,9 @@ export default function Layout({ children }: LayoutProps) {
           <div>
             <h4 className="font-bold mb-6 text-lg">Service Areas</h4>
             <nav className="flex flex-col gap-4 text-gray-400">
-              <Link to="/service-area" className="hover:text-orange-safety transition-colors">Coverage Map</Link>
+              <Link to="/service-area" className="hover:text-white transition-colors">Coverage Map</Link>
               {areaLandingPages.slice(0, 5).map((page) => (
-                <Link key={page.slug} to={landingPagePath(page)} className="hover:text-orange-safety transition-colors">
+                <Link key={page.slug} to={landingPagePath(page)} className="hover:text-white transition-colors">
                   {page.shortTitle}
                 </Link>
               ))}
@@ -114,12 +113,12 @@ export default function Layout({ children }: LayoutProps) {
           <div>
              <h4 className="font-bold mb-6 text-lg">Company</h4>
              <nav className="flex flex-col gap-4 text-gray-400">
-              <Link to="/about" className="hover:text-orange-safety transition-colors">About Us</Link>
-              <Link to="/capabilities" className="hover:text-orange-safety transition-colors">Capabilities Statement</Link>
-              <Link to="/estimate" className="hover:text-orange-safety transition-colors">Room Cost Calculator</Link>
-              <Link to="/refer" className="hover:text-orange-safety transition-colors">Referral Program</Link>
-              <Link to="/review" className="hover:text-orange-safety transition-colors">Google Review Funnel</Link>
-              <Link to="/contact" className="hover:text-orange-safety transition-colors">Get an Estimate</Link>
+              <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
+              <Link to="/capabilities" className="hover:text-white transition-colors">Capabilities Statement</Link>
+              <Link to="/estimate" className="hover:text-white transition-colors">Room Cost Calculator</Link>
+              <Link to="/refer" className="hover:text-white transition-colors">Referral Program</Link>
+              <Link to="/review" className="hover:text-white transition-colors">Google Review Funnel</Link>
+              <Link to="/contact" className="hover:text-white transition-colors">Get an Estimate</Link>
             </nav>
           </div>
         </div>

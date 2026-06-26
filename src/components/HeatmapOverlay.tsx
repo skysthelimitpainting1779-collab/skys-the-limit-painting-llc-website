@@ -79,26 +79,26 @@ export default function HeatmapOverlay() {
   return (
     <>
       {/* Floating Control Panel */}
-      <div className="heatmap-control-panel fixed bottom-20 right-4 z-50 flex items-center gap-2 border border-[#f0c067]/35 bg-[#0B0B0D]/95 p-2.5 text-xs text-white shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur transition-all duration-300">
+      <div className="heatmap-control-panel fixed bottom-20 right-4 z-50 flex items-center gap-2 border border-white/35 bg-[#0B0B0D]/95 p-2.5 text-xs text-white shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur transition-all duration-300">
         <button
           type="button"
           onClick={() => setHeatmapActive(!heatmapActive)}
-          className={`flex items-center gap-2 px-3 py-1.5 font-black uppercase tracking-wider transition-colors cursor-pointer ${
-            heatmapActive ? 'bg-[#f0c067] text-[#050505]' : 'bg-white/5 text-white hover:bg-white/10'
+          className={`flex items-center gap-2 px-3 py-1.5 font-black   transition-colors cursor-pointer ${
+            heatmapActive ? 'bg-white text-[#050505]' : 'bg-white/5 text-white hover:bg-white/10'
           }`}
         >
           <Flame size={14} className={heatmapActive ? 'animate-pulse' : ''} />
           {heatmapActive ? 'Heatmap: ON' : 'Heatmap: OFF'}
         </button>
 
-        <span className="text-[10px] font-bold text-gray-400 px-1 border-r border-white/10">
+        <span className="text-xs font-bold text-gray-400 px-1 border-r border-white/10">
           {activeClicksOnPath.length} Clicks here
         </span>
 
         <button
           type="button"
           onClick={handleReset}
-          className="flex items-center justify-center p-1.5 text-gray-400 hover:text-[#f0c067] transition-colors cursor-pointer"
+          className="flex items-center justify-center p-1.5 text-gray-400 hover:text-white transition-colors cursor-pointer"
           title="Reset click data"
         >
           <RefreshCw size={12} />
