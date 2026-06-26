@@ -646,9 +646,10 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                       author="Sarah K., Eagan"
                     />
                   </div>
+                  {/* Trust Badges & Registration Disclosures (Fogg Motivation) */}
                   <div className="pt-2 text-xs text-gray-400 font-mono flex items-center gap-1.5">
                     <span className="inline-block w-1.5 h-1.5 bg-white"></span>
-                    <span>MN Reg ID: IR816596</span>
+                    <span>reg: ir816596 | painting</span>
                   </div>
                 </div>
               </div>
