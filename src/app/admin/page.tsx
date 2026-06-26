@@ -227,8 +227,11 @@ export default function AdminPage() {
       .eq('id', 'default')
       .single();
     if (error) {
-      console.error('Failed to load settings:', error);
-      setOpError('Failed to load settings: ' + error.message);
+      // PGRST116 = no rows found -- expected on fresh installs before first save
+      if (error.code !== 'PGRST116') {
+        console.error('Failed to load settings:', error);
+        setOpError('Failed to load settings: ' + error.message);
+      }
       return;
     }
     if (data) {
