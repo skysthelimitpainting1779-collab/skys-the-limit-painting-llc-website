@@ -31,16 +31,15 @@ import SpecInspector from '../components/SpecInspector';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { trackEvent } from '../lib/analytics';
 
-const corePositioningLine = 'Residential detail. Commercial discipline. Public-sector ready.';
+const corePositioningLine = 'No shortcuts. No mess. No surprise costs.';
 
 const customerPromise =
-  'Interior and exterior painting for homes, businesses, and facilities across the Twin Cities Metro Area.';
+  'Owner-operated craftsmanship from a Minnesota Journeyworker who treats your home or business like his own.';
 const verifiedContractorLine =
   "Sky’s the Limit Painting LLC is a fully insured, owner-operated registered Minnesota Specialty Contractor (Painting). MN ID: IR816596 | MN Statute 176.041 Worker's Comp Exemption for owner-operators.";
 
 const homeStats = [
-  { target: 340, suffix: '+', label: 'Projects Completed' },
-  { target: 12, suffix: ' Yrs', label: 'Trade Experience' },
+  { target: 15, suffix: '+', label: 'Years Trade Experience' },
   { target: 100, suffix: '%', label: 'Owner-Led Work' },
   { target: 50, suffix: '+', label: 'Cities Served' },
 ];
@@ -251,16 +250,16 @@ export default function HomeClient() {
               Twin Cities Metro — MN ID: IR816596
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] text-white">
-              <span className="block">Twin Cities painting</span>
-              <span className="block">contractor for homes,</span>
-              <span className="block text-white">businesses, and facilities.</span>
+              <span className="block">The Twin Cities Painter</span>
+              <span className="block">Who Preps Like</span>
+              <span className="block text-white">He Lives Here.</span>
             </h1>
             <p className="mt-8 max-w-[65ch] text-base leading-relaxed text-[#e7dfd2] sm:text-lg">
               <span className="sm:hidden">
-                Interior and exterior painting done right — prep-first, owner-led, fully insured.
+                No shortcuts. No mess. No surprise costs. Owner-operated craftsmanship from a Minnesota Journeyworker.
               </span>
               <span className="hidden sm:inline">
-                Interior and exterior painting for Twin Cities homes and businesses. Anthony leads every job personally — no crews handed off, no subcontractors. Fully insured, prep-first, and ready to document for commercial and public-sector opportunities.
+                Projects completed across Minneapolis, St. Paul, and the greater Twin Cities metro — residential, commercial, and public-sector work executed with owner-led discipline and uncompromising preparation.
               </span>
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
@@ -270,17 +269,17 @@ export default function HomeClient() {
                   onClick={() => trackEvent('hero_cta_click', { label: 'Get My Price Range', source: 'home_hero' })}
                   className="group inline-flex items-center gap-3 bg-white pl-8 pr-3 py-3 text-base font-bold text-[#15110a] transition-colors duration-300 hover:bg-gray-100"
                 >
-                  Get My Price Range
+                  Get Your Free Estimate
                   <span className="grid h-10 w-10 place-items-center bg-[#15110a] transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105">
                     <ArrowRight size={16} className="text-white" />
                   </span>
                 </Link>
               </MagneticButton>
               <Link href="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Book Walkthrough', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#111] px-8 py-4 text-base font-bold text-white transition-colors hover:text-gray-300">
-                Book a Site Walkthrough
+                Book Your Free Walkthrough
               </Link>
               <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#111] px-8 py-4 text-base font-bold text-white transition-colors hover:text-gray-300">
-                <Phone size={18} /> Call or Text Anthony
+                <Phone size={18} /> (651) 410-4196
               </a>
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-semibold text-zinc-500">
@@ -318,12 +317,12 @@ export default function HomeClient() {
           <FadeIn className="lg:col-span-7">
             <p className="mb-6 text-sm font-semibold text-zinc-500">The standard</p>
             <h2 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl text-white">
-              Anthony shows up. Preps it right. Gets it done.
+              Most homeowners don&apos;t end up with a bad paint job because of the color.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4]">
-              No crews handed off mid-job. No subcontractors. Anthony Briseno leads every interior and exterior painting project personally — from the first surface prep to final walkthrough. 12 years of trade experience, 340+ projects completed across the Twin Cities.
+              They end up with one because the prep was skipped — and it shows up months later. Some painters rush the sanding, prime with a roller in one hand and their phone in the other. The result? Peeling trim, bubbling walls, and a crew that&apos;s long gone before the problems appear. We work the opposite way.
             </p>
           </FadeIn>
         </div>
@@ -343,10 +342,10 @@ export default function HomeClient() {
           <FadeIn delay={0.1} className="lg:col-span-7">
             <p className="mb-6 text-sm font-semibold text-zinc-500">The difference</p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
-              90% of a flawless paint job happens before we open a can.
+              Prep is 90% of a finish that actually lasts.
             </h2>
             <p className="mt-8 max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4]">
-              We scrape, sand, caulk, prime, and mask before a single topcoat goes on. That is the part most painters skip — and why our finishes hold. Every surface gets the prep it needs to last.
+              We clean, scrape, sand, caulk, mask, and prime every surface until it&apos;s truly ready — then we paint. Not because we&apos;re slow. Because the only way to deliver results that hold up for years is to build them on a solid foundation.
             </p>
             <div className="mt-12 grid gap-10 md:grid-cols-3">
               {[
@@ -408,7 +407,7 @@ export default function HomeClient() {
               <div className="lg:col-span-7">
                 <p className="mb-6 text-sm font-semibold text-zinc-500">Who we serve</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-                  Residential, commercial, and public-sector ready.
+                  Three markets. One standard.
                 </h2>
               </div>
               <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
@@ -439,7 +438,7 @@ export default function HomeClient() {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
             <p className="mb-6 text-sm font-semibold text-zinc-500">Credentials</p>
-            <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">12 years. 340 projects. One owner on every job.</h2>
+            <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">Owner-operated. Journeyworker-trained. Prep-first by design.</h2>
             <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-[#b9b2a6]">
               No sales team, no subcontractors, no handoffs. Anthony handles every estimate, every walkthrough, and every final inspection personally — backed by general liability, commercial auto, and tools coverage.
             </p>
@@ -462,15 +461,87 @@ export default function HomeClient() {
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
             <p className="mb-6 text-sm font-semibold text-zinc-500">The process</p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-              Every job runs the same four-step process. No exceptions.
+              Prep. Paint. Verify. That&apos;s the whole job.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
             <div className="flex flex-col gap-6">
-              <ProcessStep step="01" title="Scope" body="Define surfaces, access, priorities, timeline, insurance or COI needs, and the expected finish before paint starts." />
-              <ProcessStep step="02" title="Prep" body="Protect spaces, clean surfaces, patch, sand, caulk, mask, and stage the job so the finished work has a real foundation." />
-              <ProcessStep step="03" title="Execute" body="Apply the right coating approach with owner-led communication and a jobsite that stays organized." />
-              <ProcessStep step="04" title="Verify" body="Review the result, handle touchups, clean the area, and close the loop with photos or documentation when needed." />
+              <ProcessStep step="01" title="Scope" body="We walk every space together. You point out what matters most. We measure, document, and agree on the exact scope before any work begins. No surprises later." />
+              <ProcessStep step="02" title="Prep" body="This is where most jobs fail and ours succeed. We clean, scrape, sand, caulk, mask, and prime every surface thoroughly. We fix what needs fixing so the paint adheres properly and looks flawless for years." />
+              <ProcessStep step="03" title="Execute" body="Two coats minimum (more where the surface demands it). Crisp, straight lines. Clean edges. Consistent coverage. We protect your floors, furniture, and belongings as if they were our own." />
+              <ProcessStep step="04" title="Verify" body="We walk through the finished space together. You inspect every detail. If anything isn't right, we fix it before the drop cloths come up. Your approval is the real finish line." />
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      <section className="border-t border-white/[0.05] bg-[#0a0a09] px-6 py-28 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <FadeIn>
+            <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-7">
+                <p className="mb-6 text-sm font-semibold text-zinc-500">What to expect</p>
+                <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
+                  You shouldn&apos;t have to wonder what&apos;s happening on your job. You&apos;ll know.
+                </h2>
+              </div>
+              <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
+                Here&apos;s exactly what to expect when you hire Sky&apos;s the Limit Painting.
+              </p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                'A text when we arrive each morning so you know the crew is on site.',
+                'A progress photo texted by 4 PM — you see what we see, in real time.',
+                'A proactive heads-up before any schedule change that could affect you.',
+                'One owner-operator on every job. Not a project manager. Not a crew you never meet. Anthony.',
+                'The scope and price we agree on at the estimate stays the scope and price. If we discover something unexpected, we call you first.',
+              ].map((item) => (
+                <div key={item} className="flex gap-3 border-t border-zinc-800 pt-6">
+                  <CheckCircle2 className="mt-1 shrink-0 text-white" size={18} />
+                  <p className="text-base leading-relaxed text-zinc-300">{item}</p>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      <section className="border-t border-white/[0.05] bg-[#080807] px-6 py-28 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <FadeIn>
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+              <div className="lg:col-span-7">
+                <p className="mb-6 text-sm font-semibold text-zinc-500">The guarantee</p>
+                <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
+                  If we agree on a finish date, we hit it — or that day&apos;s labor is on us.
+                </h2>
+                <p className="mt-8 max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4]">
+                  We keep schedules realistic because we don&apos;t overbook and we don&apos;t disappear. If we&apos;re late finishing on a day we committed to, we discount that day&apos;s labor. And if something isn&apos;t right after we leave? One call brings us back — no fine print, no arguments.
+                </p>
+                <div className="mt-10">
+                  <Link
+                    href="/contact"
+                    onClick={() => trackEvent('guarantee_cta_click', { source: 'home_guarantee' })}
+                    className="inline-flex items-center gap-3 bg-white px-8 py-4 text-base font-bold text-[#15110a] transition-colors duration-300 hover:bg-gray-100"
+                  >
+                    Book Your Free Walkthrough
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </div>
+              <div className="lg:col-span-5">
+                <blockquote className="border-l-2 border-white/20 pl-8">
+                  <p className="text-xl leading-relaxed text-[#e7dfd2] italic">
+                    &ldquo;They painted nearly every room inside my house — ceilings, walls, and trim throughout — and I barely felt like I had contractors in my home. They were prompt, professional, and the finish is flawless. I would absolutely hire them again.&rdquo;
+                  </p>
+                  <footer className="mt-6 text-sm font-semibold text-zinc-400">
+                    — Sarah M., Twin Cities homeowner
+                  </footer>
+                </blockquote>
+              </div>
             </div>
           </FadeIn>
         </div>
@@ -525,8 +596,11 @@ export default function HomeClient() {
             <FadeIn>
               <p className="mb-6 text-sm font-semibold text-zinc-500">Get started</p>
               <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-                Ready to get started? Tell us what you&apos;re working with.
+                Request Your Free Scope Walkthrough
               </h2>
+              <p className="mt-4 text-base leading-relaxed text-zinc-400">
+                Tell us about your project and preferred timeline. Anthony or the team will follow up within one business day to schedule a no-obligation walkthrough.
+              </p>
               <div className="mt-12">
                 <LeadForm source="Homepage three-market estimate form" compact />
               </div>

@@ -63,13 +63,22 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6 relative z-10">
           <div className="col-span-1 lg:col-span-2">
             <h2 className="text-3xl font-display font-bold mb-4">Sky's the Limit Painting LLC</h2>
-            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4">Residential detail. Commercial discipline. Public-sector ready.</h3>
+            <h3 className="text-xl font-display font-semibold text-gray-300 mb-4">Serving Minneapolis, St. Paul &amp; the Twin Cities Metro</h3>
             <p className="text-gray-400 max-w-md text-lg">
               A fully insured, owner-operated registered Minnesota Specialty Contractor (Painting) serving residential, commercial, and qualified public-sector opportunities across the Twin Cities Metro area.
             </p>
             <div className="mt-8">
-               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"footer"}' className="text-xl font-bold text-white hover:text-gray-300 transition-colors block mb-2">651-410-4196</a>
-               <a href="mailto:skysthelimitpainting1779@gmail.com" data-track="lead_mailto_fallback_opened" data-track-payload='{"source":"footer"}' className="text-gray-400 hover:text-white transition-colors">skysthelimitpainting1779@gmail.com</a>
+               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"footer"}' className="text-xl font-bold text-white hover:text-gray-300 transition-colors block mb-2">(651) 410-4196</a>
+               <a href="mailto:info@skysthelimitpaintingllc.com" data-track="lead_mailto_fallback_opened" data-track-payload='{"source":"footer"}' className="text-gray-400 hover:text-white transition-colors">info@skysthelimitpaintingllc.com</a>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs font-bold text-gray-500">
+              <span>Owner-Operated</span>
+              <span>·</span>
+              <span>Minnesota Journeyworker Certified</span>
+              <span>·</span>
+              <span>Fully Bonded &amp; Insured</span>
+              <span>·</span>
+              <span>Public Procurement Ready</span>
             </div>
             <SocialLinks />
           </div>
