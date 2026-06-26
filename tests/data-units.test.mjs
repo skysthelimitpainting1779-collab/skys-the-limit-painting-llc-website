@@ -87,8 +87,9 @@ describe('data/markets - Market definitions', () => {
   });
 
   test('trustPillars array exports four items', () => {
-    const pillarMatches = marketsSrc.match(/\{\s*title:\s*'/g);
-    assert.ok(pillarMatches.length >= 4, 'should have at least 4 trust pillar entries');
+    const pillarSection = marketsSrc.split('trustPillars')[1].split('export')[0];
+    const pillarMatches = pillarSection.match(/\{\s*title:\s*'/g);
+    assert.equal(pillarMatches.length, 4, 'should have exactly 4 trust pillar entries');
   });
 
   test('trustPillars includes contractor registration pillar', () => {
