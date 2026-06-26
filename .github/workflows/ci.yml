@@ -11,9 +11,7 @@ permissions:
   pull-requests: write
 
 env:
-  VITE_SITE_URL: https://skysthelimitpaintingllc.com
-  LEAD_TO_EMAIL: skysthelimitpainting1779@gmail.com
-  LEAD_FROM_EMAIL: Sky Leads <onboarding@resend.dev>
+  SITE_URL: https://www.skysthelimitpaintingllc.com
   VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
 
