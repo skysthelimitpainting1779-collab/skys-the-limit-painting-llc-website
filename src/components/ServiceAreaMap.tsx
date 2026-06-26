@@ -35,7 +35,7 @@ export default function ServiceAreaMap({ compact = false }: ServiceAreaMapProps)
   const mapMotion = (prefersReducedMotion
     ? {}
     : {
-        initial: false,
+        initial: { opacity: 0, y: 20 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, amount: 0.22 },
         transition: { duration: 0.42, ease: 'easeOut' as const },
