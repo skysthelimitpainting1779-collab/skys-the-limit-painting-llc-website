@@ -256,6 +256,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
   }
 
+  const webhookSecret = process.env.MANYCHAT_WEBHOOK_SECRET;
+  if (webhookSecret) {
+    const provided = req.headers.get('x-manychat-secret') || '';
+    if (provided !== webhookSecret) {
+      return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
+    }
+  }
+
   let body: any;
   try {
     body = await req.json();
