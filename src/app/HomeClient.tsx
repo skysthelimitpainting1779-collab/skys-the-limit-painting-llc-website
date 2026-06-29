@@ -163,6 +163,7 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
               alt={`${market.navLabel} painting work example`}
               width={1600}
               height={1100}
+              sizes="(min-width: 1280px) 27vw, (min-width: 1024px) 33vw, 100vw"
               className="absolute inset-0 h-full w-full object-cover opacity-90"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
@@ -264,8 +265,7 @@ export default function HomeClient() {
           width={1600}
           height={900}
           sizes="100vw"
-          loading="eager"
-          fetchPriority="high"
+          priority
           className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.94)_30%,rgba(7,7,6,0.58)_62%,rgba(7,7,6,0.22)_100%)]"></div>

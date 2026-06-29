@@ -73,8 +73,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
           width={1920}
           height={1080}
           sizes="100vw"
-          loading="eager"
-          fetchPriority="high"
+          priority
           className="absolute inset-0 h-full w-full object-cover opacity-48"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.93)_42%,rgba(7,7,6,0.5)_100%)]"></div>
