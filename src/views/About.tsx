@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { ArrowRight, Camera, CheckCircle2, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import ResponsiveImage from '../components/ResponsiveImage';
+import JsonLd from '../components/JsonLd';
+import HeroOverlays from '../components/HeroOverlays';
+import IconFeatureCard from '../components/IconFeatureCard';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 export default function AboutPage() {
@@ -14,25 +17,19 @@ export default function AboutPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
+      <JsonLd data={schemaJson} />
       
       <main className="animate-premium-fade-in">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#050505] py-24 px-6">
-          <ResponsiveImage
-            src="/brand/generated/sky-service-proof.webp"
-            alt="Premium painting service proof and trade detailing"
-            width={1600}
-            height={900}
-            className="absolute inset-0 h-full w-full object-cover opacity-20 pointer-events-none"
+          <HeroOverlays
+            imageSrc="/brand/generated/sky-service-proof.webp"
+            imageAlt="Premium painting service proof and trade detailing"
+            gradients={[
+              'bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent',
+              'bg-gradient-to-t from-[#050505] via-transparent to-transparent',
+            ]}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
-          <div className="blueprint-grid absolute inset-0 opacity-12"></div>
-          <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-3xl">
@@ -234,19 +231,23 @@ export default function AboutPage() {
           <div className="measurement-rules absolute inset-0 opacity-12"></div>
           <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-3">
             {[
-              [ShieldCheck, 'Neatness & Respect', 'We treat your property like our own \u2014 clean drop cloths, dust isolation, and orderly tool staging every single day.'],
-              [ClipboardCheck, 'Apprentice-Built Craft', 'Led by Anthony Briseno with a formal Journeyworker Painter & Decorator background \u2014 combining hands-on field experience with structural discipline.'],
-              [Camera, 'Detail-First Estimates', 'Every bid features detailed photo scopes and clear, itemized line items so you know exactly what prep and coating you are paying for.'],
-            ].map(([Icon, title, body]) => {
-              const AboutIcon = Icon as typeof ShieldCheck;
-              return (
-                <article key={title as string} className="h-full border-l border-white/35 bg-[#0B0B0D] p-7 transition duration-500 hover:-translate-y-1 hover:border-white/55">
-                  <AboutIcon className="mb-8 text-white" size={30} strokeWidth={1.5} />
-                  <h2 className="text-2xl font-black leading-tight text-white">{title as string}</h2>
-                  <p className="mt-5 text-sm leading-relaxed text-[#b9b2a6]">{body as string}</p>
-                </article>
-              );
-            })}
+              { icon: ShieldCheck, title: 'Neatness & Respect', body: 'We treat your property like our own, utilizing clean drop cloths, dust isolation, and orderly tool staging every single day.' },
+              { icon: ClipboardCheck, title: 'Apprentice-Built Craft', body: 'Led by Anthony Briseno with a formal Journeyworker Painter & Decorator background\u2014combining hands-on field experience with structural discipline.' },
+              { icon: Camera, title: 'Detail-First Estimates', body: 'Every bid features detailed photo scopes and clear, itemized line items so you know exactly what prep and coating you are paying for.' },
+            ].map((card) => (
+              <IconFeatureCard
+                key={card.title}
+                icon={card.icon}
+                title={card.title}
+                body={card.body}
+                className="h-full border-l border-white/35 bg-[#0B0B0D] p-7 transition duration-500 hover:-translate-y-1 hover:border-white/55"
+                iconSize={30}
+                iconClassName="mb-8 text-white"
+                titleClassName="text-2xl font-black leading-tight text-white"
+                bodyClassName="mt-5 text-sm leading-relaxed text-[#b9b2a6]"
+                headingLevel="h2"
+              />
+            ))}
           </div>
         </section>
       </main>

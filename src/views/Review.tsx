@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Star, MessageSquare, ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import ResponsiveImage from '../components/ResponsiveImage';
+import HeroOverlays from '../components/HeroOverlays';
 import { trackEvent } from '../lib/analytics';
 
 import { ENV } from '../lib/env';
@@ -69,17 +70,16 @@ export default function ReviewPage() {
   return (
     <PageTransition>
       <section className="relative overflow-hidden min-h-[calc(100svh-116px)] bg-[#070706] py-16 px-4 text-white sm:px-6 lg:px-8">
-        <ResponsiveImage
-          src="/brand/generated/sky-service-proof.webp"
-          alt="Premium painting service proof and trade detailing"
-          width={1600}
-          height={900}
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        <HeroOverlays
+          imageSrc="/brand/generated/sky-service-proof.webp"
+          imageAlt="Premium painting service proof and trade detailing"
+          imageClassName="absolute inset-0 h-full w-full object-cover opacity-20"
+          gradients={[
+            'bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent',
+            'bg-gradient-to-t from-[#070706] via-transparent to-transparent',
+          ]}
+          blueprintOpacity="opacity-18"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#070706] via-[#070706]/94 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#070706] via-transparent to-transparent"></div>
-        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
-        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
         
         <div className="relative z-10 mx-auto max-w-2xl border border-[#d8c7aa]/16 bg-[#11100d]/90 p-8 md:p-12 overflow-hidden shadow-xl transition duration-500 hover:border-white/45">
           <div className="measurement-rules absolute inset-0 opacity-12 pointer-events-none"></div>

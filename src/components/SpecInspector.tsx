@@ -28,7 +28,9 @@ export default function SpecInspector() {
       
       osc.start();
       osc.stop(ctx.currentTime + 0.15);
-    } catch (e) {}
+    } catch (e) {
+      console.warn('AudioContext not available:', e);
+    }
   };
 
   useEffect(() => {

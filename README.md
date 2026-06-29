@@ -1,3 +1,10 @@
+---
+type: documentation
+title: Sky's the Limit Painting LLC Website Repository
+description: Production Next.js website for Sky's the Limit Painting LLC (MN painting contractor, IR816596). Includes agentic OS, CI/CD, design system and full marketing site.
+tags: [documentation, website, nextjs, painting, compliance, agent-os]
+---
+
 # Sky's the Limit Painting LLC - Website
 
 This repository contains the complete, production-ready website for **Sky's the Limit Painting LLC**, a premier Minnesota painting and pavement marking contractor based in Inver Grove Heights.

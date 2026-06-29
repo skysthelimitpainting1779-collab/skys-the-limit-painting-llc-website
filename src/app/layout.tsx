@@ -9,7 +9,7 @@ import HeatmapOverlay from '../components/HeatmapOverlay';
 import Script from 'next/script';
 import Link from 'next/link';
 import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 

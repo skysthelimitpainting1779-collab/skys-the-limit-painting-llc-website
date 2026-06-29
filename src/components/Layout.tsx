@@ -26,7 +26,10 @@ export default function Layout({ children }: LayoutProps) {
             trackEvent(eventName, payload);
           }
         } catch (err) {
-          console.error('Failed to parse track payload:', err);
+          console.error(`Failed to parse data-track-payload for event "${eventName}":`, err);
+          if (eventName) {
+            trackEvent(eventName, { parse_error: true });
+          }
         }
       }
     };

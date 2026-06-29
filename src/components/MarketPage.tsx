@@ -6,6 +6,9 @@ import FadeIn from './animations/FadeIn';
 import PageTransition from './PageTransition';
 import BookingCta from './BookingCta';
 import ResponsiveImage from './ResponsiveImage';
+import JsonLd from './JsonLd';
+import HeroOverlays from './HeroOverlays';
+import IconFeatureCard from './IconFeatureCard';
 import { marketBySlug, MarketSlug } from '../data/markets';
 import { breadcrumbSchema, serviceSchema } from '../lib/seo';
 import { trackEvent } from '../lib/analytics';
@@ -20,33 +23,28 @@ export default function MarketPage({ slug }: MarketPageProps) {
 
   return (
     <PageTransition>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            serviceSchema(market.title, market.metaDescription, `/${market.slug}`),
-            breadcrumbSchema([
-              { name: 'Home', path: '/' },
-              { name: market.navLabel, path: `/${market.slug}` },
-            ]),
-          ]),
-        }}
-      />
+      <JsonLd data={[
+        serviceSchema(market.title, market.metaDescription, `/${market.slug}`),
+        breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: market.navLabel, path: `/${market.slug}` },
+        ]),
+      ]} />
 
       <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#070706] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <ResponsiveImage
-          src={market.heroImage}
-          alt={`${market.title} project atmosphere`}
-          width={1920}
-          height={1080}
+        <HeroOverlays
+          imageSrc={market.heroImage}
+          imageAlt={`${market.title} project atmosphere`}
+          imageClassName="absolute inset-0 h-full w-full object-cover opacity-56"
           loading="eager"
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover opacity-56"
+          gradients={[
+            'bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.95)_36%,rgba(7,7,6,0.62)_68%,rgba(7,7,6,0.28)_100%)]',
+            'bg-[linear-gradient(0deg,#070706_0%,rgba(7,7,6,0.08)_45%,rgba(7,7,6,0.2)_100%)]',
+          ]}
+          blueprintOpacity="opacity-18"
+          roadRuleOpacity="opacity-75"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.95)_36%,rgba(7,7,6,0.62)_68%,rgba(7,7,6,0.28)_100%)]"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,#070706_0%,rgba(7,7,6,0.08)_45%,rgba(7,7,6,0.2)_100%)]"></div>
-        <div className="blueprint-grid absolute inset-0 opacity-18"></div>
-        <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-75"></div>
         <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
           <FadeIn className="w-full overflow-hidden lg:col-span-7">
             <div className="mb-8 flex items-center gap-4 text-white">
@@ -108,21 +106,21 @@ export default function MarketPage({ slug }: MarketPageProps) {
           </FadeIn>
           <div className="grid gap-4 lg:col-span-7 md:grid-cols-3">
             {[
-              [Camera, 'Remote Visual Scope', 'Upload or link photos of your rooms or surfaces directly in our estimate form for a faster, more precise preliminary review.'],
-              [ClipboardCheck, 'Streamlined Intake', 'Our simple multi-step form gathers your project details so we arrive fully prepared.'],
-              [FileCheck2, 'Itemized Proposals', 'We provide highly detailed, transparent scopes specifying exact preparation, paint products, and linear measurements.'],
-            ].map(([Icon, title, body], index) => {
-              const ProofIcon = Icon as typeof Camera;
-              return (
-                <FadeIn key={title as string} delay={0.06 * index}>
-                  <div className="h-full border-l border-[#c8a45d]/35 bg-[#080807]/72 p-6">
-                    <ProofIcon className="mb-8 text-white" size={28} strokeWidth={1.5} />
-                    <h3 className="text-xl font-black leading-tight text-white">{title as string}</h3>
-                    <p className="mt-4 text-sm leading-relaxed text-[#b9b2a6]">{body as string}</p>
-                  </div>
-                </FadeIn>
-              );
-            })}
+              { icon: Camera, title: 'Remote Visual Scope', body: 'Upload or link photos of your rooms or surfaces directly in our estimate form for a faster, more precise preliminary review.' },
+              { icon: ClipboardCheck, title: 'Streamlined Intake', body: 'Our simple multi-step form gathers your project details so we arrive fully prepared.' },
+              { icon: FileCheck2, title: 'Itemized Proposals', body: 'We provide highly detailed, transparent scopes specifying exact preparation, paint products, and linear measurements.' },
+            ].map((card, index) => (
+              <FadeIn key={card.title} delay={0.06 * index}>
+                <IconFeatureCard
+                  icon={card.icon}
+                  title={card.title}
+                  body={card.body}
+                  className="h-full border-l border-[#c8a45d]/35 bg-[#080807]/72 p-6"
+                  iconClassName="mb-8 text-white"
+                  as="div"
+                />
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>

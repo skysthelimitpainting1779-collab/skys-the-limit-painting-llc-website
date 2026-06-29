@@ -7,11 +7,16 @@ on:
       - "v*"
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
 env:
-  SITE_URL: https://www.skysthelimitpaintingllc.com
+  NODE_VERSION: "24.x"
+  SITE_URL: https://skysthelimitpaintingllc.com
   VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
 
@@ -21,30 +26,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v7.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v6.4.0
         with:
-          node-version: 22.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
+      - name: Restore node_modules cache
+        id: cache-nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nm-
+
       - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Type check & Lint
         run: npm run lint
 
       - name: Run tests
-        run: npm test
+        run: node scripts/agent-os.js bootstrap && npm test
 
       - name: Restore Next.js build cache
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx', 'src/**/*.js', 'src/**/*.jsx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+            ${{ runner.os }}-nextjs-
 
       - name: Build Next.js app
         run: npm run build
@@ -57,38 +73,38 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v7.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v6.4.0
         with:
-          node-version: 22.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npm ci
-
-      - name: Restore Next.js build cache
-        if: ${{ env.VERCEL_TOKEN != '' }}
+      - name: Restore node_modules cache
+        id: cache-nm
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-nm-
+
+      - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true' && env.VERCEL_TOKEN != ''
+        run: npm ci
 
       - name: Pull Vercel Environment Information
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npx vercel pull --yes --environment=production
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Prebuilt Vercel Deployment Artifacts
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npx vercel build --prod
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy prebuilt artifact to Vercel Production
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npx vercel deploy --prebuilt --prod
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
   create-release:
     name: Create GitHub Release
@@ -97,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v7.0.0
         with:
           fetch-depth: 0
 
