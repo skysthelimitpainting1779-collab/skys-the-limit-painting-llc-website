@@ -248,7 +248,7 @@ export default function HomeClient() {
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-6 py-12 sm:px-8 lg:px-12 lg:py-16">
           <FadeIn className="w-full pt-8 md:pt-16">
             <p className="font-display mb-8 text-sm font-semibold text-zinc-500">
-              Twin Cities Metro — MN ID: IR816596
+              Twin Cities Metro — MN ID: IR816596 | Residential detail. Commercial discipline. Public-sector ready.
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] text-white">
               <span className="block">The Twin Cities Painter</span>
