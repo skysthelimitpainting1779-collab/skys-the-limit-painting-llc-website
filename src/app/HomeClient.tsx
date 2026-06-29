@@ -272,7 +272,7 @@ export default function HomeClient() {
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-6 py-12 sm:px-8 lg:px-12 lg:py-16">
           <FadeIn className="w-full pt-8 md:pt-16">
-            <p className="font-display mb-8 text-sm font-semibold text-zinc-500">
+            <p className="font-display mb-8 text-sm font-semibold text-zinc-400">
               Twin Cities Metro — MN ID: IR816596 | Residential detail. Commercial discipline. Public-sector ready.
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] text-white">
@@ -308,7 +308,7 @@ export default function HomeClient() {
                 <Phone size={18} /> (651) 410-4196
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-semibold text-zinc-500">
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-semibold text-zinc-400">
               <span>Fully Insured</span>
               <span className="text-zinc-700">·</span>
               <span>Owner-Led Every Job</span>
@@ -323,7 +323,7 @@ export default function HomeClient() {
             <div className="grid gap-10 border-t border-[#d8c7aa]/20 pt-12 md:grid-cols-3">
               {conversionSteps.map((item) => (
                 <div key={item.step} className="flex flex-col">
-                  <p className="font-display text-sm font-semibold text-zinc-500">{item.step} / Customer path</p>
+                  <p className="font-display text-sm font-semibold text-zinc-400">{item.step} / Customer path</p>
                   <h2 className="mt-4 text-xl font-black leading-tight text-white">{item.title}</h2>
                   <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-300">{item.body}</p>
                 </div>
@@ -341,7 +341,7 @@ export default function HomeClient() {
       <section className="border-t border-white/[0.05] bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The standard</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-400">The standard</p>
             <h2 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl text-white">
               Most homeowners don&apos;t end up with a bad paint job because of the color.
             </h2>
@@ -366,7 +366,7 @@ export default function HomeClient() {
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The difference</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-400">The difference</p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Prep is 90% of a finish that actually lasts.
             </h2>
@@ -402,7 +402,7 @@ export default function HomeClient() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Before &amp; after</p>
+                <p className="font-display mb-6 text-sm font-semibold text-zinc-400">Before &amp; after</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   Prep work is the entire secret.
                 </h2>
@@ -431,7 +431,7 @@ export default function HomeClient() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Who we serve</p>
+                <p className="font-display mb-6 text-sm font-semibold text-zinc-400">Who we serve</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   Three markets. One standard.
                 </h2>
@@ -463,7 +463,7 @@ export default function HomeClient() {
       <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Credentials</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-400">Credentials</p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">Owner-operated. Journeyworker-trained. Prep-first by design.</h2>
             <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-[#b9b2a6]">
               No sales team, no subcontractors, no handoffs. Anthony handles every estimate, every walkthrough, and every final inspection personally — backed by general liability, commercial auto, and tools coverage.
@@ -485,7 +485,7 @@ export default function HomeClient() {
       <section className="bg-[#080807] px-6 py-28 sm:px-8 lg:px-12 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-start">
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The process</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-400">The process</p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
               Prep. Paint. Verify. That&apos;s the whole job.
             </h2>
@@ -506,7 +506,7 @@ export default function HomeClient() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="mb-6 text-sm font-semibold text-zinc-500">What to expect</p>
+                <p className="mb-6 text-sm font-semibold text-zinc-400">What to expect</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   You shouldn&apos;t have to wonder what&apos;s happening on your job. You&apos;ll know.
                 </h2>
@@ -540,7 +540,7 @@ export default function HomeClient() {
           <FadeIn>
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-7">
-                <p className="mb-6 text-sm font-semibold text-zinc-500">The guarantee</p>
+                <p className="mb-6 text-sm font-semibold text-zinc-400">The guarantee</p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   If we agree on a finish date, we hit it — or that day&apos;s labor is on us.
                 </h2>
@@ -576,7 +576,7 @@ export default function HomeClient() {
       <section className="relative overflow-hidden bg-[#182023] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-6">
-            <p className="font-display mb-6 text-sm font-semibold text-[#dce5e4]/50">Public sector</p>
+            <p className="font-display mb-6 text-sm font-semibold text-[#dce5e4]/70">Public sector</p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Already documented. Ready to bid.
             </h2>
@@ -618,7 +618,7 @@ export default function HomeClient() {
       <section id="faq" className="relative overflow-hidden border-t border-white/10 bg-[#060606] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-start">
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-4">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Questions before you book</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-400">Questions before you book</p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
               Quick answers for faster decisions.
             </h2>
@@ -662,7 +662,7 @@ export default function HomeClient() {
           </div>
           <div className="p-12 lg:col-span-7 lg:p-16 bg-[#0B0B0D]">
             <FadeIn>
-              <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Get started</p>
+              <p className="font-display mb-6 text-sm font-semibold text-zinc-400">Get started</p>
               <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                 Request Your Free Scope Walkthrough
               </h2>
