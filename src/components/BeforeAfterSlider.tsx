@@ -46,7 +46,7 @@ export default function BeforeAfterSlider({
             alt={afterLabel} 
             width={1200} 
             height={700} 
-            sizes="100vw"
+            sizes="(min-width: 768px) 60ch, 100vw"
             className="h-full w-full object-cover pointer-events-none" 
           />
         </div>
@@ -61,7 +61,7 @@ export default function BeforeAfterSlider({
             alt={beforeLabel} 
             width={1200} 
             height={700} 
-            sizes="100vw"
+            sizes="(min-width: 768px) 60ch, 100vw"
             className="h-full w-full object-cover pointer-events-none" 
           />
         </div>
