@@ -19,10 +19,12 @@ Aggregate lessons learned and reference templates for task execution.
 ## Lessons Learned & Failures Cache
 
 ---
+
 type: ledger
 title: Error Learning Log
 description: Operational errors and tool failures for continuous self-improvement
 tags: [errors, learning, incidents]
+
 ---
 
 # Errors Log
@@ -201,14 +203,17 @@ Prefer a `.ps1` script file for any pipeline with variables or complex quoting.
 **Area**: devops-execution
 
 ### Summary [ERR-20260622-634]
+
 Task command "npm run lint" failed during runtime execution.
 
 ### Error [ERR-20260622-634]
+
 ```text
 Entry criteria failed for phase RESEARCH: No active checkpoints found for task GOAL-6-T1
 ```
 
 ### Fix / Learning [ERR-20260622-634]
+
 Root cause diagnostics. Working resolution:
 
 ```javascript
@@ -220,6 +225,7 @@ Root cause diagnostics. Working resolution:
 ```
 
 ### Metadata [ERR-20260622-634]
+
 - Root cause: command execution exit code non-zero
 - Prevention: verify execution parameters and run locally prior to staging
 
@@ -231,14 +237,17 @@ Root cause diagnostics. Working resolution:
 **Area**: devops-execution
 
 ### Summary [ERR-20260622-592]
+
 Task command "npm run lint" failed during runtime execution.
 
 ### Error [ERR-20260622-592]
+
 ```text
 Entry criteria failed for phase EXECUTE: No active checkpoints found for task GOAL-6-T1
 ```
 
 ### Fix / Learning [ERR-20260622-592]
+
 Root cause diagnostics. Working resolution:
 
 ```javascript
@@ -250,6 +259,7 @@ Root cause diagnostics. Working resolution:
 ```
 
 ### Metadata [ERR-20260622-592]
+
 - Root cause: command execution exit code non-zero
 - Prevention: verify execution parameters and run locally prior to staging
 
@@ -399,8 +409,8 @@ Executing a multi-statement PowerShell command inside double quotes via `powersh
 ### Error [ERR-20260622-007]
 
 ```text
-=https://integrate.api.nvidia.com/v1 : The term '=https://integrate.api.nvidia.com/v1' is not recognized as the name 
-of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, 
+=https://integrate.api.nvidia.com/v1 : The term '=https://integrate.api.nvidia.com/v1' is not recognized as the name
+of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included,
 verify that the path is correct and try again.
 At line:1 char:1
 + ='https://integrate.api.nvidia.com/v1'; ='nvapi-zCvD8jqHiydmSNpU9kHhO ...
@@ -660,6 +670,7 @@ When writing scratch files outside the active session artifact directory, omit t
 - Prevention: Omit ArtifactMetadata parameter for all files not located in the conversation's active artifact directory
 
 ## [ERR-20260624-001]
+
 **Summary**: PowerShell orchestration scripts were deprecated due to execution restrictions.
 **Error**: `UnauthorizedAccess` errors when executing `compile-all.ps1`.
 **Fix**: Migrated entire Agent OS pipeline to Node.js.
@@ -674,9 +685,11 @@ Relying on PowerShell scripts (`.ps1`) for core pipeline orchestration.
 **Prevention Rule**: All system orchestration scripts must be written in Node.js and executed via `npm run <script>` to guarantee cross-platform and environment compatibility.
 
 ## [ERR-2026-06-24T19:31:20.977Z]
+
 **Step Failed**: A: OKF Validator
 **Command**: `node scripts/validate-okf.js`
 **Error Trace**:
+
 ```
 Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\wiki\test-error.md: Missing frontmatter properties: type, timestamp
 Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Accessibility_Testing.md: Missing frontmatter properties: type, title, timestamp

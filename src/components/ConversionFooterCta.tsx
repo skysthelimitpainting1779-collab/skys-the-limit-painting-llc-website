@@ -24,7 +24,7 @@ const proofItems = [
 
 export default function ConversionFooterCta() {
   return (
-    <section className="relative overflow-hidden bg-[#050505] px-4 py-28 text-white sm:px-6 lg:px-8 lg:py-36">
+    <section className="relative overflow-hidden bg-[#050505] px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="relative z-20 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">

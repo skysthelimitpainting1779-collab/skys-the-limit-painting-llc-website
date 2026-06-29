@@ -36,14 +36,18 @@ Without deterministic memory, agentic loops repeatedly fall into the same failur
 **Area**: Area
 
 ### Summary [ERR-YYYYMMDD-NNN]
+
 Context.
 
 ### Error [ERR-YYYYMMDD-NNN]
+
 Error text.
 
 ### Fix / Learning [ERR-YYYYMMDD-NNN]
+
 Explanation + working example.
 
 ### Metadata [ERR-YYYYMMDD-NNN]
+
 - Prevention: concrete prevention rule
 ```

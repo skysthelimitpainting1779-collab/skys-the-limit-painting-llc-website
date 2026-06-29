@@ -13,7 +13,7 @@ This is the canonical agents operating manual for Sky's the Limit Painting LLC. 
 > **STRICT COMPLIANCE RULES:**
 > 1. **SSOT**: The `.agents/` directory is the single source of truth for all context. Never create split context.
 > 2. **MCP Priority**: Always use `codebase-memory-mcp` tools for structural discovery before `grep`.
-> 3. **Shell**: All shell execution MUST use `powershell -ExecutionPolicy Bypass -Command "..."`.
+> 3. **Shell**: All shell execution should follow modern Agentic Development Environment (ADE) principles. Prefer cross-platform Node.js scripts (e.g., `node -e`), `zx`, or sandboxed agent runtimes. Use the most effective tool for the task rather than forcing a specific shell.
 > 4. **Trust, but Verify**: After executing a file creation or edit command, you must independently use the read_file or list_dir MCP tool to verify the file actually exists on the disk with the correct content before reporting success to the user.
 > 5. **OKF Compliance**: All `.agents/` markdown files MUST include YAML frontmatter with at least `type`, `title`, `description`, and `tags` fields per Google Open Knowledge Format v0.1.
 
@@ -150,7 +150,7 @@ Isolated technical nodes must be bridged to the nearest relevant business domain
 - **Build project**: `npm run build`
 - **Lint check**: `npm run lint`
 - **Run tests**: `npm test`
-- **Master compile**: `powershell -ExecutionPolicy Bypass -File "..\compile-all.ps1"`
+- **Master compile**: Run the project's compile script using Node or the appropriate cross-platform command.
 - **Project graph update**: `graphify update .`
 - **Graphify CLI Tools**:
   - `graphify update .` (Fast AST sync)

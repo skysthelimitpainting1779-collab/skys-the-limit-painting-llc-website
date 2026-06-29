@@ -574,10 +574,13 @@ Exact error message here
 Root cause explanation. Working example:
 
 \`\`\`language
+
 # CORRECT
+
 correct code here
 
 # WRONG
+
 broken code here
 \`\`\`
 

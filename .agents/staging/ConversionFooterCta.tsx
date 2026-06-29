@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Link from 'next/link';
 import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';

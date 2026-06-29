@@ -26,6 +26,9 @@ graphify-out/
 !.agents/operations/
 !.agents/playbooks/
 !.agents/skills/
+# Ignore generated skill outputs (e.g. .agents/skills/vercel-optimize/lib/)
+.agents/skills/*/lib/
+.agents/skills/*/*/lib/
 # Ignore specific databases, traces, caches, and staging inside .agents
 .agents/hub_db.json
 .agents/coordination.db

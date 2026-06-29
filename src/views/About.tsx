@@ -231,8 +231,8 @@ export default function AboutPage() {
           <div className="measurement-rules absolute inset-0 opacity-12"></div>
           <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-3">
             {[
-              { icon: ShieldCheck, title: 'Neatness & Respect', body: 'We treat your property like our own, utilizing clean drop cloths, dust isolation, and orderly tool staging every single day.' },
-              { icon: ClipboardCheck, title: 'Apprentice-Built Craft', body: 'Led by Anthony Briseno with a formal Journeyworker Painter & Decorator background\u2014combining hands-on field experience with structural discipline.' },
+              { icon: ShieldCheck, title: 'Neatness & Respect', body: 'We treat your property like our own \u2014 clean drop cloths, dust isolation, and orderly tool staging every single day.' },
+              { icon: ClipboardCheck, title: 'Apprentice-Built Craft', body: 'Led by Anthony Briseno with a formal Journeyworker Painter & Decorator background \u2014 combining hands-on field experience with structural discipline.' },
               { icon: Camera, title: 'Detail-First Estimates', body: 'Every bid features detailed photo scopes and clear, itemized line items so you know exactly what prep and coating you are paying for.' },
             ].map((card) => (
               <IconFeatureCard

@@ -1,19 +1,35 @@
 // Safe helper to get environment variables across Next.js and Vite.
+// Supports standard, NEXT_PUBLIC_, and integration-prefixed names (e.g. backend_ from Vercel Supabase).
 function getEnv(key: string): string | undefined {
   if (typeof process !== 'undefined' && process.env) {
-    return process.env[key] || process.env[`NEXT_PUBLIC_${key}`] || process.env[`VITE_${key}`];
+    const candidates = [
+      key,
+      `NEXT_PUBLIC_${key}`,
+      `backend_${key}`,
+      `NEXT_PUBLIC_backend_${key}`,
+      `VITE_${key}`,
+    ];
+    for (const c of candidates) {
+      if (process.env[c]) return process.env[c];
+    }
   }
   try {
     // @ts-ignore
     if (typeof import.meta !== 'undefined' && import.meta.env) {
       // @ts-ignore
-      return import.meta.env[key] || import.meta.env[`VITE_${key}`];
+      const metaCandidates = [key, `VITE_${key}`];
+      for (const c of metaCandidates) {
+        // @ts-ignore
+        if (import.meta.env[c]) return import.meta.env[c];
+      }
     }
   } catch {
     // import.meta may not exist in all runtimes (feature detection)
   }
   return undefined;
 }
+
+export { getEnv };
 
 export const ENV = {
   SITE_URL: getEnv('SITE_URL') || 'https://www.skysthelimitpaintingllc.com',
@@ -25,6 +41,7 @@ export const ENV = {
   LINKEDIN_URL: getEnv('LINKEDIN_URL') || 'https://linkedin.com/company/skys-the-limit-painting-llc',
   TIKTOK_URL: getEnv('TIKTOK_URL') || 'https://tiktok.com/@skysthelimitpainting',
   BOOKING_URL: getEnv('BOOKING_URL') || '',
-  SUPABASE_URL: getEnv('SUPABASE_URL') || '',
-  SUPABASE_ANON_KEY: getEnv('SUPABASE_ANON_KEY') || '',
+  // Explicitly reference process.env for Next.js client-side static substitution
+  SUPABASE_URL: process.env.NEXT_PUBLIC_backend_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || getEnv('SUPABASE_URL') || '',
+  SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_backend_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || getEnv('SUPABASE_ANON_KEY') || '',
 };

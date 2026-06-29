@@ -1,12 +1,20 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { ENV } from '../env';
 
 export async function createClient() {
   const cookieStore = await cookies();
 
+  const url = ENV.SUPABASE_URL;
+  const key = ENV.SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    throw new Error('Supabase environment variables are not configured.');
+  }
+
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    key,
     {
       cookies: {
         getAll() {

@@ -17,16 +17,19 @@ If `.agents/product-marketing.md` exists (or `.claude/product-marketing.md`, or 
 Gather this context (ask if not provided):
 
 ### 1. Business Context
+
 - What does the company do?
 - Who are the primary audiences?
 - What are the top 3 goals for the site? (conversions, SEO traffic, education, support)
 
 ### 2. Current State
+
 - New site or restructuring an existing one?
 - If restructuring: what's broken? (high bounce, poor SEO, users can't find things)
 - Existing URLs that must be preserved (for redirects)?
 
 ### 3. Site Type
+
 - SaaS marketing site
 - Content/blog site
 - E-commerce
@@ -35,6 +38,7 @@ Gather this context (ask if not provided):
 - Small business / local
 
 ### 4. Content Inventory
+
 - How many pages exist or are planned?
 - What are the most important pages? (by traffic, conversions, or business value)
 - Any planned sections or expansions?
@@ -43,14 +47,14 @@ Gather this context (ask if not provided):
 
 ## Site Types and Starting Points
 
-| Site Type | Typical Depth | Key Sections | URL Pattern |
-|-----------|--------------|--------------|-------------|
-| SaaS marketing | 2-3 levels | Home, Features, Pricing, Blog, Docs | `/features/name`, `/blog/slug` |
-| Content/blog | 2-3 levels | Home, Blog, Categories, About | `/blog/slug`, `/category/slug` |
-| E-commerce | 3-4 levels | Home, Categories, Products, Cart | `/category/subcategory/product` |
-| Documentation | 3-4 levels | Home, Guides, API Reference | `/docs/section/page` |
-| Hybrid SaaS+content | 3-4 levels | Home, Product, Blog, Resources, Docs | `/product/feature`, `/blog/slug` |
-| Small business | 1-2 levels | Home, Services, About, Contact | `/services/name` |
+| Site Type           | Typical Depth | Key Sections                         | URL Pattern                      |
+| ------------------- | ------------- | ------------------------------------ | -------------------------------- |
+| SaaS marketing      | 2-3 levels    | Home, Features, Pricing, Blog, Docs  | `/features/name`, `/blog/slug`   |
+| Content/blog        | 2-3 levels    | Home, Blog, Categories, About        | `/blog/slug`, `/category/slug`   |
+| E-commerce          | 3-4 levels    | Home, Categories, Products, Cart     | `/category/subcategory/product`  |
+| Documentation       | 3-4 levels    | Home, Guides, API Reference          | `/docs/section/page`             |
+| Hybrid SaaS+content | 3-4 levels    | Home, Product, Blog, Resources, Docs | `/product/feature`, `/blog/slug` |
+| Small business      | 1-2 levels    | Home, Services, About, Contact       | `/services/name`                 |
 
 **For full page hierarchy templates**: See [references/site-type-templates.md](references/site-type-templates.md)
 
@@ -64,22 +68,22 @@ Users should reach any important page within 3 clicks from the homepage. This is
 
 ### Flat vs Deep
 
-| Approach | Best For | Tradeoff |
-|----------|----------|----------|
-| Flat (2 levels) | Small sites, portfolios | Simple but doesn't scale |
+| Approach            | Best For                 | Tradeoff                              |
+| ------------------- | ------------------------ | ------------------------------------- |
+| Flat (2 levels)     | Small sites, portfolios  | Simple but doesn't scale              |
 | Moderate (3 levels) | Most SaaS, content sites | Good balance of depth and findability |
-| Deep (4+ levels) | E-commerce, large docs | Scales but risks burying content |
+| Deep (4+ levels)    | E-commerce, large docs   | Scales but risks burying content      |
 
 **Rule of thumb**: Go as flat as possible while keeping navigation clean. If a nav dropdown has 20+ items, add a level of hierarchy.
 
 ### Hierarchy Levels
 
-| Level | What It Is | Example |
-|-------|-----------|---------|
-| L0 | Homepage | `/` |
-| L1 | Primary sections | `/features`, `/blog`, `/pricing` |
-| L2 | Section pages | `/features/analytics`, `/blog/seo-guide` |
-| L3+ | Detail pages | `/docs/api/authentication` |
+| Level | What It Is       | Example                                  |
+| ----- | ---------------- | ---------------------------------------- |
+| L0    | Homepage         | `/`                                      |
+| L1    | Primary sections | `/features`, `/blog`, `/pricing`         |
+| L2    | Section pages    | `/features/analytics`, `/blog/seo-guide` |
+| L3+   | Detail pages     | `/docs/api/authentication`               |
 
 ### ASCII Tree Format
 
@@ -107,6 +111,7 @@ Homepage (/)
 ```
 
 **When to use ASCII vs Mermaid**:
+
 - ASCII: quick hierarchy drafts, text-only contexts, simple structures
 - Mermaid: visual presentations, complex relationships, showing nav zones or linking patterns
 
@@ -116,14 +121,14 @@ Homepage (/)
 
 ### Navigation Types
 
-| Nav Type | Purpose | Placement |
-|----------|---------|-----------|
-| Header nav | Primary navigation, always visible | Top of every page |
-| Dropdown menus | Organize sub-pages under parent | Expands from header items |
-| Footer nav | Secondary links, legal, sitemap | Bottom of every page |
-| Sidebar nav | Section navigation (docs, blog) | Left side within a section |
-| Breadcrumbs | Show current location in hierarchy | Below header, above content |
-| Contextual links | Related content, next steps | Within page content |
+| Nav Type         | Purpose                            | Placement                   |
+| ---------------- | ---------------------------------- | --------------------------- |
+| Header nav       | Primary navigation, always visible | Top of every page           |
+| Dropdown menus   | Organize sub-pages under parent    | Expands from header items   |
+| Footer nav       | Secondary links, legal, sitemap    | Bottom of every page        |
+| Sidebar nav      | Section navigation (docs, blog)    | Left side within a section  |
+| Breadcrumbs      | Show current location in hierarchy | Below header, above content |
+| Contextual links | Related content, next steps        | Within page content         |
 
 ### Header Navigation Rules
 
@@ -136,6 +141,7 @@ Homepage (/)
 ### Footer Organization
 
 Group footer links into columns:
+
 - **Product**: Features, Pricing, Integrations, Changelog
 - **Resources**: Blog, Case Studies, Templates, Docs
 - **Company**: About, Careers, Contact, Press
@@ -167,20 +173,20 @@ Breadcrumbs should mirror the URL hierarchy. Every breadcrumb segment should be 
 
 ### URL Patterns by Page Type
 
-| Page Type | Pattern | Example |
-|-----------|---------|---------|
-| Homepage | `/` | `example.com` |
-| Feature page | `/features/{name}` | `/features/analytics` |
-| Pricing | `/pricing` | `/pricing` |
-| Blog post | `/blog/{slug}` | `/blog/seo-guide` |
-| Blog category | `/blog/category/{slug}` | `/blog/category/seo` |
-| Case study | `/customers/{slug}` | `/customers/acme-corp` |
-| Documentation | `/docs/{section}/{page}` | `/docs/api/authentication` |
-| Legal | `/{page}` | `/privacy`, `/terms` |
-| Landing page | `/{slug}` or `/lp/{slug}` | `/free-trial`, `/lp/webinar` |
-| Comparison | `/compare/{competitor}` or `/vs/{competitor}` | `/compare/competitor-name` |
-| Integration | `/integrations/{name}` | `/integrations/slack` |
-| Template | `/templates/{slug}` | `/templates/marketing-plan` |
+| Page Type     | Pattern                                       | Example                      |
+| ------------- | --------------------------------------------- | ---------------------------- |
+| Homepage      | `/`                                           | `example.com`                |
+| Feature page  | `/features/{name}`                            | `/features/analytics`        |
+| Pricing       | `/pricing`                                    | `/pricing`                   |
+| Blog post     | `/blog/{slug}`                                | `/blog/seo-guide`            |
+| Blog category | `/blog/category/{slug}`                       | `/blog/category/seo`         |
+| Case study    | `/customers/{slug}`                           | `/customers/acme-corp`       |
+| Documentation | `/docs/{section}/{page}`                      | `/docs/api/authentication`   |
+| Legal         | `/{page}`                                     | `/privacy`, `/terms`         |
+| Landing page  | `/{slug}` or `/lp/{slug}`                     | `/free-trial`, `/lp/webinar` |
+| Comparison    | `/compare/{competitor}` or `/vs/{competitor}` | `/compare/competitor-name`   |
+| Integration   | `/integrations/{name}`                        | `/integrations/slack`        |
+| Template      | `/templates/{slug}`                           | `/templates/marketing-plan`  |
 
 ### Common Mistakes
 
@@ -195,11 +201,11 @@ Breadcrumbs should mirror the URL hierarchy. Every breadcrumb segment should be 
 
 The breadcrumb trail should mirror the URL path:
 
-| URL | Breadcrumb |
-|-----|-----------|
-| `/features/analytics` | Home > Features > Analytics |
-| `/blog/seo-guide` | Home > Blog > SEO Guide |
-| `/docs/api/auth` | Home > Docs > API > Authentication |
+| URL                   | Breadcrumb                         |
+| --------------------- | ---------------------------------- |
+| `/features/analytics` | Home > Features > Analytics        |
+| `/blog/seo-guide`     | Home > Blog > SEO Guide            |
+| `/docs/api/auth`      | Home > Docs > API > Authentication |
 
 ---
 
@@ -260,12 +266,12 @@ graph TD
 
 ### Link Types
 
-| Type | Purpose | Example |
-|------|---------|---------|
-| Navigational | Move between sections | Header, footer, sidebar links |
-| Contextual | Related content within text | "Learn more about [analytics](/features/analytics)" |
-| Hub-and-spoke | Connect cluster content to hub | Blog posts linking to pillar page |
-| Cross-section | Connect related pages across sections | Feature page linking to related case study |
+| Type          | Purpose                               | Example                                             |
+| ------------- | ------------------------------------- | --------------------------------------------------- |
+| Navigational  | Move between sections                 | Header, footer, sidebar links                       |
+| Contextual    | Related content within text           | "Learn more about [analytics](/features/analytics)" |
+| Hub-and-spoke | Connect cluster content to hub        | Blog posts linking to pillar page                   |
+| Cross-section | Connect related pages across sections | Feature page linking to related case study          |
 
 ### Internal Linking Rules
 
@@ -307,28 +313,32 @@ Each spoke links back to the hub. The hub links to all spokes. Spokes link to ea
 When creating a site architecture plan, provide these deliverables:
 
 ### 1. Page Hierarchy (ASCII Tree)
+
 Full site structure with URLs at each node. Use the ASCII tree format from the Page Hierarchy Design section.
 
 ### 2. Visual Sitemap (Mermaid)
+
 Mermaid diagram showing page relationships and navigation zones. Use `graph TD` with subgraphs for nav zones where helpful.
 
 ### 3. URL Map Table
 
-| Page | URL | Parent | Nav Location | Priority |
-|------|-----|--------|-------------|----------|
-| Homepage | `/` | — | Header | High |
-| Features | `/features` | Homepage | Header | High |
-| Analytics | `/features/analytics` | Features | Header dropdown | Medium |
-| Pricing | `/pricing` | Homepage | Header | High |
-| Blog | `/blog` | Homepage | Header | Medium |
+| Page      | URL                   | Parent   | Nav Location    | Priority |
+| --------- | --------------------- | -------- | --------------- | -------- |
+| Homepage  | `/`                   | —        | Header          | High     |
+| Features  | `/features`           | Homepage | Header          | High     |
+| Analytics | `/features/analytics` | Features | Header dropdown | Medium   |
+| Pricing   | `/pricing`            | Homepage | Header          | High     |
+| Blog      | `/blog`               | Homepage | Header          | Medium   |
 
 ### 4. Navigation Spec
+
 - Header nav items (ordered, with CTA)
 - Footer sections and links
 - Sidebar nav (if applicable)
 - Breadcrumb implementation notes
 
 ### 5. Internal Linking Plan
+
 - Hub pages and their spokes
 - Cross-section link opportunities
 - Orphan page audit (if restructuring)
