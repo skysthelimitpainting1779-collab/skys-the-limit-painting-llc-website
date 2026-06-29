@@ -102,7 +102,10 @@ export default function RootLayout({
                 { "@type": "AdministrativeArea", "name": "Twin Cities Metro" }
               ],
               "sameAs": [
-                "https://www.facebook.com/skysthelimitpaintingllc"
+                "https://facebook.com/skysthelimitpainting1779",
+                "https://instagram.com/skysthelimitpainting1779",
+                "https://linkedin.com/company/skys-the-limit-painting-llc",
+                "https://tiktok.com/@skysthelimitpainting"
               ]
             }),
           }}

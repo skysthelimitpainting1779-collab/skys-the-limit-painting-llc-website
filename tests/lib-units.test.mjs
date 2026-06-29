@@ -128,7 +128,7 @@ describe('lib/env - Environment variable loading', () => {
 
   test('getEnv checks process.env, NEXT_PUBLIC_, and VITE_ prefixes', () => {
     const src = read('src/lib/env.ts');
-    assert.match(src, /process\.env\[key\]/);
+    assert.match(src, /process\.env\[c\]/);
     assert.match(src, /NEXT_PUBLIC_/);
     assert.match(src, /VITE_/);
   });
