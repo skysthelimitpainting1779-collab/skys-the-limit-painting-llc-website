@@ -17,6 +17,8 @@ export default function ResponsiveImage({
   fetchPriority = 'auto',
   ...props
 }: ResponsiveImageProps) {
+  const unoptimized = src.startsWith('http://') || src.startsWith('https://');
+
   return (
     <Image
       {...props}
@@ -28,6 +30,7 @@ export default function ResponsiveImage({
       loading={priority ? undefined : loading}
       decoding="async"
       fetchPriority={priority ? undefined : fetchPriority}
+      unoptimized={unoptimized}
     />
   );
 }
