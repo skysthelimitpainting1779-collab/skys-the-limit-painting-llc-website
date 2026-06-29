@@ -9,8 +9,8 @@ function getEnv(key: string): string | undefined {
       // @ts-ignore
       return import.meta.env[key] || import.meta.env[`VITE_${key}`];
     }
-  } catch (e) {
-    // ignore
+  } catch {
+    // import.meta may not exist in all runtimes (feature detection)
   }
   return undefined;
 }

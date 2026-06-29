@@ -19,7 +19,16 @@ import { NextRequest, NextResponse } from 'next/server';
 async function getHarness() {
   // Use process.cwd() to build absolute path — safe in Next.js Node runtime
   const harnessPath = `${process.cwd()}/scripts/memory-harness.js`;
-  return await import(harnessPath);
+  // Indirect import bypasses Turbopack static analysis of dynamic paths
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  const importFn = new Function('p', 'return import(p)');
+  return await importFn(harnessPath) as {
+    QueryMemory: (opts: { text: string; type?: string; tags?: string[] }) => unknown;
+    GetNode: (id: string) => unknown;
+    GetNeighbors: (id: string, depth: number) => unknown;
+    GetGraphStats: () => unknown;
+    UpdateMemory: (conceptId: string, update: Record<string, unknown>, agentId: string) => { success: boolean; errors?: unknown; node?: unknown };
+  };
 }
 
 export const runtime = 'nodejs'; // explicitly: memory files live on disk, not edge

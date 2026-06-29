@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   phone: "+1-651-410-4196",
   email: "skysthelimitpainting1779@gmail.com",
   logo_url: null,
-  primary_color: "white",
+  primary_color: "#FF5A00",
   tagline: "Residential detail. Commercial discipline. Public-sector ready.",
   service_areas: ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'],
   services: ['Residential Painting', 'Commercial Painting', 'Interior Painting', 'Exterior Painting', 'Pavement Marking', 'Parking-Lot Striping'],
@@ -35,7 +35,12 @@ export async function getCompanySettings(): Promise<CompanySettings> {
       .eq('id', 'default')
       .single();
 
-    if (data && !error) {
+    if (error) {
+      console.warn(`Settings DB query failed (code: ${error.code}): ${error.message}. Using defaults.`);
+      return DEFAULT_SETTINGS;
+    }
+
+    if (data) {
       return {
         company_name: data.company_name,
         phone: data.phone,
@@ -50,7 +55,8 @@ export async function getCompanySettings(): Promise<CompanySettings> {
       };
     }
   } catch (err) {
-    console.warn('Error fetching settings from database. Using hardcoded defaults.', err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`Settings fetch failed (${message}). Using defaults.`);
   }
 
   return DEFAULT_SETTINGS;

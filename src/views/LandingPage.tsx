@@ -8,6 +8,7 @@ import PageTransition from '../components/PageTransition';
 import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
 import ResponsiveImage from '../components/ResponsiveImage';
+import IconFeatureCard from '../components/IconFeatureCard';
 import { breadcrumbSchema, localBusinessSchema, serviceSchema } from '../lib/seo';
 import { businessPhone } from '../lib/contact';
 import {
@@ -209,19 +210,21 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
           <FadeIn delay={0.1} className="lg:col-span-7">
             <div className="grid gap-4 md:grid-cols-3">
               {[
-                [Camera, 'Photo link', 'Add a Google Drive, iCloud, Dropbox, or public album link in the form.'],
-                [Route, 'Service lane', `This page routes into the ${page.market.toLowerCase()} estimate path.`],
-                [ClipboardCheck, 'Clear next step', 'Anthony gets the project details in a structured format instead of a vague callback request.'],
-              ].map(([Icon, title, body]) => {
-                const ProofIcon = Icon as typeof Camera;
-                return (
-                  <div key={title as string} className="min-h-[210px] border-l border-white/35 bg-[#11100d] p-6">
-                    <ProofIcon className="mb-8 text-white" size={28} strokeWidth={1.5} />
-                    <h3 className="text-xl font-black leading-tight text-white">{title as string}</h3>
-                    <p className="mt-4 text-base leading-relaxed text-[#cbd4d3]">{body as string}</p>
-                  </div>
-                );
-              })}
+                { icon: Camera, title: 'Photo link', body: 'Add a Google Drive, iCloud, Dropbox, or public album link in the form.' },
+                { icon: Route, title: 'Service lane', body: `This page routes into the ${page.market.toLowerCase()} estimate path.` },
+                { icon: ClipboardCheck, title: 'Clear next step', body: 'Anthony gets the project details in a structured format instead of a vague callback request.' },
+              ].map((card) => (
+                <IconFeatureCard
+                  key={card.title}
+                  icon={card.icon}
+                  title={card.title}
+                  body={card.body}
+                  className="min-h-[210px] border-l border-white/35 bg-[#11100d] p-6"
+                  iconClassName="mb-8 text-white"
+                  bodyClassName="mt-4 text-sm leading-relaxed text-[#cbd4d3]"
+                  as="div"
+                />
+              ))}
             </div>
           </FadeIn>
         </div>
