@@ -168,7 +168,7 @@ Isolated technical nodes must be bridged to the nearest relevant business domain
   - **Previews**: Map feature branches (`feat/`, `fix/`, etc.) to Vercel Preview environments created dynamically on Pull Requests.
   - Secrets and environment variables must be managed in the Vercel dashboard, not committed.
 - **Git Workflows & Standards**:
-  - **Naming Conventions**: Strict branch prefixes required: `feat/<desc>`, `fix/<desc>`, `chore/<desc>`, `docs/<desc>`, `infra/<desc>`. Direct pushes/commits to `main` and `staging` are prohibited.
+  - **Naming Conventions**: Strict branch prefixes required: `feat/<desc>`, `fix/<desc>`, `chore/<desc>`, `docs/<desc>`, `infra/<desc>`. Automation branches `devin/<desc>`, `agent/<desc>`, and `dependabot/<...>` are also permitted. Direct pushes/commits to `main` and `staging` are prohibited.
   - **Commit Format**: Conventional Commits standard (`<type>(<scope>): <subject>` e.g. `feat(seo): add meta tags`). Vague messages are banned.
   - **PR Workflow**: All development must occur on feature branches and be merged via PRs. PRs require Goal, Files changed, Validation results, and Search impact.
   - **CI/CD Boomerang Policy**: Auto-repair commits are disabled on protected branches (`main`, `staging`) to prevent Git history pollution. Auto-repairs are allowed on feature/PR branches only.

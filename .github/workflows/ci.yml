@@ -28,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -65,10 +65,10 @@ jobs:
     needs: lint
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -102,10 +102,10 @@ jobs:
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -163,10 +163,10 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -203,7 +203,7 @@ jobs:
         if: env.VERCEL_TOKEN != ''
         id: deploy
         run: |
-          DEPLOY_URL=$(npx vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          DEPLOY_URL=$(npx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
 
       - name: Comment preview URL on PR
@@ -263,10 +263,10 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -301,7 +301,7 @@ jobs:
 
       - name: Deploy to Vercel production
         if: env.VERCEL_TOKEN != ''
-        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel deploy --prebuilt --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: "Report CI failure (Git Discipline: no auto commits/pushes)"
         if: failure()
