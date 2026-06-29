@@ -30,3 +30,11 @@
 ### Auto-Generated Rule based on failure at 2026-06-29T01:46:02.135Z
 - **Triggering Error Context**: **Step Failed**: A: OKF Validator
 - **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Git Workflows & Deployment Topology
+- **Rule**: Standardize all workspace branches, commits, staging, and deployment environments as follows:
+  - **Protected Branches**: `main` (Production) and `staging` (Staging/Preview). Direct commits/pushes are strictly prohibited.
+  - **CI/CD Boomerang Policy**: Auto-repair incident committing is disabled on protected branches (`main`, `staging`) to prevent history pollution. It is only allowed on feature/PR branches.
+  - **Branch Naming Standard**: Strict prefixes required: `feat/`, `fix/`, `chore/`, `docs/`, `infra/`.
+  - **Commit Message Format**: Strict Conventional Commits standard (`<type>(<scope>): <subject>` e.g., `feat(seo): add meta tags`).
+  - **PR Workflow**: All features, changes, and fixes must be developed on a feature branch, pass local validation checks (`npm run lint && npm test`), and be merged via Pull Request.

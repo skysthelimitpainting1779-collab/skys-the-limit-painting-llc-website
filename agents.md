@@ -162,7 +162,11 @@ Isolated technical nodes must be bridged to the nearest relevant business domain
 
 - **Verification**: Narrow to broad. `npm run lint` -> `npm test` -> `npm run build`. Never deploy broken code.
 - **Error Learning Protocol**: On non-zero exit, STOP. Append to `.learnings/ERRORS.md`: `## [ERR-YYYYMMDD-NNN]` containing Summary, Error, Fix, Metadata, `# CORRECT` / `# WRONG` code, and a prevention rule.
-- **Deployment**: Vercel/Supabase via MCP or non-interactive CLI. Secrets in Vercel env vars only.
+- **Deployment & Environments**:
+  - **Production**: Map `main` branch to Vercel Production environment.
+  - **Staging / Preview**: Map `staging` branch to Vercel Preview (Staging) environment.
+  - **Previews**: Map feature branches (`feat/`, `fix/`, etc.) to Vercel Preview environments created dynamically on Pull Requests.
+  - Secrets and environment variables must be managed in the Vercel dashboard, not committed.
 - **Git Workflows & Standards**:
   - **Naming Conventions**: Strict branch prefixes required: `feat/<desc>`, `fix/<desc>`, `chore/<desc>`, `docs/<desc>`, `infra/<desc>`. Direct pushes/commits to `main` and `staging` are prohibited.
   - **Commit Format**: Conventional Commits standard (`<type>(<scope>): <subject>` e.g. `feat(seo): add meta tags`). Vague messages are banned.
