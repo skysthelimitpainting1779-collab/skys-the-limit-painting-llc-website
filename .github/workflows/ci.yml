@@ -15,7 +15,7 @@ permissions:
   pull-requests: write
 
 env:
-  NODE_VERSION: "24.x"
+  NODE_VERSION: "22.x"
   SITE_URL: https://skysthelimitpaintingllc.com
   VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m

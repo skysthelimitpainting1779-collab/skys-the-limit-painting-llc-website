@@ -1,3 +1,10 @@
+---
+type: policy
+title: Security Policy
+description: Supported versions, vulnerability reporting, and security practices for the Sky's the Limit Painting website and agent tooling.
+tags: [policy, security, vulnerabilities, compliance]
+---
+
 # Security Policy
 
 ## Supported Versions
