@@ -1,3 +1,10 @@
+---
+type: ledger
+title: Error Learning Log
+description: Operational errors and tool failures for continuous self-improvement
+tags: [errors, learning, incidents]
+---
+
 # Errors Log
 
 This file tracks operational errors and tool failures for continuous self-improvement.
@@ -581,5 +588,1114 @@ Never use `next/dynamic` with `ssr: false` inside a Server Component. If a compo
 - Root cause: Used `next/dynamic` with `{ ssr: false }` directly inside a Server Component
 - Prevention: Statically import client components that safe-guard browser-only APIs in `useEffect`; use dynamic imports with `ssr: false` only inside client-side components
 
+---
+
+## [ERR-20260624-001] Invalid write_to_file target path for artifact metadata
+
+**Logged**: 2026-06-24T10:48:45-07:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary [ERR-20260624-001]
+
+An attempt to use the `write_to_file` tool to write a scratch script failed because the tool call included `ArtifactMetadata` but the target file path was in the workspace root scratch directory instead of the active session artifact directory.
+
+### Error [ERR-20260624-001]
+
+```text
+c:\Users\Johnny Cage\DEV\skysthelimit-collab\scratch\download_installer.ps1 is not a valid artifact path; artifacts must be in C:\Users\Johnny Cage\.gemini\antigravity-ide\brain\df9e196f-1d52-40b8-bc09-299aedcae27c/
+```
+
+### Fix / Learning [ERR-20260624-001]
+
+When writing scratch files outside the active session artifact directory, omit the `ArtifactMetadata` argument entirely. Only provide `ArtifactMetadata` for files that are meant to be user-facing artifacts inside the session-specific brain folder.
+
+```json
+# CORRECT
+{
+  "TargetFile": "c:\\Users\\Johnny Cage\\DEV\\skysthelimit-collab\\scratch\\download_installer.ps1",
+  "Overwrite": true,
+  "CodeContent": "...",
+  "Description": "..."
+}
+
+# WRONG
+{
+  "TargetFile": "c:\\Users\\Johnny Cage\\DEV\\skysthelimit-collab\\scratch\\download_installer.ps1",
+  "Overwrite": true,
+  "CodeContent": "...",
+  "Description": "...",
+  "ArtifactMetadata": {
+    "Summary": "...",
+    "UserFacing": false,
+    "RequestFeedback": false
+  }
+}
+```
+
+### Metadata [ERR-20260624-001]
+
+- Root cause: Included ArtifactMetadata for a non-artifact scratch file in the workspace
+- Prevention: Omit ArtifactMetadata parameter for all files not located in the conversation's active artifact directory
+
+## [ERR-20260624-001]
+**Summary**: PowerShell orchestration scripts were deprecated due to execution restrictions.
+**Error**: `UnauthorizedAccess` errors when executing `compile-all.ps1`.
+**Fix**: Migrated entire Agent OS pipeline to Node.js.
+**Metadata**: Replaced `compile-all.ps1` with Node-based `compile.js` and `validate-okf.js`.
+
+**# CORRECT**
+Use Node scripts specified in `package.json` for OS-agnostic execution: `npm run compile`.
+
+**# WRONG**
+Relying on PowerShell scripts (`.ps1`) for core pipeline orchestration.
+
+**Prevention Rule**: All system orchestration scripts must be written in Node.js and executed via `npm run <script>` to guarantee cross-platform and environment compatibility.
+
+## [ERR-2026-06-24T19:31:20.977Z]
+**Step Failed**: A: OKF Validator
+**Command**: `node scripts/validate-okf.js`
+**Error Trace**:
+```
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\wiki\test-error.md: Missing frontmatter properties: type, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Accessibility_Testing.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Account_Metrics_Collection.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Agent_Operating_Manuals.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\AI_Application_Playbooks.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\App_Routing_Pages.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Bot_Protection_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Brand_Asset_Generator.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Budget_Summary_Generator.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Cache_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Minutes_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Analysis_Utilities.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Date_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Hit_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Contract_Validation.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Display_Formatting.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Reconciliation.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Selection_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\canonicalizeRoute().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CI-CD_Workflows.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Citation_and_Library_Mapping.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Claim_Verification_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Codex_Deployment_Script.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cold_Start_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Commercial_Service_Pages.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_100.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_101.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_102.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_103.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_104.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_105.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_106.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_107.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_108.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_109.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_110.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_111.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_112.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_113.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_114.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_115.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_116.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_117.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_118.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_119.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_120.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_121.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_122.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_123.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_124.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_125.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_126.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_127.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_128.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_129.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_130.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_131.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_132.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_133.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_134.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_135.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_136.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_137.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_138.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_139.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_140.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_141.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_142.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_143.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_144.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_145.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_146.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_147.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_148.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_149.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_150.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_151.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_152.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_153.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_154.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_155.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_156.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_157.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_158.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_159.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_160.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_161.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_162.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_163.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_164.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_165.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_166.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_167.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_168.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_169.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_170.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_171.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_172.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_173.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_174.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_175.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_176.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_177.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_178.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_179.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_180.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_181.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_182.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_183.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_184.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_185.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_186.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_187.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_188.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_189.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_190.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_191.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_192.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_193.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_194.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_195.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_196.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_197.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_198.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_199.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_200.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_201.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_202.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_203.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_204.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_205.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_206.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_207.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_208.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_209.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_210.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_211.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_212.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_213.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_214.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_215.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_216.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_217.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_218.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_219.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_220.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_221.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_222.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_223.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_224.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_225.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_226.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_227.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_228.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_229.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_230.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_231.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_232.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Concurrency_Control_Utilities.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Core_Type_Definitions.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cost_Coverage_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CWV_Performance_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Database_Connection_Management.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Design_System_Guidelines.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Development_Dependencies.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Directive_Rewriting_Utilities.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Display_Label_Formatting.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Build_Script.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Freshness_Check.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Schema.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Domain_Taxonomy_Bridges.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Edge_Runtime_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Estimate_Calculator_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\External_API_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\extractClaims().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Fluid_Compute_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Deployment_Script.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Support_Classification.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Frontend_Data_Models.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Function_Duration_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Graphify_Reference_Guides.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Image_Optimization_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Label_Synthesis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Sanitization_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\index.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Interactive_UI_Components.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Investigation_Briefing.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Database_Handler.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Generation_Forms.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Webhook_Integration.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\lineOf().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\main().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Marketing_Landing_Components.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Market_Page_Components.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Metric_Query_Normalization.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Middleware_Scanners.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\NPM_Script_Commands.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Observation_Safety_Checks.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\OData_Query_Utilities.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Package_Metadata.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageMeta().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageTransition().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Header_Scanners.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Metadata_Components.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Painting_Service_Components.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Postgres_Indexing_Best-Practices.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Pre-release_Feature_Flags.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Briefing_Files.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Dependencies.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Documentation_Context.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Fact_Reporting.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Provider_Rate_Limiting.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Rate_Limiting_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Architecture_Patterns.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Native_Optimization.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Recommendation_Deduplication.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText()_2.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Remotion_Video_Assets.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\renderReport().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Report_Formatting_Utilities.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Repository_Standards.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Error_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Extraction_Utilities.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Normalization.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Scanner_Grouping_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SEO_and_Landing_Pages.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Signal_Merging_Logic.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sitemap_Generation.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Slow_Route_Analysis.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SQL_Query_Optimization.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Asset_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Site_Prerendering.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sub-Agent_Output_Parser.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Supabase_Documentation.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Support_Topic_Matching.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Suspense_Deduplication_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\TypeScript_Configuration.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Undeclared_Dependency_Scanner.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Usage_Spike_Triage.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Deployment_Config.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Hard_Gates.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Service_Integration.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\verifyClaim().md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\View_Transition_Patterns.md: Missing frontmatter properties: type, title, timestamp
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Workspace_Resolver.md: Missing frontmatter properties: type, title, timestamp
+```
+
+---
+
+## [ERR-20260624-001] agent-os.js template literal syntax error
+
+**Logged**: 2026-06-24T19:58:00Z
+**Priority**: high
+**Status**: resolved
+**Area**: scripts
+
+### Summary [ERR-20260624-001]
+
+Running `node scripts/agent-os.js status` failed due to a syntax error in the template literal on line 3147. Unnecessary backslash escapes (`\`` and `\${`) were present, which caused Node.js to fail compilation with "SyntaxError: Invalid or unexpected token".
+
+### Error [ERR-20260624-001]
+
+```text
+file:///C:/Users/Johnny%20Cage/DEV/skysthelimit-collab/scripts/agent-os.js:3147
+    const logStr = \`## [ERR-\${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}]\n\n**Error:** \${err.message}\n**Task:** \${task.id}\n\`;
+                   ^
+
+SyntaxError: Invalid or unexpected token
+```
+
+### Context [ERR-20260624-001]
+
+- Command/operation attempted: Running `node scripts/agent-os.js status`
+- Input or parameters used: None
+- Environment details: Windows dev environment, Node.js v22.11.0
+
+### Suggested Fix [ERR-20260624-001]
+
+Remove the backslash escapes from the template literal enclosing backticks and variable interpolation syntax, so Node.js can parse and evaluate it as a standard template literal.
+
+### Code Examples [ERR-20260624-001]
+
+```javascript
+# CORRECT
+const logStr = `## [ERR-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}]\n\n**Error:** ${err.message}\n**Task:** ${task.id}\n`;
+
+# WRONG
+const logStr = \`## [ERR-\${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}]\n\n**Error:** \${err.message}\n**Task:** \${task.id}\n\`;
+```
+
+### Prevention Rule
+
+Never escape the outer backticks or interpolation syntax (`${}`) in a standard Javascript/TypeScript template literal unless it is nested inside another template literal and intended to be parsed literally.
+
+### Metadata [ERR-20260624-001]
+
+- Reproducible: Yes
+- Related Files: scripts/agent-os.js
+- See Also: None
+
+### Resolution [ERR-20260624-001]
+
+- **Resolved**: 2026-06-24T19:59:00Z
+- **Commit/PR**: Internal fix
+- **Notes**: Corrected line 3147 in `scripts/agent-os.js` to use a valid template literal without backslash escapes.
+
+## [ERR-2026-06-29T01:46:01.690Z]
+**Step Failed**: A: OKF Validator
+**Command**: `node scripts/validate-okf.js`
+**Error Trace**:
+```
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\AI_Application_Playbooks.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\AI_Application_Playbooks.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\AI_Application_Playbooks.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\App_Routing_Pages.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\App_Routing_Pages.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\App_Routing_Pages.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Bot_Protection_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Bot_Protection_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Bot_Protection_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Brand_Asset_Generator.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Brand_Asset_Generator.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Brand_Asset_Generator.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Budget_Summary_Generator.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Budget_Summary_Generator.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Budget_Summary_Generator.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Cache_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Cache_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Cache_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Minutes_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Minutes_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Build_Minutes_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Analysis_Utilities.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Analysis_Utilities.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Analysis_Utilities.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Date_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Date_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Date_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Hit_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Hit_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cache_Hit_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Contract_Validation.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Contract_Validation.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Contract_Validation.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Display_Formatting.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Display_Formatting.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Display_Formatting.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Reconciliation.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Reconciliation.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Reconciliation.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Selection_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Selection_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Candidate_Selection_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\canonicalizeRoute().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\canonicalizeRoute().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\canonicalizeRoute().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CI-CD_Workflows.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CI-CD_Workflows.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CI-CD_Workflows.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Citation_and_Library_Mapping.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Citation_and_Library_Mapping.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Citation_and_Library_Mapping.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Claim_Verification_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Claim_Verification_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Claim_Verification_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Codex_Deployment_Script.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Codex_Deployment_Script.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Codex_Deployment_Script.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cold_Start_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cold_Start_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cold_Start_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Commercial_Service_Pages.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Commercial_Service_Pages.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Commercial_Service_Pages.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_100.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_100.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_100.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_101.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_101.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_101.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_102.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_102.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_102.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_103.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_103.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_103.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_104.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_104.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_104.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_105.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_105.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_105.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_106.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_106.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_106.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_107.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_107.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_107.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_108.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_108.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_108.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_109.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_109.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_109.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_110.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_110.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_110.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_111.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_111.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_111.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_112.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_112.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_112.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_113.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_113.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_113.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_114.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_114.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_114.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_115.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_115.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_115.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_116.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_116.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_116.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_117.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_117.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_117.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_118.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_118.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_118.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_119.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_119.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_119.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_120.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_120.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_120.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_121.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_121.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_121.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_122.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_122.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_122.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_123.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_123.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_123.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_124.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_124.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_124.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_125.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_125.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_125.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_126.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_126.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_126.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_127.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_127.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_127.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_128.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_128.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_128.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_129.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_129.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_129.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_130.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_130.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_130.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_131.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_131.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_131.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_132.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_132.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_132.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_133.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_133.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_133.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_134.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_134.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_134.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_135.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_135.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_135.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_136.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_136.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_136.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_137.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_137.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_137.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_138.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_138.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_138.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_139.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_139.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_139.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_140.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_140.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_140.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_141.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_141.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_141.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_142.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_142.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_142.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_143.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_143.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_143.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_144.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_144.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_144.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_145.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_145.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_145.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_146.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_146.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_146.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_147.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_147.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_147.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_148.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_148.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_148.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_149.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_149.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_149.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_150.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_150.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_150.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_151.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_151.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_151.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_152.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_152.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_152.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_153.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_153.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_153.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_154.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_154.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_154.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_155.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_155.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_155.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_156.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_156.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_156.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_157.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_157.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_157.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_158.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_158.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_158.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_159.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_159.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_159.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_160.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_160.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_160.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_161.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_161.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_161.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_162.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_162.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_162.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_163.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_163.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_163.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_164.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_164.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_164.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_165.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_165.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_165.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_166.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_166.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_166.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_167.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_167.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_167.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_168.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_168.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_168.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_169.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_169.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_169.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_170.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_170.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_170.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_171.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_171.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_171.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_172.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_172.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_172.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_173.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_173.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_173.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_174.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_174.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_174.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_175.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_175.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_175.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_176.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_176.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_176.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_177.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_177.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_177.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_178.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_178.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_178.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_179.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_179.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_179.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_180.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_180.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_180.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_181.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_181.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_181.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_182.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_182.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_182.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_183.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_183.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_183.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_184.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_184.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_184.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_185.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_185.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_185.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_186.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_186.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_186.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_187.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_187.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_187.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_188.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_188.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_188.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_189.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_189.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_189.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_190.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_190.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_190.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_191.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_191.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_191.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_192.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_192.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_192.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_193.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_193.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_193.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_194.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_194.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_194.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_195.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_195.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_195.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_196.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_196.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_196.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_197.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_197.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_197.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_198.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_198.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_198.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_199.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_199.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_199.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_200.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_200.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_200.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_201.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_201.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_201.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_202.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_202.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_202.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_203.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_203.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_203.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_204.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_204.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_204.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_205.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_205.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_205.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_206.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_206.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_206.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_207.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_207.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_207.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_208.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_208.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_208.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_209.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_209.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_209.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_210.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_210.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_210.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_211.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_211.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_211.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_212.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_212.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_212.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_213.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_213.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_213.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_214.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_214.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_214.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_215.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_215.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_215.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_216.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_216.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_216.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_217.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_217.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_217.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_218.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_218.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_218.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_219.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_219.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_219.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_220.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_220.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_220.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_221.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_221.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_221.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_222.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_222.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_222.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_223.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_223.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_223.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_224.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_224.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_224.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_225.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_225.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_225.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_226.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_226.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_226.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_227.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_227.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_227.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_228.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_228.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_228.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_229.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_229.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_229.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_230.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_230.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_230.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_231.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_231.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_231.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_232.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_232.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Community_232.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Concurrency_Control_Utilities.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Concurrency_Control_Utilities.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Concurrency_Control_Utilities.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Core_Type_Definitions.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Core_Type_Definitions.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Core_Type_Definitions.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cost_Coverage_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cost_Coverage_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Cost_Coverage_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CWV_Performance_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CWV_Performance_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\CWV_Performance_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Database_Connection_Management.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Database_Connection_Management.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Database_Connection_Management.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Design_System_Guidelines.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Design_System_Guidelines.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Design_System_Guidelines.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Development_Dependencies.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Development_Dependencies.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Development_Dependencies.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Directive_Rewriting_Utilities.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Directive_Rewriting_Utilities.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Directive_Rewriting_Utilities.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Display_Label_Formatting.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Display_Label_Formatting.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Display_Label_Formatting.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Build_Script.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Build_Script.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Build_Script.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Freshness_Check.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Freshness_Check.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Freshness_Check.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Schema.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Schema.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Documentation_Schema.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Domain_Taxonomy_Bridges.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Domain_Taxonomy_Bridges.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Domain_Taxonomy_Bridges.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Edge_Runtime_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Edge_Runtime_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Edge_Runtime_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Estimate_Calculator_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Estimate_Calculator_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Estimate_Calculator_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\External_API_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\External_API_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\External_API_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\extractClaims().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\extractClaims().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\extractClaims().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Fluid_Compute_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Fluid_Compute_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Fluid_Compute_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Deployment_Script.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Deployment_Script.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Deployment_Script.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Support_Classification.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Support_Classification.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Framework_Support_Classification.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Frontend_Data_Models.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Frontend_Data_Models.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Frontend_Data_Models.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Function_Duration_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Function_Duration_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Function_Duration_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Graphify_Reference_Guides.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Graphify_Reference_Guides.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Graphify_Reference_Guides.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Image_Optimization_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Image_Optimization_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Image_Optimization_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Label_Synthesis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Label_Synthesis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Label_Synthesis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Sanitization_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Sanitization_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Impact_Sanitization_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\index.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\index.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\index.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Interactive_UI_Components.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Interactive_UI_Components.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Interactive_UI_Components.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Investigation_Briefing.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Investigation_Briefing.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Investigation_Briefing.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Database_Handler.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Database_Handler.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Database_Handler.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Generation_Forms.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Generation_Forms.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Generation_Forms.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Webhook_Integration.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Webhook_Integration.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Lead_Webhook_Integration.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\lineOf().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\lineOf().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\lineOf().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\main().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\main().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\main().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Marketing_Landing_Components.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Marketing_Landing_Components.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Marketing_Landing_Components.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Market_Page_Components.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Market_Page_Components.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Market_Page_Components.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Metric_Query_Normalization.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Metric_Query_Normalization.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Metric_Query_Normalization.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Middleware_Scanners.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Middleware_Scanners.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Middleware_Scanners.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\NPM_Script_Commands.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\NPM_Script_Commands.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\NPM_Script_Commands.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Observation_Safety_Checks.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Observation_Safety_Checks.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Observation_Safety_Checks.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\OData_Query_Utilities.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\OData_Query_Utilities.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\OData_Query_Utilities.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Package_Metadata.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Package_Metadata.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Package_Metadata.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageMeta().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageMeta().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageMeta().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageTransition().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageTransition().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\PageTransition().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Header_Scanners.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Header_Scanners.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Header_Scanners.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Metadata_Components.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Metadata_Components.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Page_Metadata_Components.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Painting_Service_Components.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Painting_Service_Components.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Painting_Service_Components.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Postgres_Indexing_Best-Practices.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Postgres_Indexing_Best-Practices.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Postgres_Indexing_Best-Practices.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Pre-release_Feature_Flags.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Pre-release_Feature_Flags.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Pre-release_Feature_Flags.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Briefing_Files.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Briefing_Files.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Briefing_Files.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Dependencies.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Dependencies.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Dependencies.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Documentation_Context.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Documentation_Context.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Documentation_Context.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Fact_Reporting.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Fact_Reporting.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Project_Fact_Reporting.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Provider_Rate_Limiting.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Provider_Rate_Limiting.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Provider_Rate_Limiting.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Rate_Limiting_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Rate_Limiting_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Rate_Limiting_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Architecture_Patterns.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Architecture_Patterns.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Architecture_Patterns.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Native_Optimization.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Native_Optimization.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\React_Native_Optimization.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Recommendation_Deduplication.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Recommendation_Deduplication.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Recommendation_Deduplication.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText()_2.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText()_2.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\recText()_2.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Remotion_Video_Assets.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Remotion_Video_Assets.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Remotion_Video_Assets.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\renderReport().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\renderReport().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\renderReport().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Report_Formatting_Utilities.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Report_Formatting_Utilities.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Report_Formatting_Utilities.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Repository_Standards.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Repository_Standards.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Repository_Standards.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Error_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Error_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Error_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Extraction_Utilities.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Extraction_Utilities.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Extraction_Utilities.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Normalization.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Normalization.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Route_Normalization.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Scanner_Grouping_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Scanner_Grouping_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Scanner_Grouping_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SEO_and_Landing_Pages.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SEO_and_Landing_Pages.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SEO_and_Landing_Pages.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Signal_Merging_Logic.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Signal_Merging_Logic.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Signal_Merging_Logic.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sitemap_Generation.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sitemap_Generation.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sitemap_Generation.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Slow_Route_Analysis.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Slow_Route_Analysis.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Slow_Route_Analysis.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SQL_Query_Optimization.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SQL_Query_Optimization.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\SQL_Query_Optimization.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Asset_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Asset_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Asset_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Site_Prerendering.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Site_Prerendering.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Static_Site_Prerendering.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sub-Agent_Output_Parser.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sub-Agent_Output_Parser.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Sub-Agent_Output_Parser.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Supabase_Documentation.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Supabase_Documentation.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Supabase_Documentation.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Support_Topic_Matching.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Support_Topic_Matching.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Support_Topic_Matching.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Suspense_Deduplication_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Suspense_Deduplication_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Suspense_Deduplication_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\TypeScript_Configuration.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\TypeScript_Configuration.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\TypeScript_Configuration.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Undeclared_Dependency_Scanner.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Undeclared_Dependency_Scanner.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Undeclared_Dependency_Scanner.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Usage_Spike_Triage.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Usage_Spike_Triage.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Usage_Spike_Triage.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Deployment_Config.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Deployment_Config.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Deployment_Config.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Hard_Gates.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Hard_Gates.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Hard_Gates.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Service_Integration.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Service_Integration.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Vercel_Service_Integration.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\verifyClaim().md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\verifyClaim().md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\verifyClaim().md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\View_Transition_Patterns.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\View_Transition_Patterns.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\View_Transition_Patterns.md: Synthesis section is under 30 words (Found 5 words)
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Workspace_Resolver.md: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Workspace_Resolver.md: Contains vague 'Source: AST Graphify Extraction' without a specific file path
+Error in C:\Users\Johnny Cage\DEV\skysthelimit-collab\.agents\wiki\Workspace_Resolver.md: Synthesis section is under 30 words (Found 5 words)
 
 
+```

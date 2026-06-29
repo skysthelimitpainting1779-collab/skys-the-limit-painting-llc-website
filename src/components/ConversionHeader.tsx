@@ -16,14 +16,14 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
         href={to} 
         data-track="nav_click"
         data-track-payload={JSON.stringify({ path: to, label: String(children) })}
-        className={`relative whitespace-nowrap text-xs font-bold uppercase tracking-widest transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
+        className={`relative whitespace-nowrap text-sm font-bold transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
       >
         {children}
       </Link>
       {isActive && (
         <motion.span
           layoutId="nav-indicator"
-          className="absolute -bottom-1 left-0 w-full h-0.5 bg-orange-safety"
+          className="absolute -bottom-1 left-0 w-full h-0.5 bg-white"
           transition={{ type: 'spring', stiffness: 380, damping: 30 }}
         />
       )}
@@ -81,9 +81,9 @@ export default function ConversionHeader() {
         
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[10px] md:text-[11px] uppercase tracking-widest text-white/70 font-bold">
-            <span className="truncate">Prep-first painting across the Twin Cities</span>
-            <span className="hidden sm:inline truncate">Price range, scope review, and schedule conversation in one path.</span>
+          <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[12px] md:text-sm text-white/70 font-bold">
+            <span className="truncate">(651) 410-4196 • info@skysthelimitpaintingllc.com</span>
+            <span className="hidden sm:inline truncate">Prep-first painting across the Twin Cities</span>
           </div>
         </div>
 
@@ -94,9 +94,9 @@ export default function ConversionHeader() {
               <div className="grid h-14 w-14 place-items-center overflow-hidden border border-white/12 bg-white p-1.5">
                 <img src="/brand/SkyLLP_BrandLogo.svg" alt="Sky's the Limit Painting LLC" className="h-full w-full object-contain" />
               </div>
-              <span className="font-display hidden text-xl font-black leading-none tracking-normal text-white sm:block">
+              <span className="font-display hidden text-xl font-black leading-none text-white sm:block">
                 SKY'S THE LIMIT
-                <span className="mt-1 block text-[10px] uppercase tracking-[0.28em] text-[#f0c067]">Painting LLC</span>
+                <span className="mt-1 block text-sm text-gray-400">Painting LLC</span>
               </span>
             </Link>
 
@@ -117,7 +117,7 @@ export default function ConversionHeader() {
               >
                 <button 
                   onClick={() => setDropdownOpen(prev => !prev)}
-                  className={`relative whitespace-nowrap text-xs font-bold uppercase tracking-widest transition-colors duration-200 flex items-center gap-1 cursor-pointer focus:outline-none hover:text-white ${dropdownOpen ? 'text-white' : 'text-gray-400'}`}
+                  className={`relative whitespace-nowrap text-sm font-bold transition-colors duration-200 flex items-center gap-1 cursor-pointer focus:outline-none hover:text-white ${dropdownOpen ? 'text-white' : 'text-gray-400'}`}
                   aria-haspopup="true"
                   aria-expanded={dropdownOpen}
                 >
@@ -134,7 +134,7 @@ export default function ConversionHeader() {
                       href="/service-area" 
                       data-track="nav_click"
                       data-track-payload={JSON.stringify({ path: '/service-area', label: 'Areas' })}
-                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      className="block px-4 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                       onClick={() => setDropdownOpen(false)}
                     >
                       Areas
@@ -143,7 +143,7 @@ export default function ConversionHeader() {
                       href="/refer" 
                       data-track="nav_click"
                       data-track-payload={JSON.stringify({ path: '/refer', label: 'Referral' })}
-                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      className="block px-4 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                       onClick={() => setDropdownOpen(false)}
                     >
                       Referral
@@ -152,7 +152,7 @@ export default function ConversionHeader() {
                       href="/about" 
                       data-track="nav_click"
                       data-track-payload={JSON.stringify({ path: '/about', label: 'About' })}
-                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      className="block px-4 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                       onClick={() => setDropdownOpen(false)}
                     >
                       About
@@ -170,7 +170,7 @@ export default function ConversionHeader() {
                 href="/estimate"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Price Range"}'
-                className="hidden items-center justify-center gap-2 border border-[#d8c7aa]/24 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] 2xl:inline-flex"
+                className="hidden items-center justify-center gap-2 border border-[#d8c7aa]/24 bg-white/5 px-4 py-3 text-sm font-black text-white transition-colors hover:border-white hover:text-white 2xl:inline-flex"
               >
                 <Calculator size={15} />
                 Price Range
@@ -179,13 +179,13 @@ export default function ConversionHeader() {
                 href="/contact"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Get Estimate"}'
-                className="whitespace-nowrap border border-orange-safety bg-orange-safety px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#050505] transition-colors hover:bg-white hover:border-white"
+                className="whitespace-nowrap border border-white bg-white px-4 py-3 text-sm font-black text-[#050505] transition-colors hover:bg-transparent hover:text-white"
               >
                 Get Estimate
               </Link>
               <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="group flex flex-col items-end gap-0">
-                <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-colors">Call / Text</span>
-                <span className="whitespace-nowrap text-xl font-black tracking-normal leading-none text-orange-safety transition-colors group-hover:text-white xl:text-2xl 2xl:text-3xl">651-410-4196</span>
+                <span className="text-sm font-bold text-white transition-colors">Call / Text</span>
+                <span className="whitespace-nowrap text-xl font-black leading-none text-white transition-colors hover:text-gray-300 xl:text-2xl 2xl:text-3xl">651-410-4196</span>
               </a>
             </div>
 
@@ -224,10 +224,10 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black uppercase tracking-wide text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067]">
+              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black text-white transition-colors hover:border-white hover:text-white">
                 Get A Price Range
               </Link>
-              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-orange-safety text-[#050505] px-6 py-4 rounded-none font-black text-lg uppercase tracking-wide">
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-white text-[#050505] px-6 py-4 rounded-none font-black text-lg">
                 Call / Text 651-410-4196
               </a>
             </div>

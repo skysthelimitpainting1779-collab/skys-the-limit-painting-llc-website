@@ -21,9 +21,9 @@ const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
 const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
 const contactMethods = ['Call', 'Text', 'Email'];
 
-const labelClass = 'block text-xs font-black uppercase tracking-[0.2em] text-[#f0c067] mb-2';
-const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-[#f0c067] focus-visible:ring-2 focus-visible:ring-[#f0c067]/20 text-base rounded-none';
-const selectButtonClass = 'border p-3.5 text-center text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer rounded-none';
+const labelClass = 'block text-xs font-black  ] text-white mb-2';
+const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-white focus-visible:ring-2 focus-visible:ring-[white]/20 text-base rounded-none';
+const selectButtonClass = 'border p-3.5 text-center text-xs font-black   transition-all duration-200 cursor-pointer rounded-none';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
   const [status, setStatus] = useState<Status>('idle');
@@ -67,17 +67,37 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
         if (!Array.isArray(leads) || leads.length === 0) return;
 
         console.log(`[Offline Sync] Syncing ${leads.length} pending leads...`);
+        const remaining: typeof leads = [];
         for (const lead of leads) {
-          await fetch('/api/leads', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(lead),
-          });
+          try {
+            const res = await fetch('/api/leads', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(lead),
+            });
+            if (!res.ok) {
+              console.warn(`[Offline Sync] Lead delivery returned ${res.status}, will retry later`);
+              remaining.push(lead);
+            }
+          } catch (fetchErr) {
+            console.warn('[Offline Sync] Network error syncing lead, will retry later:', fetchErr);
+            remaining.push(lead);
+          }
         }
-        localStorage.removeItem('pending_leads');
-        trackEvent('lead_offline_sync_success', { count: leads.length });
+        if (remaining.length > 0) {
+          localStorage.setItem('pending_leads', JSON.stringify(remaining));
+          trackEvent('lead_offline_sync_partial', { synced: leads.length - remaining.length, remaining: remaining.length });
+        } else {
+          localStorage.removeItem('pending_leads');
+          trackEvent('lead_offline_sync_success', { count: leads.length });
+        }
       } catch (err) {
         console.error('Failed to sync offline leads:', err);
+        // Preserve corrupted lead data under a backup key so it can be
+        // recovered manually, then remove the broken entry to stop
+        // repeated parse errors on every page load.
+        localStorage.setItem('pending_leads_backup', pending);
+        localStorage.removeItem('pending_leads');
       }
     };
 
@@ -367,8 +387,8 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
   if (status === 'sent') {
     return (
-      <div className="border border-[#f0c067]/30 bg-[#0B0B0D]/50 p-8 text-center space-y-6 rounded-none">
-        <h4 className="text-2xl font-black uppercase tracking-wider text-[#f0c067]">Inquiry Dispatched</h4>
+      <div className="border border-white/30 bg-[#0B0B0D]/50 p-8 text-center space-y-6 rounded-none">
+        <h4 className="text-2xl font-black text-white">Inquiry Dispatched</h4>
         <p className="text-sm leading-relaxed text-gray-300 max-w-md mx-auto">{message}</p>
         <div className="pt-2">
           <button
@@ -393,7 +413,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                 website: '',
               });
             }}
-            className="bg-[#f0c067] px-6 py-3 text-xs font-black uppercase tracking-wider text-[#050505] hover:bg-white transition-colors rounded-none cursor-pointer"
+            className="bg-white px-6 py-3 text-xs font-black text-[#050505] hover:bg-white transition-colors rounded-none cursor-pointer"
           >
             Submit Another Request
           </button>
@@ -431,13 +451,13 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       {/* Modern Progress Line */}
       <div>
         <div className="flex justify-between items-center mb-2">
-          <span className="text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067]">
+          <span className="text-xs font-semibold text-white">
             Step {currentStep + 1} of 3 // {stepTitles[currentStep]}
           </span>
           <span className="text-xs font-bold text-gray-400">{progressPercent}%</span>
         </div>
         <div className="h-1 bg-white/10 w-full rounded-none">
-          <div className="h-full bg-[#f0c067] transition-all duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
+          <div className="h-full bg-white transition-all duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
         </div>
       </div>
 
@@ -467,7 +487,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                         onClick={() => updateField('market', option as any)}
                         className={`${selectButtonClass} ${
                           formData.market === option
-                            ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
+                            ? 'border-white bg-white/10 text-white'
                             : 'border-white/10 bg-white/5 text-white hover:border-white/30'
                         }`}
                       >
@@ -493,7 +513,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                         onClick={() => updateField('propertyType', option)}
                         className={`${selectButtonClass} ${
                           formData.propertyType === option
-                            ? 'border-[#f0c067] bg-[#f0c067]/10 text-[#f0c067]'
+                            ? 'border-white bg-white/10 text-white'
                             : 'border-white/10 bg-white/5 text-white hover:border-white/30'
                         }`}
                       >
@@ -589,7 +609,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
                 <div className="space-y-2">
                   <span className={labelClass}>Photo Documentation (Optional)</span>
-                  <div className="border border-dashed border-white/10 bg-white/5 p-4 text-center hover:border-[#f0c067] transition-colors relative cursor-pointer group rounded-none">
+                  <div className="border border-dashed border-white/10 bg-white/5 p-4 text-center hover:border-white transition-colors relative cursor-pointer group rounded-none">
                     <input
                       id="file-uploader"
                       type="file"
@@ -600,15 +620,15 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center justify-center space-y-1">
-                      <Upload size={24} className="text-gray-400 group-hover:text-[#f0c067] transition-colors" />
-                      <p className="text-xs font-bold text-white uppercase tracking-wider">Drag photos here or tap to select</p>
-                      <p className="text-[10px] text-gray-400">Max size 10MB per image</p>
+                      <Upload size={24} className="text-gray-400 group-hover:text-white transition-colors" />
+                      <p className="text-xs font-bold text-white">Drag photos here or tap to select</p>
+                      <p className="text-xs text-gray-400">Max size 10MB per image</p>
                     </div>
                   </div>
 
                   {uploading && (
-                    <div className="flex items-center justify-center gap-2 p-2 bg-[#f0c067]/10 border border-[#f0c067]/20 text-[10px] font-bold text-[#f0c067] uppercase tracking-wider">
-                      <div className="animate-spin h-3 w-3 border-2 border-[#f0c067] border-t-transparent rounded-full" />
+                    <div className="flex items-center justify-center gap-2 p-2 bg-white/10 border border-white/20 text-xs font-bold text-white">
+                      <div className="animate-spin h-3 w-3 border-2 border-white border-t-transparent rounded-full" />
                       {uploadProgress}
                     </div>
                   )}
@@ -631,7 +651,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                   )}
 
                   <div className="pt-2">
-                    <label htmlFor="photos-input" className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-1.5">
+                    <label htmlFor="photos-input" className="block text-xs font-semibold text-[#c9c1b4] mb-1.5">
                       Or paste a cloud link (Google Drive, Dropbox, etc.)
                     </label>
                     <input
@@ -722,7 +742,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
                 <div className="space-y-2">
                   <div className="flex justify-between items-baseline">
                     <label htmlFor="address-input" className={labelClass}>Project address or cross streets</label>
-                    <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Optional</span>
+                    <span className="text-xs text-gray-400 font-bold">Optional</span>
                   </div>
                   <input
                     id="address-input"
@@ -744,7 +764,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
       {/* Validation Feedback */}
       {validationError && (
-        <p className="text-xs font-bold text-[#f0c067] border-l-2 border-[#f0c067] pl-3" role="alert">
+        <p className="text-xs font-bold text-white border-l-2 border-white pl-3" role="alert">
           {validationError}
         </p>
       )}
@@ -755,7 +775,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           <button
             type="button"
             onClick={handleBack}
-            className="flex items-center justify-center border border-white/10 hover:border-white/30 bg-white/5 px-5 py-4 text-sm font-black uppercase tracking-wider text-white transition-colors cursor-pointer rounded-none"
+            className="flex items-center justify-center border border-white/10 hover:border-white/30 bg-white/5 px-5 py-4 text-sm font-black text-white transition-colors cursor-pointer rounded-none"
           >
             <ArrowLeft size={16} className="mr-2" /> Back
           </button>
@@ -765,7 +785,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           <button
             type="button"
             onClick={handleNext}
-            className="flex-1 inline-flex items-center justify-center bg-[#f0c067] hover:bg-white text-[#050505] px-5 py-4 text-sm font-black uppercase tracking-[0.16em] transition-colors cursor-pointer rounded-none"
+            className="flex-1 inline-flex items-center justify-center bg-white hover:bg-white text-[#050505] px-5 py-4 text-sm font-semibold transition-colors cursor-pointer rounded-none"
           >
             Next Section <ArrowRight size={16} className="ml-2" />
           </button>
@@ -773,17 +793,17 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="flex-1 inline-flex items-center justify-center bg-[#f0c067] hover:bg-white text-[#050505] px-6 py-4 text-sm font-black uppercase tracking-[0.2em] transition-colors disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer rounded-none"
+            className="flex-1 inline-flex items-center justify-center bg-white hover:bg-white text-[#050505] px-6 py-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer rounded-none"
           >
-            {status === 'submitting' ? 'Transmitting Scope...' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={18} className="ml-2" />
+            {status === 'submitting' ? 'Sending...' : 'Request My Free Estimate'} <ArrowRight size={18} className="ml-2" />
           </button>
         )}
       </div>
 
       {/* Trust Badge Footer */}
       <p className="flex items-start gap-2 text-xs font-semibold text-gray-400 leading-relaxed" aria-live="polite">
-        <ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#f0c067]" />
-        {message || 'Your inquiry routes securely through the live estimator endpoint with automatic off-line queueing and dual-path mailto redundancy.'}
+        <ShieldCheck size={16} className="mt-0.5 shrink-0 text-white" />
+        {message || 'We respect your time and inbox. You\u2019ll only hear from us regarding your painting project.'}
       </p>
     </form>
   );

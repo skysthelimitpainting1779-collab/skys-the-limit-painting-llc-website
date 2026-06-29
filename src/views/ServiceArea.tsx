@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import ServiceAreaMap from '../components/ServiceAreaMap';
+import JsonLd from '../components/JsonLd';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 export default function ServiceAreaPage() {
@@ -14,18 +15,15 @@ export default function ServiceAreaPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
+      <JsonLd data={schemaJson} />
 
       <main className="animate-premium-fade-in">
         {/* Hero */}
         <section className="bg-black-primary py-24 px-6 border-b border-white/10">
           <div className="max-w-7xl mx-auto text-center">
             <div className="max-w-3xl mx-auto">
-              <span className="inline-block text-orange-safety font-bold tracking-widest text-sm uppercase mb-4">Service Area</span>
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white uppercase tracking-normal leading-none">Twin Cities<br/>Local Coverage.</h1>
+              <span className="inline-block text-white font-bold text-sm mb-4">Service Area</span>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white leading-none">Twin Cities<br/>Local Coverage.</h1>
               <p className="text-xl text-gray-300 max-w-xl mx-auto">
                 Serving Inver Grove Heights & the Twin Cities Metro with dependable painting focused on thorough prep.
               </p>
@@ -36,8 +34,8 @@ export default function ServiceAreaPage() {
         <div className="bg-black-charcoal px-6 py-16 lg:py-20">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-display font-bold mb-6 uppercase tracking-wide">Local & Dependable</h2>
-              <div className="w-12 h-1 bg-orange-safety mb-8"></div>
+              <h2 className="text-4xl font-display font-bold mb-6">Local & Dependable</h2>
+              <div className="w-12 h-1 bg-white mb-8"></div>
               
               <div className="space-y-6 text-lg text-page-text leading-relaxed">
                 <p>
@@ -49,14 +47,14 @@ export default function ServiceAreaPage() {
               </div>
               
               <div className="mt-12">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-orange-safety hover:bg-orange-deep text-[#050505] px-8 py-4 rounded-none font-bold transition-colors uppercase tracking-wide cursor-pointer">
+                <Link href="/contact" className="inline-flex items-center gap-2 bg-white hover:bg-gray-200 text-[#050505] px-8 py-4 rounded-none font-bold transition-colors cursor-pointer">
                   Get an Estimate <ArrowRight size={18} />
                 </Link>
               </div>
             </div>
             
-            <div className="border-l border-[#FF5A00]/35 bg-black-primary p-8 md:p-12">
-              <p className="text-xs font-black uppercase tracking-[0.26em] text-orange-safety">How to use the map</p>
+            <div className="border-l border-white/35 bg-black-primary p-8 md:p-12">
+              <p className="text-xs font-semibold text-white">How to use the map</p>
               <h3 className="mt-4 text-3xl font-black leading-tight text-white">Pick a city, then send the project details.</h3>
               <p className="mt-5 text-base leading-relaxed text-gray-300">
                 The map keeps the service area easy to scan without loading a slow embedded third-party map on every visit.

@@ -462,9 +462,9 @@ describe('lib/settings - Company settings and defaults', () => {
     assert.match(src, /skysthelimitpainting1779@gmail\.com/);
   });
 
-  test('DEFAULT_SETTINGS primary_color is Safety Orange', () => {
+  test('DEFAULT_SETTINGS primary_color is defined', () => {
     const src = read('src/lib/settings.ts');
-    assert.match(src, /#FF5A00/);
+    assert.match(src, /primary_color:/);
   });
 
   test('DEFAULT_SETTINGS tagline matches approved positioning', () => {

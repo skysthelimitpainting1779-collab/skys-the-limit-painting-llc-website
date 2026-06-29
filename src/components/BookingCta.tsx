@@ -30,7 +30,7 @@ export default function BookingCta({ audience = 'homeowner', className = '' }: B
         rel="noreferrer"
         data-track="booking_click"
         data-track-payload={JSON.stringify({ audience })}
-        className={`inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] ${className}`}
+        className={`inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black  ] text-white transition-colors hover:border-white hover:text-white ${className}`}
       >
         <CalendarClock size={18} />
         {label}
@@ -43,7 +43,7 @@ export default function BookingCta({ audience = 'homeowner', className = '' }: B
       href={`tel:${businessPhone}`}
       data-track="booking_click"
       data-track-payload={JSON.stringify({ audience, fallback: 'phone' })}
-      className={`inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:border-[#f0c067] hover:text-[#f0c067] ${className}`}
+      className={`inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-white/5 px-6 py-4 text-sm font-black  ] text-white transition-colors hover:border-white hover:text-white ${className}`}
     >
       <Phone size={18} />
       Call To Schedule

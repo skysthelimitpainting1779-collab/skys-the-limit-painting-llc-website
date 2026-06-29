@@ -49,24 +49,24 @@ export default function ReferPage() {
 
         <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
-            <span className="inline-flex items-center gap-2 border border-[#f0c067]/30 bg-[#070706]/70 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#f0c067] mb-6">
+            <span className="inline-flex items-center gap-2 border border-white/30 bg-[#070706]/70 px-4 py-2 text-xs font-semibold text-white mb-6">
               <Gift size={12} /> Word-of-Mouth Network
             </span>
-            <h1 className="text-5xl md:text-7xl font-display font-black mb-6 uppercase tracking-normal leading-[0.96] text-white">
+            <h1 className="text-5xl md:text-7xl font-display font-black mb-6 leading-[0.96] text-white">
               Share the work.<br />
-              <span className="text-[#f0c067]">Share the reward.</span>
+              <span className="text-white">Share the reward.</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl leading-relaxed">
               We build our business on quality and trust, not aggressive marketing campaigns. When you refer friends, neighbors, or colleagues, we reward both of you. They get $100 off their estimate, and you get $100 cash once the work wraps.
             </p>
           </div>
           <div className="lg:col-span-5 bg-[#11100d]/90 border border-[#d8c7aa]/16 p-6 md:p-8 backdrop-blur-sm">
-            <h2 className="text-2xl font-black uppercase tracking-wide text-white mb-2">Create sharing link</h2>
+            <h2 className="text-2xl font-black text-white mb-2">Create sharing link</h2>
             <p className="text-xs text-gray-400 mb-6">Enter your email below to instantly generate your unique referral tracking link.</p>
 
             <form onSubmit={handleGenerate} className="space-y-4">
               <div>
-                <label htmlFor="referrer-email" className="block text-xs font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-2">
+                <label htmlFor="referrer-email" className="block text-xs font-semibold text-[#c9c1b4] mb-2">
                   Your Email Address
                 </label>
                 <input
@@ -76,13 +76,13 @@ export default function ReferPage() {
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[#f0c067] focus:outline-none placeholder:text-gray-600"
+                  className="w-full border border-white/15 bg-[#070706] p-4 text-sm text-white focus-visible:ring-2 focus-visible:ring-[white] focus:outline-none placeholder:text-gray-600"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#f0c067] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#15110a] hover:bg-white transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 bg-white px-7 py-4 text-sm font-semibold text-[#15110a] hover:bg-white transition-all"
               >
                 Generate Link <ArrowRight size={18} />
               </button>
@@ -91,7 +91,7 @@ export default function ReferPage() {
             {generatedLink && (
               <div className="mt-8 pt-6 border-t border-white/10 space-y-4">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#c9c1b4] mb-2">Your Referral Link</p>
+                  <p className="text-xs font-semibold text-[#c9c1b4] mb-2">Your Referral Link</p>
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -102,27 +102,27 @@ export default function ReferPage() {
                     <button
                       type="button"
                       onClick={handleCopy}
-                      className="bg-[#f0c067] text-[#15110a] px-4 hover:bg-white transition-colors"
+                      className="bg-white text-[#15110a] px-4 hover:bg-white transition-colors"
                       title="Copy link to clipboard"
                     >
                       {copied ? <Check size={18} /> : <Copy size={18} />}
                     </button>
                   </div>
-                  {copied && <p className="text-[10px] text-[#f0c067] mt-1 font-bold uppercase tracking-wider">Copied to clipboard!</p>}
+                  {copied && <p className="text-xs text-white mt-1 font-bold">Copied to clipboard!</p>}
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 pt-2">
                   <a
                     href={smsHref}
                     onClick={() => trackEvent('referral_share_sms', { email })}
-                    className="inline-flex items-center justify-center gap-2 border border-white/10 bg-[#070706] py-3 text-xs font-black uppercase tracking-wider text-white hover:border-[#f0c067] hover:text-[#f0c067] transition-all"
+                    className="inline-flex items-center justify-center gap-2 border border-white/10 bg-[#070706] py-3 text-xs font-black text-white hover:border-white hover:text-white transition-all"
                   >
                     <MessageSquare size={14} /> Send Text
                   </a>
                   <a
                     href={mailHref}
                     onClick={() => trackEvent('referral_share_email', { email })}
-                    className="inline-flex items-center justify-center gap-2 border border-white/10 bg-[#070706] py-3 text-xs font-black uppercase tracking-wider text-white hover:border-[#f0c067] hover:text-[#f0c067] transition-all"
+                    className="inline-flex items-center justify-center gap-2 border border-white/10 bg-[#070706] py-3 text-xs font-black text-white hover:border-white hover:text-white transition-all"
                   >
                     <Mail size={14} /> Send Email
                   </a>
@@ -138,8 +138,8 @@ export default function ReferPage() {
         <div className="measurement-rules absolute inset-0 opacity-12"></div>
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#f0c067]">Simple loop</p>
-            <h2 className="text-3xl md:text-5xl font-display font-black leading-none uppercase mt-4">How it works</h2>
+            <p className="text-xs font-semibold text-white">Simple loop</p>
+            <h2 className="text-3xl md:text-5xl font-display font-black leading-none mt-4">How it works</h2>
             <p className="text-sm text-gray-400 mt-4 leading-relaxed">
               No points, no coupon portals, no complex points structures. Just direct word-of-mouth incentives paid directly to you.
             </p>
@@ -163,15 +163,15 @@ export default function ReferPage() {
                 body: 'Your friend gets $100 off their exterior or interior painting project. Once their contract completes, we mail you a $100 check or send it digitally.',
               },
             ].map((item, idx) => (
-              <div key={idx} className="border-l border-[#f0c067]/35 bg-[#070706]/70 p-8 flex flex-col justify-between min-h-[220px]">
+              <div key={idx} className="border-l border-white/35 bg-[#070706]/70 p-8 flex flex-col justify-between min-h-[220px]">
                 <div className="flex justify-between items-start">
                   <span className="font-display text-4xl font-black text-white/10">{item.step}</span>
-                  <span className="p-2 border border-white/10 bg-white/5 text-[#f0c067]">
+                  <span className="p-2 border border-white/10 bg-white/5 text-white">
                     <Share2 size={16} />
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase text-white mt-6">{item.title}</h3>
+                  <h3 className="text-xl font-black text-white mt-6">{item.title}</h3>
                   <p className="text-sm text-gray-400 mt-3 leading-relaxed">{item.body}</p>
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function ReferPage() {
       {/* Rules & FAQ Section */}
       <section className="bg-[#070706] py-24 px-6 text-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-display font-black uppercase text-white mb-10 text-center">Frequently asked questions</h2>
+          <h2 className="text-3xl font-display font-black text-white mb-10 text-center">Frequently asked questions</h2>
           
           <div className="space-y-8">
             {[
@@ -205,14 +205,14 @@ export default function ReferPage() {
               },
             ].map((faq, idx) => (
               <div key={idx} className="border-b border-white/10 pb-6">
-                <h3 className="text-lg font-black uppercase text-[#f0c067] mb-2">{faq.q}</h3>
+                <h3 className="text-lg font-black text-white mb-2">{faq.q}</h3>
                 <p className="text-sm text-[#e4ded2] leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-16 border border-[#f0c067]/20 bg-[#11100d] p-6 text-center">
-            <h3 className="text-xl font-black uppercase text-white mb-2">MN Contractor Transparency</h3>
+          <div className="mt-16 border border-white/20 bg-[#11100d] p-6 text-center">
+            <h3 className="text-xl font-black text-white mb-2">MN Contractor Transparency</h3>
             <p className="text-xs text-gray-400 max-w-xl mx-auto leading-relaxed">
               Sky’s the Limit Painting LLC is an owner-operated registered MN specialty contractor (Registration ID: IR816596) based in Inver Grove Heights. All referrals are subject to verification. Owner is exempt from standard workers’ comp rules under MN Statute 176.041.
             </p>

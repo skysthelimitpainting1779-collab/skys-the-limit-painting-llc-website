@@ -34,7 +34,7 @@ export const markets: Market[] = [
     number: '01',
     title: 'Residential Painting',
     headline: 'Careful painting for homes that deserve clean prep and a better finish.',
-    summary: 'Clean prep, careful protection, sharp lines, and finishes that respect the home.',
+    summary: 'Whole-home interiors, kitchens, baths, accent walls, cabinet refinishing, trim, ceilings, decks, and fences. One room or the entire house — we bring the same meticulous prep, clean execution, and respect for your living space every time.',
     description:
       'Residential work is where trust matters most. Sky’s the Limit Painting brings owner-led accountability, clean communication, surface prep, careful protection, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
     image: '/images/site/iphone-interior-painting-progress.webp',
@@ -74,7 +74,7 @@ export const markets: Market[] = [
     title: 'Commercial Painting',
     headline: 'Reliable commercial painting for properties where presentation and schedule matter.',
     summary:
-      'Professional painting for businesses, shops, offices, facilities, and properties where presentation and reliability matter.',
+      'Retail stores, offices, multi-family common areas, warehouses, and more. Professional finishes delivered on your timeline with minimal disruption to your customers, employees, or daily operations.',
     description:
       'Commercial projects need more than paint on walls. Registered under NAICS Code 238320 (Painting and Wall Covering Contractors) and UNSPSC Code 72151300, we provide the documentation, safety protocols, and execution that retail, office, and industrial properties require.',
     image: '/images/site/iphone-commercial-door-frame.webp',
@@ -114,7 +114,7 @@ export const markets: Market[] = [
     title: 'Public Sector Opportunities',
     headline: 'Documentation-minded painting, facility, and striping readiness for qualified public opportunities.',
     summary:
-      'Built with a long-term focus on city, county, and state painting opportunities, including facility repainting, pavement marking, striping, light poles, guardrails, and public-space work.',
+      'Schools, municipal buildings, government facilities, and public infrastructure. Fully bonded, insured, and experienced with public procurement standards, documentation, and compliance requirements.',
     description:
       'Sky’s the Limit Painting is building a documented path for public-sector painting, facility, and pavement-marking work across Minnesota. We are registered under NAICS Code 238320 (Painting and Wall Covering) and maintain the safety, insurance, and documentation discipline public-sector conversations require.',
     image: '/images/services/striping/SkyLLP_ParkingLot_Striping.webp',

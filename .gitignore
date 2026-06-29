@@ -8,8 +8,39 @@ coverage/
 !.env.example
 .vercel
 tmp/
-.agents/
 .next/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+graphify-out/
+/components/
+/lib/
+/wiki/
+*.cjs
 
+# Ignore Agent OS operational state, but track configuration/knowledge files
+.agents/*
+!.agents/rules.md
+!.agents/decisions.md
+!.agents/knowledge.md
+!.agents/governance/
+!.agents/operations/
+!.agents/playbooks/
+!.agents/skills/
+# Ignore specific databases, traces, caches, and staging inside .agents
+.agents/hub_db.json
+.agents/coordination.db
+.agents/coordination.db-journal
+.agents/dashboard.html
+.agents/checkpoints/
+.agents/dead-letter/
+.agents/effects/
+.agents/evals/
+.agents/evidence/
+.agents/queues/
+.agents/traces/
+.agents/waits/
+.agents/staging/
+
+# Ignore transient Agent OS plan and task mirrors
+plan.md
+task.md
