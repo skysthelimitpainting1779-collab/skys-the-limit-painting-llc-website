@@ -12,7 +12,7 @@
     "postbuild": "node scripts/generate-sitemap.js",
     "preview": "next start",
     "clean": "node -e \"import('node:fs').then(({ rmSync }) => { rmSync('dist', { recursive: true, force: true }); rmSync('.next', { recursive: true, force: true }); })\"",
-    "lint": "tsc --noEmit",
+    "lint": "node scripts/enforce-git.js && tsc --noEmit",
     "lint:md": "markdownlint \"wiki/**/*.md\" \".agents/**/*.md\"",
     "compile": "node scripts/compile.js",
     "ci": "node scripts/ci_check.js",

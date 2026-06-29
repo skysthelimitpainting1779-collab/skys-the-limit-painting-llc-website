@@ -58,13 +58,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const branch   = '${{ github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
             const { execSync } = require('child_process');
             const fs = require('fs');
             const path = require('path');
 
             const runId    = '${{ github.run_id }}';
             const runUrl   = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
-            const branch   = '${{ github.ref_name }}';
             const sha      = '${{ github.sha }}';
             const job      = 'lint';
             const ts       = new Date().toISOString();
@@ -163,13 +168,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const branch = '${{ github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
             const { execSync } = require('child_process');
             const fs = require('fs');
             const path = require('path');
 
             const runId  = '${{ github.run_id }}';
             const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
-            const branch = '${{ github.ref_name }}';
             const sha    = '${{ github.sha }}';
             const ts     = new Date().toISOString();
 
@@ -277,13 +287,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const branch = '${{ github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
             const { execSync } = require('child_process');
             const fs = require('fs');
             const path = require('path');
 
             const runId  = '${{ github.run_id }}';
             const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
-            const branch = '${{ github.ref_name }}';
             const sha    = '${{ github.sha }}';
             const ts     = new Date().toISOString();
 
@@ -444,13 +459,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const branch = '${{ github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
             const { execSync } = require('child_process');
             const fs = require('fs');
             const path = require('path');
 
             const runId  = '${{ github.run_id }}';
             const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
-            const branch = '${{ github.ref_name }}';
             const sha    = '${{ github.sha }}';
             const ts     = new Date().toISOString();
 
@@ -562,13 +582,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const branch = '${{ github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
             const { execSync } = require('child_process');
             const fs = require('fs');
             const path = require('path');
 
             const runId  = '${{ github.run_id }}';
             const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
-            const branch = '${{ github.ref_name }}';
             const sha    = '${{ github.sha }}';
             const ts     = new Date().toISOString();
 

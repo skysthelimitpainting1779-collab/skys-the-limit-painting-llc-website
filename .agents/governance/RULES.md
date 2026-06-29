@@ -26,3 +26,7 @@
   9. **Log** the repair in `.learnings/ERRORS.md` under `## [ERR-YYYYMMDD-NNN]` with: Summary, original error, fix applied, prevention rule.
   10. **Resume** the previously suspended queue tasks.
 - **Non-negotiable**: You may NOT fake a fix, skip local verification, or mark the incident resolved without a green CI run. If the fix requires human input (e.g., a revoked API token), escalate immediately by writing a `.agents/approvals/ESCALATE-[RUN_ID].md` file and notifying the operator.
+
+### Auto-Generated Rule based on failure at 2026-06-29T01:46:02.135Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
