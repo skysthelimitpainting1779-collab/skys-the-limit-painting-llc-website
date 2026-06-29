@@ -280,6 +280,7 @@ jobs:
             .next/
             !.next/cache
           retention-days: 1
+          include-hidden-files: true
 
       - name: "⚠ Boomerang — Commit CI Incident on Build Failure"
         if: failure()
