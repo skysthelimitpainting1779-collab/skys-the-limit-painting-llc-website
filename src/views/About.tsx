@@ -125,7 +125,7 @@ export default function AboutPage() {
         <section className="bg-[#080807] border-b border-white/10 px-6 py-24">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-7">
-              <p className="mb-6 text-sm font-semibold text-zinc-500">Why prep-first matters</p>
+              <p className="mb-6 text-sm font-semibold text-zinc-400">Why prep-first matters</p>
               <h2 className="text-4xl font-display font-black text-white mb-8 leading-tight md:text-5xl">
                 Paint is only as good as what&apos;s underneath it.
               </h2>
@@ -151,7 +151,7 @@ export default function AboutPage() {
         {/* Our Approach / Process */}
         <section className="bg-[#050505] border-b border-white/10 px-6 py-24">
           <div className="max-w-7xl mx-auto">
-            <p className="mb-6 text-sm font-semibold text-zinc-500">Our approach to every project</p>
+            <p className="mb-6 text-sm font-semibold text-zinc-400">Our approach to every project</p>
             <h2 className="text-4xl font-display font-black text-white mb-4 leading-tight md:text-5xl">
               The same clear process on every job, scaled to the scope.
             </h2>
@@ -179,7 +179,7 @@ export default function AboutPage() {
         <section className="bg-[#080807] border-b border-white/10 px-6 py-24">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-7">
-              <p className="mb-6 text-sm font-semibold text-zinc-500">Service area</p>
+              <p className="mb-6 text-sm font-semibold text-zinc-400">Service area</p>
               <h2 className="text-4xl font-display font-black text-white mb-8 leading-tight md:text-5xl">
                 Serving the Twin Cities
               </h2>
@@ -213,7 +213,7 @@ export default function AboutPage() {
                     info@skysthelimitpaintingllc.com
                   </a>
                 </div>
-                <p className="mt-6 text-sm text-zinc-500 leading-relaxed">
+                <p className="mt-6 text-sm text-zinc-400 leading-relaxed">
                   We start every relationship the same way: with a clear scope walkthrough and a transparent conversation about what the work will actually involve.
                 </p>
                 <div className="mt-8">
