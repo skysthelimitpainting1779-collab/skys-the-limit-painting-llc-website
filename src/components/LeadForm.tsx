@@ -795,7 +795,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
             disabled={status === 'submitting'}
             className="flex-1 inline-flex items-center justify-center bg-white hover:bg-white text-[#050505] px-6 py-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer rounded-none"
           >
-            {status === 'submitting' ? 'Transmitting Scope...' : 'LOCK IN YOUR ESTIMATE RANGE'} <ArrowRight size={18} className="ml-2" />
+            {status === 'submitting' ? 'Sending...' : 'Request My Free Estimate'} <ArrowRight size={18} className="ml-2" />
           </button>
         )}
       </div>
@@ -803,7 +803,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       {/* Trust Badge Footer */}
       <p className="flex items-start gap-2 text-xs font-semibold text-gray-400 leading-relaxed" aria-live="polite">
         <ShieldCheck size={16} className="mt-0.5 shrink-0 text-white" />
-        {message || 'Your inquiry routes securely through the live estimator endpoint with automatic off-line queueing and dual-path mailto redundancy.'}
+        {message || 'We respect your time and inbox. You\u2019ll only hear from us regarding your painting project.'}
       </p>
     </form>
   );
