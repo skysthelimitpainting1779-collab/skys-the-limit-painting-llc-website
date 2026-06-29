@@ -12,6 +12,7 @@ export default function ResponsiveImage({
   alt,
   width,
   height,
+  priority = false,
   loading = 'lazy',
   fetchPriority = 'auto',
   ...props
@@ -23,9 +24,10 @@ export default function ResponsiveImage({
       alt={alt}
       width={width}
       height={height}
-      loading={loading}
+      priority={priority}
+      loading={priority ? undefined : loading}
       decoding="async"
-      fetchPriority={fetchPriority}
+      fetchPriority={priority ? undefined : fetchPriority}
     />
   );
 }
