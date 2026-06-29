@@ -18,7 +18,7 @@ try {
   }
   
   const protectedBranches = ['main', 'staging'];
-  const allowedPrefixes = ['feat/', 'fix/', 'chore/', 'docs/', 'infra/', 'devin/', 'agent/'];
+  const allowedPrefixes = ['feat/', 'fix/', 'chore/', 'docs/', 'infra/', 'devin/', 'agent/', 'dependabot/'];
   
   if (protectedBranches.includes(branchName)) {
     console.log(`\x1b[33m[WARNING] You are working directly on a protected branch: "${branchName}".\x1b[0m`);
