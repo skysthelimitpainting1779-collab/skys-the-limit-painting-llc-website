@@ -66,7 +66,8 @@ export const businessSchema = {
     ENV.INSTAGRAM_URL,
     ENV.LINKEDIN_URL,
     ENV.TIKTOK_URL,
-  ],
+    ENV.GOOGLE_BUSINESS_URL,
+  ].filter(Boolean),
   knowsAbout: [
     'Residential painting',
     'Commercial painting',
