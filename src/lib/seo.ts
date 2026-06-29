@@ -61,6 +61,12 @@ export const businessSchema = {
       name: 'Minneapolis',
     },
   ],
+  sameAs: [
+    ENV.FACEBOOK_URL,
+    ENV.INSTAGRAM_URL,
+    ENV.LINKEDIN_URL,
+    ENV.TIKTOK_URL,
+  ],
   knowsAbout: [
     'Residential painting',
     'Commercial painting',

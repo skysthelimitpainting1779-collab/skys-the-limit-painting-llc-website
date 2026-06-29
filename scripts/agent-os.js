@@ -153,7 +153,9 @@ function createInitialDb() {
       { id: "POL-002", type: "emoji", rule: "No emojis in source code or React components." },
       { id: "POL-003", type: "radius", rule: "All border-radius properties must be set to 0px or rounded-none globally." },
       { id: "POL-004", type: "side_effects", rule: "External side effects require an idempotency key, recorded effect state, and approval when sensitive." },
-      { id: "POL-005", type: "rollback", rule: "The harness may quarantine and recommend recovery, but it must not automatically revert user files." }
+      { id: "POL-005", type: "rollback", rule: "The harness may quarantine and recommend recovery, but it must not automatically revert user files." },
+      { id: "POL-006", type: "proactive-health", rule: "Proactively audit and heal at session start (Node version consistency to 24.x, stale CI-INCIDENT cleanup, .gitignore for generated .agents/skills/*/lib/). Append POL entries after each healing task." },
+      { id: "POL-007", type: "automated-prs", rule: "Dependabot & Automated PR Policy: Detect Dependabot PRs automatically. For lockfile conflicts, recommend `@dependabot rebase` or close + wait. For workflow changes, advise manual Web UI merge due to OAuth scope. Never force-merge failing PRs; treat this as self-healing maintenance." }
     ],
     queues: structuredClone(DEFAULT_QUEUES)
   };
