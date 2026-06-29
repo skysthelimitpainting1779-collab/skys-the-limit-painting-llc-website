@@ -1,5 +1,7 @@
 import { ShieldCheck, FileText, CheckCircle2, Building, Landmark, Award } from 'lucide-react';
 import ResponsiveImage from '../components/ResponsiveImage';
+import JsonLd from '../components/JsonLd';
+import HeroOverlays from '../components/HeroOverlays';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 export default function CapabilitiesPage() {
@@ -13,25 +15,19 @@ export default function CapabilitiesPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
+      <JsonLd data={schemaJson} />
       
       <main className="animate-premium-fade-in">
         {/* Hero Header */}
         <section className="relative bg-[#050505] py-20 px-6 text-white overflow-hidden">
-          <ResponsiveImage
-            src="/images/services/striping/SkyLLP_ParkingLot_Striping.webp"
-            alt="Procurement and commercial parking lot striping"
-            width={1600}
-            height={900}
-            className="absolute inset-0 h-full w-full object-cover opacity-20 pointer-events-none"
+          <HeroOverlays
+            imageSrc="/images/services/striping/SkyLLP_ParkingLot_Striping.webp"
+            imageAlt="Procurement and commercial parking lot striping"
+            gradients={[
+              'bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent',
+              'bg-gradient-to-t from-[#050505] via-transparent to-transparent',
+            ]}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
-          <div className="blueprint-grid absolute inset-0 opacity-12"></div>
-          <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-70"></div>
           
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="max-w-3xl">

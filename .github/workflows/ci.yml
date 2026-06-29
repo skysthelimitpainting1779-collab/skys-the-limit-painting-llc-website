@@ -2,130 +2,645 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, staging]
   pull_request:
-    branches: [main, develop]
+    branches: [main, staging]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 env:
-  SITE_URL: https://www.skysthelimitpaintingllc.com
+  NODE_VERSION: "24.x"
+  SITE_URL: https://skysthelimitpaintingllc.com
   VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
+  LEAD_TO_EMAIL: skysthelimitpainting1779@gmail.com
+  LEAD_FROM_EMAIL: "Sky Leads <onboarding@resend.dev>"
 
 jobs:
-  validate:
-    name: Lint, Test & Build
+  lint:
+    name: "① Lint (TypeScript)"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v7.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v6.4.0
         with:
-          node-version: 22.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
+      - name: Restore node_modules cache
+        id: cache-nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nm-
+
       - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Type check & Lint
+      - name: Run TypeScript type check
         run: npm run lint
 
-      - name: Bootstrap agent OS artifacts
-        run: node scripts/agent-os.js bootstrap
+      - name: "⚠ Boomerang — Commit CI Incident on Lint Failure"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch   = '${{ github.head_ref || github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
 
-      - name: Run unit & integration tests
-        run: npm test
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+            const path = require('path');
+
+            const runId    = '${{ github.run_id }}';
+            const runUrl   = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
+            const sha      = '${{ github.sha }}';
+            const job      = 'lint';
+            const ts       = new Date().toISOString();
+
+            const dir  = '.learnings';
+            const file = path.join(dir, `CI-INCIDENT-${runId}.md`);
+
+            let sysInfo = '';
+            try { sysInfo = execSync('node --version && npm --version').toString().trim(); } catch {}
+
+            const content = [
+              `---`,
+              `type: ci-incident`,
+              `title: "CI Lint Failure — Run ${runId}"`,
+              `tags: [ci, lint, boomerang, autonomous-repair]`,
+              `last_sync: ${ts}`,
+              `---`,
+              ``,
+              `# CI Incident: Lint Failure`,
+              ``,
+              `## Metadata`,
+              `| Field | Value |`,
+              `|---|---|`,
+              `| Run ID | \`${runId}\` |`,
+              `| Run URL | [View Run](${runUrl}) |`,
+              `| Branch | \`${branch}\` |`,
+              `| Commit | \`${sha}\` |`,
+              `| Job | \`${job}\` |`,
+              `| Timestamp | ${ts} |`,
+              ``,
+              `## Error Summary`,
+              `The **Lint** job failed during \`npm run lint\` (TypeScript type check).`,
+              `Check the [full run log](${runUrl}) for the exact tsc error output.`,
+              ``,
+              `## System Info`,
+              `\`\`\``,
+              sysInfo,
+              `\`\`\``,
+              ``,
+              `## Agent Repair Instructions`,
+              `1. Pull this branch locally.`,
+              `2. Run \`npm run lint\` to reproduce the error.`,
+              `3. Fix all TypeScript type errors.`,
+              `4. Run \`npm test\` to verify no regressions.`,
+              `5. Stage, commit with \`fix: autonomous CI repair for run ${runId}\`.`,
+              `6. Push to \`${branch}\`.`,
+              `7. Delete this file from \`.learnings/\` upon successful local verification.`,
+              ``,
+              `*Generated automatically by the Self-Healing Boomerang pipeline.*`,
+            ].join('\n');
+
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(file, content, 'utf8');
+
+            execSync('git config user.name "github-actions[bot]"');
+            execSync('git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+            execSync(`git add ${file}`);
+            execSync(`git commit -m "ci: boomerang incident report for run ${runId} [lint]"`);
+            execSync(`git push origin HEAD:${branch}`);
+
+            core.notice(`Incident report committed to .learnings/CI-INCIDENT-${runId}.md on branch ${branch}`);
+
+  test:
+    name: "② Test (Node test runner)"
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Restore node_modules cache
+        id: cache-nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nm-
+
+      - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run test suite
+        run: node scripts/agent-os.js bootstrap && npm test
+
+      - name: "⚠ Boomerang — Commit CI Incident on Test Failure"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ github.head_ref || github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+            const path = require('path');
+
+            const runId  = '${{ github.run_id }}';
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
+            const sha    = '${{ github.sha }}';
+            const ts     = new Date().toISOString();
+
+            const dir  = '.learnings';
+            const file = path.join(dir, `CI-INCIDENT-${runId}.md`);
+
+            const content = [
+              `---`,
+              `type: ci-incident`,
+              `title: "CI Test Failure — Run ${runId}"`,
+              `tags: [ci, test, boomerang, autonomous-repair]`,
+              `last_sync: ${ts}`,
+              `---`,
+              ``,
+              `# CI Incident: Test Suite Failure`,
+              ``,
+              `## Metadata`,
+              `| Field | Value |`,
+              `|---|---|`,
+              `| Run ID | \`${runId}\` |`,
+              `| Run URL | [View Run](${runUrl}) |`,
+              `| Branch | \`${branch}\` |`,
+              `| Commit | \`${sha}\` |`,
+              `| Job | \`test\` |`,
+              `| Timestamp | ${ts} |`,
+              ``,
+              `## Error Summary`,
+              `The **Test** job failed during \`npm test\` (Node built-in test runner).`,
+              `Check the [full run log](${runUrl}) for failing assertion output.`,
+              ``,
+              `## Agent Repair Instructions`,
+              `1. Pull this branch locally.`,
+              `2. Run \`npm test\` to reproduce the failures.`,
+              `3. Fix the failing test(s) or the code causing the regression.`,
+              `4. Verify \`npm run lint\` still passes.`,
+              `5. Commit with \`fix: autonomous CI repair for run ${runId}\`.`,
+              `6. Push to \`${branch}\`.`,
+              `7. Delete this file from \`.learnings/\` upon successful local verification.`,
+              ``,
+              `*Generated automatically by the Self-Healing Boomerang pipeline.*`,
+            ].join('\n');
+
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(file, content, 'utf8');
+
+            execSync('git config user.name "github-actions[bot]"');
+            execSync('git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+            execSync(`git add ${file}`);
+            execSync(`git commit -m "ci: boomerang incident report for run ${runId} [test]"`);
+            execSync(`git push origin HEAD:${branch}`);
+
+            core.notice(`Incident report committed to .learnings/CI-INCIDENT-${runId}.md`);
+
+  build:
+    name: "③ Build (Next.js)"
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Restore node_modules cache
+        id: cache-nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nm-
+
+      - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Restore Next.js build cache
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx', 'src/**/*.js', 'src/**/*.jsx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+            ${{ runner.os }}-nextjs-
 
       - name: Build Next.js app
         run: npm run build
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextjs-build-${{ github.sha }}
+          path: |
+            .next/
+            !.next/cache
+          retention-days: 1
+
+      - name: "⚠ Boomerang — Commit CI Incident on Build Failure"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ github.head_ref || github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+            const path = require('path');
+
+            const runId  = '${{ github.run_id }}';
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
+            const sha    = '${{ github.sha }}';
+            const ts     = new Date().toISOString();
+
+            const dir  = '.learnings';
+            const file = path.join(dir, `CI-INCIDENT-${runId}.md`);
+
+            const content = [
+              `---`,
+              `type: ci-incident`,
+              `title: "CI Build Failure — Run ${runId}"`,
+              `tags: [ci, build, nextjs, boomerang, autonomous-repair]`,
+              `last_sync: ${ts}`,
+              `---`,
+              ``,
+              `# CI Incident: Next.js Build Failure`,
+              ``,
+              `## Metadata`,
+              `| Field | Value |`,
+              `|---|---|`,
+              `| Run ID | \`${runId}\` |`,
+              `| Run URL | [View Run](${runUrl}) |`,
+              `| Branch | \`${branch}\` |`,
+              `| Commit | \`${sha}\` |`,
+              `| Job | \`build\` |`,
+              `| Timestamp | ${ts} |`,
+              ``,
+              `## Error Summary`,
+              `The **Build** job failed during \`npm run build\` (Next.js compilation).`,
+              `Check the [full run log](${runUrl}) for the webpack/swc/tsc error.`,
+              ``,
+              `## Common Causes`,
+              `- Missing or mismatched environment variables`,
+              `- Import path errors or missing modules`,
+              `- Next.js Server Component / Client Component boundary violations`,
+              `- PostCSS / Tailwind config issues`,
+              ``,
+              `## Agent Repair Instructions`,
+              `1. Pull this branch locally.`,
+              `2. Run \`npm run build\` to reproduce the error.`,
+              `3. Fix the build error following the stack trace in the run log above.`,
+              `4. Confirm \`npm run lint\` and \`npm test\` still pass.`,
+              `5. Commit with \`fix: autonomous CI repair for run ${runId}\`.`,
+              `6. Push to \`${branch}\`.`,
+              `7. Delete this file from \`.learnings/\` upon successful local verification.`,
+              ``,
+              `*Generated automatically by the Self-Healing Boomerang pipeline.*`,
+            ].join('\n');
+
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(file, content, 'utf8');
+
+            execSync('git config user.name "github-actions[bot]"');
+            execSync('git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+            execSync(`git add ${file}`);
+            execSync(`git commit -m "ci: boomerang incident report for run ${runId} [build]"`);
+            execSync(`git push origin HEAD:${branch}`);
+
+            core.notice(`Incident report committed to .learnings/CI-INCIDENT-${runId}.md`);
+
   deploy-preview:
-    name: Deploy Staging/Preview
-    needs: validate
-    if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' }}
+    name: "④ Deploy Preview (Vercel)"
     runs-on: ubuntu-latest
+    needs: build
+    if: >
+      github.event_name == 'pull_request' ||
+      github.ref == 'refs/heads/staging'
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v7.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@v6.4.0
         with:
-          node-version: 22.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npm ci
-
-      - name: Restore Next.js build cache
-        if: ${{ env.VERCEL_TOKEN != '' }}
+      - name: Restore node_modules cache
+        id: cache-nm
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-nm-
 
-      - name: Pull Vercel Environment Information
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npx vercel pull --yes --environment=preview
+      - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true' && env.VERCEL_TOKEN != ''
+        run: npm ci
 
-      - name: Build Prebuilt Vercel Deployment Artifacts
-        if: ${{ env.VERCEL_TOKEN != '' }}
-        run: npx vercel build
+      - name: Download pre-built artifact
+        if: env.VERCEL_TOKEN != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: nextjs-build-${{ github.sha }}
+          path: .next/
 
-      - name: Deploy prebuilt artifact to Vercel
-        if: ${{ env.VERCEL_TOKEN != '' }}
+      - name: Pull Vercel environment (preview)
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Vercel deployment package
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel preview
+        if: env.VERCEL_TOKEN != ''
         id: deploy
         run: |
-          DEPLOY_URL=$(npx vercel deploy --prebuilt)
+          DEPLOY_URL=$(npx vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
 
-      - name: Comment Preview URL on PR
-        if: ${{ github.event_name == 'pull_request' && env.VERCEL_TOKEN != '' }}
+      - name: Comment preview URL on PR
+        if: github.event_name == 'pull_request' && env.VERCEL_TOKEN != ''
         uses: actions/github-script@v7
         with:
           script: |
-            const prNumber = context.payload.pull_request.number;
+            const prNumber  = context.payload.pull_request.number;
             const deployUrl = '${{ steps.deploy.outputs.url }}';
-            const body = `🚀 **Vercel Preview Deployment is ready!**\n\n🔗 [Visit Preview Site](${deployUrl})\n\n*(Built and validated on GitHub Actions)*`;
-            
+            const sha       = '${{ github.sha }}'.slice(0, 7);
+            const body = [
+              `## 🚀 Vercel Preview Deployment`,
+              ``,
+              `**URL:** [${deployUrl}](${deployUrl})`,
+              `**Commit:** \`${sha}\``,
+              `**Status:** ✅ All checks passed (Lint → Test → Build → Deploy)`,
+              ``,
+              `> Deployed via the Self-Healing Boomerang CI/CD pipeline.`,
+            ].join('\n');
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: prNumber
+              issue_number: prNumber,
             });
-            
-            const existingComment = comments.find(c => c.body.includes('Vercel Preview Deployment is ready!'));
-            
-            if (existingComment) {
+
+            const existing = comments.find(c => c.body.includes('Vercel Preview Deployment'));
+            if (existing) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                comment_id: existingComment.id,
-                body: body
+                comment_id: existing.id,
+                body,
               });
             } else {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: body
+                body,
               });
             }
+
+      - name: "⚠ Boomerang — Commit CI Incident on Deploy Failure"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ github.head_ref || github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+            const path = require('path');
+
+            const runId  = '${{ github.run_id }}';
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
+            const sha    = '${{ github.sha }}';
+            const ts     = new Date().toISOString();
+
+            const dir  = '.learnings';
+            const file = path.join(dir, `CI-INCIDENT-${runId}.md`);
+
+            const content = [
+              `---`,
+              `type: ci-incident`,
+              `title: "CI Deploy Failure — Run ${runId}"`,
+              `tags: [ci, deploy, vercel, boomerang, autonomous-repair]`,
+              `last_sync: ${ts}`,
+              `---`,
+              ``,
+              `# CI Incident: Vercel Deploy Failure`,
+              ``,
+              `## Metadata`,
+              `| Field | Value |`,
+              `|---|---|`,
+              `| Run ID | \`${runId}\` |`,
+              `| Run URL | [View Run](${runUrl}) |`,
+              `| Branch | \`${branch}\` |`,
+              `| Commit | \`${sha}\` |`,
+              `| Job | \`deploy-preview\` |`,
+              `| Timestamp | ${ts} |`,
+              ``,
+              `## Error Summary`,
+              `The **Deploy** job failed during Vercel deployment.`,
+              `This is likely a Vercel token, environment variable, or serverless function issue.`,
+              `Check the [full run log](${runUrl}) for the Vercel CLI error output.`,
+              ``,
+              `## Common Causes`,
+              `- Expired or revoked \`VERCEL_TOKEN\` secret`,
+              `- Missing required environment variables in Vercel project settings`,
+              `- Serverless function size limit exceeded`,
+              `- Vercel API rate limiting`,
+              ``,
+              `## Agent Repair Instructions`,
+              `1. Check the run log for the exact Vercel CLI error.`,
+              `2. If token-related: regenerate \`VERCEL_TOKEN\` in Vercel dashboard and update GitHub secret.`,
+              `3. If env-var related: ensure all required vars are set in Vercel project settings.`,
+              `4. Re-trigger the workflow after fixing.`,
+              `5. Delete this file from \`.learnings/\` upon successful deployment.`,
+              ``,
+              `*Generated automatically by the Self-Healing Boomerang pipeline.*`,
+            ].join('\n');
+
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(file, content, 'utf8');
+
+            execSync('git config user.name "github-actions[bot]"');
+            execSync('git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+            execSync(`git add ${file}`);
+            execSync(`git commit -m "ci: boomerang incident report for run ${runId} [deploy]"`);
+            execSync(`git push origin HEAD:${branch}`);
+
+  deploy-production:
+    name: "⑤ Deploy Production (Vercel)"
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Restore node_modules cache
+        id: cache-nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nm-
+
+      - name: Install dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true' && env.VERCEL_TOKEN != ''
+        run: npm ci
+
+      - name: Download pre-built artifact
+        if: env.VERCEL_TOKEN != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: nextjs-build-${{ github.sha }}
+          path: .next/
+
+      - name: Pull Vercel environment (production)
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Vercel production package
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel production
+        if: env.VERCEL_TOKEN != ''
+        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: "⚠ Boomerang — Commit CI Incident on Production Deploy Failure"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ github.head_ref || github.ref_name }}';
+            if (branch === 'main' || branch === 'staging') {
+              console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
+              return;
+            }
+
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+            const path = require('path');
+
+            const runId  = '${{ github.run_id }}';
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
+            const sha    = '${{ github.sha }}';
+            const ts     = new Date().toISOString();
+
+            const dir  = '.learnings';
+            const file = path.join(dir, `CI-INCIDENT-${runId}.md`);
+
+            const content = [
+              `---`,
+              `type: ci-incident`,
+              `title: "CRITICAL: Production Deploy Failure — Run ${runId}"`,
+              `tags: [ci, deploy, production, vercel, boomerang, autonomous-repair, critical]`,
+              `last_sync: ${ts}`,
+              `---`,
+              ``,
+              `# CRITICAL CI Incident: Production Deploy Failure`,
+              ``,
+              `> ⚠️ **SEVERITY: HIGH** — This is a production deployment failure.`,
+              ``,
+              `## Metadata`,
+              `| Field | Value |`,
+              `|---|---|`,
+              `| Run ID | \`${runId}\` |`,
+              `| Run URL | [View Run](${runUrl}) |`,
+              `| Branch | \`${branch}\` (production) |`,
+              `| Commit | \`${sha}\` |`,
+              `| Job | \`deploy-production\` |`,
+              `| Timestamp | ${ts} |`,
+              ``,
+              `## Error Summary`,
+              `The **Production Deploy** job failed. The current production site is NOT updated.`,
+              `Check the [full run log](${runUrl}) for the Vercel CLI error.`,
+              ``,
+              `## Agent Repair Instructions`,
+              `1. **DO NOT PUSH MORE COMMITS TO MAIN** until this is diagnosed.`,
+              `2. Check the Vercel dashboard for deployment status.`,
+              `3. Fix the root cause identified in the run log.`,
+              `4. Use \`workflow_dispatch\` to re-trigger deploy after confirming fix on staging.`,
+              `5. Delete this file from \`.learnings/\` upon successful production deployment.`,
+              ``,
+              `*Generated automatically by the Self-Healing Boomerang pipeline.*`,
+            ].join('\n');
+
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(file, content, 'utf8');
+
+            execSync('git config user.name "github-actions[bot]"');
+            execSync('git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+            execSync(`git add ${file}`);
+            execSync(`git commit -m "ci: boomerang CRITICAL incident report for run ${runId} [production-deploy]"`);
+            execSync(`git push origin HEAD:${branch}`);

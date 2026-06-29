@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { createClient } from '../lib/supabase/server';
+import JsonLd from '../components/JsonLd';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
 const ProcessTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -164,10 +165,7 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
+      <JsonLd data={schemaJson} />
 
       <main className="animate-premium-fade-in">
         {/* Hero */}
