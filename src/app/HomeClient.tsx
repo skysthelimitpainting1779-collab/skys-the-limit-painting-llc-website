@@ -31,6 +31,7 @@ import SpecInspector from '../components/SpecInspector';
 import IconFeatureCard from '../components/IconFeatureCard';
 import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
 import { trackEvent } from '../lib/analytics';
+import { faqSchema } from '../lib/seo';
 
 const corePositioningLine = 'No shortcuts. No mess. No surprise costs.';
 
@@ -81,6 +82,29 @@ const coverageItems = [
   ['COI available for qualified opportunities', 'COI available for qualified commercial/public-sector opportunities'],
 ];
 
+const faqItems = [
+  {
+    question: 'How do you price a painting project?',
+    answer:
+      'Every estimate starts with the surfaces, access, prep needs, photos, and timeline so the scope is clear before any work begins. You get a real conversation first, then a written estimate.',
+  },
+  {
+    question: 'What kinds of jobs do you handle?',
+    answer:
+      'Residential repaints, commercial interiors and exteriors, and public-sector facility work. The same prep-first standard applies whether it is a bedroom, storefront, or parking lot.',
+  },
+  {
+    question: 'Do you provide insurance and COI documentation?',
+    answer:
+      'Yes. Sky’s the Limit Painting is fully insured, owner-operated, and can provide a COI for qualified commercial and public-sector opportunities.',
+  },
+  {
+    question: 'What makes your estimates different?',
+    answer:
+      'You are talking directly with Anthony, not a sales team. That keeps the scope tight, the price honest, and the next steps simple from the first call to the final walkthrough.',
+  },
+];
+
 const marketMedia: Record<MarketSlug, { image: string; label: string; accent: string }> = {
   residential: {
     image: '/images/site/iphone-interior-painting-progress.webp',
@@ -100,6 +124,7 @@ const marketMedia: Record<MarketSlug, { image: string; label: string; accent: st
 };
 
 const MotionLink = motion(Link);
+const faqJson = faqSchema(faqItems);
 
 const marketContainerVariants = {
   hidden: {},
@@ -590,6 +615,45 @@ export default function HomeClient() {
         <MarqueeTicker items={marqueeItems.map(item => item.text)} speed="normal" />
       </div>
 
+      <section id="faq" className="relative overflow-hidden border-t border-white/10 bg-[#060606] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-start">
+          <FadeIn className="lg:sticky lg:top-36 lg:col-span-4">
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Questions before you book</p>
+            <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
+              Quick answers for faster decisions.
+            </h2>
+            <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-[#c9c1b4]">
+              Most people want to know what is included, how the estimate works, and whether the job is a fit. These are the questions we hear most often.
+            </p>
+            <div className="mt-8">
+              <Link
+                href="/estimate"
+                onClick={() => trackEvent('faq_cta_click', { source: 'homepage_faq' })}
+                className="inline-flex items-center gap-2 border border-white/20 bg-white px-6 py-3 text-sm font-black text-[#15110a] transition-colors hover:bg-zinc-100"
+              >
+                Start an estimate request
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </FadeIn>
+
+          <div className="grid gap-6 lg:col-span-8 md:grid-cols-2">
+            {faqItems.map((item) => (
+              <FadeIn key={item.question}>
+                <Card className="h-full border border-white/10 bg-[#0b0b0b] p-8 text-white">
+                  <CardHeader className="p-0">
+                    <CardTitle className="text-2xl font-black leading-tight text-white">{item.question}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 pt-4">
+                    <p className="max-w-[65ch] text-base leading-relaxed text-zinc-400">{item.answer}</p>
+                  </CardContent>
+                </Card>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-white/10 bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden bg-[#0B0B0D] lg:grid-cols-12">
           <div className="relative min-h-[480px] lg:col-span-5">
@@ -612,6 +676,11 @@ export default function HomeClient() {
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJson) }}
+      />
 
       <SpecInspector />
     </>
