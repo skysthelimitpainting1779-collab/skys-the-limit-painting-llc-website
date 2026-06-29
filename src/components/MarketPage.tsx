@@ -69,7 +69,7 @@ export default function MarketPage({ slug }: MarketPageProps) {
           <FadeIn delay={0.15} direction="left" className="w-full overflow-hidden lg:col-span-5">
             <div className="grid w-full overflow-hidden border border-white/15 bg-[#11100d]/90 backdrop-blur">
               <div className="relative min-h-[240px]">
-                <ResponsiveImage src={market.image} alt={`${market.title} work example`} width={1600} height={900} loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover opacity-86" />
+                <ResponsiveImage src={market.image} alt={`${market.title} work example`} width={1600} height={900} sizes="(min-width: 1024px) 39vw, 100vw" loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover opacity-86" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-transparent"></div>
                 <span className="absolute left-5 top-5 border border-white/15 bg-[#080807]/75 px-3 py-2 text-xs font-semibold text-white backdrop-blur">
                   {market.accent}
@@ -96,7 +96,7 @@ export default function MarketPage({ slug }: MarketPageProps) {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch">
           <FadeIn className="lg:col-span-5">
             <div className="relative h-full min-h-[420px] overflow-hidden border border-white/10">
-              <ResponsiveImage src={market.heroImage} alt={`${market.title} project showcase`} width={1600} height={1200} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <ResponsiveImage src={market.heroImage} alt={`${market.title} project showcase`} width={1600} height={1200} sizes="(min-width: 1024px) 39vw, 100vw" className="absolute inset-0 h-full w-full object-cover opacity-90" />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.78),rgba(8,8,7,0.08))]"></div>
               <div className="absolute bottom-0 left-0 right-0 p-7">
                 <p className="text-xs font-semibold text-white">Proven standards</p>

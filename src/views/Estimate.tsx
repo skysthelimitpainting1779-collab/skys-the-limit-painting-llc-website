@@ -4,6 +4,7 @@ import { useState, FormEvent, useEffect } from 'react';
 import { Calculator, ArrowRight, CheckCircle2, ShieldCheck, HelpCircle, Layers, Sliders, Settings } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import RangeSlider from '../components/RangeSlider';
+import ResponsiveImage from '../components/ResponsiveImage';
 import TestimonialCard from '../components/TestimonialCard';
 import { trackEvent } from '../lib/analytics';
 import { buildEstimateMailto } from '../lib/contact';
@@ -275,9 +276,12 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
   return (
     <PageTransition>
       <section className="relative min-h-[calc(100svh-116px)] overflow-hidden bg-[#050505] py-16 px-4 text-white sm:px-6 lg:px-8">
-        <img
+        <ResponsiveImage
           src="/images/site/iphone-interior-painting-progress.webp"
           alt="Interior painting progress"
+          width={1200}
+          height={900}
+          sizes="100vw"
           className="absolute inset-0 h-full w-full object-cover opacity-10"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/94 to-[#050505]"></div>

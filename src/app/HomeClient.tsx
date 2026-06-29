@@ -263,6 +263,7 @@ export default function HomeClient() {
           alt="Exterior painting project with protected windows, clean drop cloths, and a painter working on trim"
           width={1600}
           height={900}
+          sizes="100vw"
           loading="eager"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
@@ -358,7 +359,7 @@ export default function HomeClient() {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-5">
             <div className="relative min-h-[500px] overflow-hidden">
-              <ResponsiveImage src="/images/site/marketing-hero-exterior-painting.webp" alt="Polished exterior painting project proof" width={1600} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <ResponsiveImage src="/images/site/marketing-hero-exterior-painting.webp" alt="Polished exterior painting project proof" width={1600} height={900} sizes="(min-width: 1280px) 41vw, 100vw" className="absolute inset-0 h-full w-full object-cover opacity-90" />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.86),rgba(8,8,7,0.1))]"></div>
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <h2 className="mt-5 text-4xl font-black leading-tight">Premium finishes built on absolute preparation.</h2>
@@ -383,7 +384,7 @@ export default function HomeClient() {
                 return (
                   <div key={title as string} className="flex flex-col border-t border-zinc-800 pt-8">
                     <div className="relative aspect-[4/3] w-full mb-6 overflow-hidden">
-                      <ResponsiveImage src={body as string} alt={`${title as string} project photo`} width={1200} height={900} className="absolute inset-0 h-full w-full object-cover" />
+                      <ResponsiveImage src={body as string} alt={`${title as string} project photo`} width={1200} height={900} sizes="(min-width: 768px) 33vw, 100vw" className="absolute inset-0 h-full w-full object-cover" />
                     </div>
                     <div>
                       <ProofIcon className="mb-5 text-white" size={24} strokeWidth={1.5} />
@@ -657,7 +658,7 @@ export default function HomeClient() {
       <section className="border-t border-white/10 bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden bg-[#0B0B0D] lg:grid-cols-12">
           <div className="relative min-h-[480px] lg:col-span-5">
-            <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+            <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} sizes="(min-width: 1024px) 42vw, 100vw" className="absolute inset-0 h-full w-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.72),rgba(5,5,5,0.05))]"></div>
           </div>
           <div className="p-12 lg:col-span-7 lg:p-16 bg-[#0B0B0D]">

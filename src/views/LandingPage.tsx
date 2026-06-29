@@ -72,6 +72,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
           alt={`${page.title} visual proof`}
           width={1920}
           height={1080}
+          sizes="100vw"
           loading="eager"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover opacity-48"
@@ -183,6 +184,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
                       alt=""
                       width={900}
                       height={700}
+                      sizes="(min-width: 768px) 33vw, 100vw"
                       className="absolute inset-0 h-full w-full object-cover opacity-75"
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.75),rgba(8,8,7,0.12))]"></div>
@@ -233,7 +235,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
       <section className="bg-[#e6dfd2] px-4 py-24 text-[#171512] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden border border-[#171512]/15 bg-[#f5f0e7] lg:grid-cols-12">
           <div className="relative min-h-[420px] lg:col-span-5">
-            <ResponsiveImage src={page.image} alt="" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+            <ResponsiveImage src={page.image} alt="" width={1200} height={900} sizes="(min-width: 1024px) 42vw, 100vw" className="absolute inset-0 h-full w-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,21,18,0.78),rgba(23,21,18,0.05))]"></div>
           </div>
           <div className="p-7 md:p-10 lg:col-span-7 lg:p-12">

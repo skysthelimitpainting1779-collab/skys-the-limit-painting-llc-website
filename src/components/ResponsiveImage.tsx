@@ -1,13 +1,12 @@
-import type { ImgHTMLAttributes } from 'react';
+import Image, { type ImageProps } from 'next/image';
 
-type ResponsiveImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'decoding'> & {
-  width: number;
-  height: number;
-  loading?: 'eager' | 'lazy';
-  fetchPriority?: 'high' | 'low' | 'auto';
+type ResponsiveImageProps = Omit<ImageProps, 'alt' | 'src' | 'decoding'> & {
+  src: string;
+  alt: string;
 };
 
 export default function ResponsiveImage({
+  src,
   alt,
   width,
   height,
@@ -16,8 +15,9 @@ export default function ResponsiveImage({
   ...props
 }: ResponsiveImageProps) {
   return (
-    <img
+    <Image
       {...props}
+      src={src}
       alt={alt}
       width={width}
       height={height}

@@ -7,6 +7,7 @@ interface HeroOverlaysProps {
   imageClassName?: string;
   imageWidth?: number;
   imageHeight?: number;
+  imageSizes?: string;
   loading?: 'eager' | 'lazy';
   fetchPriority?: 'high' | 'low' | 'auto';
   gradients: string[];
@@ -23,6 +24,7 @@ export default function HeroOverlays({
   imageClassName,
   imageWidth = 1600,
   imageHeight = 900,
+  imageSizes = '100vw',
   loading,
   fetchPriority,
   gradients,
@@ -39,6 +41,7 @@ export default function HeroOverlays({
         alt={imageAlt}
         width={imageWidth}
         height={imageHeight}
+        sizes={imageSizes}
         loading={loading}
         fetchPriority={fetchPriority}
         className={imageClassName ?? `absolute inset-0 h-full w-full object-cover ${imageOpacity} pointer-events-none`}
