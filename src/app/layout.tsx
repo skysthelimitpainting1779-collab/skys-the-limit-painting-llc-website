@@ -10,6 +10,15 @@ import Script from 'next/script';
 import Link from 'next/link';
 import { Geist } from "next/font/google";
 import { cn } from "../lib/utils";
+import { ENV } from "../lib/env";
+
+const businessSameAs = [
+  ENV.FACEBOOK_URL,
+  ENV.INSTAGRAM_URL,
+  ENV.LINKEDIN_URL,
+  ENV.TIKTOK_URL,
+  ENV.GOOGLE_BUSINESS_URL,
+].filter(Boolean);
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -101,12 +110,7 @@ export default function RootLayout({
                 { "@type": "City", "name": "South St. Paul" },
                 { "@type": "AdministrativeArea", "name": "Twin Cities Metro" }
               ],
-              "sameAs": [
-                "https://facebook.com/skysthelimitpainting1779",
-                "https://instagram.com/skysthelimitpainting1779",
-                "https://linkedin.com/company/skys-the-limit-painting-llc",
-                "https://tiktok.com/@skysthelimitpainting"
-              ]
+              "sameAs": businessSameAs
             }),
           }}
         />

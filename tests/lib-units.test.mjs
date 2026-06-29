@@ -118,7 +118,7 @@ describe('lib/env - Environment variable loading', () => {
     const expectedKeys = [
       'SITE_URL', 'GA_MEASUREMENT_ID', 'FORMSPREE_FORM_ID',
       'GOOGLE_SITE_VERIFICATION', 'FACEBOOK_URL', 'INSTAGRAM_URL',
-      'LINKEDIN_URL', 'TIKTOK_URL', 'BOOKING_URL',
+      'LINKEDIN_URL', 'TIKTOK_URL', 'GOOGLE_BUSINESS_URL', 'BOOKING_URL',
       'SUPABASE_URL', 'SUPABASE_ANON_KEY',
     ];
     for (const key of expectedKeys) {
@@ -165,12 +165,34 @@ describe('lib/env - Environment variable loading', () => {
     assert.match(src, /xanybvkd/);
   });
 
-  test('Social media URLs have correct defaults', () => {
+  test('TikTok URL has correct default handle', () => {
     const src = read('src/lib/env.ts');
-    assert.match(src, /facebook\.com\/skysthelimitpainting1779/);
-    assert.match(src, /instagram\.com\/skysthelimitpainting1779/);
-    assert.match(src, /linkedin\.com\/company\/skys-the-limit-painting-llc/);
-    assert.match(src, /tiktok\.com\/@skysthelimitpainting/);
+    assert.match(src, /tiktok\.com\/@skysthelimitpaintingllc/);
+  });
+
+  test('LinkedIn URL has correct default profile', () => {
+    const src = read('src/lib/env.ts');
+    assert.match(src, /linkedin\.com\/in\/anthony-briseno/);
+  });
+
+  test('Google Business URL has correct default CID', () => {
+    const src = read('src/lib/env.ts');
+    assert.match(src, /google\.com\/maps\?cid=8497050136769031462/);
+  });
+
+  test('business structured data sameAs includes Google Business URL', () => {
+    const layoutSrc = read('src/app/layout.tsx');
+    const seoSrc = read('src/lib/seo.ts');
+    assert.match(layoutSrc, /ENV\.GOOGLE_BUSINESS_URL/);
+    assert.match(seoSrc, /ENV\.GOOGLE_BUSINESS_URL/);
+    assert.match(layoutSrc, /\.filter\(Boolean\)/);
+    assert.match(seoSrc, /\.filter\(Boolean\)/);
+  });
+
+  test('Not-yet-live social profiles default to empty (no dead sameAs links)', () => {
+    const src = read('src/lib/env.ts');
+    assert.match(src, /FACEBOOK_URL: getEnv\('FACEBOOK_URL'\) \|\| ''/);
+    assert.match(src, /INSTAGRAM_URL: getEnv\('INSTAGRAM_URL'\) \|\| ''/);
   });
 });
 

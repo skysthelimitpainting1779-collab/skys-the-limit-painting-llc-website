@@ -36,10 +36,14 @@ export const ENV = {
   GA_MEASUREMENT_ID: getEnv('GA_MEASUREMENT_ID'),
   FORMSPREE_FORM_ID: getEnv('FORMSPREE_FORM_ID') || 'xanybvkd',
   GOOGLE_SITE_VERIFICATION: getEnv('GOOGLE_SITE_VERIFICATION'),
-  FACEBOOK_URL: getEnv('FACEBOOK_URL') || 'https://facebook.com/skysthelimitpainting1779',
-  INSTAGRAM_URL: getEnv('INSTAGRAM_URL') || 'https://instagram.com/skysthelimitpainting1779',
-  LINKEDIN_URL: getEnv('LINKEDIN_URL') || 'https://linkedin.com/company/skys-the-limit-painting-llc',
-  TIKTOK_URL: getEnv('TIKTOK_URL') || 'https://tiktok.com/@skysthelimitpainting',
+  // Facebook & Instagram profiles are not live yet; leave empty until created so
+  // we don't render dead links or assert non-existent profiles in JSON-LD sameAs.
+  FACEBOOK_URL: getEnv('FACEBOOK_URL') || '',
+  INSTAGRAM_URL: getEnv('INSTAGRAM_URL') || '',
+  LINKEDIN_URL: getEnv('LINKEDIN_URL') || 'https://www.linkedin.com/in/anthony-briseno-5444b0410/',
+  TIKTOK_URL: getEnv('TIKTOK_URL') || 'https://tiktok.com/@skysthelimitpaintingllc',
+  // Verified Google Business Profile (CID), the strongest local-SEO entity link.
+  GOOGLE_BUSINESS_URL: getEnv('GOOGLE_BUSINESS_URL') || 'https://www.google.com/maps?cid=8497050136769031462',
   BOOKING_URL: getEnv('BOOKING_URL') || '',
   // Explicitly reference process.env for Next.js client-side static substitution
   SUPABASE_URL: process.env.NEXT_PUBLIC_backend_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || getEnv('SUPABASE_URL') || '',
