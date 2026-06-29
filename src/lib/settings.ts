@@ -35,7 +35,12 @@ export async function getCompanySettings(): Promise<CompanySettings> {
       .eq('id', 'default')
       .single();
 
-    if (data && !error) {
+    if (error) {
+      console.warn(`Settings DB query failed (code: ${error.code}): ${error.message}. Using defaults.`);
+      return DEFAULT_SETTINGS;
+    }
+
+    if (data) {
       return {
         company_name: data.company_name,
         phone: data.phone,
@@ -50,7 +55,8 @@ export async function getCompanySettings(): Promise<CompanySettings> {
       };
     }
   } catch (err) {
-    console.warn('Error fetching settings from database. Using hardcoded defaults.', err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`Settings fetch failed (${message}). Using defaults.`);
   }
 
   return DEFAULT_SETTINGS;

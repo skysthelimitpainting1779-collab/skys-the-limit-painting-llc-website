@@ -12,9 +12,9 @@ tmp/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
 graphify-out/
-components/
-lib/
-wiki/
+/components/
+/lib/
+/wiki/
 *.cjs
 
 # Ignore Agent OS operational state, but track configuration/knowledge files

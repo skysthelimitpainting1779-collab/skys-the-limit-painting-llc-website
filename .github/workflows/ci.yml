@@ -58,7 +58,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branch   = '${{ github.ref_name }}';
+            const branch   = '${{ github.head_ref || github.ref_name }}';
             if (branch === 'main' || branch === 'staging') {
               console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
               return;
@@ -160,7 +160,7 @@ jobs:
         run: npm ci
 
       - name: Run test suite
-        run: npm test
+        run: node scripts/agent-os.js bootstrap && npm test
 
       - name: "⚠ Boomerang — Commit CI Incident on Test Failure"
         if: failure()
@@ -168,7 +168,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branch = '${{ github.ref_name }}';
+            const branch = '${{ github.head_ref || github.ref_name }}';
             if (branch === 'main' || branch === 'staging') {
               console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
               return;
@@ -287,7 +287,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branch = '${{ github.ref_name }}';
+            const branch = '${{ github.head_ref || github.ref_name }}';
             if (branch === 'main' || branch === 'staging') {
               console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
               return;
@@ -459,7 +459,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branch = '${{ github.ref_name }}';
+            const branch = '${{ github.head_ref || github.ref_name }}';
             if (branch === 'main' || branch === 'staging') {
               console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
               return;
@@ -582,7 +582,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branch = '${{ github.ref_name }}';
+            const branch = '${{ github.head_ref || github.ref_name }}';
             if (branch === 'main' || branch === 'staging') {
               console.log(`Boomerang auto-repair is disabled on protected branch: ${branch}`);
               return;

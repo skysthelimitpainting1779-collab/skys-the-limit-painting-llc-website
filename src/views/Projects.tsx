@@ -108,7 +108,8 @@ export default async function ProjectsPage() {
       portfolioItems = data;
     }
   } catch (err) {
-    console.error('Failed to load portfolio items from Supabase, falling back to static list.', err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`Portfolio DB fetch failed (${message}), using static fallback.`);
   }
 
   // Fallback static items

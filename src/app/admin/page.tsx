@@ -94,6 +94,9 @@ export default function AdminPage() {
     meta_desc: ''
   });
 
+  // Global operation error shown as a toast/banner
+  const [opError, setOpError] = useState<string | null>(null);
+
   // Check current session on mount
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -151,7 +154,11 @@ export default function AdminPage() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Sign-out failed:', error);
+      setOpError('Sign-out failed: ' + error.message);
+    }
   };
 
   // --- CRUD API CALLS ---
@@ -162,7 +169,12 @@ export default function AdminPage() {
       .from('leads')
       .select('*')
       .order('created_at', { ascending: false });
-    if (!error && data) setLeads(data);
+    if (error) {
+      console.error('Failed to load leads:', error);
+      setOpError('Failed to load leads: ' + error.message);
+      return;
+    }
+    if (data) setLeads(data);
   };
 
   const updateLeadStatus = async (leadId: string, newStatus: string, notesText?: string) => {
@@ -170,11 +182,14 @@ export default function AdminPage() {
       .from('leads')
       .update({ status: newStatus, notes: notesText })
       .eq('lead_id', leadId);
-    if (!error) {
-      loadLeads();
-      if (selectedLead && selectedLead.lead_id === leadId) {
-        setSelectedLead({ ...selectedLead, status: newStatus, notes: notesText });
-      }
+    if (error) {
+      console.error('Failed to update lead status:', error);
+      setOpError('Failed to update lead status: ' + error.message);
+      return;
+    }
+    loadLeads();
+    if (selectedLead && selectedLead.lead_id === leadId) {
+      setSelectedLead({ ...selectedLead, status: newStatus, notes: notesText });
     }
   };
 
@@ -211,7 +226,15 @@ export default function AdminPage() {
       .select('*')
       .eq('id', 'default')
       .single();
-    if (!error && data) {
+    if (error) {
+      // PGRST116 = no rows found -- expected on fresh installs before first save
+      if (error.code !== 'PGRST116') {
+        console.error('Failed to load settings:', error);
+        setOpError('Failed to load settings: ' + error.message);
+      }
+      return;
+    }
+    if (data) {
       setCompanySettings(data);
     }
   };
@@ -256,8 +279,8 @@ export default function AdminPage() {
         setSettingsSuccess('Configuration imported and saved successfully!');
         loadSettings();
       }
-    } catch (err: any) {
-      setSettingsError('Invalid JSON format: ' + err?.message);
+    } catch (err) {
+      setSettingsError('Invalid JSON format: ' + (err instanceof Error ? err.message : String(err)));
     }
   };
 
@@ -267,7 +290,12 @@ export default function AdminPage() {
       .from('testimonials')
       .select('*')
       .order('created_at', { ascending: false });
-    if (!error && data) setTestimonials(data);
+    if (error) {
+      console.error('Failed to load testimonials:', error);
+      setOpError('Failed to load testimonials: ' + error.message);
+      return;
+    }
+    if (data) setTestimonials(data);
   };
 
   const addTestimonial = async (e: React.FormEvent) => {
@@ -275,23 +303,36 @@ export default function AdminPage() {
     const { error } = await supabase
       .from('testimonials')
       .insert([newTestimonial]);
-    if (!error) {
-      setNewTestimonial({ name: '', location: '', rating: 5, quote: '', approved: true });
-      loadTestimonials();
+    if (error) {
+      console.error('Failed to add testimonial:', error);
+      setOpError('Failed to add testimonial: ' + error.message);
+      return;
     }
+    setNewTestimonial({ name: '', location: '', rating: 5, quote: '', approved: true });
+    loadTestimonials();
   };
 
   const toggleTestimonialApproval = async (id: number, currentApproved: boolean) => {
-    await supabase
+    const { error } = await supabase
       .from('testimonials')
       .update({ approved: !currentApproved })
       .eq('id', id);
+    if (error) {
+      console.error('Failed to toggle testimonial approval:', error);
+      setOpError('Failed to update testimonial: ' + error.message);
+      return;
+    }
     loadTestimonials();
   };
 
   const deleteTestimonial = async (id: number) => {
     if (confirm('Are you sure you want to delete this testimonial?')) {
-      await supabase.from('testimonials').delete().eq('id', id);
+      const { error } = await supabase.from('testimonials').delete().eq('id', id);
+      if (error) {
+        console.error('Failed to delete testimonial:', error);
+        setOpError('Failed to delete testimonial: ' + error.message);
+        return;
+      }
       loadTestimonials();
     }
   };
@@ -302,7 +343,12 @@ export default function AdminPage() {
       .from('portfolio')
       .select('*')
       .order('created_at', { ascending: false });
-    if (!error && data) setPortfolio(data);
+    if (error) {
+      console.error('Failed to load portfolio:', error);
+      setOpError('Failed to load portfolio: ' + error.message);
+      return;
+    }
+    if (data) setPortfolio(data);
   };
 
   const addPortfolio = async (e: React.FormEvent) => {
@@ -327,25 +373,33 @@ export default function AdminPage() {
         project_date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
       }]);
 
-    if (!error) {
-      setNewPortfolio({
-        title: '',
-        category: 'Commercial',
-        location: '',
-        problem: '',
-        prepInput: '',
-        result: '',
-        image_url: '',
-        before_image_url: '',
-        after_image_url: ''
-      });
-      loadPortfolio();
+    if (error) {
+      console.error('Failed to add portfolio item:', error);
+      setOpError('Failed to add portfolio item: ' + error.message);
+      return;
     }
+    setNewPortfolio({
+      title: '',
+      category: 'Commercial',
+      location: '',
+      problem: '',
+      prepInput: '',
+      result: '',
+      image_url: '',
+      before_image_url: '',
+      after_image_url: ''
+    });
+    loadPortfolio();
   };
 
   const deletePortfolio = async (id: number) => {
     if (confirm('Are you sure you want to delete this portfolio project?')) {
-      await supabase.from('portfolio').delete().eq('id', id);
+      const { error } = await supabase.from('portfolio').delete().eq('id', id);
+      if (error) {
+        console.error('Failed to delete portfolio item:', error);
+        setOpError('Failed to delete portfolio item: ' + error.message);
+        return;
+      }
       loadPortfolio();
     }
   };
@@ -356,7 +410,12 @@ export default function AdminPage() {
       .from('service_areas')
       .select('*')
       .order('city', { ascending: true });
-    if (!error && data) setServiceAreas(data);
+    if (error) {
+      console.error('Failed to load service areas:', error);
+      setOpError('Failed to load service areas: ' + error.message);
+      return;
+    }
+    if (data) setServiceAreas(data);
   };
 
   const addServiceArea = async (e: React.FormEvent) => {
@@ -364,15 +423,23 @@ export default function AdminPage() {
     const { error } = await supabase
       .from('service_areas')
       .insert([newServiceArea]);
-    if (!error) {
-      setNewServiceArea({ city: '', slug: '', description: '', meta_title: '', meta_desc: '' });
-      loadServiceAreas();
+    if (error) {
+      console.error('Failed to add service area:', error);
+      setOpError('Failed to add service area: ' + error.message);
+      return;
     }
+    setNewServiceArea({ city: '', slug: '', description: '', meta_title: '', meta_desc: '' });
+    loadServiceAreas();
   };
 
   const deleteServiceArea = async (id: number) => {
     if (confirm('Are you sure you want to delete this service area?')) {
-      await supabase.from('service_areas').delete().eq('id', id);
+      const { error } = await supabase.from('service_areas').delete().eq('id', id);
+      if (error) {
+        console.error('Failed to delete service area:', error);
+        setOpError('Failed to delete service area: ' + error.message);
+        return;
+      }
       loadServiceAreas();
     }
   };
@@ -474,6 +541,13 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-mono flex flex-col">
+      {/* Operation Error Banner */}
+      {opError && (
+        <div className="bg-red-900/80 border-b border-red-500 px-6 py-3 flex items-center justify-between text-sm">
+          <span className="text-red-200">{opError}</span>
+          <button onClick={() => setOpError(null)} className="text-red-300 hover:text-white ml-4 text-xs uppercase tracking-widest">Dismiss</button>
+        </div>
+      )}
       {/* Top Console Header */}
       <header className="relative bg-[#0B0B0D] border-b border-white/10 px-6 py-4 flex items-center justify-between z-10">
         <div className="absolute left-0 top-0 h-0.5 bg-white w-full"></div>

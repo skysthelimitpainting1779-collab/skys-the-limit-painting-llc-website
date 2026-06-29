@@ -93,7 +93,8 @@ export default function EstimatePage() {
         if (parsed.message) setMessage(parsed.message);
       }
     } catch (err) {
-      console.error('Failed to load saved estimate progress:', err);
+      console.error('Failed to load saved estimate progress, resetting:', err);
+      localStorage.removeItem('sky_estimate_progress');
     }
   }, []);
 
@@ -112,7 +113,7 @@ export default function EstimatePage() {
       };
       localStorage.setItem('sky_estimate_progress', JSON.stringify(progress));
     } catch (err) {
-      console.error('Failed to save estimate progress:', err);
+      console.warn('Failed to save estimate progress (storage may be full):', err);
     }
   }, [step, dimensions, trimPrep, cabinets, name, phone, email, city, message]);
 
@@ -623,6 +624,7 @@ Calculated Range: $${calculationResult.low} - $${calculationResult.high}${projec
                 )}
               </div>
 
+              {/* Trust Badges & Registration Disclosures (Fogg Motivation) */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 border-t border-white/10 pt-6 mt-2">
                 <div className="lg:col-span-7 space-y-4 text-sm text-gray-400">
                   <div className="flex items-center gap-2">
