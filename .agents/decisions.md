@@ -1,0 +1,19 @@
+---
+id: architectural_decisions
+name: "Architectural Decisions & Guardrails"
+type: policy
+description: "Unified rules and design tokens enforced globally in this workspace."
+---
+
+# Architectural Decisions & Guardrails
+
+Unified policies and safety rules enforced across the workspace.
+
+## Enforced Policies
+
+- **[contrast]** POL-001: Safety orange elements (#FF5A00) must use dark charcoal (#050505) text.
+- **[emoji]** POL-002: No emojis in source code or React components.
+- **[radius]** POL-003: All border-radius properties must be set to 0px or rounded-none globally.
+- **[side_effects]** POL-004: External side effects require an idempotency key, recorded effect state, and approval when sensitive.
+- **[rollback]** POL-005: The harness may quarantine and recommend recovery, but it must not automatically revert user files.
+

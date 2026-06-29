@@ -1,67 +1,58 @@
-#!/usr/bin/env node
-/**
- * enforce-git.js
- * Enforces branch naming and protected branch policies during lint.
- * Compliant with project guidelines: no direct commits to main/staging.
- * Safe in CI (skips strict checks).
- */
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 
-const isCI = !!(process.env.CI || process.env.GITHUB_ACTIONS || process.env.VERCEL);
+console.log('[Git Guard] Running Git standards compliance check...');
 
-function getCurrentBranch() {
+try {
+  // 1. Validate branch name
+  let branchName = '';
+  if (process.env.GITHUB_ACTIONS) {
+    if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
+      branchName = process.env.GITHUB_HEAD_REF || '';
+    } else {
+      branchName = process.env.GITHUB_REF_NAME || '';
+    }
+    console.log(`[Git Guard] Running in CI. Detected branch: "${branchName}"`);
+  } else {
+    branchName = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
+    console.log(`[Git Guard] Current branch: "${branchName}"`);
+  }
+  
+  const protectedBranches = ['main', 'staging'];
+  const allowedPrefixes = ['feat/', 'fix/', 'chore/', 'docs/', 'infra/'];
+  
+  if (protectedBranches.includes(branchName)) {
+    console.log(`\x1b[33m[WARNING] You are working directly on a protected branch: "${branchName}".\x1b[0m`);
+    console.log('\x1b[33m[WARNING] Please ensure you do not commit directly to this branch. Use feature branches and PRs.\x1b[0m');
+  } else {
+    const isValidPrefix = allowedPrefixes.some(prefix => branchName.startsWith(prefix));
+    if (!isValidPrefix) {
+      console.error(`\x1b[31m[ERROR] Invalid branch name: "${branchName}".\x1b[0m`);
+      console.error(`\x1b[31m[ERROR] Branch names must start with one of the following prefixes:\x1b[0m`);
+      allowedPrefixes.forEach(prefix => console.error(`  - ${prefix}`));
+      process.exit(1);
+    }
+    console.log('\x1b[32m[Git Guard] Branch name complies with standards.\x1b[0m');
+  }
+  
+  // 2. Validate the last commit message if available (to check message format)
   try {
-    return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-  } catch {
-    return null;
+    const lastCommitMsg = execSync('git log -1 --pretty=%B', { encoding: 'utf8' }).trim();
+    console.log(`[Git Guard] Last commit message: "${lastCommitMsg.split('\n')[0]}"`);
+    
+    // Conventional commit regex
+    const ccRegex = /^(feat|fix|chore|docs|infra|refactor|test|style|ci|build)(?:\([a-z0-9_.-]+\))?!?: .+/i;
+    
+    if (!ccRegex.test(lastCommitMsg)) {
+      console.log(`\x1b[33m[WARNING] Last commit message does not strictly follow Conventional Commits format.\x1b[0m`);
+      console.log('\x1b[33m[WARNING] Standard format: <type>(<scope>): <subject> (e.g. feat(seo): add meta tags)\x1b[0m');
+    } else {
+      console.log('\x1b[32m[Git Guard] Commit message format complies with standards.\x1b[0m');
+    }
+  } catch (err) {
+    console.log('[Git Guard] Could not retrieve last commit message for validation.', err.message);
   }
-}
-
-function getCommitMessage() {
-  try {
-    return execSync('git log -1 --pretty=%B', { encoding: 'utf8' }).trim();
-  } catch {
-    return '';
-  }
-}
-
-const branch = getCurrentBranch();
-const commitMsg = getCommitMessage();
-
-const protectedBranches = ['main', 'master', 'staging', 'develop'];
-
-console.log(`[enforce-git] Branch: ${branch || 'unknown'} | CI: ${isCI}`);
-
-if (!branch) {
-  console.warn('[enforce-git] Unable to determine branch (non-git env or shallow checkout). Allowing.');
-  process.exit(0);
-}
-
-if (isCI) {
-  // In CI/PR we allow because PRs come from feature branches. Only gate direct pushes on protected in release flows.
-  if (protectedBranches.includes(branch) && process.env.GITHUB_EVENT_NAME === 'push') {
-    // On direct push to protected in CI (should be disallowed by branch protection), still warn but do not hard fail the build here.
-    console.warn(`[enforce-git] WARNING: CI push detected directly to protected branch '${branch}'. Rely on branch protection rules.`);
-  }
-  console.log('[enforce-git] CI context - branch policy checks delegated to GitHub branch protection + PR rules.');
-  process.exit(0);
-}
-
-// Local enforcement
-if (protectedBranches.includes(branch)) {
-  console.error(`\n[enforce-git] ERROR: Direct development on protected branch '${branch}' is prohibited.`);
-  console.error('Create a feature branch using one of the allowed prefixes:');
-  console.error('  feat/<desc> | fix/<desc> | chore/<desc> | docs/<desc> | infra/<desc>');
-  console.error('Then commit and open a PR to staging or main.\n');
+  
+} catch (err) {
+  console.error('[Git Guard] Failed to execute git checks. Make sure Git is installed and you are in a repository.', err.message);
   process.exit(1);
 }
-
-// Optional: basic conventional commit check (non-fatal for flexibility, but log)
-const conventional = /^(feat|fix|chore|docs|infra|test|refactor|perf|style|ci|build)(\(.+\))?: .+/;
-if (commitMsg && !conventional.test(commitMsg.split('\n')[0])) {
-  console.warn('[enforce-git] Warning: Last commit message does not follow Conventional Commits.');
-  console.warn('Expected format: type(scope): subject  e.g. feat(seo): add meta tags');
-}
-
-console.log('[enforce-git] Branch and commit policy OK.');
-process.exit(0);
