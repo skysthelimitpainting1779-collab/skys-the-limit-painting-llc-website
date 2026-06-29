@@ -4,11 +4,11 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { localBusinessSchema, breadcrumbSchema } from '../../../lib/seo';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { getEnv } from '../../../lib/env';
+import { ENV } from '../../../lib/env';
 
 // Create safe, cookie-less public client for build/static rendering tasks
-const supabaseUrl = getEnv('SUPABASE_URL') || '';
-const supabaseAnonKey = getEnv('SUPABASE_ANON_KEY') || '';
+const supabaseUrl = ENV.SUPABASE_URL || '';
+const supabaseAnonKey = ENV.SUPABASE_ANON_KEY || '';
 
 function getPublicSupabase() {
   if (!supabaseUrl || !supabaseAnonKey) return null;

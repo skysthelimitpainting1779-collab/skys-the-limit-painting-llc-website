@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { getEnv } from '../../../lib/env';
 
 const supabaseUrl = getEnv('SUPABASE_URL');
-const supabaseServiceKey = getEnv('SUPABASE_SERVICE_ROLE_KEY') || getEnv('SUPABASE_SECRET_KEY');
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
 const supabase = supabaseUrl && supabaseServiceKey 
   ? createClient(supabaseUrl, supabaseServiceKey) 
