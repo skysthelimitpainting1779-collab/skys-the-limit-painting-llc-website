@@ -213,7 +213,7 @@ export default function AboutPage() {
                     info@skysthelimitpaintingllc.com
                   </a>
                 </div>
-                <p className="mt-6 text-sm text-zinc-500 leading-relaxed">
+                <p className="mt-6 text-sm text-zinc-400 leading-relaxed">
                   We start every relationship the same way: with a clear scope walkthrough and a transparent conversation about what the work will actually involve.
                 </p>
                 <div className="mt-8">
