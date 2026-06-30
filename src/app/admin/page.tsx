@@ -22,6 +22,130 @@ import {
   Edit3 
 } from 'lucide-react';
 
+const MAX_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+function sanitizeAssetFileName(fileName: string) {
+  return fileName.toLowerCase().replace(/[^a-z0-9.-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '') || 'upload';
+}
+
+async function uploadCmsAsset(
+  supabase: ReturnType<typeof createClient>,
+  prefix: string,
+  file: File,
+) {
+  const path = `${prefix}/${Date.now()}-${sanitizeAssetFileName(file.name)}`;
+  const { error } = await supabase.storage.from('cms-assets').upload(path, file, {
+    cacheControl: '3600',
+    upsert: false,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { data } = supabase.storage.from('cms-assets').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+function ImageUrlField({
+  supabase,
+  prefix,
+  label,
+  value,
+  onChange,
+  onError,
+  placeholder,
+}: {
+  supabase: ReturnType<typeof createClient>;
+  prefix: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  onError: (message: string) => void;
+  placeholder: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.currentTarget.value = '';
+
+    if (!file) {
+      return;
+    }
+
+    setLocalError(null);
+
+    if (!file.type.startsWith('image/')) {
+      const message = 'Please choose an image file.';
+      setLocalError(message);
+      onError(message);
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_UPLOAD_BYTES) {
+      const message = 'Please choose an image under 10MB.';
+      setLocalError(message);
+      onError(message);
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const url = await uploadCmsAsset(supabase, prefix, file);
+      onChange(url);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Image upload failed.';
+      setLocalError(message);
+      onError(message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="block text-xs font-black text-gray-400">{label}</label>
+      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_96px] md:items-start">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => {
+            setLocalError(null);
+            onChange(e.target.value);
+          }}
+          placeholder={placeholder}
+          className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
+        />
+        <div className="space-y-2">
+          <label className={`flex h-11 cursor-pointer items-center justify-center gap-2 border border-white/10 bg-white/5 px-3 text-[10px] font-black uppercase tracking-widest text-white transition hover:border-white hover:bg-white/10 ${uploading ? 'pointer-events-none opacity-60' : ''}`}>
+            <Upload size={12} />
+            {uploading ? 'Uploading…' : 'Upload'}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="sr-only"
+            />
+          </label>
+          {value ? (
+            <div className="overflow-hidden border border-white/10 bg-[#050505]">
+              <img src={value} alt={`${label} preview`} className="h-16 w-full object-cover" />
+            </div>
+          ) : null}
+        </div>
+      </div>
+      {localError ? (
+        <p className="text-[10px] font-semibold text-red-400">{localError}</p>
+      ) : (
+        <p className="text-[10px] text-gray-500">PNG, JPG, or WebP up to 10MB.</p>
+      )}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [supabase] = useState(() => createClient());
   const [session, setSession] = useState<any>(null);
@@ -65,6 +189,7 @@ export default function AdminPage() {
   const [newTestimonial, setNewTestimonial] = useState({
     name: '',
     location: '',
+    photo_url: '',
     rating: 5,
     quote: '',
     approved: true
@@ -302,13 +427,16 @@ export default function AdminPage() {
     e.preventDefault();
     const { error } = await supabase
       .from('testimonials')
-      .insert([newTestimonial]);
+      .insert([{
+        ...newTestimonial,
+        photo_url: newTestimonial.photo_url || null,
+      }]);
     if (error) {
       console.error('Failed to add testimonial:', error);
       setOpError('Failed to add testimonial: ' + error.message);
       return;
     }
-    setNewTestimonial({ name: '', location: '', rating: 5, quote: '', approved: true });
+    setNewTestimonial({ name: '', location: '', photo_url: '', rating: 5, quote: '', approved: true });
     loadTestimonials();
   };
 
@@ -865,6 +993,17 @@ export default function AdminPage() {
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
+                    <div className="md:col-span-2">
+                      <ImageUrlField
+                        supabase={supabase}
+                        prefix="branding"
+                        label="Logo URL"
+                        value={companySettings.logo_url}
+                        onChange={(value) => setCompanySettings({...companySettings, logo_url: value})}
+                        onError={setOpError}
+                        placeholder="/images/brand/logo.svg"
+                      />
+                    </div>
                     <div>
                       <label className="block text-xs font-black text-gray-400 mb-2">Theme Color HEX</label>
                       <input 
@@ -986,6 +1125,16 @@ export default function AdminPage() {
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
                   </div>
+
+                  <ImageUrlField
+                    supabase={supabase}
+                    prefix="testimonials"
+                    label="Photo URL"
+                    value={newTestimonial.photo_url}
+                    onChange={(value) => setNewTestimonial({...newTestimonial, photo_url: value})}
+                    onError={setOpError}
+                    placeholder="/images/testimonials/jane-doe.webp"
+                  />
 
                   <div>
                     <label className="block text-xs font-black text-gray-400 mb-2">Rating (1-5 Stars)</label>
@@ -1157,35 +1306,38 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-gray-400 mb-1.5">Single Image Fallback URL</label>
-                    <input 
-                      type="text"
+                    <ImageUrlField
+                      supabase={supabase}
+                      prefix="portfolio"
+                      label="Single Image Fallback URL"
                       value={newPortfolio.image_url}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, image_url: e.target.value})}
+                      onChange={(value) => setNewPortfolio({...newPortfolio, image_url: value})}
+                      onError={setOpError}
                       placeholder="/images/services/commercial/case-fallback.webp"
-                      className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-black text-gray-400 mb-1">Before Img URL</label>
-                      <input 
-                        type="text"
+                      <ImageUrlField
+                        supabase={supabase}
+                        prefix="portfolio"
+                        label="Before Img URL"
                         value={newPortfolio.before_image_url}
-                        onChange={(e) => setNewPortfolio({...newPortfolio, before_image_url: e.target.value})}
+                        onChange={(value) => setNewPortfolio({...newPortfolio, before_image_url: value})}
+                        onError={setOpError}
                         placeholder="/images/before.webp"
-                        className="w-full bg-[#050505] border border-white/10 p-2 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-gray-400 mb-1">After Img URL</label>
-                      <input 
-                        type="text"
+                      <ImageUrlField
+                        supabase={supabase}
+                        prefix="portfolio"
+                        label="After Img URL"
                         value={newPortfolio.after_image_url}
-                        onChange={(e) => setNewPortfolio({...newPortfolio, after_image_url: e.target.value})}
+                        onChange={(value) => setNewPortfolio({...newPortfolio, after_image_url: value})}
+                        onError={setOpError}
                         placeholder="/images/after.webp"
-                        className="w-full bg-[#050505] border border-white/10 p-2 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
                   </div>
