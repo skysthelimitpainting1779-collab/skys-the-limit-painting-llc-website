@@ -99,7 +99,7 @@ export default function ReviewCarousel() {
   }, []);
 
   useEffect(() => {
-    setActiveIndex(0);
+    setActiveIndex((prev) => (prev >= testimonials.length ? 0 : prev));
   }, [testimonials]);
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function ReviewCarousel() {
     }
   };
 
-  const activeTestimonial = testimonials[activeIndex];
+  const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
 
   const slideVariants = {
     enter: (dir: 'left' | 'right') => ({

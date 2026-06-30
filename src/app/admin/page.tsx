@@ -23,9 +23,38 @@ import {
 } from 'lucide-react';
 
 const MAX_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024;
+const SETTINGS_IMPORT_KEYS = [
+  'company_name',
+  'phone',
+  'email',
+  'logo_url',
+  'primary_color',
+  'tagline',
+  'service_areas',
+  'services',
+  'meta_title_default',
+  'meta_desc_default',
+] as const;
 
 function sanitizeAssetFileName(fileName: string) {
   return fileName.toLowerCase().replace(/[^a-z0-9.-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '') || 'upload';
+}
+
+function sanitizePreviewUrl(value: string) {
+  if (!value) {
+    return '';
+  }
+
+  try {
+    const url = new URL(value, window.location.origin);
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
+      return url.href;
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
 }
 
 async function uploadCmsAsset(
@@ -132,7 +161,7 @@ function ImageUrlField({
           </label>
           {value ? (
             <div className="overflow-hidden border border-white/10 bg-[#050505]">
-              <img src={value} alt={`${label} preview`} className="h-16 w-full object-cover" />
+              <img src={sanitizePreviewUrl(value)} alt={`${label} preview`} className="h-16 w-full object-cover" />
             </div>
           ) : null}
         </div>
@@ -394,7 +423,12 @@ export default function AdminPage() {
     setSettingsSuccess(null);
     try {
       const parsed = JSON.parse(jsonImportString);
-      const { id, updated_at, ...cleanSettings } = parsed; // strip immutable keys
+      const cleanSettings = SETTINGS_IMPORT_KEYS.reduce<Record<string, unknown>>((acc, key) => {
+        if (Object.prototype.hasOwnProperty.call(parsed, key)) {
+          acc[key] = parsed[key];
+        }
+        return acc;
+      }, {});
       const { error } = await supabase
         .from('settings')
         .upsert({ id: 'default', ...cleanSettings });
@@ -971,7 +1005,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.company_name}
-                        onChange={(e) => setCompanySettings({...companySettings, company_name: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, company_name: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -980,7 +1014,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.phone}
-                        onChange={(e) => setCompanySettings({...companySettings, phone: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, phone: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -989,7 +1023,7 @@ export default function AdminPage() {
                       <input 
                         type="email"
                         value={companySettings.email}
-                        onChange={(e) => setCompanySettings({...companySettings, email: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, email: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -999,7 +1033,7 @@ export default function AdminPage() {
                         prefix="branding"
                         label="Logo URL"
                         value={companySettings.logo_url}
-                        onChange={(value) => setCompanySettings({...companySettings, logo_url: value})}
+                        onChange={(value) => setCompanySettings((prev) => ({...prev, logo_url: value}))}
                         onError={setOpError}
                         placeholder="/images/brand/logo.svg"
                       />
@@ -1009,7 +1043,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.primary_color}
-                        onChange={(e) => setCompanySettings({...companySettings, primary_color: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, primary_color: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -1018,7 +1052,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.tagline}
-                        onChange={(e) => setCompanySettings({...companySettings, tagline: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, tagline: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -1027,7 +1061,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.meta_title_default}
-                        onChange={(e) => setCompanySettings({...companySettings, meta_title_default: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, meta_title_default: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -1036,7 +1070,7 @@ export default function AdminPage() {
                       <textarea 
                         rows={3}
                         value={companySettings.meta_desc_default}
-                        onChange={(e) => setCompanySettings({...companySettings, meta_desc_default: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, meta_desc_default: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -1109,7 +1143,7 @@ export default function AdminPage() {
                       type="text" 
                       required
                       value={newTestimonial.name}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, name: e.target.value})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, name: e.target.value}))}
                       placeholder="Jane Doe"
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1120,7 +1154,7 @@ export default function AdminPage() {
                     <input 
                       type="text" 
                       value={newTestimonial.location}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, location: e.target.value})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, location: e.target.value}))}
                       placeholder="Eagan, MN"
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1131,7 +1165,7 @@ export default function AdminPage() {
                     prefix="testimonials"
                     label="Photo URL"
                     value={newTestimonial.photo_url}
-                    onChange={(value) => setNewTestimonial({...newTestimonial, photo_url: value})}
+                    onChange={(value) => setNewTestimonial((prev) => ({...prev, photo_url: value}))}
                     onError={setOpError}
                     placeholder="/images/testimonials/jane-doe.webp"
                   />
@@ -1140,7 +1174,7 @@ export default function AdminPage() {
                     <label className="block text-xs font-black text-gray-400 mb-2">Rating (1-5 Stars)</label>
                     <select 
                       value={newTestimonial.rating}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, rating: parseInt(e.target.value)})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, rating: parseInt(e.target.value)}))}
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     >
                       <option value={5}>5 Stars ★★★★★</option>
@@ -1157,7 +1191,7 @@ export default function AdminPage() {
                       rows={4}
                       required
                       value={newTestimonial.quote}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, quote: e.target.value})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, quote: e.target.value}))}
                       placeholder="Anthony did an excellent job. Fast, accurate, and kept prep priority."
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1242,7 +1276,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.title}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, title: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, title: e.target.value}))}
                       placeholder="Cabinet Finishing / Exterior Siding"
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1252,7 +1286,7 @@ export default function AdminPage() {
                     <label className="block text-xs font-black text-gray-400 mb-1.5">Category</label>
                     <select 
                       value={newPortfolio.category}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, category: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, category: e.target.value}))}
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     >
                       <option value="Commercial">Commercial / Public-Sector</option>
@@ -1266,7 +1300,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.location}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, location: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, location: e.target.value}))}
                       placeholder="Inver Grove Heights, MN"
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1277,7 +1311,7 @@ export default function AdminPage() {
                     <textarea 
                       rows={2} required
                       value={newPortfolio.problem}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, problem: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, problem: e.target.value}))}
                       placeholder="Faded siding and wood rot details requiring deep stabilizing repairs."
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1288,7 +1322,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.prepInput}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, prepInput: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, prepInput: e.target.value}))}
                       placeholder="Sanding, Priming, Masking, Wood stabilization"
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1299,7 +1333,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.result}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, result: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, result: e.target.value}))}
                       placeholder="Durable, gorgeous finish with weather-stabilized defense."
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1311,7 +1345,7 @@ export default function AdminPage() {
                       prefix="portfolio"
                       label="Single Image Fallback URL"
                       value={newPortfolio.image_url}
-                      onChange={(value) => setNewPortfolio({...newPortfolio, image_url: value})}
+                      onChange={(value) => setNewPortfolio((prev) => ({...prev, image_url: value}))}
                       onError={setOpError}
                       placeholder="/images/services/commercial/case-fallback.webp"
                     />
@@ -1324,7 +1358,7 @@ export default function AdminPage() {
                         prefix="portfolio"
                         label="Before Img URL"
                         value={newPortfolio.before_image_url}
-                        onChange={(value) => setNewPortfolio({...newPortfolio, before_image_url: value})}
+                        onChange={(value) => setNewPortfolio((prev) => ({...prev, before_image_url: value}))}
                         onError={setOpError}
                         placeholder="/images/before.webp"
                       />
@@ -1335,7 +1369,7 @@ export default function AdminPage() {
                         prefix="portfolio"
                         label="After Img URL"
                         value={newPortfolio.after_image_url}
-                        onChange={(value) => setNewPortfolio({...newPortfolio, after_image_url: value})}
+                        onChange={(value) => setNewPortfolio((prev) => ({...prev, after_image_url: value}))}
                         onError={setOpError}
                         placeholder="/images/after.webp"
                       />
