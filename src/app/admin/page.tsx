@@ -159,11 +159,14 @@ function ImageUrlField({
               className="sr-only"
             />
           </label>
-          {value ? (
-            <div className="overflow-hidden border border-white/10 bg-[#050505]">
-              <img src={sanitizePreviewUrl(value)} alt={`${label} preview`} className="h-16 w-full object-cover" />
-            </div>
-          ) : null}
+          {(() => {
+            const previewSrc = value ? sanitizePreviewUrl(value) : '';
+            return previewSrc ? (
+              <div className="overflow-hidden border border-white/10 bg-[#050505]">
+                <img src={previewSrc} alt={`${label} preview`} className="h-16 w-full object-cover" />
+              </div>
+            ) : null;
+          })()}
         </div>
       </div>
       {localError ? (
