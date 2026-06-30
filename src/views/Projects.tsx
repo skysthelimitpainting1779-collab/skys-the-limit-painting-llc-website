@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { createClient } from '../lib/supabase/server';
+import { getCaseStudies, directusAssetUrl } from '../lib/directus/client';
 import JsonLd from '../components/JsonLd';
 import { businessSchema, breadcrumbSchema } from '../lib/seo';
 
@@ -95,24 +96,28 @@ export default async function ProjectsPage() {
     ])
   ];
 
-  // Fetch portfolio items from Supabase
-  let portfolioItems: any[] = [];
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from('portfolio')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (data && !error) {
-      portfolioItems = data;
+  // 1. Try Directus CMS first (graceful fallback if unreachable during Vercel build)
+  const cmsStudies = await getCaseStudies();
+
+  // 2. Try Supabase portfolio table as secondary source
+  let portfolioItems: Array<{ title: string; location: string; problem: string; prep: string[]; result: string; image_url?: string; before_image_url?: string; after_image_url?: string }> = [];
+  if (cmsStudies.length === 0) {
+    try {
+      const supabase = await createClient();
+      const { data, error } = await supabase
+        .from('portfolio')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (data && !error) {
+        portfolioItems = data;
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`Portfolio DB fetch failed (${message}), using static fallback.`);
     }
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`Portfolio DB fetch failed (${message}), using static fallback.`);
   }
 
-  // Fallback static items
+  // 3. Static fallback (always available, ensures Vercel builds never break)
   const fallbackProjects = [
     {
       type: "Commercial Interior Refresh",
@@ -150,7 +155,19 @@ export default async function ProjectsPage() {
     }
   ];
 
-  const projectsToRender = portfolioItems.length > 0 
+  // Priority: CMS → Supabase → static
+  const projectsToRender = cmsStudies.length > 0
+    ? cmsStudies.map(item => ({
+        type: item.type,
+        location: item.location,
+        problem: item.problem,
+        prep: item.prep || [],
+        result: item.result,
+        image: directusAssetUrl(item.image),
+        beforeImage: directusAssetUrl(item.before_image),
+        afterImage: directusAssetUrl(item.after_image),
+      }))
+    : portfolioItems.length > 0
     ? portfolioItems.map(item => ({
         type: item.title,
         location: item.location,

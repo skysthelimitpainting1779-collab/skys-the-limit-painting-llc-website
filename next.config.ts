@@ -4,6 +4,21 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ouykfhoxlrkjgscdjjqg.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8055",
+        pathname: "/assets/**",
+      },
+    ],
+  },
   async redirects() {
     return [
       {
