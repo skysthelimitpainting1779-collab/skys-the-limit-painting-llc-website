@@ -3,6 +3,10 @@
 -- marketing photos/logos directly from the browser, and the row-level check
 -- below restricts write access to authenticated users whose profile role is
 -- `admin`. Anonymous writes remain disallowed.
+--
+-- Prerequisite: `public.profiles` with a `role` column is provisioned out of
+-- band in this project, so the policy block is skipped on fresh resets until
+-- that table exists.
 
 DO $$
 BEGIN
