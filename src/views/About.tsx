@@ -25,6 +25,7 @@ export default function AboutPage() {
           <HeroOverlays
             imageSrc="/brand/generated/sky-service-proof.webp"
             imageAlt="Premium painting service proof and trade detailing"
+            imageSizes="100vw"
             gradients={[
               'bg-gradient-to-r from-[#050505] via-[#050505]/94 to-transparent',
               'bg-gradient-to-t from-[#050505] via-transparent to-transparent',
@@ -48,7 +49,7 @@ export default function AboutPage() {
             <div className="space-y-6">
               {/* Branded Equipment Bento Card */}
               <div className="relative group overflow-hidden border border-white/10 bg-[#0B0B0D] shadow-md transition duration-500 hover:border-white/45">
-                <ResponsiveImage src="/brand/generated/sky-owner-proof.webp" alt="Sky's the Limit branded equipment and owner-led proof" width={1200} height={1200} className="w-full aspect-[4/3] object-cover" />
+                <ResponsiveImage src="/brand/generated/sky-owner-proof.webp" alt="Sky's the Limit branded equipment and owner-led proof" width={1200} height={1200} sizes="(min-width: 1024px) 50vw, 100vw" className="w-full aspect-[4/3] object-cover" />
                 <div className="absolute inset-0 bg-black-primary/10"></div>
                 <div className="absolute bottom-0 left-0 right-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.92),transparent)] p-6">
                   <p className="text-xs font-semibold text-white">Branded Equipment</p>
@@ -62,7 +63,7 @@ export default function AboutPage() {
                   <div className="absolute inset-0 flex items-center justify-center bg-white/5 text-white font-display text-2xl font-black">
                     AB
                   </div>
-                  <ResponsiveImage src="/images/site/anthony-portrait.webp" alt="Anthony Briseno" width={400} height={400} className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale hover:grayscale-0 transition duration-500" />
+                  <ResponsiveImage src="/images/site/anthony-portrait.webp" alt="Anthony Briseno" width={400} height={400} sizes="(min-width: 768px) 25vw, 100vw" className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale hover:grayscale-0 transition duration-500" />
                 </div>
                 <div className="md:col-span-8 flex flex-col justify-center">
                   <p className="text-xs font-black text-white">Founder &amp; Operator</p>
@@ -142,7 +143,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="lg:col-span-5 relative min-h-[400px] overflow-hidden">
-              <ResponsiveImage src="/images/site/iphone-exterior-prep-front-entry.webp" alt="Exterior surface preparation in progress" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover" />
+              <ResponsiveImage src="/images/site/iphone-exterior-prep-front-entry.webp" alt="Exterior surface preparation in progress" width={1200} height={900} sizes="(min-width: 1024px) 50vw, 100vw" className="absolute inset-0 h-full w-full object-cover" />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.5),rgba(8,8,7,0.05))]"></div>
             </div>
           </div>

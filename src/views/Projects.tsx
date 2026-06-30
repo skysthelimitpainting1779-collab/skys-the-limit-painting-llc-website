@@ -33,7 +33,7 @@ const CaseStudyCard = ({ type, location, problem, prep, result, image, beforeIma
       ) : (
         <div className="h-[350px] relative">
           {image && (
-            <ResponsiveImage src={image} alt={`${type} in ${location}`} width={1200} height={700} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+            <ResponsiveImage src={image} alt={`${type} in ${location}`} width={1200} height={700} sizes="(min-width: 1024px) 33vw, 100vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
           )}
           <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm border border-white/20 text-white text-xs font-bold px-3 py-1 rounded-none">
             {location}
@@ -170,7 +170,7 @@ export default async function ProjectsPage() {
       <main className="animate-premium-fade-in">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#050505] py-24 px-6 border-b border-white/10">
-          <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="Sky's the Limit Painting LLC premium work proof" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-20 pointer-events-none" />
+          <ResponsiveImage src="/brand/generated/sky-service-proof.webp" alt="Sky's the Limit Painting LLC premium work proof" width={1920} height={1080} sizes="100vw" className="absolute inset-0 h-full w-full object-cover opacity-20 pointer-events-none" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-3xl">
               <h1 className="text-5xl md:text-7xl font-display font-black mb-6 text-white leading-[0.96]">Real Surfaces.<br/>Real Finish.</h1>
