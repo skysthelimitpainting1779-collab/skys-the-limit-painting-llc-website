@@ -59,7 +59,7 @@ export default function MarketPage({ slug }: MarketPageProps) {
             <div className="mt-8 grid max-w-[calc(100vw-2rem)] grid-cols-1 gap-3 sm:max-w-3xl sm:grid-cols-3">
               {market.proof.map((item) => (
                 <div key={item} className="border-t border-white/10 pt-4">
-                  <p className="break-words text-xs font-black leading-relaxed ] text-gray-300 sm:">{item}</p>
+                  <p className="break-words text-xs font-black leading-relaxed text-gray-300">{item}</p>
                 </div>
               ))}
             </div>

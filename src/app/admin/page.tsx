@@ -450,7 +450,7 @@ export default function AdminPage() {
       <div className="min-h-screen bg-[#050505] flex items-center justify-center text-white font-mono">
         <div className="flex flex-col items-center gap-4">
           <div className="h-8 w-8 border-2 border-white border-t-transparent animate-spin rounded-none"></div>
-          <p className="text-xs ]">Authenticating Core...</p>
+          <p className="text-xs">Authenticating Core...</p>
         </div>
       </div>
     );
