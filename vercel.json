@@ -24,6 +24,12 @@
       ]
     }
   ],
+  "crons": [
+    {
+      "path": "/api/cron/seo-ping",
+      "schedule": "0 8 * * *"
+    }
+  ],
   "redirects": [
     { "source": "/services", "destination": "/residential", "permanent": true },
     { "source": "/services/interior", "destination": "/residential", "permanent": true },

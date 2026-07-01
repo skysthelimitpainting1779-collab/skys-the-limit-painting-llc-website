@@ -7,6 +7,8 @@ import CustomCursor from '../components/CustomCursor';
 import SocialLinks from '../components/SocialLinks';
 import HeatmapOverlay from '../components/HeatmapOverlay';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Link from 'next/link';
 import { Geist } from "next/font/google";
 import { cn } from "../lib/utils";
@@ -286,6 +288,8 @@ export default function RootLayout({
           </footer>
         </div>
         <Script id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/246259637.js" strategy="lazyOnload" />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
