@@ -1,10 +1,31 @@
-# Exclude standalone container services from the Vercel build context. These run
-# separately (Fly/Render/local or opt-in paid Vercel), not as part of this
-# project's Next.js deploy. Their Dockerfiles are also named plain `Dockerfile`
-# (not `Dockerfile.vercel`) so Vercel's Functions auto-detection doesn't try to
-# provision them, which was timing out on the free plan.
+# Keep the Vercel deployment lean: upload only what `next build` (and the
+# postbuild sitemap step) actually needs. Everything below is local tooling,
+# agent state, docs, or separate services that must NOT be part of the Vercel
+# build/deploy — shipping them bloats provisioning and, for the container
+# services, triggers Functions auto-detection that times out on the free plan.
 #
-# Patterns are root-anchored (leading slash) so they only match the top-level
-# service directories and NOT app code like src/lib/directus/.
+# Patterns are root-anchored (leading slash) so they only match top-level
+# entries and never app code (e.g. src/lib/directus/ stays included).
+
+# Standalone container services (run on Fly/Render/local or opt-in paid Vercel).
 /backend/
 /directus/
+
+# Agent control plane, skills, and generated knowledge graphs.
+/.agents/
+/.claude/
+/.learnings/
+/graphify-out/
+
+# Local git hooks and CI config (not needed at build time).
+/.husky/
+/.github/
+
+# Non-app sources and fixtures.
+/remotion/
+/supabase/
+/tests/
+
+# Operating manuals / docs (kept in the repo, not shipped to Vercel).
+/agents.md
+/CLAUDE.md
