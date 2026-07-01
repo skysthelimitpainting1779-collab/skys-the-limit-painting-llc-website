@@ -17,7 +17,7 @@
       Never introduce new one-off hex backgrounds.
     • Ink: use `ink-*` on dark, `text-black`/`ink` on paper. Body copy is
       never pure white — reserve `#FFFFFF` for headings + the primary CTA.
-    • Accent: exactly ONE accent (`accent`, terracotta). Never a second hue.
+    • Accent: exactly ONE accent (`brand`, terracotta). Never a second hue.
     • Hairlines: `line` (cool white) on dark, `line-warm` on paper.
     • Motion: durations `--duration-*`, easing `--ease-premium`/`--ease-out`.
       Always honor `prefers-reduced-motion` (handled globally below).
@@ -44,9 +44,12 @@
   --color-ink-3: #c9c1b4;          /* warm body on dark */
   --color-ink-4: #9ca3af;          /* muted / captions */
 
-  /* ── Accent (single terracotta) + trust ──────────────────────────── */
-  --color-accent: #b45c28;         /* the ONE accent */
-  --color-accent-soft: #8b4d20;    /* accent on paper (eyebrows) */
+  /* ── Brand accent (single terracotta) + trust ────────────────────── */
+  /* Named `brand`, NOT `accent`, on purpose: the shadcn `@theme inline`
+     block below already binds `--color-accent` to a neutral gray var, so a
+     token named `accent` here would be silently overridden. */
+  --color-brand: #b45c28;          /* the ONE accent (bg-brand/text-brand) */
+  --color-brand-soft: #8b4d20;     /* accent on paper (eyebrows) */
   --color-green-trust: #2E7D32;
 
   /* ── Hairlines ───────────────────────────────────────────────────── */
