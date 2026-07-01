@@ -102,10 +102,50 @@ const NEXT_STEP_PATTERNS = [
   /will need to/i,
 ];
 
+const REVERSAL_PATTERNS = [
+  /revert/i,
+  /reverted/i,
+  /rolled back/i,
+  /roll back/i,
+  /undid/i,
+  /undo/i,
+  /changed .*back/i,
+  /actually.*instead/i,
+  /on second thought/i,
+  /scratch that/i,
+  /never ?mind/i,
+];
+
+const IN_PROGRESS_PATTERNS = [
+  /in progress/i,
+  /still working/i,
+  /partially/i,
+  /started but/i,
+  /halfway/i,
+  /work in progress/i,
+  /wip/i,
+  /not yet (?:done|finished|complete)/i,
+];
+
+const SKILL_DISCOVERED_PATTERNS = [
+  /reusable/i,
+  /extract .*(?:skill|helper|util)/i,
+  /could be a skill/i,
+  /repeated (?:flow|pattern)/i,
+  /every time we/i,
+  /keep (?:doing|having to)/i,
+];
+
+// Order matters: more specific / higher-signal buckets are checked first so a
+// reversal isn't miscounted as a plain decision, etc. Every bucket declared in
+// AGENTS.md §Step 2 is represented here.
 function classify(text) {
   if (ERROR_PATTERNS.some((p) => p.test(text))) return 'ERROR';
+  if (REVERSAL_PATTERNS.some((p) => p.test(text))) return 'REVERSAL';
+  if (SKILL_DISCOVERED_PATTERNS.some((p) => p.test(text))) return 'SKILL_DISCOVERED';
   if (DECISION_PATTERNS.some((p) => p.test(text))) return 'DECISION';
   if (LESSON_PATTERNS.some((p) => p.test(text))) return 'LESSON';
+  if (IN_PROGRESS_PATTERNS.some((p) => p.test(text))) return 'IN_PROGRESS';
   if (COMPLETED_PATTERNS.some((p) => p.test(text))) return 'COMPLETED';
   if (NEXT_STEP_PATTERNS.some((p) => p.test(text))) return 'NEXT_STEP';
   return null;
@@ -116,11 +156,13 @@ function classify(text) {
 async function main() {
   const signals = {
     ERROR: [],
+    REVERSAL: [],
     DECISION: [],
     LESSON: [],
+    IN_PROGRESS: [],
     COMPLETED: [],
     NEXT_STEP: [],
-    REVERSAL: [],
+    SKILL_DISCOVERED: [],
   };
   const userMessages = [];
   const filesChanged = new Set();
@@ -210,6 +252,16 @@ ${
     : '- None detected automatically. Review transcript manually.'
 }
 
+---
+
+## In Progress
+
+${
+  signals.IN_PROGRESS.length > 0
+    ? signals.IN_PROGRESS.map((s) => `- ${s}`).join('\n')
+    : '- None detected automatically.'
+}
+
 ### Files Changed
 
 ${
@@ -246,6 +298,19 @@ ${
 
 ---
 
+## Reversals
+
+${
+  signals.REVERSAL.length > 0
+    ? signals.REVERSAL.map(
+        (r, i) =>
+          `### REV-${String(i + 1).padStart(3, '0')}\n- **Reversal**: ${r}`
+      ).join('\n\n')
+    : '- No reversals detected automatically.'
+}
+
+---
+
 ## Lessons Learned
 
 ${
@@ -262,6 +327,16 @@ ${
   signals.NEXT_STEP.length > 0
     ? signals.NEXT_STEP.map((n, i) => `${i + 1}. [ ] ${n}`).join('\n')
     : '1. [ ] Review this document and complete any missing sections manually.'
+}
+
+---
+
+## Skills Discovered
+
+${
+  signals.SKILL_DISCOVERED.length > 0
+    ? signals.SKILL_DISCOVERED.map((s) => `- ${s}`).join('\n')
+    : '- None detected automatically.'
 }
 
 ---
@@ -324,10 +399,13 @@ okf: v0.1
 - Steps audited: ${stepCount}
 - Signals extracted: ${signalTotal}
   - Errors: ${signals.ERROR.length}
+  - Reversals: ${signals.REVERSAL.length}
   - Decisions: ${signals.DECISION.length}
   - Lessons: ${signals.LESSON.length}
+  - In Progress: ${signals.IN_PROGRESS.length}
   - Completed: ${signals.COMPLETED.length}
   - Next Steps: ${signals.NEXT_STEP.length}
+  - Skills Discovered: ${signals.SKILL_DISCOVERED.length}
   `);
 }
 
