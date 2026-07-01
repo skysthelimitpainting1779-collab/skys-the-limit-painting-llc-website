@@ -21,7 +21,9 @@ export default function CalBooking() {
     }
   }, [enabled]);
 
-  if (!enabled) return null;
+  // Render nothing until the booking link is actually configured, so the
+  // estimate page never ships an unfinished "coming soon" CTA in production.
+  if (!enabled || !CAL_LINK) return null;
 
   return (
     <section className="relative bg-[#050505] px-4 py-16 text-white sm:px-6 lg:px-8">
@@ -42,39 +44,14 @@ export default function CalBooking() {
           </p>
         </div>
 
-        {CAL_LINK ? (
-          <div className="overflow-hidden border border-white/10 bg-[#0B0B0D]">
-            <iframe
-              title="Schedule an estimate with Sky's the Limit Painting"
-              src={`https://cal.com/${CAL_LINK}?embed=true&theme=dark&layout=month_view`}
-              className="h-[720px] w-full"
-              loading="lazy"
-            />
-          </div>
-        ) : (
-          <div className="border border-white/10 bg-[#0B0B0D] p-8 text-center">
-            <p className="text-sm text-[#c9c1b4]">
-              Online scheduling is being set up. In the meantime, request your
-              estimate below or call the owner directly.
-            </p>
-            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href="/contact"
-                onClick={() => trackEvent('cal_booking_fallback_contact')}
-                className="bg-[#FF5A00] px-6 py-3 text-xs font-black uppercase tracking-widest text-[#050505] transition hover:opacity-90"
-              >
-                Request Estimate
-              </a>
-              <a
-                href="tel:+16514104196"
-                onClick={() => trackEvent('cal_booking_fallback_call')}
-                className="border border-white/20 px-6 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:border-white"
-              >
-                Call the Owner
-              </a>
-            </div>
-          </div>
-        )}
+        <div className="overflow-hidden border border-white/10 bg-[#0B0B0D]">
+          <iframe
+            title="Schedule an estimate with Sky's the Limit Painting"
+            src={`https://cal.com/${CAL_LINK}?embed=true&theme=dark&layout=month_view`}
+            className="h-[720px] w-full"
+            loading="lazy"
+          />
+        </div>
       </div>
     </section>
   );
