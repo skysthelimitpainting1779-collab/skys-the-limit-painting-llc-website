@@ -19,7 +19,7 @@
       never pure white — reserve `#FFFFFF` for headings + the primary CTA.
     • Accent: exactly ONE accent (`brand`, terracotta). Never a second hue.
     • Hairlines: `line` (cool white) on dark, `line-warm` on paper.
-    • Motion: durations `--duration-*`, easing `--ease-premium`/`--ease-out`.
+    • Motion: durations `--duration-*`, easing `--ease-premium`/`--ease-snap`.
       Always honor `prefers-reduced-motion` (handled globally below).
     • Rhythm: sections use `.section` padding; content uses `.container-page`.
     • Measure: body text capped at ~65ch (`.measure`).
@@ -84,7 +84,9 @@
 
   /* ── Motion tokens ───────────────────────────────────────────────── */
   --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Named `snap`, NOT `out`: a token named `--ease-out` would shadow
+     Tailwind's built-in `ease-out` utility across the whole codebase. */
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 500ms;
