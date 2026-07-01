@@ -21,7 +21,7 @@ const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
 const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
 const contactMethods = ['Call', 'Text', 'Email'];
 
-const labelClass = 'block text-xs font-black  ] text-white mb-2';
+const labelClass = 'block text-xs font-black text-white mb-2';
 const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-white focus-visible:ring-2 focus-visible:ring-[white]/20 text-base rounded-none';
 const selectButtonClass = 'border p-3.5 text-center text-xs font-black   transition-all duration-200 cursor-pointer rounded-none';
 
