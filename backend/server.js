@@ -1,51 +1,88 @@
+const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
 const app = express();
 
-// Middleware
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
+// Allowlisted origins (never `*`). Mirrors the CORS policy in vercel.json.
+const ALLOWED_ORIGINS = [
+  'https://www.skysthelimitpaintingllc.com',
+  'https://skysthelimitpaintingllc.com',
+  ...(process.env.EXTRA_CORS_ORIGINS
+    ? process.env.EXTRA_CORS_ORIGINS.split(',').map((o) => o.trim()).filter(Boolean)
+    : []),
+];
 
-// Base Route
-app.get('/', (req, res) => {
-  res.send('Agentic Backend Container running on Vercel Fluid 👋');
+app.use(helmet());
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Allow same-origin / server-to-server calls (no Origin header).
+      if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      return callback(new Error('Origin not allowed by CORS'));
+    },
+    methods: ['POST', 'OPTIONS'],
+  })
+);
+
+// Keep the raw body so we can verify HMAC signatures on webhooks.
+app.use(
+  express.json({
+    verify: (req, _res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
+
+// Liveness/readiness probe (used by Docker HEALTHCHECK + uptime monitors).
+app.get('/health', (_req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
 
-// Self-Healing Webhook Endpoint
-// Triggered by GitHub Actions (.github/workflows/self-healing.yml)
-app.post('/api/agent/remediate', async (req, res) => {
-  console.log('Received remediation webhook payload:', req.body);
+app.get('/', (_req, res) => {
+  res.send('Agentic Backend Container running on Vercel Fluid');
+});
 
-  const { run_id, branch, failure_reason } = req.body;
+// Timing-safe verification of an HMAC-SHA256 signature: "sha256=<hex>".
+function verifySignature(req) {
+  const secret = process.env.REMEDIATE_SECRET;
+  if (!secret) return false;
+  const provided = req.get('X-Signature') || '';
+  const expected =
+    'sha256=' +
+    crypto.createHmac('sha256', secret).update(req.rawBody || Buffer.from('')).digest('hex');
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
 
-  if (!run_id) {
+// Self-healing webhook. Triggered by .github/workflows/self-healing.yml.
+// Rejects unsigned/invalid requests; requires REMEDIATE_SECRET to be configured.
+app.post('/api/agent/remediate', (req, res) => {
+  if (!process.env.REMEDIATE_SECRET) {
+    return res.status(503).json({ error: 'Remediation disabled: REMEDIATE_SECRET not set.' });
+  }
+  if (!verifySignature(req)) {
+    return res.status(401).json({ error: 'Invalid or missing signature.' });
+  }
+
+  const { run_id: runId, branch } = req.body || {};
+  if (!runId) {
     return res.status(400).json({ error: 'Missing run_id in payload.' });
   }
 
-  // MOCK LOGIC for Agentic Remediation loop:
-  // 1. Fetch build logs using GitHub API and run_id
-  // 2. Parse logs with AI SDK / Claude
-  // 3. Generate patch
-  // 4. Commit to branch or open PR
+  console.log(`[Agent Loop] Accepted remediation for run ${runId} on ${branch}.`);
 
-  console.log(
-    `[Agent Loop] Initiating self-healing protocol for run: ${run_id}`
-  );
-
+  // Async remediation (fetch logs -> analyze -> propose fix). Left as a stub;
+  // production should route this to Vercel Agent's approved-actions flow.
   return res.status(202).json({
     status: 'accepted',
-    message: `Agentic remediation started for run ${run_id}.`,
-    details:
-      'This container will continue processing the heavy LLM tasks asynchronously.',
+    message: `Agentic remediation started for run ${runId}.`,
   });
 });
 
-// The Vercel Fluid compute layer automatically assigns a PORT environment variable
-const port = process.env.PORT || 80;
-
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Agentic backend listening on port ${port}`);
 });

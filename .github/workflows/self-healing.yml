@@ -1,54 +1,63 @@
 name: Self-Healing Pipeline
 
+# SCAFFOLD (not yet active). This workflow observes CI failures and prepares a
+# remediation payload, but performs NO writes. Auto-repair on protected branches
+# is prohibited by the git-discipline policy (see .agents/AGENTS.md §6).
+#
+# Recommended production path (2026): replace the mock step below with Vercel
+# Agent investigations + approved actions (public beta, 30 Jun 2026), which reads
+# deployments/logs/config and proposes fixes with human approval:
+# https://vercel.com/changelog/an-expanded-vercel-agent-chat-investigations-and-approved-actions-now-in-public-beta
+
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ['CI/CD Pipeline']
     types:
       - completed
+
+# Least privilege: observe only. Elevate per-job when real remediation is wired.
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   self-heal:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    permissions:
-      contents: write
-      pull-requests: write
-      actions: read
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch != 'main' && github.event.workflow_run.head_branch != 'staging' }}
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
+          persist-credentials: false
 
-      - name: Download Build Logs
-        uses: actions/github-script@v7
+      - name: Collect failure metadata
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
+            const runId = context.payload.workflow_run.id;
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: ${{ github.event.workflow_run.id }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
             });
-            // Mock logic: Send logs to Agentic LLM for remediation analysis
+            core.info(`Failed run: ${runId} on ${context.payload.workflow_run.head_branch}`);
+            core.info(`Artifacts available: ${artifacts.data.total_count}`);
+            core.setOutput('run_id', String(runId));
 
-      - name: Agentic Analysis & Remediation (Mock)
+      - name: Dispatch remediation request (disabled until endpoint + secret exist)
+        env:
+          REMEDIATE_URL: ${{ secrets.REMEDIATE_URL }}
+          REMEDIATE_SECRET: ${{ secrets.REMEDIATE_SECRET }}
         run: |
-          echo "Agentic DevOps loop initiated."
-          echo "Analyzing failure logs..."
-          echo "Generating patch for resolution..."
-          # In 2026, this calls your custom Vercel AI SDK Edge Function
-          # curl -X POST https://api.skysthelimitpaintingllc.com/api/agent/remediate
-
-      - name: Commit Remediation
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # git commit -am "fix(agent): auto-remediate pipeline failure"
-          # git push origin HEAD:agent-fix-${{ github.event.workflow_run.id }}
-          echo "Remediation patch prepared."
-
-      - name: Open Remediation PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            console.log("In production, this opens a PR for the agent-fix branch with Policy-Gated Coexistence.");
+          if [ -z "$REMEDIATE_URL" ] || [ -z "$REMEDIATE_SECRET" ]; then
+            echo "REMEDIATE_URL/REMEDIATE_SECRET not set — self-healing is scaffold-only. Skipping."
+            exit 0
+          fi
+          # HMAC-signed webhook to the agentic backend (backend/server.js /api/agent/remediate).
+          BODY="{\"run_id\":\"${{ github.event.workflow_run.id }}\",\"branch\":\"${{ github.event.workflow_run.head_branch }}\"}"
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$REMEDIATE_SECRET" | sed 's/^.* //')
+          curl -fsS -X POST "$REMEDIATE_URL" \
+            -H 'Content-Type: application/json' \
+            -H "X-Signature: sha256=$SIG" \
+            --data "$BODY"

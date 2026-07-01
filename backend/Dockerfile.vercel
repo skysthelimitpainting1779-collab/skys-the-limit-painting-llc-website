@@ -1,20 +1,27 @@
-# Use the official Node.js 20 Alpine image for a small footprint
-FROM node:20-alpine
+# Agentic backend — deployed as a Vercel Function from a Dockerfile (OCI image on
+# Fluid compute). See: https://vercel.com/changelog/bring-your-dockerfile-to-vercel-functions
+# The server MUST listen on $PORT (Vercel assigns it). See server.js.
 
-# Set the working directory to /app
+# Pinned base image (no :latest) for reproducible, supply-chain-safe builds.
+FROM node:24-alpine
+
+# Small hardening: run as the built-in non-root `node` user.
+ENV NODE_ENV=production
 WORKDIR /app
 
-# Copy package.json and package-lock.json from the current directory
-COPY package*.json ./
+# Install production deps from the lockfile for deterministic builds.
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 
-# Install only production dependencies
-RUN npm install --omit=dev
+# Copy source and drop privileges.
+COPY --chown=node:node . .
+USER node
 
-# Copy the rest of the backend source code
-COPY . .
+# Documentation only — Vercel routes traffic to $PORT at runtime.
+EXPOSE 3000
 
-# Expose the default port (Vercel overrides this with the PORT env var)
-EXPOSE 80
+# Lightweight liveness probe against the /health endpoint.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- "http://127.0.0.1:${PORT:-3000}/health" || exit 1
 
-# Start the Express server
 CMD ["npm", "start"]
