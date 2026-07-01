@@ -10,7 +10,7 @@ import { isEnabled } from '../lib/flags';
 // site never renders a broken widget when the link isn't configured.
 //
 // Set NEXT_PUBLIC_CALCOM_LINK to your Cal.com path, e.g. "skys-the-limit/estimate".
-const CAL_LINK = process.env.NEXT_PUBLIC_CALCOM_LINK;
+const CAL_LINK = process.env.NEXT_PUBLIC_CALCOM_LINK?.trim() || undefined;
 
 export default function CalBooking() {
   const enabled = isEnabled('calBooking');
@@ -50,6 +50,7 @@ export default function CalBooking() {
             src={`https://cal.com/${CAL_LINK}?embed=true&theme=dark&layout=month_view`}
             className="h-[720px] w-full"
             loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
           />
         </div>
       </div>
