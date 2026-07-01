@@ -3,5 +3,8 @@
 # project's Next.js deploy. Their Dockerfiles are also named plain `Dockerfile`
 # (not `Dockerfile.vercel`) so Vercel's Functions auto-detection doesn't try to
 # provision them, which was timing out on the free plan.
-backend/
-directus/
+#
+# Patterns are root-anchored (leading slash) so they only match the top-level
+# service directories and NOT app code like src/lib/directus/.
+/backend/
+/directus/
