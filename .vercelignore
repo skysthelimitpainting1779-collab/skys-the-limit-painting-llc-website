@@ -1,7 +1,7 @@
-# Exclude standalone container services from the Vercel build context.
-# With "Bring your Dockerfile to Vercel Functions", Vercel auto-detects
-# Dockerfile.vercel and tries to provision containers, which times out on the
-# free plan (BUILD_FAILED: "Resource provisioning timed out"). These services
-# are deployed/hosted separately; the Vercel project only builds the Next.js app.
+# Exclude standalone container services from the Vercel build context. These run
+# separately (Fly/Render/local or opt-in paid Vercel), not as part of this
+# project's Next.js deploy. Their Dockerfiles are also named plain `Dockerfile`
+# (not `Dockerfile.vercel`) so Vercel's Functions auto-detection doesn't try to
+# provision them, which was timing out on the free plan.
 backend/
 directus/
