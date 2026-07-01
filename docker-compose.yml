@@ -1,0 +1,18 @@
+services:
+  directus:
+    image: directus/directus:12
+    ports:
+      - "8055:8055"
+    volumes:
+      - directus-uploads:/directus/uploads
+      - directus-extensions:/directus/extensions
+    env_file:
+      - .env.directus
+    environment:
+      NODE_TLS_REJECT_UNAUTHORIZED: "0"
+    depends_on: []
+    restart: unless-stopped
+
+volumes:
+  directus-uploads:
+  directus-extensions:
