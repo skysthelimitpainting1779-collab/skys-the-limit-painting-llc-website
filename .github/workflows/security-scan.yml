@@ -51,7 +51,20 @@ jobs:
         with:
           fail-on-severity: moderate
 
-  # CodeQL analysis is handled exclusively by codeql.yml ("CodeQL Advanced",
-  # matrix: actions + javascript-typescript + python). A second CodeQL job here
-  # uploads to the same SARIF category and makes the analysis fail, so it lives
-  # in one workflow only.
+  codeql:
+    name: CodeQL
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@51f77329afa6477de8c49fc9c7046c15b9a4e79d # v3.29.5
+        with:
+          languages: javascript-typescript
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@51f77329afa6477de8c49fc9c7046c15b9a4e79d # v3.29.5
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@51f77329afa6477de8c49fc9c7046c15b9a4e79d # v3.29.5

@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
@@ -57,9 +58,19 @@ function verifySignature(req) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
+// Rate limit the remediation endpoint (defense-in-depth on top of the HMAC
+// check) so a leaked/guessed secret can't be used to flood the agent loop.
+const remediateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many remediation requests, slow down.' },
+});
+
 // Self-healing webhook. Triggered by .github/workflows/self-healing.yml.
 // Rejects unsigned/invalid requests; requires REMEDIATE_SECRET to be configured.
-app.post('/api/agent/remediate', (req, res) => {
+app.post('/api/agent/remediate', remediateLimiter, (req, res) => {
   if (!process.env.REMEDIATE_SECRET) {
     return res.status(503).json({ error: 'Remediation disabled: REMEDIATE_SECRET not set.' });
   }
