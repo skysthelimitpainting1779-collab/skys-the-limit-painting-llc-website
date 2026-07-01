@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
+import { createClient } from '../lib/supabase/client';
 
 interface Testimonial {
   id: number;
@@ -14,7 +15,7 @@ interface Testimonial {
   text: string;
 }
 
-const testimonials: Testimonial[] = [
+const FALLBACK_TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
     name: 'Sarah M.',
@@ -50,15 +51,63 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function ReviewCarousel() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(FALLBACK_TESTIMONIALS);
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<'left' | 'right'>('right');
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadTestimonials = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('*')
+          .eq('approved', true)
+          .order('created_at', { ascending: false });
+
+        if (!mounted) {
+          return;
+        }
+
+        if (error || !data || data.length === 0) {
+          setTestimonials(FALLBACK_TESTIMONIALS);
+          return;
+        }
+
+        setTestimonials(data.map((row: any) => ({
+          id: row.id,
+          name: row.name,
+          location: row.location ?? '',
+          project: '',
+          rating: row.rating ?? 5,
+          text: row.quote ?? '',
+        })));
+      } catch {
+        if (mounted) {
+          setTestimonials(FALLBACK_TESTIMONIALS);
+        }
+      }
+    };
+
+    loadTestimonials();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setActiveIndex((prev) => (prev >= testimonials.length ? 0 : prev));
+  }, [testimonials]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       handleNext(true); // auto-play
     }, 8000);
     return () => clearInterval(timer);
-  }, [activeIndex]);
+  }, [activeIndex, testimonials]);
 
   const handlePrev = () => {
     setDirection('left');
@@ -74,7 +123,7 @@ export default function ReviewCarousel() {
     }
   };
 
-  const activeTestimonial = testimonials[activeIndex];
+  const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
 
   const slideVariants = {
     enter: (dir: 'left' | 'right') => ({
@@ -138,7 +187,8 @@ export default function ReviewCarousel() {
           <div>
             <h4 className="text-lg font-black text-white">{activeTestimonial.name}</h4>
             <p className="text-xs text-white font-semibold mt-1">
-              {activeTestimonial.project} &mdash; {activeTestimonial.location}
+              {activeTestimonial.project ? `${activeTestimonial.project} — ` : ''}
+              {activeTestimonial.location}
             </p>
           </div>
 

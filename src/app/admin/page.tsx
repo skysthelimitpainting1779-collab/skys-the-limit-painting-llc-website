@@ -22,6 +22,162 @@ import {
   Edit3 
 } from 'lucide-react';
 
+const MAX_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024;
+const SETTINGS_IMPORT_KEYS = [
+  'company_name',
+  'phone',
+  'email',
+  'logo_url',
+  'primary_color',
+  'tagline',
+  'service_areas',
+  'services',
+  'meta_title_default',
+  'meta_desc_default',
+] as const;
+
+function sanitizeAssetFileName(fileName: string) {
+  return fileName.toLowerCase().replace(/[^a-z0-9.-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '') || 'upload';
+}
+
+function sanitizePreviewUrl(value: string) {
+  if (!value) {
+    return '';
+  }
+
+  try {
+    const url = new URL(value, window.location.origin);
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
+      return url.href;
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
+}
+
+async function uploadCmsAsset(
+  supabase: ReturnType<typeof createClient>,
+  prefix: string,
+  file: File,
+) {
+  const path = `${prefix}/${Date.now()}-${sanitizeAssetFileName(file.name)}`;
+  const { error } = await supabase.storage.from('cms-assets').upload(path, file, {
+    cacheControl: '3600',
+    upsert: false,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { data } = supabase.storage.from('cms-assets').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+function ImageUrlField({
+  supabase,
+  prefix,
+  label,
+  value,
+  onChange,
+  onError,
+  placeholder,
+}: {
+  supabase: ReturnType<typeof createClient>;
+  prefix: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  onError: (message: string) => void;
+  placeholder: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.currentTarget.value = '';
+
+    if (!file) {
+      return;
+    }
+
+    setLocalError(null);
+
+    if (!file.type.startsWith('image/')) {
+      const message = 'Please choose an image file.';
+      setLocalError(message);
+      onError(message);
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_UPLOAD_BYTES) {
+      const message = 'Please choose an image under 10MB.';
+      setLocalError(message);
+      onError(message);
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const url = await uploadCmsAsset(supabase, prefix, file);
+      onChange(url);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Image upload failed.';
+      setLocalError(message);
+      onError(message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="block text-xs font-black text-gray-400">{label}</label>
+      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_96px] md:items-start">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => {
+            setLocalError(null);
+            onChange(e.target.value);
+          }}
+          placeholder={placeholder}
+          className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
+        />
+        <div className="space-y-2">
+          <label className={`flex h-11 cursor-pointer items-center justify-center gap-2 border border-white/10 bg-white/5 px-3 text-[10px] font-black uppercase tracking-widest text-white transition hover:border-white hover:bg-white/10 ${uploading ? 'pointer-events-none opacity-60' : ''}`}>
+            <Upload size={12} />
+            {uploading ? 'Uploading…' : 'Upload'}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="sr-only"
+            />
+          </label>
+          {(() => {
+            const previewSrc = value ? sanitizePreviewUrl(value) : '';
+            return previewSrc ? (
+              <div className="overflow-hidden border border-white/10 bg-[#050505]">
+                <img src={previewSrc} alt={`${label} preview`} className="h-16 w-full object-cover" />
+              </div>
+            ) : null;
+          })()}
+        </div>
+      </div>
+      {localError ? (
+        <p className="text-[10px] font-semibold text-red-400">{localError}</p>
+      ) : (
+        <p className="text-[10px] text-gray-500">PNG, JPG, or WebP up to 10MB.</p>
+      )}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [supabase] = useState(() => createClient());
   const [session, setSession] = useState<any>(null);
@@ -65,6 +221,7 @@ export default function AdminPage() {
   const [newTestimonial, setNewTestimonial] = useState({
     name: '',
     location: '',
+    photo_url: '',
     rating: 5,
     quote: '',
     approved: true
@@ -269,7 +426,12 @@ export default function AdminPage() {
     setSettingsSuccess(null);
     try {
       const parsed = JSON.parse(jsonImportString);
-      const { id, updated_at, ...cleanSettings } = parsed; // strip immutable keys
+      const cleanSettings = SETTINGS_IMPORT_KEYS.reduce<Record<string, unknown>>((acc, key) => {
+        if (Object.prototype.hasOwnProperty.call(parsed, key)) {
+          acc[key] = parsed[key];
+        }
+        return acc;
+      }, {});
       const { error } = await supabase
         .from('settings')
         .upsert({ id: 'default', ...cleanSettings });
@@ -302,13 +464,16 @@ export default function AdminPage() {
     e.preventDefault();
     const { error } = await supabase
       .from('testimonials')
-      .insert([newTestimonial]);
+      .insert([{
+        ...newTestimonial,
+        photo_url: newTestimonial.photo_url || null,
+      }]);
     if (error) {
       console.error('Failed to add testimonial:', error);
       setOpError('Failed to add testimonial: ' + error.message);
       return;
     }
-    setNewTestimonial({ name: '', location: '', rating: 5, quote: '', approved: true });
+    setNewTestimonial({ name: '', location: '', photo_url: '', rating: 5, quote: '', approved: true });
     loadTestimonials();
   };
 
@@ -843,7 +1008,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.company_name}
-                        onChange={(e) => setCompanySettings({...companySettings, company_name: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, company_name: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -852,7 +1017,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.phone}
-                        onChange={(e) => setCompanySettings({...companySettings, phone: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, phone: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -861,8 +1026,19 @@ export default function AdminPage() {
                       <input 
                         type="email"
                         value={companySettings.email}
-                        onChange={(e) => setCompanySettings({...companySettings, email: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, email: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <ImageUrlField
+                        supabase={supabase}
+                        prefix="branding"
+                        label="Logo URL"
+                        value={companySettings.logo_url}
+                        onChange={(value) => setCompanySettings((prev) => ({...prev, logo_url: value}))}
+                        onError={setOpError}
+                        placeholder="/images/brand/logo.svg"
                       />
                     </div>
                     <div>
@@ -870,7 +1046,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.primary_color}
-                        onChange={(e) => setCompanySettings({...companySettings, primary_color: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, primary_color: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -879,7 +1055,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.tagline}
-                        onChange={(e) => setCompanySettings({...companySettings, tagline: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, tagline: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -888,7 +1064,7 @@ export default function AdminPage() {
                       <input 
                         type="text"
                         value={companySettings.meta_title_default}
-                        onChange={(e) => setCompanySettings({...companySettings, meta_title_default: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, meta_title_default: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -897,7 +1073,7 @@ export default function AdminPage() {
                       <textarea 
                         rows={3}
                         value={companySettings.meta_desc_default}
-                        onChange={(e) => setCompanySettings({...companySettings, meta_desc_default: e.target.value})}
+                        onChange={(e) => setCompanySettings((prev) => ({...prev, meta_desc_default: e.target.value}))}
                         className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
@@ -970,7 +1146,7 @@ export default function AdminPage() {
                       type="text" 
                       required
                       value={newTestimonial.name}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, name: e.target.value})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, name: e.target.value}))}
                       placeholder="Jane Doe"
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -981,17 +1157,27 @@ export default function AdminPage() {
                     <input 
                       type="text" 
                       value={newTestimonial.location}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, location: e.target.value})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, location: e.target.value}))}
                       placeholder="Eagan, MN"
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
                   </div>
 
+                  <ImageUrlField
+                    supabase={supabase}
+                    prefix="testimonials"
+                    label="Photo URL"
+                    value={newTestimonial.photo_url}
+                    onChange={(value) => setNewTestimonial((prev) => ({...prev, photo_url: value}))}
+                    onError={setOpError}
+                    placeholder="/images/testimonials/jane-doe.webp"
+                  />
+
                   <div>
                     <label className="block text-xs font-black text-gray-400 mb-2">Rating (1-5 Stars)</label>
                     <select 
                       value={newTestimonial.rating}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, rating: parseInt(e.target.value)})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, rating: parseInt(e.target.value)}))}
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     >
                       <option value={5}>5 Stars ★★★★★</option>
@@ -1008,7 +1194,7 @@ export default function AdminPage() {
                       rows={4}
                       required
                       value={newTestimonial.quote}
-                      onChange={(e) => setNewTestimonial({...newTestimonial, quote: e.target.value})}
+                      onChange={(e) => setNewTestimonial((prev) => ({...prev, quote: e.target.value}))}
                       placeholder="Anthony did an excellent job. Fast, accurate, and kept prep priority."
                       className="w-full bg-[#050505] border border-white/10 p-3 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1093,7 +1279,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.title}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, title: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, title: e.target.value}))}
                       placeholder="Cabinet Finishing / Exterior Siding"
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1103,7 +1289,7 @@ export default function AdminPage() {
                     <label className="block text-xs font-black text-gray-400 mb-1.5">Category</label>
                     <select 
                       value={newPortfolio.category}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, category: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, category: e.target.value}))}
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     >
                       <option value="Commercial">Commercial / Public-Sector</option>
@@ -1117,7 +1303,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.location}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, location: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, location: e.target.value}))}
                       placeholder="Inver Grove Heights, MN"
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1128,7 +1314,7 @@ export default function AdminPage() {
                     <textarea 
                       rows={2} required
                       value={newPortfolio.problem}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, problem: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, problem: e.target.value}))}
                       placeholder="Faded siding and wood rot details requiring deep stabilizing repairs."
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1139,7 +1325,7 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.prepInput}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, prepInput: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, prepInput: e.target.value}))}
                       placeholder="Sanding, Priming, Masking, Wood stabilization"
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
@@ -1150,42 +1336,45 @@ export default function AdminPage() {
                     <input 
                       type="text" required
                       value={newPortfolio.result}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, result: e.target.value})}
+                      onChange={(e) => setNewPortfolio((prev) => ({...prev, result: e.target.value}))}
                       placeholder="Durable, gorgeous finish with weather-stabilized defense."
                       className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-gray-400 mb-1.5">Single Image Fallback URL</label>
-                    <input 
-                      type="text"
+                    <ImageUrlField
+                      supabase={supabase}
+                      prefix="portfolio"
+                      label="Single Image Fallback URL"
                       value={newPortfolio.image_url}
-                      onChange={(e) => setNewPortfolio({...newPortfolio, image_url: e.target.value})}
+                      onChange={(value) => setNewPortfolio((prev) => ({...prev, image_url: value}))}
+                      onError={setOpError}
                       placeholder="/images/services/commercial/case-fallback.webp"
-                      className="w-full bg-[#050505] border border-white/10 p-2.5 text-xs text-white rounded-none focus:outline-none focus:border-white"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-black text-gray-400 mb-1">Before Img URL</label>
-                      <input 
-                        type="text"
+                      <ImageUrlField
+                        supabase={supabase}
+                        prefix="portfolio"
+                        label="Before Img URL"
                         value={newPortfolio.before_image_url}
-                        onChange={(e) => setNewPortfolio({...newPortfolio, before_image_url: e.target.value})}
+                        onChange={(value) => setNewPortfolio((prev) => ({...prev, before_image_url: value}))}
+                        onError={setOpError}
                         placeholder="/images/before.webp"
-                        className="w-full bg-[#050505] border border-white/10 p-2 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-gray-400 mb-1">After Img URL</label>
-                      <input 
-                        type="text"
+                      <ImageUrlField
+                        supabase={supabase}
+                        prefix="portfolio"
+                        label="After Img URL"
                         value={newPortfolio.after_image_url}
-                        onChange={(e) => setNewPortfolio({...newPortfolio, after_image_url: e.target.value})}
+                        onChange={(value) => setNewPortfolio((prev) => ({...prev, after_image_url: value}))}
+                        onError={setOpError}
                         placeholder="/images/after.webp"
-                        className="w-full bg-[#050505] border border-white/10 p-2 text-xs text-white rounded-none focus:outline-none focus:border-white"
                       />
                     </div>
                   </div>
