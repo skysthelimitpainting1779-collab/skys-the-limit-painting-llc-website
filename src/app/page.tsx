@@ -2,12 +2,19 @@ import type { Metadata } from 'next';
 import HomeClient from './HomeClient';
 
 export const metadata: Metadata = {
-  title:
-    "Sky's the Limit Painting LLC | Prep-First Painting Contractor Twin Cities",
+  title: "Prep-First Painting Contractor Twin Cities | Sky's the Limit Painting LLC",
   description:
-    'Owner-operated Minnesota Journeyworker painter delivering meticulous preparation and lasting finishes for homes, businesses, and public facilities across Minneapolis, St. Paul, and the Twin Cities metro. Get your free estimate today. (651) 410-4196',
+    "Owner-operated Twin Cities painting contractor for homes, businesses, and public facilities. Interior, exterior, and striping work with meticulous prep, insured coverage, and fast free estimates.",
   alternates: {
-    canonical: 'https://www.skysthelimitpaintingllc.com',
+    canonical: "https://www.skysthelimitpaintingllc.com",
+  },
+  openGraph: {
+    type: "website",
+    title: "Prep-First Painting Contractor Twin Cities | Sky's the Limit Painting LLC",
+    description:
+      "Owner-operated Twin Cities painting contractor for homes, businesses, and public facilities. Meticulous prep, insured coverage, and fast free estimates.",
+    url: "https://www.skysthelimitpaintingllc.com",
+    images: [{ url: "/brand/generated/sky-local-authority.webp", width: 1200, height: 630 }],
   },
 };
 

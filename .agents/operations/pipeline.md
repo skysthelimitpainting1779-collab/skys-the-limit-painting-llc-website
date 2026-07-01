@@ -1,6 +1,6 @@
 ---
 type: ops-control
-title: 'Lead Pipeline State'
+title: "Lead Pipeline State"
 tags: [pipeline, leads, crm, hubspot, operations, company-os]
 last_sync: 2026-06-24
 ---
@@ -16,14 +16,14 @@ last_sync: 2026-06-24
 INTAKE → CRM_RECONCILIATION → ESTIMATE_DRAFTING → APPROVAL_WAITPOINT → CLOSED_WON / CLOSED_LOST
 ```
 
-| Stage                | Description                                                | SLA       |
-| -------------------- | ---------------------------------------------------------- | --------- |
-| `intake`             | Lead received from `/api/leads`. Saved to Supabase.        | Immediate |
-| `crm_reconciliation` | HubSpot contact upserted (create or patch). Webhook fired. | < 30s     |
-| `estimate_drafting`  | Agent drafts estimate response in `.agents/approvals/`.    | < 4h      |
-| `approval_waitpoint` | Human reviews and approves drafted estimate.               | < 24h     |
-| `closed_won`         | Estimate accepted. Job scheduled.                          | —         |
-| `closed_lost`        | Lead did not convert. Reason logged.                       | —         |
+| Stage | Description | SLA |
+|---|---|---|
+| `intake` | Lead received from `/api/leads`. Saved to Supabase. | Immediate |
+| `crm_reconciliation` | HubSpot contact upserted (create or patch). Webhook fired. | < 30s |
+| `estimate_drafting` | Agent drafts estimate response in `.agents/approvals/`. | < 4h |
+| `approval_waitpoint` | Human reviews and approves drafted estimate. | < 24h |
+| `closed_won` | Estimate accepted. Job scheduled. | — |
+| `closed_lost` | Lead did not convert. Reason logged. | — |
 
 ---
 
@@ -31,9 +31,9 @@ INTAKE → CRM_RECONCILIATION → ESTIMATE_DRAFTING → APPROVAL_WAITPOINT → C
 
 <!-- AUTO-MANAGED: harness-ops.js writes/updates rows below. Do not edit manually. -->
 
-| Lead ID                | Name           | Market      | Stage                | Submitted At             | Updated At               | HubSpot Synced | Notes                                                 |
-| ---------------------- | -------------- | ----------- | -------------------- | ------------------------ | ------------------------ | -------------- | ----------------------------------------------------- |
-| SKY-MOCK-1782332669088 | Jane Homeowner | Residential | `approval_waitpoint` | 2026-06-24T20:24:29.089Z | 2026-06-24T20:24:29.137Z | ❌             | Awaiting approval: ESTIMATE-SKY-MOCK-1782332669088.md |
+| Lead ID | Name | Market | Stage | Submitted At | Updated At | HubSpot Synced | Notes |
+|---|---|---|---|---|---|---|---|
+| SKY-MOCK-1782332669088 | Jane Homeowner | Residential | `approval_waitpoint` | 2026-06-24T20:24:29.089Z | 2026-06-24T20:24:29.137Z | ❌ | Awaiting approval: ESTIMATE-SKY-MOCK-1782332669088.md |
 
 ---
 
@@ -47,8 +47,8 @@ INTAKE → CRM_RECONCILIATION → ESTIMATE_DRAFTING → APPROVAL_WAITPOINT → C
 
 ## Closed Pipeline (Last 30 Days)
 
-| Lead ID      | Name | Outcome | Job Value | Closed At |
-| ------------ | ---- | ------- | --------- | --------- |
-| _(None yet)_ | —    | —       | —         | —         |
+| Lead ID | Name | Outcome | Job Value | Closed At |
+|---|---|---|---|---|
+| *(None yet)* | — | — | — | — |
 
-_Last sync: 2026-06-24_ 🧬
+*Last sync: 2026-06-24* 🧬

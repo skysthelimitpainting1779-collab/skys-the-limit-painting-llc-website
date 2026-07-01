@@ -15,43 +15,17 @@ interface LeadFormProps {
 
 type Status = 'idle' | 'submitting' | 'sent' | 'fallback' | 'error';
 
-const projectOptions = [
-  'Interior',
-  'Exterior',
-  'Facility',
-  'Striping',
-  'Pavement Marking',
-  'Other',
-];
-const propertyOptions = [
-  'Single-family home',
-  'Townhome / condo',
-  'Retail / storefront',
-  'Office / commercial',
-  'Facility / public property',
-  'Other',
-];
+const projectOptions = ['Interior', 'Exterior', 'Facility', 'Striping', 'Pavement Marking', 'Other'];
+const propertyOptions = ['Single-family home', 'Townhome / condo', 'Retail / storefront', 'Office / commercial', 'Facility / public property', 'Other'];
 const timelineOptions = ['ASAP', '1-4 weeks', '1-3 months', 'Planning ahead'];
-const budgetOptions = [
-  'Under $2,500',
-  '$2,500-$7,500',
-  '$7,500-$20,000',
-  '$20,000+',
-  'Not sure yet',
-];
+const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,000+', 'Not sure yet'];
 const contactMethods = ['Call', 'Text', 'Email'];
 
-const labelClass = 'block text-xs font-black  ] text-white mb-2';
-const fieldClass =
-  'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-white focus-visible:ring-2 focus-visible:ring-[white]/20 text-base rounded-none';
-const selectButtonClass =
-  'border p-3.5 text-center text-xs font-black   transition-all duration-200 cursor-pointer rounded-none';
+const labelClass = 'block text-xs font-black text-white mb-2';
+const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-white focus-visible:ring-2 focus-visible:ring-[white]/20 text-base rounded-none';
+const selectButtonClass = 'border p-3.5 text-center text-xs font-black   transition-all duration-200 cursor-pointer rounded-none';
 
-export default function LeadForm({
-  source,
-  defaultMarket = 'Residential',
-  compact = false,
-}: LeadFormProps) {
+export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
@@ -80,10 +54,7 @@ export default function LeadForm({
     website: '',
   });
 
-  const utm = useMemo(
-    () => (typeof window === 'undefined' ? null : readUtmParams()),
-    []
-  );
+  const utm = useMemo(() => (typeof window === 'undefined' ? null : readUtmParams()), []);
 
   useEffect(() => {
     const syncOfflineLeads = async () => {
@@ -105,25 +76,17 @@ export default function LeadForm({
               body: JSON.stringify(lead),
             });
             if (!res.ok) {
-              console.warn(
-                `[Offline Sync] Lead delivery returned ${res.status}, will retry later`
-              );
+              console.warn(`[Offline Sync] Lead delivery returned ${res.status}, will retry later`);
               remaining.push(lead);
             }
           } catch (fetchErr) {
-            console.warn(
-              '[Offline Sync] Network error syncing lead, will retry later:',
-              fetchErr
-            );
+            console.warn('[Offline Sync] Network error syncing lead, will retry later:', fetchErr);
             remaining.push(lead);
           }
         }
         if (remaining.length > 0) {
           localStorage.setItem('pending_leads', JSON.stringify(remaining));
-          trackEvent('lead_offline_sync_partial', {
-            synced: leads.length - remaining.length,
-            remaining: remaining.length,
-          });
+          trackEvent('lead_offline_sync_partial', { synced: leads.length - remaining.length, remaining: remaining.length });
         } else {
           localStorage.removeItem('pending_leads');
           trackEvent('lead_offline_sync_success', { count: leads.length });
@@ -157,19 +120,19 @@ export default function LeadForm({
 
     setUploading(true);
     setValidationError('');
-
+    
     const urls: string[] = [...uploadedFiles];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
+      
       if (file.size > 10 * 1024 * 1024) {
         setValidationError(`File ${file.name} is too large. Max size is 10MB.`);
         continue;
       }
 
       setUploadProgress(`Uploading ${file.name} (${i + 1}/${files.length})...`);
-
+      
       const fileExt = file.name.split('.').pop() || 'jpg';
       const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
       const bucketName = 'lead-photos';
@@ -225,16 +188,9 @@ export default function LeadForm({
   const isStepValid = (step: number) => {
     switch (step) {
       case 0:
-        return (
-          !!formData.market && !!formData.propertyType && !!formData.city.trim()
-        );
+        return !!formData.market && !!formData.propertyType && !!formData.city.trim();
       case 1:
-        return (
-          !!formData.projectType &&
-          !!formData.timeline &&
-          !!formData.budget &&
-          !!formData.notes.trim()
-        );
+        return !!formData.projectType && !!formData.timeline && !!formData.budget && !!formData.notes.trim();
       case 2:
         return (
           !!formData.name.trim() &&
@@ -258,16 +214,12 @@ export default function LeadForm({
         if (!formData.projectType) return 'Please select a project type.';
         if (!formData.timeline) return 'Please select a timeline.';
         if (!formData.budget) return 'Please select a budget range.';
-        if (!formData.notes.trim())
-          return 'Scope notes are required to check details.';
+        if (!formData.notes.trim()) return 'Scope notes are required to check details.';
         return '';
       case 2:
         if (!formData.name.trim()) return 'Full name is required.';
         if (!formData.phone.trim()) return 'Phone number is required.';
-        if (
-          !formData.email.trim() ||
-          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())
-        ) {
+        if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
           return 'Please enter a valid email address.';
         }
         if (!formData.contactMethod) return 'Please select a contact method.';
@@ -313,16 +265,11 @@ export default function LeadForm({
     const botHoneypot = formData.bot_honeypot;
     if (botHoneypot) {
       setStatus('sent');
-      setMessage(
-        'Your estimate request was received. Sky’s the Limit can follow up by your preferred contact method, confirm scope, and walk through scheduling next steps.'
-      );
+      setMessage('Your estimate request was received. Sky’s the Limit can follow up by your preferred contact method, confirm scope, and walk through scheduling next steps.');
       return;
     }
 
-    const referrerEmail =
-      typeof window !== 'undefined'
-        ? localStorage.getItem('referrer_email')
-        : null;
+    const referrerEmail = typeof window !== 'undefined' ? localStorage.getItem('referrer_email') : null;
     const payload = {
       source,
       page: window.location.pathname,
@@ -341,10 +288,7 @@ export default function LeadForm({
       notes: formData.notes,
       company: '',
       website: formData.website,
-      hubspotutk:
-        typeof document !== 'undefined'
-          ? document.cookie.match(/hubspotutk=([^;]+)/)?.[1]
-          : undefined,
+      hubspotutk: typeof document !== 'undefined' ? document.cookie.match(/hubspotutk=([^;]+)/)?.[1] : undefined,
       ...(referrerEmail ? { referrerEmail } : {}),
       ...utm,
     };
@@ -355,21 +299,13 @@ export default function LeadForm({
     }
 
     if (typeof window !== 'undefined' && !navigator.onLine) {
-      const pendingLeads = JSON.parse(
-        localStorage.getItem('pending_leads') || '[]'
-      );
+      const pendingLeads = JSON.parse(localStorage.getItem('pending_leads') || '[]');
       pendingLeads.push(payload);
       localStorage.setItem('pending_leads', JSON.stringify(pendingLeads));
 
       setStatus('fallback');
-      setMessage(
-        'Offline Mode: Your estimate request was saved locally. It will sync automatically as soon as your internet connection is restored.'
-      );
-      trackEvent('lead_form_submit_error', {
-        source,
-        market: payload.market,
-        reason: 'offline',
-      });
+      setMessage('Offline Mode: Your estimate request was saved locally. It will sync automatically as soon as your internet connection is restored.');
+      trackEvent('lead_form_submit_error', { source, market: payload.market, reason: 'offline' });
       return;
     }
 
@@ -385,35 +321,16 @@ export default function LeadForm({
 
       if (response.ok && result?.ok === true) {
         setStatus('sent');
-        setMessage(
-          'Your estimate request was received. Sky’s the Limit can follow up by your preferred contact method, confirm scope, and walk through scheduling next steps.'
-        );
-        trackEvent('lead_form_submit_success', {
-          source,
-          market: payload.market,
-        });
+        setMessage('Your estimate request was received. Sky’s the Limit can follow up by your preferred contact method, confirm scope, and walk through scheduling next steps.');
+        trackEvent('lead_form_submit_success', { source, market: payload.market });
         return;
       }
 
-      if (
-        response.status === 502 ||
-        response.status === 501 ||
-        result?.fallback === 'email'
-      ) {
+      if (response.status === 502 || response.status === 501 || result?.fallback === 'email') {
         setStatus('fallback');
-        setMessage(
-          'Email delivery needs provider setup. Open the prepared email draft to send your request now.'
-        );
-        trackEvent('lead_form_submit_error', {
-          source,
-          market: payload.market,
-          reason: 'email_provider_missing',
-        });
-        trackEvent('lead_mailto_fallback_opened', {
-          source,
-          market: payload.market,
-          reason: 'email_provider_missing',
-        });
+        setMessage('Email delivery needs provider setup. Open the prepared email draft to send your request now.');
+        trackEvent('lead_form_submit_error', { source, market: payload.market, reason: 'email_provider_missing' });
+        trackEvent('lead_mailto_fallback_opened', { source, market: payload.market, reason: 'email_provider_missing' });
         window.location.href = buildEstimateMailto({
           Source: source,
           Name: payload.name,
@@ -434,20 +351,11 @@ export default function LeadForm({
       }
 
       setStatus('error');
-      setMessage(
-        result?.error ||
-          'The request could not be sent. Please call, text, or email Anthony directly.'
-      );
-      trackEvent('lead_form_submit_error', {
-        source,
-        market: payload.market,
-        status: response.status,
-      });
+      setMessage(result?.error || 'The request could not be sent. Please call, text, or email Anthony directly.');
+      trackEvent('lead_form_submit_error', { source, market: payload.market, status: response.status });
     } catch {
       setStatus('fallback');
-      setMessage(
-        'The lead endpoint did not respond. Open the prepared email draft or call/text Anthony directly.'
-      );
+      setMessage('The lead endpoint did not respond. Open the prepared email draft or call/text Anthony directly.');
       trackEvent('lead_form_submit_error', { source, reason: 'network' });
       trackEvent('lead_mailto_fallback_opened', { source, reason: 'network' });
       window.location.href = buildEstimateMailto({
@@ -481,9 +389,7 @@ export default function LeadForm({
     return (
       <div className="border border-white/30 bg-[#0B0B0D]/50 p-8 text-center space-y-6 rounded-none">
         <h4 className="text-2xl font-black text-white">Inquiry Dispatched</h4>
-        <p className="text-sm leading-relaxed text-gray-300 max-w-md mx-auto">
-          {message}
-        </p>
+        <p className="text-sm leading-relaxed text-gray-300 max-w-md mx-auto">{message}</p>
         <div className="pt-2">
           <button
             onClick={() => {
@@ -537,32 +443,10 @@ export default function LeadForm({
   };
 
   return (
-    <form
-      className="space-y-6 relative rounded-none"
-      onSubmit={handleSubmit}
-      onKeyDown={handleKeyDown}
-      aria-busy={status === 'submitting'}
-    >
+    <form className="space-y-6 relative rounded-none" onSubmit={handleSubmit} onKeyDown={handleKeyDown} aria-busy={status === 'submitting'}>
       {/* Honeypots */}
-      <input
-        type="text"
-        style={{ display: 'none' }}
-        name="bot_honeypot"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        value={formData.bot_honeypot}
-        onChange={(e) => updateField('bot_honeypot', e.target.value)}
-      />
-      <input
-        name="website"
-        className="hidden"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        value={formData.website}
-        onChange={(e) => updateField('website', e.target.value)}
-      />
+      <input type="text" style={{ display: 'none' }} name="bot_honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" value={formData.bot_honeypot} onChange={(e) => updateField('bot_honeypot', e.target.value)} />
+      <input name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" value={formData.website} onChange={(e) => updateField('website', e.target.value)} />
 
       {/* Modern Progress Line */}
       <div>
@@ -570,23 +454,15 @@ export default function LeadForm({
           <span className="text-xs font-semibold text-white">
             Step {currentStep + 1} of 3 // {stepTitles[currentStep]}
           </span>
-          <span className="text-xs font-bold text-gray-400">
-            {progressPercent}%
-          </span>
+          <span className="text-xs font-bold text-gray-400">{progressPercent}%</span>
         </div>
         <div className="h-1 bg-white/10 w-full rounded-none">
-          <div
-            className="h-full bg-white transition-all duration-300 rounded-none"
-            style={{ width: `${progressPercent}%` }}
-          ></div>
+          <div className="h-full bg-white transition-all duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
         </div>
       </div>
 
       {/* Dynamic Animated Core Panel */}
-      <motion.div
-        layout
-        className="overflow-hidden bg-white/[0.02] border border-white/5 p-6 space-y-6 relative"
-      >
+      <motion.div layout className="overflow-hidden bg-white/[0.02] border border-white/5 p-6 space-y-6 relative">
         <AnimatePresence mode="popLayout" initial={false} custom={direction}>
           <motion.div
             key={currentStep}
@@ -604,33 +480,23 @@ export default function LeadForm({
                 <div className="space-y-2">
                   <span className={labelClass}>Market Segment</span>
                   <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-                    {['Residential', 'Commercial', 'Public Sector'].map(
-                      (option) => (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() => updateField('market', option as any)}
-                          className={`${selectButtonClass} ${
-                            formData.market === option
-                              ? 'border-white bg-white/10 text-white'
-                              : 'border-white/10 bg-white/5 text-white hover:border-white/30'
-                          }`}
-                        >
-                          {option}
-                        </button>
-                      )
-                    )}
+                    {['Residential', 'Commercial', 'Public Sector'].map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => updateField('market', option as any)}
+                        className={`${selectButtonClass} ${
+                          formData.market === option
+                            ? 'border-white bg-white/10 text-white'
+                            : 'border-white/10 bg-white/5 text-white hover:border-white/30'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
                   </div>
                   {/* Select for tests & accessibility */}
-                  <select
-                    name="market"
-                    aria-label="Market"
-                    value={formData.market}
-                    onChange={(e) =>
-                      updateField('market', e.target.value as any)
-                    }
-                    className="hidden"
-                  >
+                  <select name="market" aria-label="Market" value={formData.market} onChange={(e) => updateField('market', e.target.value as any)} className="hidden">
                     <option value="Residential">Residential</option>
                     <option value="Commercial">Commercial</option>
                     <option value="Public Sector">Public Sector</option>
@@ -655,28 +521,14 @@ export default function LeadForm({
                       </button>
                     ))}
                   </div>
-                  <select
-                    name="propertyType"
-                    aria-label="Property type"
-                    value={formData.propertyType}
-                    onChange={(e) =>
-                      updateField('propertyType', e.target.value)
-                    }
-                    className="hidden"
-                  >
+                  <select name="propertyType" aria-label="Property type" value={formData.propertyType} onChange={(e) => updateField('propertyType', e.target.value)} className="hidden">
                     <option value="">Select Class</option>
-                    {propertyOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
+                    {propertyOptions.map((option) => <option key={option} value={option}>{option}</option>)}
                   </select>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="city-input" className={labelClass}>
-                    Which city is the property in?
-                  </label>
+                  <label htmlFor="city-input" className={labelClass}>Which city is the property in?</label>
                   <input
                     id="city-input"
                     name="city"
@@ -703,17 +555,11 @@ export default function LeadForm({
                       name="projectType"
                       aria-label="Project type"
                       value={formData.projectType}
-                      onChange={(e) =>
-                        updateField('projectType', e.target.value)
-                      }
+                      onChange={(e) => updateField('projectType', e.target.value)}
                       className={fieldClass}
                     >
                       <option value="">Select Type</option>
-                      {projectOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
+                      {projectOptions.map((option) => <option key={option} value={option}>{option}</option>)}
                     </select>
                   </div>
 
@@ -727,11 +573,7 @@ export default function LeadForm({
                       className={fieldClass}
                     >
                       <option value="">Select Timeline</option>
-                      {timelineOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
+                      {timelineOptions.map((option) => <option key={option} value={option}>{option}</option>)}
                     </select>
                   </div>
 
@@ -745,19 +587,13 @@ export default function LeadForm({
                       className={fieldClass}
                     >
                       <option value="">Select Budget</option>
-                      {budgetOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
+                      {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="notes-input" className={labelClass}>
-                    Project details
-                  </label>
+                  <label htmlFor="notes-input" className={labelClass}>Project details</label>
                   <textarea
                     id="notes-input"
                     name="notes"
@@ -772,9 +608,7 @@ export default function LeadForm({
                 </div>
 
                 <div className="space-y-2">
-                  <span className={labelClass}>
-                    Photo Documentation (Optional)
-                  </span>
+                  <span className={labelClass}>Photo Documentation (Optional)</span>
                   <div className="border border-dashed border-white/10 bg-white/5 p-4 text-center hover:border-white transition-colors relative cursor-pointer group rounded-none">
                     <input
                       id="file-uploader"
@@ -786,16 +620,9 @@ export default function LeadForm({
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center justify-center space-y-1">
-                      <Upload
-                        size={24}
-                        className="text-gray-400 group-hover:text-white transition-colors"
-                      />
-                      <p className="text-xs font-bold text-white">
-                        Drag photos here or tap to select
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        Max size 10MB per image
-                      </p>
+                      <Upload size={24} className="text-gray-400 group-hover:text-white transition-colors" />
+                      <p className="text-xs font-bold text-white">Drag photos here or tap to select</p>
+                      <p className="text-xs text-gray-400">Max size 10MB per image</p>
                     </div>
                   </div>
 
@@ -809,15 +636,8 @@ export default function LeadForm({
                   {uploadedFiles.length > 0 && (
                     <div className="grid grid-cols-4 gap-2.5 pt-1">
                       {uploadedFiles.map((url, idx) => (
-                        <div
-                          key={url}
-                          className="relative aspect-square border border-white/10 bg-white/5 overflow-hidden rounded-none"
-                        >
-                          <img
-                            src={url}
-                            alt={`Uploaded project photo ${idx + 1}`}
-                            className="w-full h-full object-cover"
-                          />
+                        <div key={url} className="relative aspect-square border border-white/10 bg-white/5 overflow-hidden rounded-none">
+                          <img src={url} alt={`Uploaded project photo ${idx + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
                             onClick={() => handleRemovePhoto(idx)}
@@ -831,10 +651,7 @@ export default function LeadForm({
                   )}
 
                   <div className="pt-2">
-                    <label
-                      htmlFor="photos-input"
-                      className="block text-xs font-semibold text-[#c9c1b4] mb-1.5"
-                    >
+                    <label htmlFor="photos-input" className="block text-xs font-semibold text-[#c9c1b4] mb-1.5">
                       Or paste a cloud link (Google Drive, Dropbox, etc.)
                     </label>
                     <input
@@ -857,9 +674,7 @@ export default function LeadForm({
               <div className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <label htmlFor="name-input" className={labelClass}>
-                      Full name
-                    </label>
+                    <label htmlFor="name-input" className={labelClass}>Full name</label>
                     <input
                       id="name-input"
                       name="name"
@@ -875,9 +690,7 @@ export default function LeadForm({
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="phone-input" className={labelClass}>
-                      Phone
-                    </label>
+                    <label htmlFor="phone-input" className={labelClass}>Phone</label>
                     <input
                       id="phone-input"
                       name="phone"
@@ -896,9 +709,7 @@ export default function LeadForm({
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <label htmlFor="email-input" className={labelClass}>
-                      Email
-                    </label>
+                    <label htmlFor="email-input" className={labelClass}>Email</label>
                     <input
                       id="email-input"
                       name="email"
@@ -919,29 +730,19 @@ export default function LeadForm({
                       name="contactMethod"
                       aria-label="Preferred contact method"
                       value={formData.contactMethod}
-                      onChange={(e) =>
-                        updateField('contactMethod', e.target.value)
-                      }
+                      onChange={(e) => updateField('contactMethod', e.target.value)}
                       className={fieldClass}
                     >
                       <option value="">Select Method</option>
-                      {contactMethods.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
+                      {contactMethods.map((option) => <option key={option} value={option}>{option}</option>)}
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between items-baseline">
-                    <label htmlFor="address-input" className={labelClass}>
-                      Project address or cross streets
-                    </label>
-                    <span className="text-xs text-gray-400 font-bold">
-                      Optional
-                    </span>
+                    <label htmlFor="address-input" className={labelClass}>Project address or cross streets</label>
+                    <span className="text-xs text-gray-400 font-bold">Optional</span>
                   </div>
                   <input
                     id="address-input"
@@ -951,9 +752,7 @@ export default function LeadForm({
                     aria-label="Project address or cross streets"
                     autoComplete="street-address"
                     value={formData.projectAddress}
-                    onChange={(e) =>
-                      updateField('projectAddress', e.target.value)
-                    }
+                    onChange={(e) => updateField('projectAddress', e.target.value)}
                     className={fieldClass}
                   />
                 </div>
@@ -965,10 +764,7 @@ export default function LeadForm({
 
       {/* Validation Feedback */}
       {validationError && (
-        <p
-          className="text-xs font-bold text-white border-l-2 border-white pl-3"
-          role="alert"
-        >
+        <p className="text-xs font-bold text-white border-l-2 border-white pl-3" role="alert">
           {validationError}
         </p>
       )}
@@ -999,22 +795,15 @@ export default function LeadForm({
             disabled={status === 'submitting'}
             className="flex-1 inline-flex items-center justify-center bg-white hover:bg-white text-[#050505] px-6 py-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer rounded-none"
           >
-            {status === 'submitting'
-              ? 'Sending...'
-              : 'Request My Free Estimate'}{' '}
-            <ArrowRight size={18} className="ml-2" />
+            {status === 'submitting' ? 'Sending...' : 'Request My Free Estimate'} <ArrowRight size={18} className="ml-2" />
           </button>
         )}
       </div>
 
       {/* Trust Badge Footer */}
-      <p
-        className="flex items-start gap-2 text-xs font-semibold text-gray-400 leading-relaxed"
-        aria-live="polite"
-      >
+      <p className="flex items-start gap-2 text-xs font-semibold text-gray-400 leading-relaxed" aria-live="polite">
         <ShieldCheck size={16} className="mt-0.5 shrink-0 text-white" />
-        {message ||
-          'We respect your time and inbox. You\u2019ll only hear from us regarding your painting project.'}
+        {message || 'We respect your time and inbox. You\u2019ll only hear from us regarding your painting project.'}
       </p>
     </form>
   );

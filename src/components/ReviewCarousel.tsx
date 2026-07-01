@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { trackEvent } from '../lib/analytics';
+import { createClient } from '../lib/supabase/client';
 
 interface Testimonial {
   id: number;
@@ -14,14 +15,14 @@ interface Testimonial {
   text: string;
 }
 
-const testimonials: Testimonial[] = [
+const FALLBACK_TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
     name: 'Sarah M.',
     location: 'Inver Grove Heights, MN',
     project: 'Interior Painting & Cabinets',
     rating: 5,
-    text: 'Anthony is absolutely top-tier. Clean prep, perfect masking, and sharp trim lines. He painted our entire main level and kitchen cabinets. The finish is immaculate and he respected our home throughout.',
+    text: "Anthony is absolutely top-tier. Clean prep, perfect masking, and sharp trim lines. He painted our entire main level and kitchen cabinets. The finish is immaculate and he respected our home throughout.",
   },
   {
     id: 2,
@@ -37,7 +38,7 @@ const testimonials: Testimonial[] = [
     location: 'Eagan, MN',
     project: 'Full Exterior Painting',
     rating: 5,
-    text: 'The smartest decision we made was hiring Anthony for our home exterior. The prep work alone—scraping, sanding, and priming—was incredibly thorough. The final paint looks stunning. High craftsmanship.',
+    text: "The smartest decision we made was hiring Anthony for our home exterior. The prep work alone—scraping, sanding, and priming—was incredibly thorough. The final paint looks stunning. High craftsmanship.",
   },
   {
     id: 4,
@@ -45,20 +46,68 @@ const testimonials: Testimonial[] = [
     location: 'Woodbury, MN',
     project: 'Kitchen Cabinet Refinishing',
     rating: 5,
-    text: 'Pristine cabinet spraying! Our kitchen cabinets look brand new. Perfect adhesion with a hard, dust-free spray finish. Anthony kept us updated every step. Excellent service and worth every penny.',
+    text: "Pristine cabinet spraying! Our kitchen cabinets look brand new. Perfect adhesion with a hard, dust-free spray finish. Anthony kept us updated every step. Excellent service and worth every penny.",
   },
 ];
 
 export default function ReviewCarousel() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(FALLBACK_TESTIMONIALS);
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<'left' | 'right'>('right');
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadTestimonials = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('*')
+          .eq('approved', true)
+          .order('created_at', { ascending: false });
+
+        if (!mounted) {
+          return;
+        }
+
+        if (error || !data || data.length === 0) {
+          setTestimonials(FALLBACK_TESTIMONIALS);
+          return;
+        }
+
+        setTestimonials(data.map((row: any) => ({
+          id: row.id,
+          name: row.name,
+          location: row.location ?? '',
+          project: '',
+          rating: row.rating ?? 5,
+          text: row.quote ?? '',
+        })));
+      } catch {
+        if (mounted) {
+          setTestimonials(FALLBACK_TESTIMONIALS);
+        }
+      }
+    };
+
+    loadTestimonials();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setActiveIndex((prev) => (prev >= testimonials.length ? 0 : prev));
+  }, [testimonials]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       handleNext(true); // auto-play
     }, 8000);
     return () => clearInterval(timer);
-  }, [activeIndex]);
+  }, [activeIndex, testimonials]);
 
   const handlePrev = () => {
     setDirection('left');
@@ -74,7 +123,7 @@ export default function ReviewCarousel() {
     }
   };
 
-  const activeTestimonial = testimonials[activeIndex];
+  const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
 
   const slideVariants = {
     enter: (dir: 'left' | 'right') => ({
@@ -102,13 +151,10 @@ export default function ReviewCarousel() {
   return (
     <div className="relative overflow-hidden border border-white/10 bg-[#080807] p-8 md:p-12">
       <div className="blueprint-grid absolute inset-0 opacity-5 pointer-events-none"></div>
-
+      
       {/* Quote Icon Background decoration */}
-      <Quote
-        size={120}
-        className="absolute right-6 top-6 text-white/[0.02] pointer-events-none shrink-0"
-      />
-
+      <Quote size={120} className="absolute right-6 top-6 text-white/[0.02] pointer-events-none shrink-0" />
+      
       <div className="relative z-10 flex flex-col justify-between h-full min-h-[220px]">
         {/* Rating Stars */}
         <div className="flex gap-1 text-white">
@@ -139,11 +185,10 @@ export default function ReviewCarousel() {
         {/* Bottom Metadata & Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 pt-6 border-t border-white/10">
           <div>
-            <h4 className="text-lg font-black text-white">
-              {activeTestimonial.name}
-            </h4>
+            <h4 className="text-lg font-black text-white">{activeTestimonial.name}</h4>
             <p className="text-xs text-white font-semibold mt-1">
-              {activeTestimonial.project} &mdash; {activeTestimonial.location}
+              {activeTestimonial.project ? `${activeTestimonial.project} — ` : ''}
+              {activeTestimonial.location}
             </p>
           </div>
 
@@ -157,8 +202,7 @@ export default function ReviewCarousel() {
               <ChevronLeft size={20} />
             </button>
             <span className="text-xs text-gray-500 font-mono px-2">
-              {String(activeIndex + 1).padStart(2, '0')} /{' '}
-              {String(testimonials.length).padStart(2, '0')}
+              {String(activeIndex + 1).padStart(2, '0')} / {String(testimonials.length).padStart(2, '0')}
             </span>
             <button
               onClick={() => handleNext(false)}

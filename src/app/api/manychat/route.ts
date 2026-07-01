@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const leadToEmail =
-  process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
+
+const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
 // Simple in-memory IP rate limiter
 const ipCache = new Map<string, { count: number; lastReset: number }>();
@@ -40,10 +40,7 @@ function escapeHtml(value: unknown): string {
 }
 
 function buildLeadId(): string {
-  const stamp = new Date()
-    .toISOString()
-    .replace(/[-:.TZ]/g, '')
-    .slice(0, 14);
+  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
   const random = Math.random().toString(36).slice(2, 8).toUpperCase();
   return `SKY-MC-${stamp}-${random}`;
 }
@@ -51,32 +48,18 @@ function buildLeadId(): string {
 function buildLeadHtml(payload: Record<string, unknown>): string {
   const rows = Object.entries(payload)
     .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(
-      ([key, value]) =>
-        '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' +
-        escapeHtml(key) +
-        '</td><td style="padding:6px 10px;border:1px solid #ddd;">' +
-        escapeHtml(value) +
-        '</td></tr>'
-    )
+    .map(([key, value]) => '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' + escapeHtml(key) + '</td><td style="padding:6px 10px;border:1px solid #ddd;">' + escapeHtml(value) + '</td></tr>')
     .join('');
 
-  return (
-    '<h1>New Sky\'s the Limit Painting ManyChat Lead</h1><table style="border-collapse:collapse;">' +
-    rows +
-    '</table>'
-  );
+  return '<h1>New Sky\'s the Limit Painting ManyChat Lead</h1><table style="border-collapse:collapse;">' + rows + '</table>';
 }
 
 async function sendWithResend(payload: Record<string, unknown>) {
   const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail =
-    process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
+  const fromEmail = process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
 
   if (!apiKey) {
-    console.warn(
-      'WARNING: RESEND_API_KEY is not set in the environment variables. ManyChat lead emails will not be sent!'
-    );
+    console.warn("WARNING: RESEND_API_KEY is not set in the environment variables. ManyChat lead emails will not be sent!");
     return { configured: false };
   }
 
@@ -115,9 +98,7 @@ async function sendLeadWebhook(payload: Record<string, unknown>) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...(process.env.LEAD_WEBHOOK_SECRET
-        ? { 'X-Sky-Lead-Secret': process.env.LEAD_WEBHOOK_SECRET }
-        : {}),
+      ...(process.env.LEAD_WEBHOOK_SECRET ? { 'X-Sky-Lead-Secret': process.env.LEAD_WEBHOOK_SECRET } : {}),
     },
     body: JSON.stringify({
       event: 'sky.manychat.lead.created',
@@ -151,13 +132,9 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     `Timeline: ${asText(payload.timeline)}`,
     `Budget Range: ${asText(payload.budget)}`,
     `Preferred Contact: ${asText(payload.contactMethod)}`,
-    payload.projectAddress
-      ? `Project Address: ${asText(payload.projectAddress)}`
-      : '',
+    payload.projectAddress ? `Project Address: ${asText(payload.projectAddress)}` : '',
     payload.notes ? `Notes:\n${asText(payload.notes)}` : '',
-  ]
-    .filter(Boolean)
-    .join('\n');
+  ].filter(Boolean).join('\n');
 
   if (accessToken) {
     const email = asText(payload.email);
@@ -166,32 +143,25 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     // Search for existing contact by email to prevent duplicates
     if (email) {
       try {
-        const searchRes = await fetch(
-          'https://api.hubapi.com/crm/v3/objects/contacts/search',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              filterGroups: [
-                {
-                  filters: [
-                    {
-                      propertyName: 'email',
-                      operator: 'EQ',
-                      value: email,
-                    },
-                  ],
-                },
-              ],
-            }),
-          }
-        );
+        const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            filterGroups: [{
+              filters: [{
+                propertyName: 'email',
+                operator: 'EQ',
+                value: email,
+              }],
+            }],
+          }),
+        });
 
         if (searchRes.ok) {
-          const searchData = (await searchRes.json()) as any;
+          const searchData = await searchRes.json() as any;
           if (searchData.results && searchData.results.length > 0) {
             contactId = searchData.results[0].id;
           }
@@ -217,17 +187,14 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     let response;
     if (contactId) {
       // Update existing contact
-      response = await fetch(
-        `https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ properties }),
-        }
-      );
+      response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ properties }),
+      });
     } else {
       // Create new contact
       response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
@@ -262,19 +229,16 @@ async function sendToHubspot(payload: Record<string, unknown>) {
       pageName: 'ManyChat Facebook Chatbot Integration',
     };
 
-    const response = await fetch(
-      `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fields,
-          context,
-        }),
-      }
-    );
+    const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fields,
+        context,
+      }),
+    });
 
     if (!response.ok) {
       const body = await response.text();
@@ -286,19 +250,10 @@ async function sendToHubspot(payload: Record<string, unknown>) {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = (
-    req.headers.get('x-forwarded-for') ||
-    req.headers.get('x-real-ip') ||
-    'unknown'
-  )
-    .split(',')[0]
-    .trim();
+  const ip = (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown').split(',')[0].trim();
   if (!rateLimit(ip)) {
     console.warn(`ManyChat rate limit exceeded for IP: ${ip}`);
-    return NextResponse.json(
-      { error: 'Too many requests. Please try again later.' },
-      { status: 429 }
-    );
+    return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
   }
 
   const webhookSecret = process.env.MANYCHAT_WEBHOOK_SECRET;
@@ -318,48 +273,18 @@ export async function POST(req: NextRequest) {
 
   // Parse and extract custom fields sent by ManyChat webhook
   const customFields = body.custom_fields || {};
-
-  const name =
-    asText(
-      body.name || `${body.first_name || ''} ${body.last_name || ''}`.trim()
-    ) || 'ManyChat Lead';
-  const phone = asText(
-    body.phone || customFields.phone || customFields.Phone || ''
-  );
-  const email = asText(
-    body.email || customFields.email || customFields.Email || ''
-  );
-  const city = asText(
-    customFields.City || customFields.city || body.city || 'Twin Cities'
-  );
-  const projectAddress = asText(
-    customFields['Project Address'] ||
-      customFields.address ||
-      customFields.Address ||
-      ''
-  );
-  const projectType = asText(
-    customFields['Project Type'] || customFields.project_type || 'Interior'
-  );
-  const propertyType = asText(
-    customFields['Property Type'] ||
-      customFields.property_type ||
-      'Single-family home'
-  );
-  const timeline = asText(
-    customFields.Timeline || customFields.timeline || 'ASAP'
-  );
-  const budget = asText(
-    customFields.Budget || customFields.budget || 'Not sure yet'
-  );
-  const contactMethod = asText(
-    customFields['Preferred Contact'] || customFields.contact_method || 'Text'
-  );
-  const notes = asText(
-    customFields.Notes ||
-      customFields.notes ||
-      'Submitted via ManyChat FB/IG Chatbot'
-  );
+  
+  const name = asText(body.name || `${body.first_name || ''} ${body.last_name || ''}`.trim()) || 'ManyChat Lead';
+  const phone = asText(body.phone || customFields.phone || customFields.Phone || '');
+  const email = asText(body.email || customFields.email || customFields.Email || '');
+  const city = asText(customFields.City || customFields.city || body.city || 'Twin Cities');
+  const projectAddress = asText(customFields["Project Address"] || customFields.address || customFields.Address || '');
+  const projectType = asText(customFields["Project Type"] || customFields.project_type || 'Interior');
+  const propertyType = asText(customFields["Property Type"] || customFields.property_type || 'Single-family home');
+  const timeline = asText(customFields.Timeline || customFields.timeline || 'ASAP');
+  const budget = asText(customFields.Budget || customFields.budget || 'Not sure yet');
+  const contactMethod = asText(customFields["Preferred Contact"] || customFields.contact_method || 'Text');
+  const notes = asText(customFields.Notes || customFields.notes || 'Submitted via ManyChat FB/IG Chatbot');
 
   const lead = {
     source: 'ManyChat',
@@ -380,13 +305,7 @@ export async function POST(req: NextRequest) {
   };
 
   if (!lead.phone && !lead.email) {
-    return NextResponse.json(
-      {
-        error:
-          'ManyChat lead must have either a phone number or email address.',
-      },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'ManyChat lead must have either a phone number or email address.' }, { status: 400 });
   }
 
   try {
@@ -395,9 +314,7 @@ export async function POST(req: NextRequest) {
       sendLeadWebhook(lead),
       sendToHubspot(lead),
     ]);
-    const configured = delivery.some(
-      (result) => result.status === 'fulfilled' && result.value.configured
-    );
+    const configured = delivery.some((result) => result.status === 'fulfilled' && result.value.configured);
     const failed = delivery.find((result) => result.status === 'rejected');
 
     if (failed) {
@@ -409,23 +326,12 @@ export async function POST(req: NextRequest) {
     }
 
     if (!configured) {
-      console.error(
-        'ManyChat lead delivery error: Lead delivery is not configured yet.'
-      );
-      return NextResponse.json(
-        {
-          error: 'Lead delivery platforms not configured in .env',
-          fallback: 'email',
-        },
-        { status: 500 }
-      );
+      console.error('ManyChat lead delivery error: Lead delivery is not configured yet.');
+      return NextResponse.json({ error: 'Lead delivery platforms not configured in .env', fallback: 'email' }, { status: 500 });
     }
   } catch (error) {
     console.error('ManyChat lead delivery failed with error:', error);
-    return NextResponse.json(
-      { error: 'ManyChat lead delivery failed.', fallback: 'email' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'ManyChat lead delivery failed.', fallback: 'email' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, leadId: lead.leadId }, { status: 201 });

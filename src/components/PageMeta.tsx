@@ -14,19 +14,11 @@ interface PageMetaProps {
 const defaultImage = '/og-preview.svg';
 
 function getSiteUrl() {
-  const fallback =
-    typeof window === 'undefined'
-      ? 'https://www.skysthelimitpaintingllc.com'
-      : window.location.origin;
+  const fallback = typeof window === 'undefined' ? 'https://www.skysthelimitpaintingllc.com' : window.location.origin;
   return (ENV.SITE_URL || fallback).replace(/\/$/, '');
 }
 
-function upsertMeta(
-  selector: string,
-  attribute: 'name' | 'property',
-  key: string,
-  content: string
-) {
+function upsertMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
   let tag = document.querySelector(selector);
   if (!tag) {
     tag = document.createElement('meta');
@@ -37,9 +29,7 @@ function upsertMeta(
 }
 
 function upsertLink(rel: string, href: string) {
-  let tag = document.querySelector(
-    `link[rel="${rel}"]`
-  ) as HTMLLinkElement | null;
+  let tag = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
   if (!tag) {
     tag = document.createElement('link');
     tag.setAttribute('rel', rel);
@@ -48,14 +38,7 @@ function upsertLink(rel: string, href: string) {
   tag.href = href;
 }
 
-export default function PageMeta({
-  title,
-  description,
-  path,
-  image = defaultImage,
-  type = 'website',
-  schema,
-}: PageMetaProps) {
+export default function PageMeta({ title, description, path, image = defaultImage, type = 'website', schema }: PageMetaProps) {
   useEffect(() => {
     const siteUrl = getSiteUrl();
     const pagePath = path || window.location.pathname;
@@ -66,39 +49,19 @@ export default function PageMeta({
 
     upsertMeta('meta[name="description"]', 'name', 'description', description);
     upsertMeta('meta[property="og:title"]', 'property', 'og:title', title);
-    upsertMeta(
-      'meta[property="og:description"]',
-      'property',
-      'og:description',
-      description
-    );
+    upsertMeta('meta[property="og:description"]', 'property', 'og:description', description);
     upsertMeta('meta[property="og:type"]', 'property', 'og:type', type);
     upsertMeta('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
     upsertMeta('meta[property="og:image"]', 'property', 'og:image', imageUrl);
-    upsertMeta(
-      'meta[name="twitter:card"]',
-      'name',
-      'twitter:card',
-      'summary_large_image'
-    );
+    upsertMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
     upsertMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
-    upsertMeta(
-      'meta[name="twitter:description"]',
-      'name',
-      'twitter:description',
-      description
-    );
+    upsertMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
     upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
     upsertLink('canonical', canonicalUrl);
 
     const verification = ENV.GOOGLE_SITE_VERIFICATION;
     if (verification) {
-      upsertMeta(
-        'meta[name="google-site-verification"]',
-        'name',
-        'google-site-verification',
-        verification
-      );
+      upsertMeta('meta[name="google-site-verification"]', 'name', 'google-site-verification', verification);
     }
 
     const existingSchema = document.getElementById('page-schema');

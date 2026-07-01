@@ -61,6 +61,13 @@ export const businessSchema = {
       name: 'Minneapolis',
     },
   ],
+  sameAs: [
+    ENV.FACEBOOK_URL,
+    ENV.INSTAGRAM_URL,
+    ENV.LINKEDIN_URL,
+    ENV.TIKTOK_URL,
+    ENV.GOOGLE_BUSINESS_URL,
+  ].filter(Boolean),
   knowsAbout: [
     'Residential painting',
     'Commercial painting',
@@ -141,5 +148,20 @@ export function localBusinessSchema(cityName: string, slug: string) {
         name: 'Twin Cities Metro',
       },
     ],
+  };
+}
+
+export function faqSchema(items: Array<{ question: string; answer: string }>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
   };
 }

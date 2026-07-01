@@ -26,39 +26,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
-const SRC_DIR = path.join(ROOT, 'src');
-const APP_DIR = path.join(ROOT, 'src', 'app');
-const COMP_DIR = path.join(ROOT, 'src', 'components');
-const WIKI_DIR = path.join(ROOT, '.agents', 'wiki');
-const GRAPH_FILE = path.join(ROOT, 'memory', 'shared-graph.json');
-const STAGING_DIR = path.join(ROOT, '.agents', 'staging');
-const TRACES_DIR = path.join(ROOT, '.agents', 'traces');
+const SRC_DIR       = path.join(ROOT, 'src');
+const APP_DIR       = path.join(ROOT, 'src', 'app');
+const COMP_DIR      = path.join(ROOT, 'src', 'components');
+const WIKI_DIR      = path.join(ROOT, '.agents', 'wiki');
+const GRAPH_FILE    = path.join(ROOT, 'memory', 'shared-graph.json');
+const STAGING_DIR   = path.join(ROOT, '.agents', 'staging');
+const TRACES_DIR    = path.join(ROOT, '.agents', 'traces');
 
 // Next.js reserved filenames that ARE valid inside src/app/
 const NEXTJS_RESERVED = new Set([
-  'page.tsx',
-  'page.ts',
-  'page.js',
-  'page.jsx',
-  'layout.tsx',
-  'layout.ts',
-  'layout.js',
-  'layout.jsx',
-  'route.ts',
-  'route.js',
-  'not-found.tsx',
-  'error.tsx',
-  'loading.tsx',
-  'template.tsx',
-  'global-error.tsx',
-  'default.tsx',
+  'page.tsx', 'page.ts', 'page.js', 'page.jsx',
+  'layout.tsx', 'layout.ts', 'layout.js', 'layout.jsx',
+  'route.ts', 'route.js',
+  'not-found.tsx', 'error.tsx', 'loading.tsx', 'template.tsx',
+  'global-error.tsx', 'default.tsx',
 ]);
 
 // Approved exceptions (from playbook)
 const APPROVED_EXCEPTIONS = new Set(['HomeClient.tsx']);
 
 let debtItems = [];
-let sweepLog = [];
+let sweepLog  = [];
 
 // ─── Logger ───────────────────────────────────────────────────────────────────
 function log(phase, message, level = 'INFO') {
@@ -68,12 +57,8 @@ function log(phase, message, level = 'INFO') {
   sweepLog.push(line);
   fs.mkdirSync(TRACES_DIR, { recursive: true });
   fs.appendFileSync(
-    path.join(
-      TRACES_DIR,
-      `custodian-${new Date().toISOString().slice(0, 10)}.log`
-    ),
-    line + '\n',
-    'utf8'
+    path.join(TRACES_DIR, `custodian-${new Date().toISOString().slice(0, 10)}.log`),
+    line + '\n', 'utf8'
   );
 }
 
@@ -89,7 +74,7 @@ function walkDir(dir, exts = null, exclude = []) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    if (exclude.some((ex) => fullPath.includes(ex))) continue;
+    if (exclude.some(ex => fullPath.includes(ex))) continue;
     if (entry.isDirectory()) {
       results.push(...walkDir(fullPath, exts, exclude));
     } else if (!exts || exts.includes(path.extname(entry.name))) {
@@ -104,17 +89,9 @@ function phase1_AstSweep() {
   log(1, 'Starting AST sweep — scanning import graph for orphaned files...');
 
   // Collect all .ts/.tsx source files
-  const allSourceFiles = walkDir(
-    SRC_DIR,
-    ['.ts', '.tsx'],
-    ['node_modules', '.next']
-  );
-  const scriptFiles = walkDir(
-    path.join(ROOT, 'scripts'),
-    ['.js'],
-    ['node_modules']
-  );
-  const allFiles = [...allSourceFiles, ...scriptFiles];
+  const allSourceFiles = walkDir(SRC_DIR, ['.ts', '.tsx'], ['node_modules', '.next']);
+  const scriptFiles    = walkDir(path.join(ROOT, 'scripts'), ['.js'], ['node_modules']);
+  const allFiles       = [...allSourceFiles, ...scriptFiles];
 
   log(1, `Found ${allFiles.length} source files`);
 
@@ -123,30 +100,17 @@ function phase1_AstSweep() {
 
   for (const file of allFiles) {
     let content = '';
-    try {
-      content = fs.readFileSync(file, 'utf8');
-    } catch {
-      continue;
-    }
+    try { content = fs.readFileSync(file, 'utf8'); } catch { continue; }
 
     // Match: import ... from '...', require('...'), dynamic import('...')
-    const importPattern =
-      /(?:import|from|require)\s*\(?['"](\.{1,2}\/[^'"]+)['"]\)?/g;
+    const importPattern = /(?:import|from|require)\s*\(?['"](\.{1,2}\/[^'"]+)['"]\)?/g;
     let match;
     while ((match = importPattern.exec(content)) !== null) {
       const rawImport = match[1];
       const resolvedBase = path.resolve(path.dirname(file), rawImport);
 
       // Try resolving with common extensions
-      for (const ext of [
-        '',
-        '.ts',
-        '.tsx',
-        '.js',
-        '.jsx',
-        '/index.ts',
-        '/index.tsx',
-      ]) {
+      for (const ext of ['', '.ts', '.tsx', '.js', '.jsx', '/index.ts', '/index.tsx']) {
         const resolved = resolvedBase + ext;
         if (fs.existsSync(resolved)) {
           importedFiles.add(resolved);
@@ -157,7 +121,7 @@ function phase1_AstSweep() {
   }
 
   // Find files that are never imported
-  const orphans = allFiles.filter((f) => {
+  const orphans = allFiles.filter(f => {
     // Skip Next.js entry points — they're never imported, they're route handlers
     const filename = path.basename(f);
     if (NEXTJS_RESERVED.has(filename)) return false;
@@ -182,27 +146,18 @@ function phase1_AstSweep() {
     );
   }
 
-  return { orphans: orphans.map((f) => path.relative(ROOT, f)) };
+  return { orphans: orphans.map(f => path.relative(ROOT, f)) };
 }
 
 // ─── Phase 2: Data Lineage Trace ──────────────────────────────────────────────
 function phase2_DataTrace() {
-  log(
-    2,
-    'Tracing lead payload lineage: LeadPayload → /api/leads → HubSpot/Supabase/Resend...'
-  );
+  log(2, 'Tracing lead payload lineage: LeadPayload → /api/leads → HubSpot/Supabase/Resend...');
 
   const leadsRoute = path.join(APP_DIR, 'api', 'leads', 'route.ts');
   const lineageBreaks = [];
 
   if (!fs.existsSync(leadsRoute)) {
-    debt(
-      'LINEAGE-LEADS-ROUTE',
-      'Law 2: Data Lineage',
-      'high',
-      'src/app/api/leads/route.ts',
-      'Lead API route not found — critical lineage break'
-    );
+    debt('LINEAGE-LEADS-ROUTE', 'Law 2: Data Lineage', 'high', 'src/app/api/leads/route.ts', 'Lead API route not found — critical lineage break');
     return { breaks: lineageBreaks };
   }
 
@@ -210,13 +165,7 @@ function phase2_DataTrace() {
 
   // Check LeadPayload interface exists
   if (!routeContent.includes('interface LeadPayload')) {
-    debt(
-      'LINEAGE-NO-INTERFACE',
-      'Law 2: Data Lineage',
-      'high',
-      'src/app/api/leads/route.ts',
-      'LeadPayload interface not found'
-    );
+    debt('LINEAGE-NO-INTERFACE', 'Law 2: Data Lineage', 'high', 'src/app/api/leads/route.ts', 'LeadPayload interface not found');
     lineageBreaks.push('Missing LeadPayload interface');
   } else {
     log(2, '✅ LeadPayload interface: found');
@@ -224,13 +173,7 @@ function phase2_DataTrace() {
 
   // Check HubSpot integration
   if (!routeContent.includes('sendToHubspot')) {
-    debt(
-      'LINEAGE-NO-HUBSPOT',
-      'Law 2: Data Lineage',
-      'high',
-      'src/app/api/leads/route.ts',
-      'sendToHubspot not found — CRM lineage broken'
-    );
+    debt('LINEAGE-NO-HUBSPOT', 'Law 2: Data Lineage', 'high', 'src/app/api/leads/route.ts', 'sendToHubspot not found — CRM lineage broken');
     lineageBreaks.push('Missing HubSpot integration');
   } else {
     log(2, '✅ HubSpot (sendToHubspot): found');
@@ -238,13 +181,7 @@ function phase2_DataTrace() {
 
   // Check Supabase persistence
   if (!routeContent.includes('saveLeadToDb')) {
-    debt(
-      'LINEAGE-NO-SUPABASE',
-      'Law 2: Data Lineage',
-      'high',
-      'src/app/api/leads/route.ts',
-      'saveLeadToDb not found — DB lineage broken'
-    );
+    debt('LINEAGE-NO-SUPABASE', 'Law 2: Data Lineage', 'high', 'src/app/api/leads/route.ts', 'saveLeadToDb not found — DB lineage broken');
     lineageBreaks.push('Missing Supabase persistence');
   } else {
     log(2, '✅ Supabase (saveLeadToDb): found');
@@ -252,13 +189,7 @@ function phase2_DataTrace() {
 
   // Check Resend notification
   if (!routeContent.includes('sendWithResend')) {
-    debt(
-      'LINEAGE-NO-RESEND',
-      'Law 2: Data Lineage',
-      'medium',
-      'src/app/api/leads/route.ts',
-      'sendWithResend not found — email notification lineage broken'
-    );
+    debt('LINEAGE-NO-RESEND', 'Law 2: Data Lineage', 'medium', 'src/app/api/leads/route.ts', 'sendWithResend not found — email notification lineage broken');
     lineageBreaks.push('Missing Resend notification');
   } else {
     log(2, '✅ Resend (sendWithResend): found');
@@ -269,13 +200,7 @@ function phase2_DataTrace() {
   if (fs.existsSync(leadForm)) {
     const formContent = fs.readFileSync(leadForm, 'utf8');
     if (!formContent.includes('/api/leads')) {
-      debt(
-        'LINEAGE-FORM-DISCONNECT',
-        'Law 2: Data Lineage',
-        'high',
-        'src/components/LeadForm.tsx',
-        'LeadForm.tsx does not reference /api/leads — UI→API lineage broken'
-      );
+      debt('LINEAGE-FORM-DISCONNECT', 'Law 2: Data Lineage', 'high', 'src/components/LeadForm.tsx', 'LeadForm.tsx does not reference /api/leads — UI→API lineage broken');
       lineageBreaks.push('LeadForm disconnected from /api/leads');
     } else {
       log(2, '✅ LeadForm → /api/leads: connected');
@@ -309,14 +234,11 @@ function phase3_DirCleanse() {
       'Law 3: Next.js 16.x Directory Boundaries',
       'high',
       rel,
-      `Non-routable component inside src/app/ (${(stat.size / 1024).toFixed(1)}KB): move to src/components/`
+      `Non-routable component inside src/app/ (${(stat.size/1024).toFixed(1)}KB): move to src/components/`
     );
   }
 
-  log(
-    3,
-    `Directory cleanse complete: ${violations.length} boundary violation(s)`
-  );
+  log(3, `Directory cleanse complete: ${violations.length} boundary violation(s)`);
   return { violations };
 }
 
@@ -325,20 +247,15 @@ function phase4_OkfAudit() {
   log(4, 'Auditing .agents/wiki/ for OKF frontmatter compliance...');
 
   const wikiFiles = walkDir(WIKI_DIR, ['.md'], []);
-  let nonCompliant = 0;
-  let antiLaziness = 0;
-  const violations = [];
+  let nonCompliant  = 0;
+  let antiLaziness  = 0;
+  const violations  = [];
 
   const REQUIRED_FM = ['type', 'title', 'tags', 'last_sync'];
 
-  for (const file of wikiFiles.slice(0, 50)) {
-    // sample first 50 to avoid timeout
+  for (const file of wikiFiles.slice(0, 50)) { // sample first 50 to avoid timeout
     let content = '';
-    try {
-      content = fs.readFileSync(file, 'utf8');
-    } catch {
-      continue;
-    }
+    try { content = fs.readFileSync(file, 'utf8'); } catch { continue; }
 
     // Check frontmatter
     if (!content.startsWith('---')) {
@@ -348,13 +265,10 @@ function phase4_OkfAudit() {
     }
 
     const fmEnd = content.indexOf('---', 3);
-    if (fmEnd === -1) {
-      nonCompliant++;
-      continue;
-    }
+    if (fmEnd === -1) { nonCompliant++; continue; }
 
     const fm = content.slice(3, fmEnd);
-    const missingFields = REQUIRED_FM.filter((f) => !fm.includes(f + ':'));
+    const missingFields = REQUIRED_FM.filter(f => !fm.includes(f + ':'));
     if (missingFields.length > 0) nonCompliant++;
 
     // Anti-Laziness check
@@ -363,28 +277,13 @@ function phase4_OkfAudit() {
     }
   }
 
-  log(
-    4,
-    `OKF audit (sample of 50): ${nonCompliant} non-compliant, ${antiLaziness} anti-laziness violations`
-  );
+  log(4, `OKF audit (sample of 50): ${nonCompliant} non-compliant, ${antiLaziness} anti-laziness violations`);
 
   if (nonCompliant > 0) {
-    debt(
-      'OKF-NONCOMPLIANT',
-      'Law 4: OKF Compliance',
-      'medium',
-      '.agents/wiki/',
-      `${nonCompliant} of 50 sampled wiki files missing required frontmatter fields`
-    );
+    debt('OKF-NONCOMPLIANT', 'Law 4: OKF Compliance', 'medium', '.agents/wiki/', `${nonCompliant} of 50 sampled wiki files missing required frontmatter fields`);
   }
   if (antiLaziness > 0) {
-    debt(
-      'OKF-ANTI-LAZINESS',
-      'Law 4: OKF Compliance',
-      'high',
-      '.agents/wiki/',
-      `${antiLaziness} of 50 sampled wiki files contain [System Note: Awaiting semantic compilation] — re-compile required`
-    );
+    debt('OKF-ANTI-LAZINESS', 'Law 4: OKF Compliance', 'high', '.agents/wiki/', `${antiLaziness} of 50 sampled wiki files contain [System Note: Awaiting semantic compilation] — re-compile required`);
   }
 
   return { nonCompliant, antiLaziness, totalSampled: 50 };
@@ -395,13 +294,7 @@ function phase5_MemoryDrift() {
   log(5, 'Checking shared-graph.json source_file references for drift...');
 
   if (!fs.existsSync(GRAPH_FILE)) {
-    debt(
-      'MEMORY-GRAPH-MISSING',
-      'Law 5: Memory Drift',
-      'high',
-      'memory/shared-graph.json',
-      'shared-graph.json not found'
-    );
+    debt('MEMORY-GRAPH-MISSING', 'Law 5: Memory Drift', 'high', 'memory/shared-graph.json', 'shared-graph.json not found');
     return { driftItems: 1 };
   }
 
@@ -432,21 +325,15 @@ function phase5_MemoryDrift() {
 
 // ─── Phase 6: Remediation Queue ───────────────────────────────────────────────
 async function phase6_RemediationQueue() {
-  log(
-    6,
-    `Writing DEBT_REPORT.md to .agents/staging/ and enqueuing ${debtItems.length} repair task(s)...`
-  );
+  log(6, `Writing DEBT_REPORT.md to .agents/staging/ and enqueuing ${debtItems.length} repair task(s)...`);
 
   fs.mkdirSync(STAGING_DIR, { recursive: true });
 
   const ts = new Date().toISOString();
-  const reportPath = path.join(
-    STAGING_DIR,
-    `DEBT_REPORT-${ts.slice(0, 10)}.md`
-  );
+  const reportPath = path.join(STAGING_DIR, `DEBT_REPORT-${ts.slice(0, 10)}.md`);
 
-  const highItems = debtItems.filter((d) => d.priority === 'high');
-  const mediumItems = debtItems.filter((d) => d.priority === 'medium');
+  const highItems   = debtItems.filter(d => d.priority === 'high');
+  const mediumItems = debtItems.filter(d => d.priority === 'medium');
 
   const reportContent = [
     `---`,
@@ -467,32 +354,24 @@ async function phase6_RemediationQueue() {
     ``,
     `## HIGH Priority Items`,
     ``,
-    ...(highItems.length > 0
-      ? highItems.map((d) =>
-          [
-            `### ${d.id}`,
-            `- **Law:** ${d.law}`,
-            `- **File:** \`${d.file}\``,
-            `- **Issue:** ${d.description}`,
-            ``,
-          ].join('\n')
-        )
-      : ['*None*', '']),
+    ...(highItems.length > 0 ? highItems.map(d => [
+      `### ${d.id}`,
+      `- **Law:** ${d.law}`,
+      `- **File:** \`${d.file}\``,
+      `- **Issue:** ${d.description}`,
+      ``,
+    ].join('\n')) : ['*None*', '']),
     `---`,
     ``,
     `## MEDIUM Priority Items`,
     ``,
-    ...(mediumItems.length > 0
-      ? mediumItems.map((d) =>
-          [
-            `### ${d.id}`,
-            `- **Law:** ${d.law}`,
-            `- **File:** \`${d.file}\``,
-            `- **Issue:** ${d.description}`,
-            ``,
-          ].join('\n')
-        )
-      : ['*None*', '']),
+    ...(mediumItems.length > 0 ? mediumItems.map(d => [
+      `### ${d.id}`,
+      `- **Law:** ${d.law}`,
+      `- **File:** \`${d.file}\``,
+      `- **Issue:** ${d.description}`,
+      ``,
+    ].join('\n')) : ['*None*', '']),
     `---`,
     ``,
     `## How to Resolve`,
@@ -521,10 +400,7 @@ async function phase6_RemediationQueue() {
     }
   }
 
-  log(
-    6,
-    `${enqueued}/${debtItems.length} repair task(s) enqueued in SQLite queue`
-  );
+  log(6, `${enqueued}/${debtItems.length} repair task(s) enqueued in SQLite queue`);
   return { reportPath, enqueued };
 }
 
@@ -539,10 +415,8 @@ async function runFullSweep(phaseFilter = null) {
   if (!phaseFilter || phaseFilter === '2') results.phase2 = phase2_DataTrace();
   if (!phaseFilter || phaseFilter === '3') results.phase3 = phase3_DirCleanse();
   if (!phaseFilter || phaseFilter === '4') results.phase4 = phase4_OkfAudit();
-  if (!phaseFilter || phaseFilter === '5')
-    results.phase5 = phase5_MemoryDrift();
-  if (!phaseFilter || phaseFilter === '6')
-    results.phase6 = await phase6_RemediationQueue();
+  if (!phaseFilter || phaseFilter === '5') results.phase5 = phase5_MemoryDrift();
+  if (!phaseFilter || phaseFilter === '6') results.phase6 = await phase6_RemediationQueue();
 
   log('ALL', `═══ Sweep complete. ${debtItems.length} total debt items. ═══`);
 
@@ -561,15 +435,11 @@ runFullSweep(phaseFilter)
     console.log(`ARCHITECTURE CUSTODIAN — SWEEP RESULTS`);
     console.log('═══════════════════════════════════════════════════════');
     console.log(`Total debt items: ${items.length}`);
-    console.log(`HIGH:   ${items.filter((d) => d.priority === 'high').length}`);
-    console.log(
-      `MEDIUM: ${items.filter((d) => d.priority === 'medium').length}`
-    );
+    console.log(`HIGH:   ${items.filter(d => d.priority === 'high').length}`);
+    console.log(`MEDIUM: ${items.filter(d => d.priority === 'medium').length}`);
     console.log('');
     console.log('Top 3 highest-impact debt items:');
-    const top3 = [...items]
-      .sort((a, b) => (a.priority === 'high' ? -1 : 1))
-      .slice(0, 3);
+    const top3 = [...items].sort((a, b) => (a.priority === 'high' ? -1 : 1)).slice(0, 3);
     top3.forEach((d, i) => {
       console.log(`  ${i + 1}. [${d.priority.toUpperCase()}] ${d.id}`);
       console.log(`     ${d.description}`);
@@ -580,7 +450,7 @@ runFullSweep(phaseFilter)
     }
     console.log('═══════════════════════════════════════════════════════');
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('Custodian sweep failed:', err.message);
     process.exit(1);
   });

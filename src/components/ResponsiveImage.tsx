@@ -1,32 +1,36 @@
-import type { ImgHTMLAttributes } from 'react';
+import Image, { type ImageProps } from 'next/image';
 
-type ResponsiveImageProps = Omit<
-  ImgHTMLAttributes<HTMLImageElement>,
-  'decoding'
-> & {
+type ResponsiveImageProps = Omit<ImageProps, 'alt' | 'src' | 'decoding' | 'width' | 'height'> & {
+  src: string;
+  alt: string;
   width: number;
   height: number;
-  loading?: 'eager' | 'lazy';
-  fetchPriority?: 'high' | 'low' | 'auto';
 };
 
 export default function ResponsiveImage({
+  src,
   alt,
   width,
   height,
+  priority = false,
   loading = 'lazy',
   fetchPriority = 'auto',
   ...props
 }: ResponsiveImageProps) {
+  const unoptimized = src.startsWith('http://') || src.startsWith('https://');
+
   return (
-    <img
+    <Image
       {...props}
+      src={src}
       alt={alt}
       width={width}
       height={height}
-      loading={loading}
+      priority={priority}
+      loading={priority ? undefined : loading}
       decoding="async"
-      fetchPriority={fetchPriority}
+      fetchPriority={priority ? undefined : fetchPriority}
+      unoptimized={unoptimized}
     />
   );
 }

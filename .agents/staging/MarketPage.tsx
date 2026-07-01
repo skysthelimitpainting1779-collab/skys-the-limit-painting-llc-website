@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { ArrowRight, Calculator, Camera, CheckCircle2, ClipboardCheck, FileCheck2 } from 'lucide-react';

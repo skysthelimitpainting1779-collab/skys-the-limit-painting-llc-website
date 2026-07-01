@@ -8,10 +8,7 @@ interface PageTransitionProps {
   className?: string;
 }
 
-export default function PageTransition({
-  children,
-  className = '',
-}: PageTransitionProps) {
+export default function PageTransition({ children, className = '' }: PageTransitionProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {

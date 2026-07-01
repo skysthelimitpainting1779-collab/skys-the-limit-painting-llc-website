@@ -26,20 +26,14 @@ function log(message, level = 'INFO') {
   console.log(line);
   fs.mkdirSync(TRACES_DIR, { recursive: true });
   fs.appendFileSync(
-    path.join(
-      TRACES_DIR,
-      `cron-custodian-${new Date().toISOString().slice(0, 10)}.log`
-    ),
-    line + '\n',
-    'utf8'
+    path.join(TRACES_DIR, `cron-custodian-${new Date().toISOString().slice(0, 10)}.log`),
+    line + '\n', 'utf8'
   );
 }
 
 function getLastCommitAge() {
   try {
-    const output = execSync('git log -1 --format="%ct"', { cwd: ROOT })
-      .toString()
-      .trim();
+    const output = execSync('git log -1 --format="%ct"', { cwd: ROOT }).toString().trim();
     const commitTimestamp = parseInt(output, 10) * 1000;
     return (Date.now() - commitTimestamp) / (1000 * 60 * 60);
   } catch (err) {
@@ -57,7 +51,7 @@ function spawnCustodian() {
       cwd: ROOT,
       stdio: 'inherit',
     });
-    child.on('exit', (code) => {
+    child.on('exit', code => {
       if (code === 0) {
         log('harness-custodian.js completed successfully');
         resolve();
@@ -66,7 +60,7 @@ function spawnCustodian() {
         reject(new Error(`Custodian exited with code ${code}`));
       }
     });
-    child.on('error', (err) => {
+    child.on('error', err => {
       log(`Failed to spawn custodian: ${err.message}`, 'ERROR');
       reject(err);
     });
@@ -88,20 +82,14 @@ async function checkAndRun(force = false) {
     return;
   }
 
-  log(
-    `Last git commit: ${ageHours.toFixed(1)}h ago (threshold: ${IDLE_THRESHOLD_HOURS}h)`
-  );
+  log(`Last git commit: ${ageHours.toFixed(1)}h ago (threshold: ${IDLE_THRESHOLD_HOURS}h)`);
 
   if (ageHours >= IDLE_THRESHOLD_HOURS) {
-    log(
-      `Repository has been idle for ${ageHours.toFixed(1)}h — triggering architecture sweep.`
-    );
+    log(`Repository has been idle for ${ageHours.toFixed(1)}h — triggering architecture sweep.`);
     await spawnCustodian();
   } else {
     const remainingHours = IDLE_THRESHOLD_HOURS - ageHours;
-    log(
-      `Repository is active. Next sweep eligible in ${remainingHours.toFixed(1)}h.`
-    );
+    log(`Repository is active. Next sweep eligible in ${remainingHours.toFixed(1)}h.`);
   }
 }
 
@@ -113,17 +101,14 @@ const pollHours = 6;
 
 if (watchMode) {
   log(`Starting in watch mode — polling every ${pollHours} hours`);
-  checkAndRun(forceMode).catch((err) => log(`Error: ${err.message}`, 'ERROR'));
-  setInterval(
-    () => {
-      checkAndRun(false).catch((err) => log(`Error: ${err.message}`, 'ERROR'));
-    },
-    pollHours * 60 * 60 * 1000
-  );
+  checkAndRun(forceMode).catch(err => log(`Error: ${err.message}`, 'ERROR'));
+  setInterval(() => {
+    checkAndRun(false).catch(err => log(`Error: ${err.message}`, 'ERROR'));
+  }, pollHours * 60 * 60 * 1000);
 } else {
   checkAndRun(forceMode)
     .then(() => log('─── Custodian idle check complete ───'))
-    .catch((err) => {
+    .catch(err => {
       log(`Fatal error: ${err.message}`, 'ERROR');
       process.exit(1);
     });

@@ -7,7 +7,6 @@ This guide provides structured, machine-readable pricing structures and estimati
 Estimates for residential rooms are calculated using linear measurements of room dimensions, prep levels, openings, and cabinet specifications.
 
 ### Formula
-
 ```
 Total Estimate = (Wall Area Cost * Prep Multiplier) + Openings Cost + Trim Cost + Cabinet Cost
 ```
@@ -33,7 +32,6 @@ Total Estimate = (Wall Area Cost * Prep Multiplier) + Openings Cost + Trim Cost 
    - Cabinet Openings (Doors + Drawers): **$125** per opening
 
 ### Room Presets (Examples)
-
 All dimensions are in feet (Width x Length x Height):
 
 - **Bedroom (12' x 14' x 8'):** ~416 sq ft wall area
@@ -41,7 +39,7 @@ All dimensions are in feet (Width x Length x Height):
 - **Kitchen (12' x 16' x 8'):** ~448 sq ft wall area
 - **Basement (22' x 26' x 8'):** ~768 sq ft wall area
 
-_Note: Estimates generated are for initial planning ranges (typically represented as -10% to +15% of the calculated total). Final pricing is confirmed after surface condition and scope details are visually inspected on-site._
+*Note: Estimates generated are for initial planning ranges (typically represented as -10% to +15% of the calculated total). Final pricing is confirmed after surface condition and scope details are visually inspected on-site.*
 
 ## Commercial & Public-Sector Pricing
 

@@ -65,6 +65,7 @@ If `code_only` is True: print `[graphify update] Code-only changes detected - sk
 
 If `code_only` is False (any changed file is a doc/paper/image): run the full Steps 3A–3C pipeline as normal.
 
+
 If no new files exist (only deletions), create an empty extraction so the merge step can prune:
 
 ```bash
@@ -77,6 +78,7 @@ Path('graphify-out/.graphify_extract.json').write_text(json.dumps({'nodes':[],'e
 "
 fi
 ```
+
 
 Then:
 

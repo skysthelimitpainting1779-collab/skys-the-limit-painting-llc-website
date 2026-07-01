@@ -1,26 +1,26 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-page-bg: #050505;
-  --color-page-text: #f7f7f7;
+  --color-page-text: #F7F7F7;
 
   --color-black-primary: #050505;
   --color-black-charcoal: #111111;
   --color-text-black: #171717;
-  --color-gray-muted: #9ca3af;
-  --color-gray-warm: #1f2937; /* Used for subtle light borders/cards in dark mode */
+  --color-gray-muted: #9CA3AF;
+  --color-gray-warm: #1F2937; /* Used for subtle light borders/cards in dark mode */
 
-  --color-orange-safety: #f7f7f7;
-  --color-orange-deep: #e5e5e5;
-  --color-green-trust: #2e7d32;
+  --color-orange-safety: #F7F7F7;
+  --color-orange-deep: #E5E5E5;
+  --color-green-trust: #2E7D32;
 
-  --font-display: 'Satoshi', 'Oswald', sans-serif;
+  --font-display: "Satoshi", "Oswald", sans-serif;
   --font-body: system-ui, -apple-system, sans-serif;
-  --font-mono: 'Fira Code', monospace;
+  --font-mono: "Fira Code", monospace;
 
   --radius-xs: 0px;
   --radius-sm: 0px;
@@ -85,12 +85,7 @@
     overflow-wrap: anywhere;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-normal;
   }
 
@@ -100,7 +95,7 @@
   select:focus-visible,
   textarea:focus-visible,
   [tabindex]:focus-visible {
-    outline: 2px solid #f7f7f7;
+    outline: 2px solid #F7F7F7;
     outline-offset: 4px;
   }
 
@@ -141,11 +136,11 @@
   }
 
   .market-panel::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: auto 0 0 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #f7f7f7, transparent);
+    background: linear-gradient(90deg, transparent, #F7F7F7, transparent);
     opacity: 0.35;
   }
 
@@ -190,12 +185,8 @@
 
   /* Marquee animation */
   @keyframes marquee-left {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
   .animate-marquee {
     animation: marquee-left 28s linear infinite;
@@ -207,12 +198,8 @@
 
   /* Shimmer CTA overlay */
   @keyframes shimmer-slide {
-    from {
-      transform: translateX(-100%);
-    }
-    to {
-      transform: translateX(200%);
-    }
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
   }
   .shimmer-cta {
     position: relative;
@@ -222,12 +209,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      105deg,
-      transparent 40%,
-      rgba(255, 255, 255, 0.15) 50%,
-      transparent 60%
-    );
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
     animation: shimmer-slide 2.5s ease infinite;
     will-change: transform;
   }
@@ -239,18 +221,9 @@
 
   /* Pulse ring for badge */
   @keyframes pulse-ring {
-    0% {
-      transform: scale(1);
-      opacity: 0.6;
-    }
-    70% {
-      transform: scale(1.55);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1.55);
-      opacity: 0;
-    }
+    0% { transform: scale(1); opacity: 0.6; }
+    70% { transform: scale(1.55); opacity: 0; }
+    100% { transform: scale(1.55); opacity: 0; }
   }
   .animate-pulse-ring {
     animation: pulse-ring 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
@@ -275,7 +248,7 @@
     background: #080807;
   }
   .mesh-gradient-bg::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20%;
     left: -20%;
@@ -303,8 +276,8 @@
   outline: none;
 }
 .leaflet-popup-content-wrapper {
-  background: #0b0b0d !important;
-  color: #f7f7f7 !important;
+  background: #0B0B0D !important;
+  color: #F7F7F7 !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   border-radius: 0px !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
@@ -313,7 +286,7 @@
   margin: 10px 14px !important;
 }
 .leaflet-popup-tip {
-  background: #0b0b0d !important;
+  background: #0B0B0D !important;
   border-left: 1px solid rgba(255, 255, 255, 0.25) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
@@ -328,14 +301,14 @@
   border-radius: 0px !important;
 }
 .leaflet-bar a {
-  background-color: #0b0b0d !important;
-  color: #f7f7f7 !important;
+  background-color: #0B0B0D !important;
+  color: #F7F7F7 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 0px !important;
   transition: background-color 0.2s;
 }
 .leaflet-bar a:hover {
-  background-color: #f7f7f7 !important;
+  background-color: #F7F7F7 !important;
   color: #050505 !important;
 }
 
@@ -344,12 +317,12 @@
   outline: 1px dashed rgba(255, 255, 255, 0.22) !important;
   outline-offset: -1px;
 }
-.spec-mode-active a,
+.spec-mode-active a, 
 .spec-mode-active button,
 .spec-mode-active input,
 .spec-mode-active select,
 .spec-mode-active textarea {
-  outline: 1px dashed #f7f7f7 !important;
+  outline: 1px dashed #F7F7F7 !important;
   outline-offset: 2px;
 }
 
@@ -403,8 +376,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #FF5A00;
-  --primary-foreground: #f7f7f7;
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -420,7 +393,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0rem;
+  --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -438,8 +411,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #FF5A00;
-  --primary-foreground: #050505;
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);

@@ -2,8 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test, describe } from 'node:test';
 
-const read = (path) =>
-  readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 // ---------------------------------------------------------------------------
 // Parse data exports from TypeScript source files for structural testing.
@@ -18,10 +17,9 @@ const landingPagesSrc = read('src/data/landingPages.ts');
 // Markets data integrity tests
 // ---------------------------------------------------------------------------
 describe('data/markets - Market definitions', () => {
+
   test('exports exactly three markets', () => {
-    const slugMatches = marketsSrc.match(
-      /slug:\s*'(residential|commercial|public-sector)'/g
-    );
+    const slugMatches = marketsSrc.match(/slug:\s*'(residential|commercial|public-sector)'/g);
     assert.equal(slugMatches.length, 3);
   });
 
@@ -45,49 +43,23 @@ describe('data/markets - Market definitions', () => {
 
   test('Market interface declares all required fields', () => {
     const fields = [
-      'slug',
-      'navLabel',
-      'number',
-      'title',
-      'headline',
-      'summary',
-      'description',
-      'image',
-      'heroImage',
-      'icon',
-      'accent',
-      'proof',
-      'capabilities',
-      'process',
-      'cta',
-      'metaTitle',
-      'metaDescription',
+      'slug', 'navLabel', 'number', 'title', 'headline', 'summary',
+      'description', 'image', 'heroImage', 'icon', 'accent', 'proof',
+      'capabilities', 'process', 'cta', 'metaTitle', 'metaDescription',
     ];
     for (const field of fields) {
-      assert.match(
-        marketsSrc,
-        new RegExp(`${field}:\\s`),
-        `Market interface should declare ${field}`
-      );
+      assert.match(marketsSrc, new RegExp(`${field}:\\s`), `Market interface should declare ${field}`);
     }
   });
 
   test('each market has capabilities array with title and body', () => {
     const capTitles = marketsSrc.match(/capabilities:\s*\[/g);
-    assert.equal(
-      capTitles.length,
-      3,
-      'all three markets should have capabilities'
-    );
+    assert.equal(capTitles.length, 3, 'all three markets should have capabilities');
   });
 
   test('each market has process array with title and body', () => {
     const processHeaders = marketsSrc.match(/process:\s*\[/g);
-    assert.equal(
-      processHeaders.length,
-      3,
-      'all three markets should have process steps'
-    );
+    assert.equal(processHeaders.length, 3, 'all three markets should have process steps');
   });
 
   test('residential market has correct CTA', () => {
@@ -115,15 +87,9 @@ describe('data/markets - Market definitions', () => {
   });
 
   test('trustPillars array exports four items', () => {
-    const pillarSection = marketsSrc
-      .split('trustPillars')[1]
-      .split('export')[0];
+    const pillarSection = marketsSrc.split('trustPillars')[1].split('export')[0];
     const pillarMatches = pillarSection.match(/\{\s*title:\s*'/g);
-    assert.equal(
-      pillarMatches.length,
-      4,
-      'should have exactly 4 trust pillar entries'
-    );
+    assert.equal(pillarMatches.length, 4, 'should have exactly 4 trust pillar entries');
   });
 
   test('trustPillars includes contractor registration pillar', () => {
@@ -169,11 +135,7 @@ describe('data/markets - Market definitions', () => {
       const capClose = block.indexOf('],');
       const capContent = block.slice(0, capClose);
       const titleCount = (capContent.match(/title:\s*'/g) || []).length;
-      assert.equal(
-        titleCount,
-        3,
-        'each market should have exactly 3 capabilities'
-      );
+      assert.equal(titleCount, 3, 'each market should have exactly 3 capabilities');
     }
   });
 
@@ -183,11 +145,7 @@ describe('data/markets - Market definitions', () => {
       const closeIdx = block.indexOf('],');
       const procContent = block.slice(0, closeIdx);
       const titleCount = (procContent.match(/title:\s*'/g) || []).length;
-      assert.equal(
-        titleCount,
-        4,
-        'each market should have exactly 4 process steps'
-      );
+      assert.equal(titleCount, 4, 'each market should have exactly 4 process steps');
     }
   });
 
@@ -204,11 +162,7 @@ describe('data/markets - Market definitions', () => {
   test('metaTitle fields include company name', () => {
     const metaTitles = marketsSrc.match(/metaTitle:\s*'[^']+'/g) || [];
     for (const title of metaTitles) {
-      assert.match(
-        title,
-        /Sky/,
-        `metaTitle should include company name: ${title}`
-      );
+      assert.match(title, /Sky/, `metaTitle should include company name: ${title}`);
     }
   });
 });
@@ -217,6 +171,7 @@ describe('data/markets - Market definitions', () => {
 // Landing pages data integrity tests
 // ---------------------------------------------------------------------------
 describe('data/landingPages - Area landing pages', () => {
+
   test('LandingPageKind type covers service and area', () => {
     assert.match(landingPagesSrc, /'service'/);
     assert.match(landingPagesSrc, /'area'/);
@@ -224,29 +179,12 @@ describe('data/landingPages - Area landing pages', () => {
 
   test('LandingPage interface declares all required fields', () => {
     const fields = [
-      'kind',
-      'slug',
-      'title',
-      'shortTitle',
-      'eyebrow',
-      'headline',
-      'description',
-      'metaTitle',
-      'metaDescription',
-      'image',
-      'accent',
-      'market',
-      'proof',
-      'scope',
-      'process',
-      'related',
+      'kind', 'slug', 'title', 'shortTitle', 'eyebrow', 'headline',
+      'description', 'metaTitle', 'metaDescription', 'image', 'accent',
+      'market', 'proof', 'scope', 'process', 'related',
     ];
     for (const field of fields) {
-      assert.match(
-        landingPagesSrc,
-        new RegExp(`${field}[?:]`),
-        `LandingPage should declare ${field}`
-      );
+      assert.match(landingPagesSrc, new RegExp(`${field}[?:]`), `LandingPage should declare ${field}`);
     }
   });
 
@@ -255,35 +193,17 @@ describe('data/landingPages - Area landing pages', () => {
   });
 
   test('area landing pages cover all 7 expected service areas', () => {
-    const areaSlugs = [
-      'inver-grove-heights',
-      'south-st-paul',
-      'st-paul',
-      'eagan',
-      'woodbury',
-      'minneapolis',
-      'twin-cities',
-    ];
+    const areaSlugs = ['inver-grove-heights', 'south-st-paul', 'st-paul', 'eagan', 'woodbury', 'minneapolis', 'twin-cities'];
     for (const slug of areaSlugs) {
-      assert.match(
-        landingPagesSrc,
-        new RegExp(`slug:\\s*'${slug}'`),
-        `should include area ${slug}`
-      );
+      assert.match(landingPagesSrc, new RegExp(`slug:\\s*'${slug}'`), `should include area ${slug}`);
     }
   });
 
   test('all area pages have kind set to area', () => {
-    const areaSection = landingPagesSrc
-      .split('areaLandingPages')[1]
-      .split('serviceLandingPages')[0];
+    const areaSection = landingPagesSrc.split('areaLandingPages')[1].split('serviceLandingPages')[0];
     const kindMatches = areaSection.match(/kind:\s*'(area|service)'/g) || [];
     for (const k of kindMatches) {
-      assert.match(
-        k,
-        /area/,
-        'all entries in areaLandingPages should be area kind'
-      );
+      assert.match(k, /area/, 'all entries in areaLandingPages should be area kind');
     }
   });
 
@@ -293,66 +213,43 @@ describe('data/landingPages - Area landing pages', () => {
   });
 
   test('each area page has at least 3 proof points', () => {
-    const areaSection = landingPagesSrc
-      .split('areaLandingPages')[1]
-      .split('serviceLandingPages')[0];
+    const areaSection = landingPagesSrc.split('areaLandingPages')[1].split('serviceLandingPages')[0];
     const proofBlocks = areaSection.split(/proof:\s*\[/).slice(1);
     for (const block of proofBlocks) {
       const close = block.indexOf('],');
       const items = (block.slice(0, close).match(/'/g) || []).length / 2;
-      assert.ok(
-        items >= 3,
-        'each area page should have at least 3 proof points'
-      );
+      assert.ok(items >= 3, 'each area page should have at least 3 proof points');
     }
   });
 
   test('each area page has at least 3 process steps', () => {
-    const areaSection = landingPagesSrc
-      .split('areaLandingPages')[1]
-      .split('serviceLandingPages')[0];
+    const areaSection = landingPagesSrc.split('areaLandingPages')[1].split('serviceLandingPages')[0];
     const processBlocks = areaSection.split(/process:\s*\[/).slice(1);
     for (const block of processBlocks) {
       const close = block.indexOf('],');
       const content = block.slice(0, close);
       const count = (content.match(/title:\s*'/g) || []).length;
-      assert.ok(
-        count >= 3,
-        'each area page should have at least 3 process steps'
-      );
+      assert.ok(count >= 3, 'each area page should have at least 3 process steps');
     }
   });
 
   test('each area page has related slugs array', () => {
-    const areaSection = landingPagesSrc
-      .split('areaLandingPages')[1]
-      .split('serviceLandingPages')[0];
+    const areaSection = landingPagesSrc.split('areaLandingPages')[1].split('serviceLandingPages')[0];
     const relatedBlocks = areaSection.split(/related:\s*\[/).slice(1);
-    assert.ok(
-      relatedBlocks.length >= 7,
-      'all area pages should have related slugs'
-    );
+    assert.ok(relatedBlocks.length >= 7, 'all area pages should have related slugs');
   });
 });
 
 describe('data/landingPages - Service landing pages', () => {
+
   test('service landing pages cover all expected services', () => {
     const serviceSlugs = [
-      'interior-painting',
-      'exterior-painting',
-      'commercial-painting',
-      'cabinet-painting',
-      'drywall-repair',
-      'deck-fence-staining',
-      'parking-lot-striping',
-      'pavement-marking',
+      'interior-painting', 'exterior-painting', 'commercial-painting',
+      'cabinet-painting', 'drywall-repair', 'deck-fence-staining',
+      'parking-lot-striping', 'pavement-marking',
     ];
     for (const slug of serviceSlugs) {
-      assert.match(
-        landingPagesSrc,
-        new RegExp(`slug:\\s*'${slug}'`),
-        `should include service ${slug}`
-      );
+      assert.match(landingPagesSrc, new RegExp(`slug:\\s*'${slug}'`), `should include service ${slug}`);
     }
   });
 
@@ -360,11 +257,7 @@ describe('data/landingPages - Service landing pages', () => {
     const serviceSection = landingPagesSrc.split('serviceLandingPages')[1];
     const kindMatches = serviceSection.match(/kind:\s*'(area|service)'/g) || [];
     for (const k of kindMatches) {
-      assert.match(
-        k,
-        /service/,
-        'all entries in serviceLandingPages should be service kind'
-      );
+      assert.match(k, /service/, 'all entries in serviceLandingPages should be service kind');
     }
   });
 
@@ -373,21 +266,14 @@ describe('data/landingPages - Service landing pages', () => {
     const marketMatches = landingPagesSrc.match(/market:\s*'([^']+)'/g) || [];
     for (const m of marketMatches) {
       const value = m.match(/'([^']+)'/)[1];
-      assert.ok(
-        validMarkets.includes(value),
-        `market "${value}" should be one of ${validMarkets.join(', ')}`
-      );
+      assert.ok(validMarkets.includes(value), `market "${value}" should be one of ${validMarkets.join(', ')}`);
     }
   });
 
   test('all landing page images use .webp extension', () => {
     const imageMatches = landingPagesSrc.match(/image:\s*'[^']+'/g) || [];
     for (const img of imageMatches) {
-      assert.match(
-        img,
-        /\.webp'$/,
-        `Landing page image should be .webp: ${img}`
-      );
+      assert.match(img, /\.webp'$/, `Landing page image should be .webp: ${img}`);
     }
   });
 
@@ -395,15 +281,12 @@ describe('data/landingPages - Service landing pages', () => {
     const slugMatches = landingPagesSrc.match(/slug:\s*'([^']+)'/g) || [];
     const slugs = slugMatches.map((s) => s.match(/'([^']+)'/)[1]);
     const unique = new Set(slugs);
-    assert.equal(
-      slugs.length,
-      unique.size,
-      'all landing page slugs must be unique'
-    );
+    assert.equal(slugs.length, unique.size, 'all landing page slugs must be unique');
   });
 });
 
 describe('data/landingPages - Utility functions', () => {
+
   test('landingPagePath generates area paths correctly', () => {
     const src = landingPagesSrc;
     assert.match(src, /\/service-areas\/\$\{page\.slug\}/);
@@ -424,17 +307,11 @@ describe('data/landingPages - Utility functions', () => {
   });
 
   test('landingPages combines area and service arrays', () => {
-    assert.match(
-      landingPagesSrc,
-      /\[\.\.\.areaLandingPages, \.\.\.serviceLandingPages\]/
-    );
+    assert.match(landingPagesSrc, /\[\.\.\.areaLandingPages, \.\.\.serviceLandingPages\]/);
   });
 
   test('landingPageByKindAndSlug selects correct collection by kind', () => {
-    assert.match(
-      landingPagesSrc,
-      /kind === 'area' \? areaLandingPages : serviceLandingPages/
-    );
+    assert.match(landingPagesSrc, /kind === 'area' \? areaLandingPages : serviceLandingPages/);
   });
 });
 
@@ -442,58 +319,29 @@ describe('data/landingPages - Utility functions', () => {
 // Cross-module consistency tests
 // ---------------------------------------------------------------------------
 describe('Cross-module data consistency', () => {
+
   test('all market slugs from markets.ts are referenced in landing page related arrays', () => {
     const marketSlugs = ['residential', 'commercial', 'public-sector'];
     for (const slug of marketSlugs) {
-      assert.match(
-        landingPagesSrc,
-        new RegExp(`'${slug}'`),
-        `landing pages should reference market slug ${slug}`
-      );
+      assert.match(landingPagesSrc, new RegExp(`'${slug}'`), `landing pages should reference market slug ${slug}`);
     }
   });
 
   test('area landing page slugs match cities in seo.ts areaServed', () => {
     const seoSrc = read('src/lib/seo.ts');
-    const areaCities = [
-      'Inver Grove Heights',
-      'South St. Paul',
-      'St. Paul',
-      'Eagan',
-      'Woodbury',
-      'Minneapolis',
-    ];
+    const areaCities = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
     for (const city of areaCities) {
-      assert.match(
-        seoSrc,
-        new RegExp(city.replace(/\./g, '\\.')),
-        `seo.ts should reference ${city}`
-      );
+      assert.match(seoSrc, new RegExp(city.replace(/\./g, '\\.')), `seo.ts should reference ${city}`);
     }
   });
 
   test('settings service_areas match seo.ts areaServed cities', () => {
     const settingsSrc = read('src/lib/settings.ts');
     const seoSrc = read('src/lib/seo.ts');
-    const settingsAreas = [
-      'Inver Grove Heights',
-      'South St. Paul',
-      'St. Paul',
-      'Eagan',
-      'Woodbury',
-      'Minneapolis',
-    ];
+    const settingsAreas = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
     for (const area of settingsAreas) {
-      assert.match(
-        settingsSrc,
-        new RegExp(area.replace(/\./g, '\\.')),
-        `settings should include ${area}`
-      );
-      assert.match(
-        seoSrc,
-        new RegExp(area.replace(/\./g, '\\.')),
-        `seo should include ${area}`
-      );
+      assert.match(settingsSrc, new RegExp(area.replace(/\./g, '\\.')), `settings should include ${area}`);
+      assert.match(seoSrc, new RegExp(area.replace(/\./g, '\\.')), `seo should include ${area}`);
     }
   });
 

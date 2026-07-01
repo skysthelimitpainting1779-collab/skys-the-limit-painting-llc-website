@@ -1,22 +1,18 @@
-### Auto-Generated Rule based on failure at 2026-06-24T19:31:21.083Z
 
+### Auto-Generated Rule based on failure at 2026-06-24T19:31:21.083Z
 - **Triggering Error Context**: **Step Failed**: A: OKF Validator
 - **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
 
 ### Silent Wipe Prevention
-
 - **Rule**: Never overwrite a file without checking its original line count. If the new output is more than 20% shorter than the original, you MUST flag it for human review in `.agents/approvals/` before saving.
 
 ### API Rate Limit Stalls
-
 - **Rule**: Audit our API wrappers or MCP server configs. Ensure that on a 429 Error, the system pauses for 10 seconds, retries, and scales the wait time exponentially before throwing a hard failure.
 
 ### Anti-Laziness Protocol
-
 - **Rule**: ANTI-LAZINESS PROTOCOL: When tasked with OKF compilation or synthesis, you are strictly forbidden from writing boilerplate, placeholders, or empty structural tags. You MUST use the read_file or search_codebase MCP tools to extract the raw facts, relationships, and context from the source data FIRST. Your synthesis must be a genuine, dense summarization of those specific facts. If you cannot find enough data to write a 30+ word synthesis, you must flag the node as 'Insufficient Data' in the ERRORS.md file rather than faking it.
 
 ### CI/CD Incident Override (CRITICAL PRIORITY — Interrupts All Lower-Priority Work)
-
 - **Trigger**: A new file matching `.learnings/CI-INCIDENT-*.md` is detected in the working tree or is pulled from the remote branch.
 - **Rule**: Upon detection of a CI-INCIDENT file, you MUST immediately:
   1. **Suspend** all pending and low-priority queue tasks (mark them `blocked` in the SQLite queue via `scripts/queue.js`).
@@ -32,12 +28,10 @@
 - **Non-negotiable**: You may NOT fake a fix, skip local verification, or mark the incident resolved without a green CI run. If the fix requires human input (e.g., a revoked API token), escalate immediately by writing a `.agents/approvals/ESCALATE-[RUN_ID].md` file and notifying the operator.
 
 ### Auto-Generated Rule based on failure at 2026-06-29T01:46:02.135Z
-
 - **Triggering Error Context**: **Step Failed**: A: OKF Validator
 - **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
 
 ### Git Workflows & Deployment Topology
-
 - **Rule**: Standardize all workspace branches, commits, staging, and deployment environments as follows:
   - **Protected Branches**: `main` (Production) and `staging` (Staging/Preview). Direct commits/pushes are strictly prohibited.
   - **CI/CD Boomerang Policy**: Auto-repair incident committing is disabled on protected branches (`main`, `staging`) to prevent history pollution. It is only allowed on feature/PR branches.

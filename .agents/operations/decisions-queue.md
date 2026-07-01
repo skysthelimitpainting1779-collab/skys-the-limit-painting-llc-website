@@ -1,6 +1,6 @@
 ---
 type: ops-control
-title: 'Decisions Queue'
+title: "Decisions Queue"
 tags: [decisions, approvals, human-in-the-loop, company-os]
 last_sync: 2026-06-24
 ---
@@ -14,17 +14,17 @@ last_sync: 2026-06-24
 
 ## Open Decisions
 
-| ID                 | Priority | Description | Raised By | Raised At | Status | Decided By |
-| ------------------ | -------- | ----------- | --------- | --------- | ------ | ---------- |
-| _(Queue is empty)_ | —        | —           | —         | —         | —      | —          |
+| ID | Priority | Description | Raised By | Raised At | Status | Decided By |
+|---|---|---|---|---|---|---|
+| *(Queue is empty)* | — | — | — | — | — | — |
 
 ---
 
 ## Decision Log (Closed)
 
-| ID           | Description | Decision | Decided By | Decided At |
-| ------------ | ----------- | -------- | ---------- | ---------- |
-| _(None yet)_ | —           | —        | —          | —          |
+| ID | Description | Decision | Decided By | Decided At |
+|---|---|---|---|---|
+| *(None yet)* | — | — | — | — |
 
 ---
 
@@ -32,13 +32,13 @@ last_sync: 2026-06-24
 
 The following events cause the harness to automatically add items here:
 
-| Trigger                                | Priority | Description                                     |
-| -------------------------------------- | -------- | ----------------------------------------------- |
-| Lead enters `approval_waitpoint`       | HIGH     | Human review of drafted estimate before sending |
-| HubSpot sync fails 3x                  | HIGH     | Manual HubSpot credential check required        |
-| Meta ad spend > 120% of monthly target | MEDIUM   | Spend review and pause decision                 |
-| Lead response time > 8h                | MEDIUM   | Acknowledge and flag for manual outreach        |
-| New route added without JSON-LD schema | LOW      | Schema markup task enqueue                      |
+| Trigger | Priority | Description |
+|---|---|---|
+| Lead enters `approval_waitpoint` | HIGH | Human review of drafted estimate before sending |
+| HubSpot sync fails 3x | HIGH | Manual HubSpot credential check required |
+| Meta ad spend > 120% of monthly target | MEDIUM | Spend review and pause decision |
+| Lead response time > 8h | MEDIUM | Acknowledge and flag for manual outreach |
+| New route added without JSON-LD schema | LOW | Schema markup task enqueue |
 
 ---
 
@@ -60,16 +60,14 @@ When a new estimate draft is ready, the harness writes a file to `.agents/approv
 [Agent-composed estimate draft goes here]
 
 ### Agent Confidence
-
 - HubSpot synced: ✅ / ❌
 - Supabase record: ✅ / ❌
 - Auto-reply sent: ✅ / ❌
 
 ### Human Action Required
-
 - [ ] Review draft estimate
 - [ ] Approve to send via email OR edit and send manually
 - [ ] Update pipeline.md status to `closed_won` or `closed_lost`
 ```
 
-_Last sync: 2026-06-24_ 🧬
+*Last sync: 2026-06-24* 🧬

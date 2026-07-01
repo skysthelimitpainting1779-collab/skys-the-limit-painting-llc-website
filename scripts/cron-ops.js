@@ -24,15 +24,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 // ─── Paths ──────────────────────────────────────────────────────────────────
-const PIPELINE_MD = path.join(ROOT, '.agents', 'operations', 'pipeline.md');
-const KPIS_MD = path.join(ROOT, '.agents', 'operations', 'KPIs.md');
-const APPROVALS_DIR = path.join(ROOT, '.agents', 'approvals');
-const TRACES_DIR = path.join(ROOT, '.agents', 'traces');
+const PIPELINE_MD    = path.join(ROOT, '.agents', 'operations', 'pipeline.md');
+const KPIS_MD        = path.join(ROOT, '.agents', 'operations', 'KPIs.md');
+const APPROVALS_DIR  = path.join(ROOT, '.agents', 'approvals');
+const TRACES_DIR     = path.join(ROOT, '.agents', 'traces');
 
 // ─── Thresholds ──────────────────────────────────────────────────────────────
-const STALE_ESTIMATE_HOURS = 48; // estimate_drafting
-const STALE_APPROVAL_HOURS = 72; // approval_waitpoint
-const APPROVAL_OVERDUE_HOURS = 24; // approval file overdue
+const STALE_ESTIMATE_HOURS    = 48;  // estimate_drafting
+const STALE_APPROVAL_HOURS    = 72;  // approval_waitpoint
+const APPROVAL_OVERDUE_HOURS  = 24;  // approval file overdue
 
 // ─── Logger ──────────────────────────────────────────────────────────────────
 function log(message, level = 'INFO') {
@@ -40,10 +40,7 @@ function log(message, level = 'INFO') {
   const line = `[${ts}] [cron-ops] [${level}] ${message}`;
   console.log(line);
   fs.mkdirSync(TRACES_DIR, { recursive: true });
-  const traceFile = path.join(
-    TRACES_DIR,
-    `cron-${new Date().toISOString().slice(0, 10)}.log`
-  );
+  const traceFile = path.join(TRACES_DIR, `cron-${new Date().toISOString().slice(0, 10)}.log`);
   fs.appendFileSync(traceFile, line + '\n', 'utf8');
 }
 
@@ -63,37 +60,17 @@ function parsePipelineLeads() {
   let headerPassed = false;
 
   for (const line of lines) {
-    if (line.includes('| Lead ID |')) {
-      inTable = true;
-      continue;
-    }
-    if (inTable && line.startsWith('|---')) {
-      headerPassed = true;
-      continue;
-    }
+    if (line.includes('| Lead ID |')) { inTable = true; continue; }
+    if (inTable && line.startsWith('|---')) { headerPassed = true; continue; }
     if (!inTable || !headerPassed) continue;
     if (!line.startsWith('|') || line.includes('*(No active leads)*')) continue;
-    if (line.startsWith('|---') || line.trim() === '') {
-      inTable = false;
-      continue;
-    }
+    if (line.startsWith('|---') || line.trim() === '') { inTable = false; continue; }
 
     // Parse columns: | Lead ID | Name | Market | Stage | Submitted At | Updated At | HubSpot Synced | Notes |
-    const cols = line
-      .split('|')
-      .map((c) => c.trim())
-      .filter((_, i) => i > 0); // drop empty first
+    const cols = line.split('|').map(c => c.trim()).filter((_, i) => i > 0); // drop empty first
     if (cols.length < 7) continue;
 
-    const [
-      leadId,
-      name,
-      market,
-      stageRaw,
-      submittedAt,
-      updatedAt,
-      hubspotSynced,
-    ] = cols;
+    const [leadId, name, market, stageRaw, submittedAt, updatedAt, hubspotSynced] = cols;
 
     // Skip closed leads
     const stage = stageRaw.replace(/`/g, '');
@@ -132,18 +109,12 @@ function scanForStaleLeads(leads) {
   for (const lead of leads) {
     const age = hoursSince(lead.updatedAt);
     if (age === null) {
-      log(
-        `Cannot parse updatedAt for ${lead.leadId}: "${lead.updatedAt}"`,
-        'WARN'
-      );
+      log(`Cannot parse updatedAt for ${lead.leadId}: "${lead.updatedAt}"`, 'WARN');
       continue;
     }
 
     if (lead.stage === 'estimate_drafting' && age > STALE_ESTIMATE_HOURS) {
-      log(
-        `STALE: ${lead.leadId} (${lead.name}) has been in estimate_drafting for ${age.toFixed(1)}h — threshold: ${STALE_ESTIMATE_HOURS}h`,
-        'WARN'
-      );
+      log(`STALE: ${lead.leadId} (${lead.name}) has been in estimate_drafting for ${age.toFixed(1)}h — threshold: ${STALE_ESTIMATE_HOURS}h`, 'WARN');
       enqueueTask(
         lead.leadId,
         `FOLLOW-UP: Stale Lead Review — ${lead.leadId} (${lead.name}, ${lead.market}) stuck in estimate_drafting for ${Math.round(age)}h`,
@@ -153,10 +124,7 @@ function scanForStaleLeads(leads) {
     }
 
     if (lead.stage === 'approval_waitpoint' && age > STALE_APPROVAL_HOURS) {
-      log(
-        `STALE: ${lead.leadId} (${lead.name}) has been in approval_waitpoint for ${age.toFixed(1)}h — threshold: ${STALE_APPROVAL_HOURS}h`,
-        'WARN'
-      );
+      log(`STALE: ${lead.leadId} (${lead.name}) has been in approval_waitpoint for ${age.toFixed(1)}h — threshold: ${STALE_APPROVAL_HOURS}h`, 'WARN');
       enqueueTask(
         lead.leadId,
         `ESCALATE: Human Approval Overdue — ${lead.leadId} (${lead.name}, ${lead.market}) waiting ${Math.round(age)}h for approval`,
@@ -166,10 +134,7 @@ function scanForStaleLeads(leads) {
     }
 
     if (!lead.hubspotSynced && lead.stage !== 'intake') {
-      log(
-        `SYNC FAILURE: ${lead.leadId} (${lead.name}) has no HubSpot sync`,
-        'WARN'
-      );
+      log(`SYNC FAILURE: ${lead.leadId} (${lead.name}) has no HubSpot sync`, 'WARN');
       enqueueTask(
         lead.leadId,
         `REPAIR: HubSpot Sync Failure — ${lead.leadId} (${lead.name}) requires manual CRM sync`,
@@ -197,7 +162,7 @@ function scanKPIs() {
   for (const line of lines) {
     if (line.includes('🔴')) {
       // Extract KPI name (first column)
-      const cols = line.split('|').map((c) => c.trim());
+      const cols = line.split('|').map(c => c.trim());
       if (cols.length > 1 && cols[1] && cols[1] !== '---') {
         offTrack.push(cols[1]);
       }
@@ -223,7 +188,7 @@ function scanApprovalQueue() {
     return 0;
   }
 
-  const files = fs.readdirSync(APPROVALS_DIR).filter((f) => f.endsWith('.md'));
+  const files = fs.readdirSync(APPROVALS_DIR).filter(f => f.endsWith('.md'));
   let overdue = 0;
 
   for (const file of files) {
@@ -236,10 +201,7 @@ function scanApprovalQueue() {
     if (!content.includes('status: pending')) continue; // already actioned
 
     if (age > APPROVAL_OVERDUE_HOURS) {
-      log(
-        `OVERDUE APPROVAL: ${file} has been pending for ${age.toFixed(1)}h`,
-        'WARN'
-      );
+      log(`OVERDUE APPROVAL: ${file} has been pending for ${age.toFixed(1)}h`, 'WARN');
       const leadId = file.replace('ESTIMATE-', '').replace('.md', '');
       enqueueTask(
         leadId,
@@ -287,30 +249,24 @@ async function runScanCycle() {
 
 // ─── CLI entry ────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
-const watchMode = args.includes('--watch');
+const watchMode  = args.includes('--watch');
 const intervalFlagIdx = args.indexOf('--interval');
-const intervalMins =
-  intervalFlagIdx !== -1 ? parseInt(args[intervalFlagIdx + 1], 10) || 30 : 30;
+const intervalMins = intervalFlagIdx !== -1 ? parseInt(args[intervalFlagIdx + 1], 10) || 30 : 30;
 
 if (watchMode) {
   log(`Starting in watch mode — cycle every ${intervalMins} minutes`);
-  runScanCycle().catch((err) => log(`Cycle error: ${err.message}`, 'ERROR'));
+  runScanCycle().catch(err => log(`Cycle error: ${err.message}`, 'ERROR'));
 
-  setInterval(
-    () => {
-      runScanCycle().catch((err) =>
-        log(`Cycle error: ${err.message}`, 'ERROR')
-      );
-    },
-    intervalMins * 60 * 1000
-  );
+  setInterval(() => {
+    runScanCycle().catch(err => log(`Cycle error: ${err.message}`, 'ERROR'));
+  }, intervalMins * 60 * 1000);
 } else {
   // Single run
   runScanCycle()
-    .then((summary) => {
+    .then(summary => {
       console.log('\n✅ Cron scan complete:', JSON.stringify(summary, null, 2));
     })
-    .catch((err) => {
+    .catch(err => {
       console.error('\n❌ Cron scan failed:', err.message);
       process.exit(1);
     });

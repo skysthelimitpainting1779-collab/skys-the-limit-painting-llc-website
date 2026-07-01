@@ -1,9 +1,6 @@
 import { Music2 } from 'lucide-react';
 
-const Facebook = ({
-  size = 24,
-  ...props
-}: { size?: number } & React.SVGProps<SVGSVGElement>) => (
+const Facebook = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
     width={size}
@@ -19,10 +16,7 @@ const Facebook = ({
   </svg>
 );
 
-const Instagram = ({
-  size = 24,
-  ...props
-}: { size?: number } & React.SVGProps<SVGSVGElement>) => (
+const Instagram = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
     width={size}
@@ -40,10 +34,7 @@ const Instagram = ({
   </svg>
 );
 
-const Linkedin = ({
-  size = 24,
-  ...props
-}: { size?: number } & React.SVGProps<SVGSVGElement>) => (
+const Linkedin = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
     width={size}

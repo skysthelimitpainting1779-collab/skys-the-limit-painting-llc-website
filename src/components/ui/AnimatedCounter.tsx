@@ -1,13 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useInView,
-  useReducedMotion,
-} from 'motion/react';
+import { motion, useMotionValue, useSpring, useInView, useReducedMotion } from 'motion/react';
 
 interface AnimatedCounterProps {
   target: number;
@@ -17,13 +11,7 @@ interface AnimatedCounterProps {
   duration?: number;
 }
 
-function AnimatedCounterItem({
-  target,
-  suffix = '',
-  prefix = '',
-  label,
-  duration = 1.8,
-}: AnimatedCounterProps) {
+function AnimatedCounterItem({ target, suffix = '', prefix = '', label, duration = 1.8 }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
   const motionValue = useMotionValue(0);
@@ -52,17 +40,13 @@ function AnimatedCounterItem({
     <div ref={ref} className="flex flex-col items-start gap-2">
       <div className="flex items-baseline gap-1">
         {prefix && (
-          <span className="font-display text-xl font-black text-white">
-            {prefix}
-          </span>
+          <span className="font-display text-xl font-black text-white">{prefix}</span>
         )}
         <span className="font-display text-5xl font-black leading-none text-white md:text-6xl">
           {displayValue}
         </span>
         {suffix && (
-          <span className="font-display text-2xl font-black text-white">
-            {suffix}
-          </span>
+          <span className="font-display text-2xl font-black text-white">{suffix}</span>
         )}
       </div>
       <p className="text-xs font-medium text-[#9ca3af]">{label}</p>
@@ -71,19 +55,11 @@ function AnimatedCounterItem({
 }
 
 interface StatsBarProps {
-  stats: Array<{
-    target: number;
-    suffix?: string;
-    prefix?: string;
-    label: string;
-  }>;
+  stats: Array<{ target: number; suffix?: string; prefix?: string; label: string }>;
   className?: string;
 }
 
-export default function AnimatedStatsBar({
-  stats,
-  className = '',
-}: StatsBarProps) {
+export default function AnimatedStatsBar({ stats, className = '' }: StatsBarProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

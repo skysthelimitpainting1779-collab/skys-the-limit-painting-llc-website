@@ -1,12 +1,5 @@
 import Link from 'next/link';
-import {
-  ArrowRight,
-  Calculator,
-  Camera,
-  ClipboardCheck,
-  Phone,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';
 import MagneticButton from './animations/MagneticButton';
 import IconFeatureCard from './IconFeatureCard';
@@ -25,7 +18,7 @@ const proofItems = [
   {
     icon: ShieldCheck,
     title: 'Verified contractor language',
-    body: "Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers' comp exempt under MN Statute 176.041. MN ID: IR816596",
+    body: 'Registered Minnesota Specialty Contractor (Painting), fully insured, and owner-operator workers\' comp exempt under MN Statute 176.041. MN ID: IR816596',
   },
 ];
 
@@ -38,9 +31,7 @@ export default function ConversionFooterCta() {
             Get a tighter scope before paint ever opens.
           </h2>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#c9c1b4] md:text-lg">
-            Start with a fast planning range, then send the details for a real
-            estimate conversation. The better the surface story, the cleaner the
-            first response.
+            Start with a fast planning range, then send the details for a real estimate conversation. The better the surface story, the cleaner the first response.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <MagneticButton pullFactor={0.3}>

@@ -21,19 +21,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 // ─── Path constants ────────────────────────────────────────────────────────
-const PIPELINE_MD = path.join(ROOT, '.agents', 'operations', 'pipeline.md');
+const PIPELINE_MD   = path.join(ROOT, '.agents', 'operations', 'pipeline.md');
 const APPROVALS_DIR = path.join(ROOT, '.agents', 'approvals');
-const TRACES_DIR = path.join(ROOT, '.agents', 'traces');
+const TRACES_DIR    = path.join(ROOT, '.agents', 'traces');
 
 // ─── Pipeline stages ────────────────────────────────────────────────────────
-const STAGES = [
-  'intake',
-  'crm_reconciliation',
-  'estimate_drafting',
-  'approval_waitpoint',
-  'closed_won',
-  'closed_lost',
-];
+const STAGES = ['intake', 'crm_reconciliation', 'estimate_drafting', 'approval_waitpoint', 'closed_won', 'closed_lost'];
 
 // ─── Structured logger ──────────────────────────────────────────────────────
 function log(stage, leadId, message, level = 'INFO') {
@@ -41,10 +34,7 @@ function log(stage, leadId, message, level = 'INFO') {
   const line = `[${ts}] [harness-ops] [${level}] [${stage}] [${leadId}] ${message}`;
   console.log(line);
   // Append to trace log
-  const traceFile = path.join(
-    TRACES_DIR,
-    `harness-${new Date().toISOString().slice(0, 10)}.log`
-  );
+  const traceFile = path.join(TRACES_DIR, `harness-${new Date().toISOString().slice(0, 10)}.log`);
   fs.mkdirSync(TRACES_DIR, { recursive: true });
   fs.appendFileSync(traceFile, line + '\n', 'utf8');
 }
@@ -58,12 +48,7 @@ function readPipelineMd() {
 function upsertLeadInPipeline(lead, stage, hubspotSynced = false, notes = '') {
   const content = readPipelineMd();
   if (!content) {
-    log(
-      stage,
-      lead.leadId,
-      'pipeline.md not found — skipping pipeline update',
-      'WARN'
-    );
+    log(stage, lead.leadId, 'pipeline.md not found — skipping pipeline update', 'WARN');
     return;
   }
 
@@ -88,20 +73,12 @@ function upsertLeadInPipeline(lead, stage, hubspotSynced = false, notes = '') {
     // If placeholder wasn't found, append before the Stale Lead section
     if (updated === content) {
       const insertBefore = '\n---\n\n## Stale Lead Alert Rules';
-      fs.writeFileSync(
-        PIPELINE_MD,
-        content.replace(insertBefore, `\n${newRow}${insertBefore}`),
-        'utf8'
-      );
+      fs.writeFileSync(PIPELINE_MD, content.replace(insertBefore, `\n${newRow}${insertBefore}`), 'utf8');
     } else {
       fs.writeFileSync(PIPELINE_MD, updated, 'utf8');
     }
   }
-  log(
-    stage,
-    lead.leadId,
-    `Pipeline updated → stage: ${stage}, hubspot: ${hubspotStatus}`
-  );
+  log(stage, lead.leadId, `Pipeline updated → stage: ${stage}, hubspot: ${hubspotStatus}`);
 }
 
 // ─── HubSpot CRM Reconciliation ──────────────────────────────────────────────
@@ -109,12 +86,7 @@ async function crmReconciliation(lead) {
   const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
 
   if (!accessToken) {
-    log(
-      'crm_reconciliation',
-      lead.leadId,
-      'HUBSPOT_ACCESS_TOKEN not set — CRM reconciliation skipped',
-      'WARN'
-    );
+    log('crm_reconciliation', lead.leadId, 'HUBSPOT_ACCESS_TOKEN not set — CRM reconciliation skipped', 'WARN');
     return { synced: false, reason: 'no_token', contactId: null };
   }
 
@@ -122,45 +94,27 @@ async function crmReconciliation(lead) {
 
   // Step 1: Search for existing contact by email
   try {
-    const searchRes = await fetch(
-      'https://api.hubapi.com/crm/v3/objects/contacts/search',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          filterGroups: [
-            {
-              filters: [
-                { propertyName: 'email', operator: 'EQ', value: lead.email },
-              ],
-            },
-          ],
-          properties: ['email', 'firstname', 'lastname', 'hs_lead_status'],
-        }),
-      }
-    );
+    const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: lead.email }] }],
+        properties: ['email', 'firstname', 'lastname', 'hs_lead_status'],
+      }),
+    });
 
     if (searchRes.ok) {
       const data = await searchRes.json();
       if (data.results?.length > 0) {
         contactId = data.results[0].id;
-        log(
-          'crm_reconciliation',
-          lead.leadId,
-          `HubSpot contact found: ${contactId}`
-        );
+        log('crm_reconciliation', lead.leadId, `HubSpot contact found: ${contactId}`);
       }
     }
   } catch (err) {
-    log(
-      'crm_reconciliation',
-      lead.leadId,
-      `HubSpot search failed: ${err.message}`,
-      'ERROR'
-    );
+    log('crm_reconciliation', lead.leadId, `HubSpot search failed: ${err.message}`, 'ERROR');
   }
 
   // Step 2: Build properties
@@ -179,9 +133,7 @@ async function crmReconciliation(lead) {
       `Budget: ${lead.budget}`,
       `Contact Method: ${lead.contactMethod}`,
       lead.notes ? `Notes: ${lead.notes}` : '',
-    ]
-      .filter(Boolean)
-      .join('\n'),
+    ].filter(Boolean).join('\n'),
     hs_lead_status: 'NEW',
   };
 
@@ -189,65 +141,34 @@ async function crmReconciliation(lead) {
   try {
     let response;
     if (contactId) {
-      response = await fetch(
-        `https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ properties }),
-        }
-      );
-      log(
-        'crm_reconciliation',
-        lead.leadId,
-        `HubSpot contact PATCHED: ${contactId}`
-      );
+      response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ properties }),
+      });
+      log('crm_reconciliation', lead.leadId, `HubSpot contact PATCHED: ${contactId}`);
     } else {
       response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ properties }),
       });
       if (response.ok) {
         const data = await response.json();
         contactId = data.id;
-        log(
-          'crm_reconciliation',
-          lead.leadId,
-          `HubSpot contact CREATED: ${contactId}`
-        );
+        log('crm_reconciliation', lead.leadId, `HubSpot contact CREATED: ${contactId}`);
       }
     }
 
     if (!response.ok) {
       const body = await response.text();
-      log(
-        'crm_reconciliation',
-        lead.leadId,
-        `HubSpot API error ${response.status}: ${body}`,
-        'ERROR'
-      );
-      return {
-        synced: false,
-        reason: `http_${response.status}`,
-        contactId: null,
-      };
+      log('crm_reconciliation', lead.leadId, `HubSpot API error ${response.status}: ${body}`, 'ERROR');
+      return { synced: false, reason: `http_${response.status}`, contactId: null };
     }
 
     return { synced: true, reason: 'ok', contactId };
   } catch (err) {
-    log(
-      'crm_reconciliation',
-      lead.leadId,
-      `HubSpot upsert failed: ${err.message}`,
-      'ERROR'
-    );
+    log('crm_reconciliation', lead.leadId, `HubSpot upsert failed: ${err.message}`, 'ERROR');
     return { synced: false, reason: err.message, contactId: null };
   }
 }
@@ -339,100 +260,47 @@ function draftEstimate(lead, hubspotResult) {
   ].join('\n');
 
   fs.writeFileSync(approvalFile, content, 'utf8');
-  log(
-    'estimate_drafting',
-    lead.leadId,
-    `Estimate draft written → ${approvalFile}`
-  );
+  log('estimate_drafting', lead.leadId, `Estimate draft written → ${approvalFile}`);
   return approvalFile;
 }
 
 // ─── Main State Machine ──────────────────────────────────────────────────────
 export async function processLead(leadPayload) {
-  const lead =
-    typeof leadPayload === 'string' ? JSON.parse(leadPayload) : leadPayload;
+  const lead = typeof leadPayload === 'string' ? JSON.parse(leadPayload) : leadPayload;
 
   if (!lead.leadId) {
     // Assign a leadId if not provided (e.g. called directly, not from /api/leads)
-    const stamp = new Date()
-      .toISOString()
-      .replace(/[-:.TZ]/g, '')
-      .slice(0, 14);
+    const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
     lead.leadId = `SKY-${stamp}-HARNESS`;
     lead.submittedAt = lead.submittedAt || new Date().toISOString();
   }
 
   // ── Stage 1: INTAKE ────────────────────────────────────────────────────────
-  log(
-    'intake',
-    lead.leadId,
-    `Processing lead: ${lead.name} | ${lead.email} | ${lead.market}`
-  );
+  log('intake', lead.leadId, `Processing lead: ${lead.name} | ${lead.email} | ${lead.market}`);
   upsertLeadInPipeline(lead, 'intake', false, 'Received from /api/leads');
 
   // ── Stage 2: CRM RECONCILIATION ────────────────────────────────────────────
-  log(
-    'crm_reconciliation',
-    lead.leadId,
-    'Starting HubSpot CRM reconciliation...'
-  );
-  upsertLeadInPipeline(
-    lead,
-    'crm_reconciliation',
-    false,
-    'CRM sync in progress'
-  );
+  log('crm_reconciliation', lead.leadId, 'Starting HubSpot CRM reconciliation...');
+  upsertLeadInPipeline(lead, 'crm_reconciliation', false, 'CRM sync in progress');
   const hubspotResult = await crmReconciliation(lead);
 
   if (!hubspotResult.synced) {
-    log(
-      'crm_reconciliation',
-      lead.leadId,
-      `CRM reconciliation failed: ${hubspotResult.reason} — enqueuing repair task`,
-      'WARN'
-    );
-    enqueueTask(
-      lead.leadId,
-      `REPAIR: HubSpot Sync Failure for lead ${lead.leadId} (reason: ${hubspotResult.reason})`,
-      'high'
-    );
+    log('crm_reconciliation', lead.leadId, `CRM reconciliation failed: ${hubspotResult.reason} — enqueuing repair task`, 'WARN');
+    enqueueTask(lead.leadId, `REPAIR: HubSpot Sync Failure for lead ${lead.leadId} (reason: ${hubspotResult.reason})`, 'high');
   }
 
-  upsertLeadInPipeline(
-    lead,
-    'crm_reconciliation',
-    hubspotResult.synced,
-    hubspotResult.synced
-      ? `HubSpot ID: ${hubspotResult.contactId}`
-      : `Sync failed: ${hubspotResult.reason}`
+  upsertLeadInPipeline(lead, 'crm_reconciliation', hubspotResult.synced,
+    hubspotResult.synced ? `HubSpot ID: ${hubspotResult.contactId}` : `Sync failed: ${hubspotResult.reason}`
   );
 
   // ── Stage 3: ESTIMATE DRAFTING ─────────────────────────────────────────────
-  log(
-    'estimate_drafting',
-    lead.leadId,
-    'Drafting estimate for human approval...'
-  );
-  upsertLeadInPipeline(
-    lead,
-    'estimate_drafting',
-    hubspotResult.synced,
-    'Drafting estimate'
-  );
+  log('estimate_drafting', lead.leadId, 'Drafting estimate for human approval...');
+  upsertLeadInPipeline(lead, 'estimate_drafting', hubspotResult.synced, 'Drafting estimate');
   const approvalFile = draftEstimate(lead, hubspotResult);
 
   // ── Stage 4: APPROVAL WAITPOINT ────────────────────────────────────────────
-  log(
-    'approval_waitpoint',
-    lead.leadId,
-    `Estimate ready for human sign-off: ${approvalFile}`
-  );
-  upsertLeadInPipeline(
-    lead,
-    'approval_waitpoint',
-    hubspotResult.synced,
-    `Awaiting approval: ${path.basename(approvalFile)}`
-  );
+  log('approval_waitpoint', lead.leadId, `Estimate ready for human sign-off: ${approvalFile}`);
+  upsertLeadInPipeline(lead, 'approval_waitpoint', hubspotResult.synced, `Awaiting approval: ${path.basename(approvalFile)}`);
 
   // Enqueue a reminder task for the approval
   enqueueTask(
@@ -441,38 +309,30 @@ export async function processLead(leadPayload) {
     'high'
   );
 
-  log(
-    'approval_waitpoint',
-    lead.leadId,
-    `✅ Harness complete. Lead is in approval_waitpoint.`
-  );
+  log('approval_waitpoint', lead.leadId, `✅ Harness complete. Lead is in approval_waitpoint.`);
 
   return {
     leadId: lead.leadId,
-    stages: [
-      'intake',
-      'crm_reconciliation',
-      'estimate_drafting',
-      'approval_waitpoint',
-    ],
+    stages: ['intake', 'crm_reconciliation', 'estimate_drafting', 'approval_waitpoint'],
     hubspot: hubspotResult,
     approvalFile,
   };
 }
 
 // ─── CLI entry point ─────────────────────────────────────────────────────────
-const [, , command, ...args] = process.argv;
+const [,, command, ...args] = process.argv;
 
 if (command === 'process-lead') {
   const payload = args.join(' ');
   processLead(payload)
-    .then((result) => {
+    .then(result => {
       console.log('\n✅ Harness complete:', JSON.stringify(result, null, 2));
     })
-    .catch((err) => {
+    .catch(err => {
       console.error('\n❌ Harness failed:', err.message);
       process.exit(1);
     });
+
 } else if (command === 'mock-test') {
   // ── MOCK LEAD PAYLOAD (mirrors /api/leads shape exactly) ──────────────────
   const mockLead = {
@@ -501,15 +361,16 @@ if (command === 'process-lead') {
   console.log('\n--- Starting state machine ---\n');
 
   processLead(mockLead)
-    .then((result) => {
+    .then(result => {
       console.log('\n✅ Mock test complete:');
       console.log(JSON.stringify(result, null, 2));
       console.log(`\nApproval file written to: ${result.approvalFile}`);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error('\n❌ Mock test failed:', err.message);
       process.exit(1);
     });
+
 } else {
   console.log(`
 harness-ops.js — Customer & Operations State Machine Harness

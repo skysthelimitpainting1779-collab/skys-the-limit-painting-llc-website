@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
 
-const DB_PATH = join(process.cwd(), '.agents', 'state.json');
+const DB_PATH = join(process.cwd(), '.agents', 'hub_db.json');
 
 function loadDb() {
   if (!fs.existsSync(DB_PATH)) return { tasks: [] };
@@ -14,7 +14,7 @@ function saveDb(db) {
 
 export function claimNextTask() {
   const db = loadDb();
-  const pending = (db.tasks || []).find((t) => t.status === 'pending');
+  const pending = (db.tasks || []).find(t => t.status === 'pending');
   if (!pending) return null;
   pending.status = 'running';
   pending.claimed_at = new Date().toISOString();
@@ -24,23 +24,9 @@ export function claimNextTask() {
 
 export function resolveTask(taskId, status) {
   const db = loadDb();
-  const task = (db.tasks || []).find((t) => t.id === taskId);
+  const task = (db.tasks || []).find(t => t.id === taskId);
   if (!task) return;
   task.status = status;
   task.resolved_at = new Date().toISOString();
-  saveDb(db);
-}
-
-export function enqueueTask(id, title, priority = 'normal') {
-  const db = loadDb();
-  db.tasks = db.tasks || [];
-  db.tasks.push({
-    id: `TASK-${Date.now()}`,
-    title,
-    priority,
-    status: 'pending',
-    created_at: new Date().toISOString(),
-    assignee: 'agent',
-  });
   saveDb(db);
 }

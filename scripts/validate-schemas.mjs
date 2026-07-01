@@ -26,30 +26,22 @@ async function getHtmlFiles(dir) {
 
 async function validateSchemas() {
   const distDir = path.resolve('dist');
-  console.log(
-    `\n${BLUE}[Schema Validator] Scanning directory: ${distDir}${RESET}`
-  );
+  console.log(`\n${BLUE}[Schema Validator] Scanning directory: ${distDir}${RESET}`);
 
   let htmlFiles;
   try {
     htmlFiles = await getHtmlFiles(distDir);
   } catch (err) {
-    console.error(
-      `${RED}Error reading dist directory. Has the site been built? (${err.message})${RESET}`
-    );
+    console.error(`${RED}Error reading dist directory. Has the site been built? (${err.message})${RESET}`);
     process.exit(1);
   }
 
   if (htmlFiles.length === 0) {
-    console.log(
-      `${YELLOW}No HTML files found to validate. Run a production build first.${RESET}`
-    );
+    console.log(`${YELLOW}No HTML files found to validate. Run a production build first.${RESET}`);
     process.exit(1);
   }
 
-  console.log(
-    `[Schema Validator] Found ${htmlFiles.length} HTML files to inspect.`
-  );
+  console.log(`[Schema Validator] Found ${htmlFiles.length} HTML files to inspect.`);
   let totalSchemasChecked = 0;
   let invalidSchemasCount = 0;
 
@@ -58,8 +50,7 @@ async function validateSchemas() {
     const content = await readFile(file, 'utf8');
 
     // Find all application/ld+json scripts
-    const scriptRegex =
-      /<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
+    const scriptRegex = /<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
     let match;
     let fileSchemasCount = 0;
 
@@ -76,29 +67,20 @@ async function validateSchemas() {
 
           // Basic schema.org integrity checks
           if (!schema['@context']) {
-            console.error(
-              `${RED}  [FAIL] ${relativePath}: Schema is missing @context.${RESET}`
-            );
+            console.error(`${RED}  [FAIL] ${relativePath}: Schema is missing @context.${RESET}`);
             invalidSchemasCount++;
             continue;
           }
 
           const context = schema['@context'];
-          if (
-            context !== 'https://schema.org' &&
-            context !== 'http://schema.org'
-          ) {
-            console.error(
-              `${RED}  [FAIL] ${relativePath}: Invalid @context value "${context}".${RESET}`
-            );
+          if (context !== 'https://schema.org' && context !== 'http://schema.org') {
+            console.error(`${RED}  [FAIL] ${relativePath}: Invalid @context value "${context}".${RESET}`);
             invalidSchemasCount++;
             continue;
           }
 
           if (!schema['@type']) {
-            console.error(
-              `${RED}  [FAIL] ${relativePath}: Schema is missing @type.${RESET}`
-            );
+            console.error(`${RED}  [FAIL] ${relativePath}: Schema is missing @type.${RESET}`);
             invalidSchemasCount++;
             continue;
           }
@@ -107,34 +89,24 @@ async function validateSchemas() {
           const type = schema['@type'];
           if (type === 'HousePainter') {
             if (!schema.name || !schema.telephone || !schema.email) {
-              console.error(
-                `${RED}  [FAIL] ${relativePath} (HousePainter): Missing name, phone, or email.${RESET}`
-              );
+              console.error(`${RED}  [FAIL] ${relativePath} (HousePainter): Missing name, phone, or email.${RESET}`);
               invalidSchemasCount++;
             }
           } else if (type === 'BreadcrumbList') {
-            if (
-              !schema.itemListElement ||
-              !Array.isArray(schema.itemListElement)
-            ) {
-              console.error(
-                `${RED}  [FAIL] ${relativePath} (BreadcrumbList): Missing or invalid itemListElement array.${RESET}`
-              );
+            if (!schema.itemListElement || !Array.isArray(schema.itemListElement)) {
+              console.error(`${RED}  [FAIL] ${relativePath} (BreadcrumbList): Missing or invalid itemListElement array.${RESET}`);
               invalidSchemasCount++;
             }
           } else if (type === 'Service') {
             if (!schema.name || !schema.provider) {
-              console.error(
-                `${RED}  [FAIL] ${relativePath} (Service): Missing service name or provider block.${RESET}`
-              );
+              console.error(`${RED}  [FAIL] ${relativePath} (Service): Missing service name or provider block.${RESET}`);
               invalidSchemasCount++;
             }
           }
         }
+
       } catch (err) {
-        console.error(
-          `${RED}  [FAIL] ${relativePath}: Invalid JSON format inside schema script tag. Error: ${err.message}${RESET}`
-        );
+        console.error(`${RED}  [FAIL] ${relativePath}: Invalid JSON format inside schema script tag. Error: ${err.message}${RESET}`);
         invalidSchemasCount++;
       }
     }
@@ -145,14 +117,10 @@ async function validateSchemas() {
   console.log(`  - Total JSON-LD schemas validated: ${totalSchemasChecked}`);
 
   if (invalidSchemasCount > 0) {
-    console.log(
-      `  - Status: ${RED}FAILED (${invalidSchemasCount} invalid schemas found)${RESET}\n`
-    );
+    console.log(`  - Status: ${RED}FAILED (${invalidSchemasCount} invalid schemas found)${RESET}\n`);
     process.exit(1);
   } else {
-    console.log(
-      `  - Status: ${GREEN}SUCCESS (All schemas are syntactically valid and compliant)${RESET}\n`
-    );
+    console.log(`  - Status: ${GREEN}SUCCESS (All schemas are syntactically valid and compliant)${RESET}\n`);
     process.exit(0);
   }
 }

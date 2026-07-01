@@ -7,34 +7,26 @@ const SITEMAP_URL = `${SITE_URL}/sitemap.xml`;
 function verifySitemapIngestion() {
   console.log('Initiating Sitemap Discovery Verification...');
   console.log(`Target Sitemap: ${SITEMAP_URL}`);
-
+  
   const workspaceRoot = path.resolve(process.cwd());
 
   // 1. Verify sitemap.xml exists in the public directory
-  const publicPath = path.normalize(
-    path.resolve(workspaceRoot, 'public/sitemap.xml')
-  );
-
+  const publicPath = path.normalize(path.resolve(workspaceRoot, 'public/sitemap.xml'));
+  
   if (!publicPath.startsWith(workspaceRoot)) {
     throw new Error('Path traversal detected');
   }
 
   const publicExists = fs.existsSync(publicPath);
-
+  
   if (publicExists) {
-    console.log(
-      'Sitemap Asset Integrity: SUCCESS (Sitemap exists and is properly structured)'
-    );
+    console.log('Sitemap Asset Integrity: SUCCESS (Sitemap exists and is properly structured)');
   } else {
-    console.warn(
-      'Sitemap Asset Integrity: WARNING (Sitemap not found in public output)'
-    );
+    console.warn('Sitemap Asset Integrity: WARNING (Sitemap not found in public output)');
   }
-
+  
   // 2. Verify robots.txt contains the Sitemap directive
-  const robotsPath = path.normalize(
-    path.resolve(workspaceRoot, 'public/robots.txt')
-  );
+  const robotsPath = path.normalize(path.resolve(workspaceRoot, 'public/robots.txt'));
   if (!robotsPath.startsWith(workspaceRoot)) {
     throw new Error('Path traversal detected');
   }
@@ -42,25 +34,17 @@ function verifySitemapIngestion() {
   if (fs.existsSync(robotsPath)) {
     const robotsTxt = fs.readFileSync(robotsPath, 'utf8');
     if (robotsTxt.includes(`Sitemap: ${SITEMAP_URL}`)) {
-      console.log(
-        'Search Engine Auto-Discovery: ENABLED (Sitemap referenced successfully in robots.txt)'
-      );
+      console.log('Search Engine Auto-Discovery: ENABLED (Sitemap referenced successfully in robots.txt)');
     } else {
-      console.warn(
-        'Search Engine Auto-Discovery: WARNING (Sitemap reference missing from robots.txt)'
-      );
+      console.warn('Search Engine Auto-Discovery: WARNING (Sitemap reference missing from robots.txt)');
     }
   }
-
+  
   console.log('\nSEO Indexation Checklist:');
   console.log(`  [✓] Robots.txt Sitemap declaration verified.`);
-  console.log(
-    `  [✓] Google Search Console deprecation defense active (Retired unauthenticated GET endpoints bypassed).`
-  );
+  console.log(`  [✓] Google Search Console deprecation defense active (Retired unauthenticated GET endpoints bypassed).`);
   console.log(`  [✓] Microdata schemas validated locally.`);
-  console.log(
-    '\nGoogle Search Console automatically indexes the sitemap on crawler schedules.\n'
-  );
+  console.log('\nGoogle Search Console automatically indexes the sitemap on crawler schedules.\n');
 }
 
 verifySitemapIngestion();

@@ -12,13 +12,10 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
 
   return (
     <div className="relative group flex items-center">
-      <Link
-        href={to}
+      <Link 
+        href={to} 
         data-track="nav_click"
-        data-track-payload={JSON.stringify({
-          path: to,
-          label: String(children),
-        })}
+        data-track-payload={JSON.stringify({ path: to, label: String(children) })}
         className={`relative whitespace-nowrap text-sm font-bold transition-colors duration-200 py-2 hover:text-white ${isActive ? 'text-white' : 'text-gray-400'}`}
       >
         {children}
@@ -80,19 +77,13 @@ export default function ConversionHeader() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/85 backdrop-blur-md  border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}
-      >
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/85 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}>
+        
         {/* Micro-Utility Bar */}
         <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[12px] md:text-sm text-white/70 font-bold">
-            <span className="truncate">
-              (651) 410-4196 • info@skysthelimitpaintingllc.com
-            </span>
-            <span className="hidden sm:inline truncate">
-              Prep-first painting across the Twin Cities • Price range, scope
-              review, and schedule conversation in one path
-            </span>
+            <span className="truncate">(651) 410-4196 • info@skysthelimitpaintingllc.com</span>
+            <span className="hidden sm:inline truncate">Prep-first painting across the Twin Cities • Price range, scope review, and schedule conversation in one path</span>
           </div>
         </div>
 
@@ -101,17 +92,11 @@ export default function ConversionHeader() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3">
               <div className="grid h-14 w-14 place-items-center overflow-hidden border border-white/12 bg-white p-1.5">
-                <img
-                  src="/brand/SkyLLP_BrandLogo.svg"
-                  alt="Sky's the Limit Painting LLC"
-                  className="h-full w-full object-contain"
-                />
+                <img src="/brand/SkyLLP_BrandLogo.svg" alt="Sky's the Limit Painting LLC" className="h-full w-full object-contain" />
               </div>
               <span className="font-display hidden text-xl font-black leading-none text-white sm:block">
                 SKY'S THE LIMIT
-                <span className="mt-1 block text-sm text-gray-400">
-                  Painting LLC
-                </span>
+                <span className="mt-1 block text-sm text-gray-400">Painting LLC</span>
               </span>
             </Link>
 
@@ -121,64 +106,52 @@ export default function ConversionHeader() {
               <NavLink to="/commercial">Commercial</NavLink>
               <NavLink to="/public-sector">Public Sector</NavLink>
               <NavLink to="/projects">Projects</NavLink>
-
+              
               {/* Dropdown Menu */}
-              <div
+              <div 
                 className="relative py-2"
                 onMouseEnter={() => setDropdownOpen(true)}
                 onMouseLeave={() => setDropdownOpen(false)}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
               >
-                <button
-                  onClick={() => setDropdownOpen((prev) => !prev)}
+                <button 
+                  onClick={() => setDropdownOpen(prev => !prev)}
                   className={`relative whitespace-nowrap text-sm font-bold transition-colors duration-200 flex items-center gap-1 cursor-pointer focus:outline-none hover:text-white ${dropdownOpen ? 'text-white' : 'text-gray-400'}`}
                   aria-haspopup="true"
                   aria-expanded={dropdownOpen}
                 >
                   More
-                  <ChevronDown
-                    size={12}
-                    className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
-                  />
+                  <ChevronDown size={12} className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
-
+                
                 {dropdownOpen && (
-                  <div
-                    className="absolute left-0 mt-2 w-48 bg-[#050505] border border-white/10 p-2 flex flex-col gap-1  z-50"
+                  <div 
+                    className="absolute left-0 mt-2 w-48 bg-[#050505] border border-white/10 p-2 flex flex-col gap-1 shadow-xl z-50"
                     style={{ borderRadius: '0px' }}
                   >
-                    <Link
-                      href="/service-area"
+                    <Link 
+                      href="/service-area" 
                       data-track="nav_click"
-                      data-track-payload={JSON.stringify({
-                        path: '/service-area',
-                        label: 'Areas',
-                      })}
+                      data-track-payload={JSON.stringify({ path: '/service-area', label: 'Areas' })}
                       className="block px-4 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                       onClick={() => setDropdownOpen(false)}
                     >
                       Areas
                     </Link>
-                    <Link
-                      href="/refer"
+                    <Link 
+                      href="/refer" 
                       data-track="nav_click"
-                      data-track-payload={JSON.stringify({
-                        path: '/refer',
-                        label: 'Referral',
-                      })}
+                      data-track-payload={JSON.stringify({ path: '/refer', label: 'Referral' })}
                       className="block px-4 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                       onClick={() => setDropdownOpen(false)}
                     >
                       Referral
                     </Link>
-                    <Link
-                      href="/about"
+                    <Link 
+                      href="/about" 
                       data-track="nav_click"
-                      data-track-payload={JSON.stringify({
-                        path: '/about',
-                        label: 'About',
-                      })}
+                      data-track-payload={JSON.stringify({ path: '/about', label: 'About' })}
                       className="block px-4 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                       onClick={() => setDropdownOpen(false)}
                     >
@@ -210,28 +183,15 @@ export default function ConversionHeader() {
               >
                 Get Estimate
               </Link>
-              <a
-                href="tel:+16514104196"
-                data-track="call_click"
-                data-track-payload='{"source":"header"}'
-                className="group flex flex-col items-end gap-0"
-              >
-                <span className="text-sm font-bold text-white transition-colors">
-                  Call / Text
-                </span>
-                <span className="whitespace-nowrap text-xl font-black leading-none text-white transition-colors hover:text-gray-300 xl:text-2xl 2xl:text-3xl">
-                  651-410-4196
-                </span>
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="group flex flex-col items-end gap-0">
+                <span className="text-sm font-bold text-white transition-colors">Call / Text</span>
+                <span className="whitespace-nowrap text-xl font-black leading-none text-white transition-colors hover:text-gray-300 xl:text-2xl 2xl:text-3xl">651-410-4196</span>
               </a>
             </div>
 
             {/* Mobile Menu Toggle */}
-            <button
-              aria-label={
-                mobileMenuOpen
-                  ? 'Close navigation menu'
-                  : 'Open navigation menu'
-              }
+            <button 
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
               className="lg:hidden p-2 text-white"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -245,15 +205,11 @@ export default function ConversionHeader() {
       {/* Mobile Menu Overlay */}
       <AnimatePresence initial={false}>
         {mobileMenuOpen && (
-          <motion.div
+          <motion.div 
             initial={prefersReducedMotion ? false : { opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={prefersReducedMotion ? undefined : { opacity: 0, y: -16 }}
-            transition={
-              prefersReducedMotion
-                ? { duration: 0 }
-                : { duration: 0.2, ease: 'easeOut' }
-            }
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
             className="fixed inset-0 top-[104px] bg-[#050505] z-40 lg:hidden flex flex-col p-6 overflow-y-auto pb-32"
           >
             <nav className="flex flex-col gap-6 text-xl">
@@ -268,20 +224,10 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <Link
-                href="/estimate"
-                data-track="hero_cta_click"
-                data-track-payload='{"source":"mobile_menu","label":"Price Range"}'
-                className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black text-white transition-colors hover:border-white hover:text-white"
-              >
+              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black text-white transition-colors hover:border-white hover:text-white">
                 Get A Price Range
               </Link>
-              <a
-                href="tel:+16514104196"
-                data-track="call_click"
-                data-track-payload='{"source":"mobile_menu"}'
-                className="w-full text-center bg-white text-[#050505] px-6 py-4 rounded-none font-black text-lg"
-              >
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-white text-[#050505] px-6 py-4 rounded-none font-black text-lg">
                 Call / Text 651-410-4196
               </a>
             </div>

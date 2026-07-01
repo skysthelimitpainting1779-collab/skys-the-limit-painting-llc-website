@@ -1,13 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  Star,
-  MessageSquare,
-  ShieldAlert,
-  ArrowRight,
-  CheckCircle2,
-} from 'lucide-react';
+import { Star, MessageSquare, ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import ResponsiveImage from '../components/ResponsiveImage';
 import HeroOverlays from '../components/HeroOverlays';
@@ -25,8 +19,7 @@ export default function ReviewPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [privateError, setPrivateError] = useState('');
 
-  const googleReviewUrl =
-    'https://search.google.com/local/writereview?placeid=ChIJ8d-Nq98d9kgR50-mR-K5k84';
+  const googleReviewUrl = "https://search.google.com/local/writereview?placeid=ChIJ8d-Nq98d9kgR50-mR-K5k84";
 
   const handleRatingSelect = (selectedRating: number) => {
     setRating(selectedRating);
@@ -37,9 +30,7 @@ export default function ReviewPage() {
   const handlePrivateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!privateFeedback.trim()) {
-      setPrivateError(
-        'Please add a few details so we can understand what needs attention.'
-      );
+      setPrivateError('Please add a few details so we can understand what needs attention.');
       return;
     }
 
@@ -66,15 +57,11 @@ export default function ReviewPage() {
       if (response.ok) {
         setFeedbackSubmitted(true);
       } else {
-        setPrivateError(
-          'The private feedback form did not send. Please call or text 651-410-4196 so we can handle this directly.'
-        );
+        setPrivateError('The private feedback form did not send. Please call or text 651-410-4196 so we can handle this directly.');
       }
     } catch (err) {
       console.error('Error submitting feedback:', err);
-      setPrivateError(
-        'The private feedback form did not respond. Please call or text 651-410-4196 so we can handle this directly.'
-      );
+      setPrivateError('The private feedback form did not respond. Please call or text 651-410-4196 so we can handle this directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -93,10 +80,10 @@ export default function ReviewPage() {
           ]}
           blueprintOpacity="opacity-18"
         />
-
-        <div className="relative z-10 mx-auto max-w-2xl border border-[#d8c7aa]/16 bg-[#11100d]/90 p-8 md:p-12 overflow-hidden  transition duration-500 hover:border-white/45">
+        
+        <div className="relative z-10 mx-auto max-w-2xl border border-[#d8c7aa]/16 bg-[#11100d]/90 p-8 md:p-12 overflow-hidden shadow-xl transition duration-500 hover:border-white/45">
           <div className="measurement-rules absolute inset-0 opacity-12 pointer-events-none"></div>
-
+          
           {/* Header */}
           <div className="text-center">
             <span className="inline-block border border-white/30 bg-[#070706]/70 px-4 py-2 text-xs font-semibold text-white">
@@ -106,9 +93,7 @@ export default function ReviewPage() {
               How did we do?
             </h1>
             <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">
-              Anthony and the Sky's the Limit team hold themselves to an elite,
-              industrial-luxury standard. Your feedback helps us maintain our
-              craftsmanship and protect our commitment to you.
+              Anthony and the Sky's the Limit team hold themselves to an elite, industrial-luxury standard. Your feedback helps us maintain our craftsmanship and protect our commitment to you.
             </p>
           </div>
 
@@ -152,23 +137,16 @@ export default function ReviewPage() {
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-white mb-6">
                     <CheckCircle2 size={32} />
                   </div>
-                  <h3 className="text-2xl font-black text-white">
-                    We love to hear that!
-                  </h3>
+                  <h3 className="text-2xl font-black text-white">We love to hear that!</h3>
                   <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">
-                    Since you had a strong experience, would you take 15 seconds
-                    to support an owner-operated local business by leaving a
-                    brief review on Google? A short note helps the next
-                    homeowner feel confident before they reach out.
+                    Since you had a strong experience, would you take 15 seconds to support an owner-operated local business by leaving a brief review on Google? A short note helps the next homeowner feel confident before they reach out.
                   </p>
-
+                  
                   <a
                     href={googleReviewUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() =>
-                      trackEvent('google_review_redirect_click', { rating })
-                    }
+                    onClick={() => trackEvent('google_review_redirect_click', { rating })}
                     className="mt-8 inline-flex w-full items-center justify-center gap-3 bg-white px-7 py-4 text-sm font-semibold text-[#15110a] transition-colors hover:bg-white"
                   >
                     Leave Us a Google Review <ArrowRight size={18} />
@@ -188,18 +166,11 @@ export default function ReviewPage() {
                   {!feedbackSubmitted ? (
                     <form onSubmit={handlePrivateSubmit} className="space-y-6">
                       <div className="flex items-start gap-4 border-l border-white/35 bg-[#070706] p-5 mb-6">
-                        <ShieldAlert
-                          className="text-white shrink-0 mt-0.5"
-                          size={24}
-                        />
+                        <ShieldAlert className="text-white shrink-0 mt-0.5" size={24} />
                         <div>
-                          <h4 className="text-base font-black text-white">
-                            We want to make it right.
-                          </h4>
+                          <h4 className="text-base font-black text-white">We want to make it right.</h4>
                           <p className="mt-2 text-xs leading-relaxed text-[#b9b2a6]">
-                            Anthony personally reviews all feedback. Please
-                            share your phone and details below so we can contact
-                            you directly to resolve any concerns.
+                            Anthony personally reviews all feedback. Please share your phone and details below so we can contact you directly to resolve any concerns.
                           </p>
                         </div>
                       </div>
@@ -252,14 +223,10 @@ export default function ReviewPage() {
                         disabled={isSubmitting}
                         className="w-full inline-flex items-center justify-center gap-2 bg-white px-7 py-4 text-sm font-semibold text-[#15110a] transition-colors hover:bg-white disabled:opacity-55"
                       >
-                        {isSubmitting ? 'Sending...' : 'Submit Feedback'}{' '}
-                        <MessageSquare size={18} />
+                        {isSubmitting ? 'Sending...' : 'Submit Feedback'} <MessageSquare size={18} />
                       </button>
                       {privateError && (
-                        <p
-                          className="border-l border-white/45 bg-[#070706] p-4 text-xs font-semibold leading-relaxed text-[#f2d6a8]"
-                          role="alert"
-                        >
+                        <p className="border-l border-white/45 bg-[#070706] p-4 text-xs font-semibold leading-relaxed text-[#f2d6a8]" role="alert">
                           {privateError}
                         </p>
                       )}
@@ -270,14 +237,9 @@ export default function ReviewPage() {
                       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-white mb-6">
                         <CheckCircle2 size={32} />
                       </div>
-                      <h3 className="text-2xl font-black text-white">
-                        Feedback Received
-                      </h3>
+                      <h3 className="text-2xl font-black text-white">Feedback Received</h3>
                       <p className="mt-4 text-sm leading-relaxed text-[#c9c1b4]">
-                        Thank you for your honesty, {clientName}. Anthony has
-                        been notified privately and will call you directly at{' '}
-                        {clientPhone} to address the details and make this
-                        right.
+                        Thank you for your honesty, {clientName}. Anthony has been notified privately and will call you directly at {clientPhone} to address the details and make this right.
                       </p>
                     </div>
                   )}
@@ -285,6 +247,7 @@ export default function ReviewPage() {
               )}
             </div>
           )}
+
         </div>
       </section>
     </PageTransition>

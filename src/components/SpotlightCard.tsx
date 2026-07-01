@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  useRef,
-  useState,
-  ReactNode,
-  MouseEvent as ReactMouseEvent,
-} from 'react';
+import { useRef, useState, ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 
 interface SpotlightCardProps {
@@ -13,10 +8,7 @@ interface SpotlightCardProps {
   className?: string;
 }
 
-export default function SpotlightCard({
-  children,
-  className = '',
-}: SpotlightCardProps) {
+export default function SpotlightCard({ children, className = '' }: SpotlightCardProps) {
   const divRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });

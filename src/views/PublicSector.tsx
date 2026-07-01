@@ -6,4 +6,5 @@ export default function PublicSectorPage() {
   return <MarketPage slug="public-sector" />;
 }
 
+
 // Static production check: market="Public Sector" PageMeta

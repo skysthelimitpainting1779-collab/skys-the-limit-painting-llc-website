@@ -2,8 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test, describe } from 'node:test';
 
-const read = (path) =>
-  readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 // ---------------------------------------------------------------------------
 // Re-implement pure utility functions from API routes for real unit testing.
@@ -42,41 +41,23 @@ function getSafeValue(obj, key) {
 
 // -- buildLeadId (leads route)
 function buildLeadId() {
-  const stamp = new Date()
-    .toISOString()
-    .replace(/[-:.TZ]/g, '')
-    .slice(0, 14);
+  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
   const random = Math.random().toString(36).slice(2, 8).toUpperCase();
   return `SKY-${stamp}-${random}`;
 }
 
 // -- buildManyChatLeadId (manychat route)
 function buildManyChatLeadId() {
-  const stamp = new Date()
-    .toISOString()
-    .replace(/[-:.TZ]/g, '')
-    .slice(0, 14);
+  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
   const random = Math.random().toString(36).slice(2, 8).toUpperCase();
   return `SKY-MC-${stamp}-${random}`;
 }
 
 // -- validate (leads route)
-const requiredFields = [
-  'name',
-  'phone',
-  'email',
-  'city',
-  'market',
-  'projectType',
-  'timeline',
-  'contactMethod',
-  'notes',
-];
+const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'projectType', 'timeline', 'contactMethod', 'notes'];
 
 function validate(payload) {
-  const missing = requiredFields.filter(
-    (field) => !asText(getSafeValue(payload, field))
-  );
+  const missing = requiredFields.filter((field) => !asText(getSafeValue(payload, field)));
   if (missing.length > 0) {
     return `Missing required fields: ${missing.join(', ')}`;
   }
@@ -90,10 +71,7 @@ function validate(payload) {
   if (photosUrl) {
     try {
       const url = new URL(photosUrl);
-      if (
-        !['http:', 'https:'].includes(url.protocol) ||
-        !url.hostname.includes('.')
-      ) {
+      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname.includes('.')) {
         return 'Enter a valid project photo link.';
       }
     } catch {
@@ -107,20 +85,9 @@ function validate(payload) {
 function buildLeadHtml(payload) {
   const rows = Object.entries(payload)
     .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(
-      ([key, value]) =>
-        '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' +
-        escapeHtml(key) +
-        '</td><td style="padding:6px 10px;border:1px solid #ddd;">' +
-        escapeHtml(value) +
-        '</td></tr>'
-    )
+    .map(([key, value]) => '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' + escapeHtml(key) + '</td><td style="padding:6px 10px;border:1px solid #ddd;">' + escapeHtml(value) + '</td></tr>')
     .join('');
-  return (
-    '<h1>New Sky\'s the Limit Painting lead</h1><table style="border-collapse:collapse;">' +
-    rows +
-    '</table>'
-  );
+  return '<h1>New Sky\'s the Limit Painting lead</h1><table style="border-collapse:collapse;">' + rows + '</table>';
 }
 
 // -- rateLimit (leads route)
@@ -149,6 +116,7 @@ function createRateLimiter(maxRequests, windowMs) {
 // asText tests
 // ---------------------------------------------------------------------------
 describe('api/leads - asText utility', () => {
+
   test('returns trimmed string for string input', () => {
     assert.equal(asText('  hello  '), 'hello');
   });
@@ -194,6 +162,7 @@ describe('api/leads - asText utility', () => {
 // isPayload tests
 // ---------------------------------------------------------------------------
 describe('api/leads - isPayload guard', () => {
+
   test('returns true for plain object', () => {
     assert.equal(isPayload({ name: 'test' }), true);
   });
@@ -239,6 +208,7 @@ describe('api/leads - isPayload guard', () => {
 // escapeHtml tests
 // ---------------------------------------------------------------------------
 describe('api/leads - escapeHtml sanitization', () => {
+
   test('escapes ampersand', () => {
     assert.equal(escapeHtml('a&b'), 'a&amp;b');
   });
@@ -260,10 +230,7 @@ describe('api/leads - escapeHtml sanitization', () => {
   });
 
   test('escapes all special characters in combination', () => {
-    assert.equal(
-      escapeHtml('<b>"Hello" & \'world\'</b>'),
-      '&lt;b&gt;&quot;Hello&quot; &amp; &#39;world&#39;&lt;/b&gt;'
-    );
+    assert.equal(escapeHtml('<b>"Hello" & \'world\'</b>'), '&lt;b&gt;&quot;Hello&quot; &amp; &#39;world&#39;&lt;/b&gt;');
   });
 
   test('passes through safe strings unchanged', () => {
@@ -292,6 +259,7 @@ describe('api/leads - escapeHtml sanitization', () => {
 // getSafeValue tests
 // ---------------------------------------------------------------------------
 describe('api/leads - getSafeValue prototype pollution guard', () => {
+
   test('returns value for normal key', () => {
     assert.equal(getSafeValue({ name: 'Alice' }, 'name'), 'Alice');
   });
@@ -301,10 +269,7 @@ describe('api/leads - getSafeValue prototype pollution guard', () => {
   });
 
   test('returns undefined for constructor', () => {
-    assert.equal(
-      getSafeValue({ constructor: 'evil' }, 'constructor'),
-      undefined
-    );
+    assert.equal(getSafeValue({ constructor: 'evil' }, 'constructor'), undefined);
   });
 
   test('returns undefined for prototype', () => {
@@ -326,6 +291,7 @@ describe('api/leads - getSafeValue prototype pollution guard', () => {
 // buildLeadId tests
 // ---------------------------------------------------------------------------
 describe('api/leads - buildLeadId generation', () => {
+
   test('starts with SKY- prefix', () => {
     const id = buildLeadId();
     assert.ok(id.startsWith('SKY-'), `lead ID should start with SKY-: ${id}`);
@@ -350,10 +316,7 @@ describe('api/leads - buildLeadId generation', () => {
 
   test('ManyChat lead ID starts with SKY-MC-', () => {
     const id = buildManyChatLeadId();
-    assert.ok(
-      id.startsWith('SKY-MC-'),
-      `ManyChat lead ID should start with SKY-MC-: ${id}`
-    );
+    assert.ok(id.startsWith('SKY-MC-'), `ManyChat lead ID should start with SKY-MC-: ${id}`);
   });
 
   test('ManyChat lead ID matches expected format', () => {
@@ -366,6 +329,7 @@ describe('api/leads - buildLeadId generation', () => {
 // validate tests
 // ---------------------------------------------------------------------------
 describe('api/leads - validate lead payload', () => {
+
   const validPayload = {
     name: 'Jane Doe',
     phone: '651-555-1234',
@@ -410,11 +374,7 @@ describe('api/leads - validate lead payload', () => {
   test('accepts valid email formats', () => {
     const emails = ['user@example.com', 'a.b@c.d.e', 'test+tag@domain.org'];
     for (const email of emails) {
-      assert.equal(
-        validate({ ...validPayload, email }),
-        '',
-        `should accept ${email}`
-      );
+      assert.equal(validate({ ...validPayload, email }), '', `should accept ${email}`);
     }
   });
 
@@ -432,18 +392,12 @@ describe('api/leads - validate lead payload', () => {
   });
 
   test('accepts payload with valid photosUrl', () => {
-    const result = validate({
-      ...validPayload,
-      photosUrl: 'https://photos.example.com/img.jpg',
-    });
+    const result = validate({ ...validPayload, photosUrl: 'https://photos.example.com/img.jpg' });
     assert.equal(result, '');
   });
 
   test('returns error for photosUrl with invalid protocol', () => {
-    const result = validate({
-      ...validPayload,
-      photosUrl: 'ftp://photos.example.com/img.jpg',
-    });
+    const result = validate({ ...validPayload, photosUrl: 'ftp://photos.example.com/img.jpg' });
     assert.equal(result, 'Enter a valid project photo link.');
   });
 
@@ -453,10 +407,7 @@ describe('api/leads - validate lead payload', () => {
   });
 
   test('returns error for photosUrl without valid hostname', () => {
-    const result = validate({
-      ...validPayload,
-      photosUrl: 'https://localhost/img.jpg',
-    });
+    const result = validate({ ...validPayload, photosUrl: 'https://localhost/img.jpg' });
     assert.equal(result, 'Enter a valid project photo link.');
   });
 
@@ -474,6 +425,7 @@ describe('api/leads - validate lead payload', () => {
 // buildLeadHtml tests
 // ---------------------------------------------------------------------------
 describe('api/leads - buildLeadHtml email template', () => {
+
   test('generates HTML with header', () => {
     const html = buildLeadHtml({ name: 'Test' });
     assert.match(html, /New Sky's the Limit Painting lead/);
@@ -516,6 +468,7 @@ describe('api/leads - buildLeadHtml email template', () => {
 // rateLimit tests
 // ---------------------------------------------------------------------------
 describe('api/leads - Rate limiter', () => {
+
   test('allows first request from an IP', () => {
     const rl = createRateLimiter(5, 60000);
     assert.equal(rl('10.0.0.1'), true);
@@ -548,9 +501,7 @@ describe('api/leads - Rate limiter', () => {
     rl('10.0.0.6');
     // After 1ms the window should have expired
     const start = Date.now();
-    while (Date.now() - start < 5) {
-      /* wait 5ms */
-    }
+    while (Date.now() - start < 5) { /* wait 5ms */ }
     assert.equal(rl('10.0.0.6'), true);
   });
 });
@@ -559,6 +510,7 @@ describe('api/leads - Rate limiter', () => {
 // API route source structure tests
 // ---------------------------------------------------------------------------
 describe('api/leads/route - Route structure', () => {
+
   test('exports POST handler', () => {
     const src = read('src/app/api/leads/route.ts');
     assert.match(src, /export async function POST/);
@@ -619,6 +571,7 @@ describe('api/leads/route - Route structure', () => {
 });
 
 describe('api/manychat/route - Route structure', () => {
+
   test('exports POST handler', () => {
     const src = read('src/app/api/manychat/route.ts');
     assert.match(src, /export async function POST/);
@@ -674,6 +627,7 @@ describe('api/manychat/route - Route structure', () => {
 });
 
 describe('api/storage/upload-url/route - Route structure', () => {
+
   test('exports POST handler', () => {
     const src = read('src/app/api/storage/upload-url/route.ts');
     assert.match(src, /export async function POST/);
