@@ -21,13 +21,15 @@ async function fetchCheck(url: string) {
 export async function GET(request: NextRequest) {
   try {
     const cronSecret = process.env.CRON_SECRET;
-    const secured = Boolean(cronSecret);
+    const onVercel = process.env.VERCEL === '1' || Boolean(process.env.VERCEL_ENV);
 
-    if (secured) {
+    if (cronSecret) {
       const authorization = request.headers.get('authorization');
       if (authorization !== `Bearer ${cronSecret}`) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
+    } else if (onVercel) {
+      return NextResponse.json({ error: 'Unauthorized: endpoint requires CRON_SECRET' }, { status: 401 });
     }
 
     const checks = await Promise.all([
@@ -38,7 +40,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       ok: true,
       ranAt: new Date().toISOString(),
-      secured,
+      secured: Boolean(cronSecret),
       checks,
     });
   } catch (error) {
