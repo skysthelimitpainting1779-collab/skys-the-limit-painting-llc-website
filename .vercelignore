@@ -1,0 +1,31 @@
+# Keep the Vercel deployment lean: upload only what `next build` (and the
+# postbuild sitemap step) actually needs. Everything below is local tooling,
+# agent state, docs, or separate services that must NOT be part of the Vercel
+# build/deploy — shipping them bloats provisioning and, for the container
+# services, triggers Functions auto-detection that times out on the free plan.
+#
+# Patterns are root-anchored (leading slash) so they only match top-level
+# entries and never app code (e.g. src/lib/directus/ stays included).
+
+# Standalone container services (run on Fly/Render/local or opt-in paid Vercel).
+/backend/
+/directus/
+
+# Agent control plane, skills, and generated knowledge graphs.
+/.agents/
+/.claude/
+/.learnings/
+/graphify-out/
+
+# Local git hooks and CI config (not needed at build time).
+/.husky/
+/.github/
+
+# Non-app sources and fixtures.
+/remotion/
+/supabase/
+/tests/
+
+# Operating manuals / docs (kept in the repo, not shipped to Vercel).
+/agents.md
+/CLAUDE.md

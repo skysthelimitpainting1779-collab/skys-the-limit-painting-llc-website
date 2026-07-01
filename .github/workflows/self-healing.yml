@@ -1,0 +1,66 @@
+name: Self-Healing Pipeline
+
+# SCAFFOLD (not yet active). This workflow observes CI failures and prepares a
+# remediation payload, but performs NO writes. Auto-repair on protected branches
+# is prohibited by the git-discipline policy (see .agents/AGENTS.md §6).
+#
+# Recommended production path (2026): replace the mock step below with Vercel
+# Agent investigations + approved actions (public beta, 30 Jun 2026), which reads
+# deployments/logs/config and proposes fixes with human approval:
+# https://vercel.com/changelog/an-expanded-vercel-agent-chat-investigations-and-approved-actions-now-in-public-beta
+
+on:
+  workflow_run:
+    workflows: ['CI/CD Pipeline']
+    types:
+      - completed
+
+# Least privilege: observe only. Elevate per-job when real remediation is wired.
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  self-heal:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch != 'main' && github.event.workflow_run.head_branch != 'staging' }}
+    steps:
+      # NOTE: no `actions/checkout` here. This is a privileged `workflow_run`
+      # job with access to secrets, so it must never check out untrusted PR
+      # code. It only reads run metadata via the API and dispatches a signed
+      # webhook — no repository contents are needed.
+
+      - name: Collect failure metadata
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const runId = context.payload.workflow_run.id;
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+            });
+            core.info(`Failed run: ${runId} on ${context.payload.workflow_run.head_branch}`);
+            core.info(`Artifacts available: ${artifacts.data.total_count}`);
+            core.setOutput('run_id', String(runId));
+
+      - name: Dispatch remediation request (disabled until endpoint + secret exist)
+        env:
+          REMEDIATE_URL: ${{ secrets.REMEDIATE_URL }}
+          REMEDIATE_SECRET: ${{ secrets.REMEDIATE_SECRET }}
+          # Pass event data through the environment (never interpolated into the
+          # script body) so an attacker-controlled branch name can't inject shell.
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          if [ -z "$REMEDIATE_URL" ] || [ -z "$REMEDIATE_SECRET" ]; then
+            echo "REMEDIATE_URL/REMEDIATE_SECRET not set — self-healing is scaffold-only. Skipping."
+            exit 0
+          fi
+          # HMAC-signed webhook to the agentic backend (backend/server.js /api/agent/remediate).
+          BODY=$(RUN_ID="$RUN_ID" HEAD_BRANCH="$HEAD_BRANCH" node -e 'process.stdout.write(JSON.stringify({run_id:String(process.env.RUN_ID),branch:String(process.env.HEAD_BRANCH)}))')
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$REMEDIATE_SECRET" | sed 's/^.* //')
+          curl -fsS -X POST "$REMEDIATE_URL" \
+            -H 'Content-Type: application/json' \
+            -H "X-Signature: sha256=$SIG" \
+            --data "$BODY"

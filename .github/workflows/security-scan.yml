@@ -6,13 +6,16 @@ on:
   pull_request:
     branches: [main, staging]
   schedule:
-    - cron: "0 3 * * 0"
+    - cron: '0 3 * * 0'
   workflow_dispatch:
 
 permissions:
   contents: read
   security-events: write
   pull-requests: read
+
+env:
+  NODE_VERSION: '24.x'
 
 jobs:
   npm-audit:
@@ -25,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: "24.x"
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install dependencies

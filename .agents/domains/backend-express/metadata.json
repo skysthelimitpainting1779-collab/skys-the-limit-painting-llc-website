@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "organization": "Sky's the Limit Painting LLC",
+  "date": "July 2026",
+  "okf": "v0.1",
+  "abstract": "Express 5 + Node.js 24 backend engineering rules for the Sky's the Limit Painting LLC API layer. Contains rules across 4 categories covering deprecated API blocks, security guardrails, architecture patterns, and code style enforcement. Each rule includes incorrect vs. correct code examples to guide automated refactoring and code generation in any IDE or CLI agent.",
+  "references": [
+    "https://expressjs.com/en/guide/error-handling.html",
+    "https://nodejs.org/en/docs/guides/",
+    "https://supabase.com/docs/reference/javascript",
+    "https://vercel.com/docs/functions/serverless-functions",
+    "https://www.typescriptlang.org/tsconfig"
+  ]
+}

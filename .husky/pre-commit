@@ -1,0 +1,5 @@
+#!/bin/sh
+# Pre-commit gate: git-standards guard + TypeScript type check.
+# (Mirrors the CI "Lint" job; no formatter auto-fix so commits never silently
+# reformat unrelated files.)
+npm run lint
