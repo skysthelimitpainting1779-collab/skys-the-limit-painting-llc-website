@@ -1,4 +1,5 @@
 import EstimatePage from '../../views/Estimate';
+import CalBooking from '../../components/CalBooking';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,5 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function Estimate() {
-  return <EstimatePage />;
+  return (
+    <>
+      <EstimatePage />
+      <CalBooking />
+    </>
+  );
 }
