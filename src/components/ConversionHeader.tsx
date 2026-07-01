@@ -77,10 +77,10 @@ export default function ConversionHeader() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/85 backdrop-blur-md shadow-sm border-b border-white/10' : 'bg-[#050505]/92 backdrop-blur-sm'}`}>
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-surface-void/85 backdrop-blur-md shadow-sm border-b border-line' : 'bg-surface-void/92 backdrop-blur-sm'}`}>
         
         {/* Micro-Utility Bar */}
-        <div className="h-8 bg-[#050505] border-b border-white/10 flex items-center px-4 sm:px-6 lg:px-8">
+        <div className="h-8 bg-surface-void border-b border-line flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-3 overflow-hidden text-[12px] md:text-sm text-white/70 font-bold">
             <span className="truncate">(651) 410-4196 • info@skysthelimitpaintingllc.com</span>
             <span className="hidden sm:inline truncate">Prep-first painting across the Twin Cities • Price range, scope review, and schedule conversation in one path</span>
@@ -89,9 +89,9 @@ export default function ConversionHeader() {
 
         {/* Primary Nav */}
         <div className={`py-4`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="grid h-14 w-14 place-items-center overflow-hidden border border-white/12 bg-white p-1.5">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+            <Link href="/" className="flex shrink-0 items-center gap-3">
+              <div className="grid h-14 w-14 place-items-center overflow-hidden border border-line-strong bg-white p-1.5">
                 <img src="/brand/SkyLLP_BrandLogo.svg" alt="Sky's the Limit Painting LLC" className="h-full w-full object-contain" />
               </div>
               <span className="font-display hidden text-xl font-black leading-none text-white sm:block">
@@ -101,7 +101,7 @@ export default function ConversionHeader() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-5 xl:gap-6">
+            <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
               <NavLink to="/residential">Residential</NavLink>
               <NavLink to="/commercial">Commercial</NavLink>
               <NavLink to="/public-sector">Public Sector</NavLink>
@@ -127,7 +127,7 @@ export default function ConversionHeader() {
                 
                 {dropdownOpen && (
                   <div 
-                    className="absolute left-0 mt-2 w-48 bg-[#050505] border border-white/10 p-2 flex flex-col gap-1 shadow-xl z-50"
+                    className="absolute left-0 mt-2 w-48 bg-surface-void border border-line p-2 flex flex-col gap-1 shadow-xl z-50"
                     style={{ borderRadius: '0px' }}
                   >
                     <Link 
@@ -165,12 +165,12 @@ export default function ConversionHeader() {
             </nav>
 
             {/* Desktop Actions - Conversion Anchor */}
-            <div className="hidden items-center gap-4 md:flex">
+            <div className="hidden shrink-0 items-center gap-3 lg:flex">
               <Link
                 href="/estimate"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Price Range"}'
-                className="hidden items-center justify-center gap-2 border border-[#d8c7aa]/24 bg-white/5 px-4 py-3 text-sm font-black text-white transition-colors hover:border-white hover:text-white 2xl:inline-flex"
+                className="u-transition hidden items-center justify-center gap-2 border border-line-strong bg-white/5 px-4 py-3 text-sm font-black text-white hover:border-white xl:inline-flex"
               >
                 <Calculator size={15} />
                 Price Range
@@ -179,13 +179,13 @@ export default function ConversionHeader() {
                 href="/contact"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Get Estimate"}'
-                className="whitespace-nowrap border border-white bg-white px-4 py-3 text-sm font-black text-[#050505] transition-colors hover:bg-transparent hover:text-white"
+                className="u-transition whitespace-nowrap border border-white bg-white px-4 py-3 text-sm font-black text-surface-void hover:bg-transparent hover:text-white"
               >
                 Get Estimate
               </Link>
-              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="group flex flex-col items-end gap-0">
-                <span className="text-sm font-bold text-white transition-colors">Call / Text</span>
-                <span className="whitespace-nowrap text-xl font-black leading-none text-white transition-colors hover:text-gray-300 xl:text-2xl 2xl:text-3xl">651-410-4196</span>
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="group hidden flex-col items-end gap-0 xl:flex">
+                <span className="text-xs font-bold text-ink-4">Call / Text</span>
+                <span className="u-transition tnum whitespace-nowrap text-xl font-black leading-none text-white hover:text-ink-3">651-410-4196</span>
               </a>
             </div>
 
@@ -210,7 +210,7 @@ export default function ConversionHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={prefersReducedMotion ? undefined : { opacity: 0, y: -16 }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
-            className="fixed inset-0 top-[104px] bg-[#050505] z-40 lg:hidden flex flex-col p-6 overflow-y-auto pb-32"
+            className="fixed inset-0 top-[104px] bg-surface-void z-40 lg:hidden flex flex-col p-6 overflow-y-auto pb-32"
           >
             <nav className="flex flex-col gap-6 text-xl">
               <NavLink to="/">Home</NavLink>
@@ -224,10 +224,10 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="w-full text-center border border-[#d8c7aa]/24 bg-white/5 px-6 py-4 font-black text-white transition-colors hover:border-white hover:text-white">
+              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="u-transition w-full text-center border border-line-strong bg-white/5 px-6 py-4 font-black text-white hover:border-white">
                 Get A Price Range
               </Link>
-              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-white text-[#050505] px-6 py-4 rounded-none font-black text-lg">
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-white text-surface-void px-6 py-4 rounded-none font-black text-lg">
                 Call / Text 651-410-4196
               </a>
             </div>
