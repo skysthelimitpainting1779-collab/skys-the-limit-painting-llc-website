@@ -6,14 +6,11 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - All images/icons (.svg, .png, .jpg, .jpeg, .gif, .webp)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  /*
+   * Supabase session refresh is only needed where an authenticated session
+   * exists — the admin dashboard. Public marketing pages are unauthenticated,
+   * so scoping the matcher here avoids a Supabase round-trip (and an edge
+   * middleware invocation) on every visitor request.
+   */
+  matcher: ['/admin/:path*'],
 };
