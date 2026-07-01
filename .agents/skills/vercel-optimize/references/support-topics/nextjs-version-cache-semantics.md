@@ -2,14 +2,14 @@
 id: nextjs-version-cache-semantics
 title: Next.js cache semantics by version
 status: active
-candidateKinds: ["uncached_route"]
-frameworks: ["next@>=15.0.0"]
+candidateKinds: ['uncached_route']
+frameworks: ['next@>=15.0.0']
 priority: 85
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/directives/use-cache",
-    "https://nextjs.org/docs/app/api-reference/functions/cacheLife",
-    "https://nextjs.org/docs/app/building-your-application/caching",
+    'https://nextjs.org/docs/app/api-reference/directives/use-cache',
+    'https://nextjs.org/docs/app/api-reference/functions/cacheLife',
+    'https://nextjs.org/docs/app/building-your-application/caching',
   ]
 maxBriefChars: 800
 ---

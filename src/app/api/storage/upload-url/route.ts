@@ -4,7 +4,8 @@ import path from 'path';
 import { getEnv } from '../../../../lib/env';
 
 const supabaseUrl = getEnv('SUPABASE_URL');
-const supabaseServiceKey = getEnv('SUPABASE_SERVICE_ROLE_KEY') || getEnv('SUPABASE_SECRET_KEY');
+const supabaseServiceKey =
+  getEnv('SUPABASE_SERVICE_ROLE_KEY') || getEnv('SUPABASE_SECRET_KEY');
 
 const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.heic'];
 const MAX_FILENAME_LENGTH = 128;
@@ -32,7 +33,11 @@ function rateLimit(ip: string): boolean {
 }
 
 function sanitizeFileName(raw: string): string | null {
-  if (typeof raw !== 'string' || raw.length === 0 || raw.length > MAX_FILENAME_LENGTH) {
+  if (
+    typeof raw !== 'string' ||
+    raw.length === 0 ||
+    raw.length > MAX_FILENAME_LENGTH
+  ) {
     return null;
   }
   const basename = path.basename(raw);
@@ -50,20 +55,38 @@ function sanitizeFileName(raw: string): string | null {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown').split(',')[0].trim();
+  const ip = (
+    req.headers.get('x-forwarded-for') ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  )
+    .split(',')[0]
+    .trim();
   if (!rateLimit(ip)) {
-    return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
   }
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    return NextResponse.json({ error: 'Storage is not configured.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Storage is not configured.' },
+      { status: 500 }
+    );
   }
 
   try {
     const body = await req.json();
     const fileName = sanitizeFileName(body?.fileName);
     if (!fileName) {
-      return NextResponse.json({ error: 'Invalid file name. Use alphanumeric characters with a supported image extension (.jpg, .jpeg, .png, .webp, .heic).' }, { status: 400 });
+      return NextResponse.json(
+        {
+          error:
+            'Invalid file name. Use alphanumeric characters with a supported image extension (.jpg, .jpeg, .png, .webp, .heic).',
+        },
+        { status: 400 }
+      );
     }
 
     const uniqueName = `${Date.now()}-${fileName}`;
@@ -75,17 +98,23 @@ export async function POST(req: NextRequest) {
       .createSignedUploadUrl(uniqueName);
 
     if (error) {
-      return NextResponse.json({ error: 'Failed to generate upload URL.' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Failed to generate upload URL.' },
+        { status: 500 }
+      );
     }
 
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${uniqueName}`;
 
     return NextResponse.json({
       uploadUrl: data.signedUrl,
-      publicUrl
+      publicUrl,
     });
   } catch (err) {
     console.error('Storage upload URL generation failed:', err);
-    return NextResponse.json({ error: 'Storage upload URL generation failed.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Storage upload URL generation failed.' },
+      { status: 500 }
+    );
   }
 }

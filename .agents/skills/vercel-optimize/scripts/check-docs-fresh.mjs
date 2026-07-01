@@ -6,7 +6,11 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { scanners } from '../lib/scanners/index.mjs';
-import { gates, MAX_CODE_CANDIDATES, GATE_VERSION } from '../lib/gates/index.mjs';
+import {
+  gates,
+  MAX_CODE_CANDIDATES,
+  GATE_VERSION,
+} from '../lib/gates/index.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REFS = join(HERE, '..', 'references');
@@ -25,14 +29,19 @@ async function main() {
   let stale = false;
   for (const [name, content] of Object.entries(expected)) {
     let actual;
-    try { actual = await readFile(join(REFS, name), 'utf-8'); }
-    catch {
-      console.error(`[check-docs-fresh] ${name} does not exist. Run \`node scripts/build-docs.mjs\`.`);
+    try {
+      actual = await readFile(join(REFS, name), 'utf-8');
+    } catch {
+      console.error(
+        `[check-docs-fresh] ${name} does not exist. Run \`node scripts/build-docs.mjs\`.`
+      );
       stale = true;
       continue;
     }
     if (actual !== content) {
-      console.error(`[check-docs-fresh] ${name} is stale. Run \`node scripts/build-docs.mjs\` and commit.`);
+      console.error(
+        `[check-docs-fresh] ${name} is stale. Run \`node scripts/build-docs.mjs\` and commit.`
+      );
       stale = true;
     }
   }
@@ -43,9 +52,12 @@ async function main() {
 
 // MUST stay byte-identical to build-docs.mjs renderers — duplication is the contract.
 function renderScanners() {
-  const sorted = scanners.slice().sort((a, b) => a.metadata.id.localeCompare(b.metadata.id));
+  const sorted = scanners
+    .slice()
+    .sort((a, b) => a.metadata.id.localeCompare(b.metadata.id));
   let out = GENERATED_BANNER + '# Scanner patterns\n\n';
-  out += 'AST/grep-style scanners run in parallel with metric-driven investigation. They find known anti-patterns. Findings on cold-path or unmappable files are dropped unless the scanner declares `trafficIndependent: true`.\n\n';
+  out +=
+    'AST/grep-style scanners run in parallel with metric-driven investigation. They find known anti-patterns. Findings on cold-path or unmappable files are dropped unless the scanner declares `trafficIndependent: true`.\n\n';
   out += `Total scanners: ${sorted.length}.\n\n`;
   out += '## Patterns\n\n';
   for (const s of sorted) {
@@ -65,9 +77,12 @@ function renderScanners() {
 }
 
 function renderCandidates() {
-  const sorted = gates.slice().sort((a, b) => a.metadata.id.localeCompare(b.metadata.id));
+  const sorted = gates
+    .slice()
+    .sort((a, b) => a.metadata.id.localeCompare(b.metadata.id));
   let out = GENERATED_BANNER + '# Candidate gates\n\n';
-  out += 'The deterministic threshold expressions that turn observability signals into investigation candidates. Pure JS, no LLM. Thresholds live in `lib/gates/*.mjs`.\n\n';
+  out +=
+    'The deterministic threshold expressions that turn observability signals into investigation candidates. Pure JS, no LLM. Thresholds live in `lib/gates/*.mjs`.\n\n';
   out += `Total gates: ${sorted.length}. Budget cap: \`MAX_CODE_CANDIDATES = ${MAX_CODE_CANDIDATES}\`. Gate version: \`${GATE_VERSION}\`.\n\n`;
   out += '## Gates\n\n';
   for (const g of sorted) {

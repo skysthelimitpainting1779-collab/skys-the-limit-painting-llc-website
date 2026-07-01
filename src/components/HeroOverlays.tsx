@@ -31,7 +31,6 @@ export default function HeroOverlays({
   showMeasurementRules = false,
   measurementRulesOpacity = 'opacity-16',
 }: HeroOverlaysProps) {
-
   return (
     <>
       <ResponsiveImage
@@ -41,15 +40,22 @@ export default function HeroOverlays({
         height={imageHeight}
         loading={loading}
         fetchPriority={fetchPriority}
-        className={imageClassName ?? `absolute inset-0 h-full w-full object-cover ${imageOpacity} pointer-events-none`}
+        className={
+          imageClassName ??
+          `absolute inset-0 h-full w-full object-cover ${imageOpacity} pointer-events-none`
+        }
       />
       {gradients.map((cls) => (
         <div key={cls} className={`absolute inset-0 ${cls}`} />
       ))}
       <div className={`blueprint-grid absolute inset-0 ${blueprintOpacity}`} />
-      <div className={`road-rule absolute left-0 top-0 h-1 w-full ${roadRuleOpacity}`} />
+      <div
+        className={`road-rule absolute left-0 top-0 h-1 w-full ${roadRuleOpacity}`}
+      />
       {showMeasurementRules && (
-        <div className={`measurement-rules absolute inset-0 ${measurementRulesOpacity}`} />
+        <div
+          className={`measurement-rules absolute inset-0 ${measurementRulesOpacity}`}
+        />
       )}
     </>
   );

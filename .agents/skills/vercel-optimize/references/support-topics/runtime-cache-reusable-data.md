@@ -2,13 +2,13 @@
 id: runtime-cache-reusable-data
 title: Runtime Cache for reusable server data
 status: active
-candidateKinds: ["slow_route", "external_api_slow"]
-frameworks: ["*"]
+candidateKinds: ['slow_route', 'external_api_slow']
+frameworks: ['*']
 priority: 84
 citations:
   [
-    "https://vercel.com/docs/caching/runtime-cache",
-    "https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package",
+    'https://vercel.com/docs/caching/runtime-cache',
+    'https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package',
   ]
 maxBriefChars: 850
 ---

@@ -2,14 +2,19 @@ import pg from 'pg';
 import dotenv from 'dotenv';
 import path from 'node:path';
 
-dotenv.config({ path: path.resolve('C:\\Users\\Johnny Cage\\DEV\\skysthelimit-collab\\.env.local') });
+dotenv.config({
+  path: path.resolve(
+    'C:\\Users\\Johnny Cage\\DEV\\skysthelimit-collab\\.env.local'
+  ),
+});
 
 const { Client } = pg;
 
-const rawConnectionString = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
+const rawConnectionString =
+  process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
 
 if (!rawConnectionString) {
-  console.error("Error: Database connection string missing in environment.");
+  console.error('Error: Database connection string missing in environment.');
   process.exit(1);
 }
 
@@ -19,8 +24,8 @@ const connectionString = rawConnectionString.split('?')[0];
 const client = new Client({
   connectionString,
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 const migrationSql = `
@@ -51,11 +56,11 @@ WITH CHECK (bucket_id = 'lead-photos');
 async function run() {
   await client.connect();
   try {
-    console.log("Connected to Supabase database. Running migrations...");
+    console.log('Connected to Supabase database. Running migrations...');
     await client.query(migrationSql);
-    console.log("Migrations ran successfully!");
+    console.log('Migrations ran successfully!');
   } catch (err) {
-    console.error("Migration failed:", err);
+    console.error('Migration failed:', err);
     process.exit(1);
   } finally {
     await client.end();

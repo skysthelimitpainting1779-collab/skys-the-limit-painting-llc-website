@@ -71,7 +71,7 @@ type ImpactLabel = {
   // PRECISE: performance recs
   performance?: string;
   // MAGNITUDE: cost recs
-  costMagnitude?: "negligible" | "small" | "medium" | "large" | "very-large";
+  costMagnitude?: 'negligible' | 'small' | 'medium' | 'large' | 'very-large';
   costPhrase?: string;
   billingDimension?: string; // 'Edge Requests' | 'Function Duration' | ...
   fractionReduced?: number; // 0.2 = ~20% — internal only, NOT rendered

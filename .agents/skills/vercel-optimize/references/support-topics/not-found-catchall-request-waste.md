@@ -2,16 +2,16 @@
 id: not-found-catchall-request-waste
 title: Not-found and catch-all request waste
 status: active
-candidateKinds: ["uncached_route"]
-frameworks: ["*"]
-routePatterns: ["(^|/)404$", "not-found", "\\[\\.\\.\\."]
+candidateKinds: ['uncached_route']
+frameworks: ['*']
+routePatterns: ['(^|/)404$', 'not-found', "\\[\\.\\.\\."]
 priority: 92
 citations:
   [
-    "https://vercel.com/docs/routing/",
-    "https://vercel.com/docs/redirects/bulk-redirects/",
-    "https://vercel.com/docs/vercel-firewall/vercel-waf/custom-rules",
-    "https://vercel.com/docs/vercel-firewall/vercel-waf/managed-rulesets",
+    'https://vercel.com/docs/routing/',
+    'https://vercel.com/docs/redirects/bulk-redirects/',
+    'https://vercel.com/docs/vercel-firewall/vercel-waf/custom-rules',
+    'https://vercel.com/docs/vercel-firewall/vercel-waf/managed-rulesets',
   ]
 maxBriefChars: 850
 ---

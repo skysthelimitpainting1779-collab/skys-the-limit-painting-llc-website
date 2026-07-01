@@ -1,0 +1,6 @@
+# Use the official Directus image
+FROM directus/directus:latest
+
+# Expose the standard Directus port
+# Vercel Fluid Compute overrides this mapping automatically using the $PORT env var
+EXPOSE 8055

@@ -2,14 +2,14 @@
 id: use-cache-date-stamp-isr-write-amplifier
 title: "'use cache' date-stamp ISR write amplifier"
 status: active
-candidateKinds: ["use_cache_date_stamp"]
-frameworks: ["next@>=15.0.0"]
-scannerPatterns: ["use-cache-date-stamp"]
+candidateKinds: ['use_cache_date_stamp']
+frameworks: ['next@>=15.0.0']
+scannerPatterns: ['use-cache-date-stamp']
 priority: 88
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/directives/use-cache",
-    "https://nextjs.org/docs/app/api-reference/functions/cacheLife",
+    'https://nextjs.org/docs/app/api-reference/directives/use-cache',
+    'https://nextjs.org/docs/app/api-reference/functions/cacheLife',
   ]
 maxBriefChars: 900
 ---

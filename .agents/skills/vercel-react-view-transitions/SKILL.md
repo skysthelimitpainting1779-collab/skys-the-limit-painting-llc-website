@@ -4,7 +4,7 @@ description: Guide for implementing smooth, native-feeling animations using Reac
 license: MIT
 metadata:
   author: vercel
-  version: "1.0.0"
+  version: '1.0.0'
 ---
 
 # React View Transitions
@@ -59,7 +59,7 @@ When adding view transitions to an existing app, **follow `references/implementa
 ### The `<ViewTransition>` Component
 
 ```jsx
-import { ViewTransition } from "react";
+import { ViewTransition } from 'react';
 
 <ViewTransition>
   <Component />
@@ -133,9 +133,9 @@ Tag transitions with `addTransitionType` so VTs can pick different animations ba
 
 ```jsx
 startTransition(() => {
-  addTransitionType("nav-forward");
-  addTransitionType("select-item");
-  router.push("/detail/1");
+  addTransitionType('nav-forward');
+  addTransitionType('select-item');
+  router.push('/detail/1');
 });
 ```
 
@@ -144,19 +144,19 @@ Pass an object to map types to CSS classes. Works on `enter`, `exit`, **and** `s
 ```jsx
 <ViewTransition
   enter={{
-    "nav-forward": "slide-from-right",
-    "nav-back": "slide-from-left",
-    default: "none",
+    'nav-forward': 'slide-from-right',
+    'nav-back': 'slide-from-left',
+    default: 'none',
   }}
   exit={{
-    "nav-forward": "slide-to-left",
-    "nav-back": "slide-to-right",
-    default: "none",
+    'nav-forward': 'slide-to-left',
+    'nav-back': 'slide-to-right',
+    default: 'none',
   }}
   share={{
-    "nav-forward": "morph-forward",
-    "nav-back": "morph-back",
-    default: "morph",
+    'nav-forward': 'morph-forward',
+    'nav-back': 'morph-back',
+    default: 'morph',
   }}
   default="none"
 >
@@ -259,11 +259,11 @@ Shared elements and list identity are independent concerns — don't confuse one
 {
   items.map((item) => (
     <ViewTransition key={item.id}>
-      {" "}
+      {' '}
       {/* list identity */}
       <Link href={`/items/${item.id}`}>
         <ViewTransition name={`item-image-${item.id}`} share="morph">
-          {" "}
+          {' '}
           {/* shared element */}
           <Image src={item.image} />
         </ViewTransition>

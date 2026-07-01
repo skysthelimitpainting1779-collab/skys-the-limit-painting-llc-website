@@ -2,10 +2,10 @@
 id: fluid-compute-caveats
 title: Fluid compute caveats
 status: active
-candidateKinds: ["platform_fluid_compute", "cold_start"]
-frameworks: ["*"]
+candidateKinds: ['platform_fluid_compute', 'cold_start']
+frameworks: ['*']
 priority: 80
-citations: ["https://vercel.com/docs/fluid-compute"]
+citations: ['https://vercel.com/docs/fluid-compute']
 maxBriefChars: 900
 ---
 

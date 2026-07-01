@@ -2,14 +2,14 @@
 id: next-script-third-party-strategy
 title: Next.js third-party script strategy
 status: active
-candidateKinds: ["cwv_poor"]
-frameworks: ["next@*"]
-metrics: ["LCP", "INP"]
+candidateKinds: ['cwv_poor']
+frameworks: ['next@*']
+metrics: ['LCP', 'INP']
 priority: 85
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/components/script",
-    "https://web.dev/articles/optimize-inp",
+    'https://nextjs.org/docs/app/api-reference/components/script',
+    'https://web.dev/articles/optimize-inp',
   ]
 maxBriefChars: 850
 ---

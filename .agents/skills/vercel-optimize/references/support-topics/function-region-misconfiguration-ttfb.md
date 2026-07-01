@@ -2,14 +2,14 @@
 id: function-region-misconfiguration-ttfb
 title: Function region misconfiguration (TTFB)
 status: active
-candidateKinds: ["region_misconfig"]
-frameworks: ["*"]
-scannerPatterns: ["region-pin-in-config"]
+candidateKinds: ['region_misconfig']
+frameworks: ['*']
+scannerPatterns: ['region-pin-in-config']
 priority: 85
 citations:
   [
-    "https://vercel.com/docs/functions/configuring-functions/region",
-    "https://vercel.com/docs/regions",
+    'https://vercel.com/docs/functions/configuring-functions/region',
+    'https://vercel.com/docs/regions',
   ]
 maxBriefChars: 950
 ---

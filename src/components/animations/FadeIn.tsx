@@ -12,11 +12,21 @@ interface FadeInProps {
   key?: Key;
 }
 
-export default function FadeIn({ children, delay = 0, direction = 'up', fullWidth = false, className = '' }: FadeInProps) {
+export default function FadeIn({
+  children,
+  delay = 0,
+  direction = 'up',
+  fullWidth = false,
+  className = '',
+}: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
-    return <div className={`${fullWidth ? 'w-full' : ''} ${className}`}>{children}</div>;
+    return (
+      <div className={`${fullWidth ? 'w-full' : ''} ${className}`}>
+        {children}
+      </div>
+    );
   }
 
   return (

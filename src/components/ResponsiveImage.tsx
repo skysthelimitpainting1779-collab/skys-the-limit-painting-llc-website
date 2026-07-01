@@ -1,6 +1,9 @@
 import type { ImgHTMLAttributes } from 'react';
 
-type ResponsiveImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'decoding'> & {
+type ResponsiveImageProps = Omit<
+  ImgHTMLAttributes<HTMLImageElement>,
+  'decoding'
+> & {
   width: number;
   height: number;
   loading?: 'eager' | 'lazy';

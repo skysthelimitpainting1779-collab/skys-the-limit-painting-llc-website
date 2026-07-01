@@ -2,13 +2,13 @@
 id: astro-edge-middleware-scope
 title: Astro edge middleware scope
 status: active
-candidateKinds: ["middleware_heavy"]
-frameworks: ["astro@*"]
+candidateKinds: ['middleware_heavy']
+frameworks: ['astro@*']
 priority: 88
 citations:
   [
-    "https://vercel.com/docs/frameworks/frontend/astro",
-    "https://docs.astro.build/en/guides/integrations-guide/vercel/",
+    'https://vercel.com/docs/frameworks/frontend/astro',
+    'https://docs.astro.build/en/guides/integrations-guide/vercel/',
   ]
 maxBriefChars: 800
 ---

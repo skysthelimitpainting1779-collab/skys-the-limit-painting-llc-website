@@ -90,7 +90,7 @@ Reserve directional slides for hierarchical navigation (list → detail) and ord
 ### The `<ViewTransition>` Component
 
 ```jsx
-import { ViewTransition } from "react";
+import { ViewTransition } from 'react';
 
 <ViewTransition>
   <Component />
@@ -154,9 +154,9 @@ Tag transitions with `addTransitionType` so VTs can pick different animations. C
 
 ```jsx
 startTransition(() => {
-  addTransitionType("nav-forward");
-  addTransitionType("select-item");
-  router.push("/detail/1");
+  addTransitionType('nav-forward');
+  addTransitionType('select-item');
+  router.push('/detail/1');
 });
 ```
 
@@ -165,19 +165,19 @@ Map types to CSS classes. Works on `enter`, `exit`, **and** `share`:
 ```jsx
 <ViewTransition
   enter={{
-    "nav-forward": "slide-from-right",
-    "nav-back": "slide-from-left",
-    default: "none",
+    'nav-forward': 'slide-from-right',
+    'nav-back': 'slide-from-left',
+    default: 'none',
   }}
   exit={{
-    "nav-forward": "slide-to-left",
-    "nav-back": "slide-to-right",
-    default: "none",
+    'nav-forward': 'slide-to-left',
+    'nav-back': 'slide-to-right',
+    default: 'none',
   }}
   share={{
-    "nav-forward": "morph-forward",
-    "nav-back": "morph-back",
-    default: "morph",
+    'nav-forward': 'morph-forward',
+    'nav-back': 'morph-back',
+    default: 'morph',
   }}
   default="none"
 >
@@ -264,11 +264,11 @@ Shared elements and list identity are independent concerns — don't confuse one
 {
   items.map((item) => (
     <ViewTransition key={item.id}>
-      {" "}
+      {' '}
       {/* list identity */}
       <Link href={`/items/${item.id}`}>
         <ViewTransition name={`item-image-${item.id}`} share="morph">
-          {" "}
+          {' '}
           {/* shared element */}
           <Image src={item.image} />
         </ViewTransition>
@@ -401,7 +401,7 @@ Copy the **complete** CSS recipe set from the CSS Animation Recipes section belo
 ## Step 3: Isolate Persistent Elements
 
 ```jsx
-<header style={{ viewTransitionName: "site-header" }}>...</header>
+<header style={{ viewTransitionName: 'site-header' }}>...</header>
 ```
 
 ```css
@@ -417,8 +417,8 @@ For `backdrop-blur`/`backdrop-filter`, use the backdrop-blur workaround instead.
 
 ```jsx
 startTransition(() => {
-  addTransitionType("nav-forward");
-  router.push("/detail/1");
+  addTransitionType('nav-forward');
+  router.push('/detail/1');
 });
 ```
 
@@ -427,14 +427,14 @@ Wrap each **page component** (not layout) in a type-keyed VT:
 ```jsx
 <ViewTransition
   enter={{
-    "nav-forward": "nav-forward",
-    "nav-back": "nav-back",
-    default: "none",
+    'nav-forward': 'nav-forward',
+    'nav-back': 'nav-back',
+    default: 'none',
   }}
   exit={{
-    "nav-forward": "nav-forward",
-    "nav-back": "nav-back",
-    default: "none",
+    'nav-forward': 'nav-forward',
+    'nav-back': 'nav-back',
+    default: 'none',
   }}
   default="none"
 >
@@ -544,12 +544,12 @@ For Next.js-specific steps, see the Next.js section below.
 ## Searchable Grid with `useDeferredValue`
 
 ```tsx
-"use client";
+'use client';
 
-import { useDeferredValue, useState, ViewTransition, Suspense } from "react";
+import { useDeferredValue, useState, ViewTransition, Suspense } from 'react';
 
 export default function SearchableGrid({ itemsPromise }) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const deferredSearch = useDeferredValue(search);
 
   return (
@@ -573,9 +573,9 @@ Per-item named VTs in deferred lists trigger cross-fades on every keystroke. Fix
 ## Card Expand/Collapse with `startTransition`
 
 ```tsx
-"use client";
+'use client';
 
-import { useState, useRef, startTransition, ViewTransition } from "react";
+import { useState, useRef, startTransition, ViewTransition } from 'react';
 
 export default function ItemGrid({ items }) {
   const [expandedId, setExpandedId] = useState(null);
@@ -590,8 +590,8 @@ export default function ItemGrid({ items }) {
             setExpandedId(null);
             setTimeout(
               () =>
-                window.scrollTo({ behavior: "smooth", top: scrollRef.current }),
-              100,
+                window.scrollTo({ behavior: 'smooth', top: scrollRef.current }),
+              100
             );
           });
         }}
@@ -630,7 +630,7 @@ Omit `key` to trigger update (cross-fade) instead of exit + enter. Avoids Suspen
 Persistent elements get captured in page's transition snapshot. Fix with `viewTransitionName`:
 
 ```jsx
-<nav style={{ viewTransitionName: "persistent-nav" }}>{/* ... */}</nav>
+<nav style={{ viewTransitionName: 'persistent-nav' }}>{/* ... */}</nav>
 ```
 
 ```css
@@ -662,7 +662,7 @@ function AnimatedCollapse({ open, children }) {
 ## Preserve State with Activity
 
 ```jsx
-<Activity mode={isVisible ? "visible" : "hidden"}>
+<Activity mode={isVisible ? 'visible' : 'hidden'}>
   <ViewTransition enter="slide-in" exit="slide-out">
     <Sidebar />
   </ViewTransition>
@@ -684,10 +684,10 @@ Imperative control via `onEnter`, `onExit`, `onUpdate`, `onShare`. Always return
   onEnter={(instance, types) => {
     const anim = instance.new.animate(
       [
-        { transform: "scale(0.8)", opacity: 0 },
-        { transform: "scale(1)", opacity: 1 },
+        { transform: 'scale(0.8)', opacity: 0 },
+        { transform: 'scale(1)', opacity: 1 },
       ],
-      { duration: 300, easing: "ease-out" },
+      { duration: 300, easing: 'ease-out' }
     );
     return () => anim.cancel();
   }}
@@ -1005,7 +1005,7 @@ Don't add a layout-level VT wrapping `{children}` if pages have their own VTs �
 Works in Server Components, no wrapper needed:
 
 ```tsx
-<Link href="/products/1" transitionTypes={["nav-forward"]}>
+<Link href="/products/1" transitionTypes={['nav-forward']}>
   View
 </Link>
 ```
@@ -1026,8 +1026,8 @@ Directional slides + Suspense reveals coexist because they fire at different mom
 
 ```tsx
 <ViewTransition
-  enter={{ "nav-forward": "slide-from-right", default: "none" }}
-  exit={{ "nav-forward": "slide-to-left", default: "none" }}
+  enter={{ 'nav-forward': 'slide-from-right', default: 'none' }}
+  exit={{ 'nav-forward': 'slide-to-left', default: 'none' }}
   default="none"
 >
   <div>

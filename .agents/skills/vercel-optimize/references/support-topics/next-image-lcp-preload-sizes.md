@@ -2,14 +2,14 @@
 id: next-image-lcp-preload-sizes
 title: Next.js image LCP preload and sizes
 status: active
-candidateKinds: ["cwv_poor"]
-frameworks: ["next@*"]
-metrics: ["LCP"]
+candidateKinds: ['cwv_poor']
+frameworks: ['next@*']
+metrics: ['LCP']
 priority: 86
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/components/image",
-    "https://web.dev/articles/optimize-lcp",
+    'https://nextjs.org/docs/app/api-reference/components/image',
+    'https://web.dev/articles/optimize-lcp',
   ]
 maxBriefChars: 850
 ---

@@ -22,12 +22,20 @@ async function getHarness() {
   // Indirect import bypasses Turbopack static analysis of dynamic paths
   // eslint-disable-next-line @typescript-eslint/no-implied-eval
   const importFn = new Function('p', 'return import(p)');
-  return await importFn(harnessPath) as {
-    QueryMemory: (opts: { text: string; type?: string; tags?: string[] }) => unknown;
+  return (await importFn(harnessPath)) as {
+    QueryMemory: (opts: {
+      text: string;
+      type?: string;
+      tags?: string[];
+    }) => unknown;
     GetNode: (id: string) => unknown;
     GetNeighbors: (id: string, depth: number) => unknown;
     GetGraphStats: () => unknown;
-    UpdateMemory: (conceptId: string, update: Record<string, unknown>, agentId: string) => { success: boolean; errors?: unknown; node?: unknown };
+    UpdateMemory: (
+      conceptId: string,
+      update: Record<string, unknown>,
+      agentId: string
+    ) => { success: boolean; errors?: unknown; node?: unknown };
   };
 }
 
@@ -36,7 +44,8 @@ export const runtime = 'nodejs'; // explicitly: memory files live on disk, not e
 // ─── GET ─────────────────────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
   try {
-    const { QueryMemory, GetNode, GetNeighbors, GetGraphStats } = await getHarness();
+    const { QueryMemory, GetNode, GetNeighbors, GetGraphStats } =
+      await getHarness();
     const { searchParams } = new URL(req.url);
 
     // Stats
@@ -56,7 +65,10 @@ export async function GET(req: NextRequest) {
       }
       const node = GetNode(nodeId);
       if (!node) {
-        return NextResponse.json({ error: `Node not found: ${nodeId}` }, { status: 404 });
+        return NextResponse.json(
+          { error: `Node not found: ${nodeId}` },
+          { status: 404 }
+        );
       }
       return NextResponse.json(node);
     }
@@ -65,15 +77,18 @@ export async function GET(req: NextRequest) {
     const q = searchParams.get('q') || '';
     const type = searchParams.get('type') || undefined;
     const tagsParam = searchParams.get('tags');
-    const tags = tagsParam ? tagsParam.split(',').map(t => t.trim()) : undefined;
+    const tags = tagsParam
+      ? tagsParam.split(',').map((t) => t.trim())
+      : undefined;
 
     const result = QueryMemory({ text: q, type, tags });
 
     // Cache for 60s — graph updates happen via POST, not by polling
     return NextResponse.json(result, {
-      headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30' },
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+      },
     });
-
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Memory harness error';
     console.error('[/api/memory GET]', message);
@@ -88,29 +103,41 @@ export async function POST(req: NextRequest) {
   const expectedSecret = process.env.MEMORY_WRITE_SECRET;
 
   if (!expectedSecret || secret !== expectedSecret) {
-    return NextResponse.json({ error: 'Unauthorized. Provide x-memory-secret header.' }, { status: 401 });
+    return NextResponse.json(
+      { error: 'Unauthorized. Provide x-memory-secret header.' },
+      { status: 401 }
+    );
   }
 
   try {
     const { UpdateMemory } = await getHarness();
-    const body = await req.json() as {
+    const body = (await req.json()) as {
       conceptId: string;
       update: Record<string, unknown>;
       agentId?: string;
     };
 
     if (!body.conceptId || !body.update) {
-      return NextResponse.json({ error: 'Missing conceptId or update' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing conceptId or update' },
+        { status: 400 }
+      );
     }
 
-    const result = UpdateMemory(body.conceptId, body.update, body.agentId || 'api-route');
+    const result = UpdateMemory(
+      body.conceptId,
+      body.update,
+      body.agentId || 'api-route'
+    );
 
     if (!result.success) {
-      return NextResponse.json({ error: 'Schema validation failed', errors: result.errors }, { status: 422 });
+      return NextResponse.json(
+        { error: 'Schema validation failed', errors: result.errors },
+        { status: 422 }
+      );
     }
 
     return NextResponse.json({ ok: true, node: result.node }, { status: 200 });
-
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Memory write error';
     console.error('[/api/memory POST]', message);

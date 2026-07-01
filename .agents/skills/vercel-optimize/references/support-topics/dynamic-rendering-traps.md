@@ -2,14 +2,14 @@
 id: dynamic-rendering-traps
 title: Dynamic rendering traps
 status: active
-candidateKinds: ["rendering_candidate"]
-frameworks: ["next@>=13.0.0"]
+candidateKinds: ['rendering_candidate']
+frameworks: ['next@>=13.0.0']
 priority: 90
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config",
-    "https://nextjs.org/docs/app/api-reference/functions/generate-static-params",
-    "https://nextjs.org/docs/app/building-your-application/rendering/partial-prerendering",
+    'https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config',
+    'https://nextjs.org/docs/app/api-reference/functions/generate-static-params',
+    'https://nextjs.org/docs/app/building-your-application/rendering/partial-prerendering',
   ]
 maxBriefChars: 850
 ---

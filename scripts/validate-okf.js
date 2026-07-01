@@ -25,13 +25,13 @@ let hasError = false;
 
 for (const file of filesToCheck) {
   const content = fs.readFileSync(file, 'utf8');
-  
+
   // Custom simple frontmatter parser to avoid gray-matter / js-yaml v4 conflict
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   let frontmatter = {};
   if (match) {
     const lines = match[1].split('\n');
-    lines.forEach(line => {
+    lines.forEach((line) => {
       const parts = line.split(':');
       if (parts.length > 1) {
         const key = parts[0].trim();
@@ -40,34 +40,45 @@ for (const file of filesToCheck) {
       }
     });
   }
-  
+
   const missingProps = [];
   if (!frontmatter.type) missingProps.push('type');
   if (!frontmatter.title) missingProps.push('title');
-  if (!frontmatter.timestamp && !frontmatter.last_sync) missingProps.push('timestamp');
-  
+  if (!frontmatter.timestamp && !frontmatter.last_sync)
+    missingProps.push('timestamp');
+
   if (missingProps.length > 0) {
-    console.error(`Error in ${file}: Missing frontmatter properties: ${missingProps.join(', ')}`);
+    console.error(
+      `Error in ${file}: Missing frontmatter properties: ${missingProps.join(', ')}`
+    );
     hasError = true;
   }
-  
+
   // Semantic Checks
   if (content.includes('[System Note: Awaiting semantic compilation]')) {
-    console.error(`Error in ${file}: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'`);
+    console.error(
+      `Error in ${file}: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'`
+    );
     hasError = true;
   }
-  
+
   if (content.match(/Source:\s*AST Graphify Extraction\s*(?:\r?\n|$)/)) {
-    console.error(`Error in ${file}: Contains vague 'Source: AST Graphify Extraction' without a specific file path`);
+    console.error(
+      `Error in ${file}: Contains vague 'Source: AST Graphify Extraction' without a specific file path`
+    );
     hasError = true;
   }
-  
+
   const synthesisMatch = content.match(/## Synthesis([\s\S]*?)(?=##|$)/);
   if (synthesisMatch) {
     const synthesisText = synthesisMatch[1].trim();
-    const wordCount = synthesisText.split(/\s+/).filter(w => w.length > 0).length;
+    const wordCount = synthesisText
+      .split(/\s+/)
+      .filter((w) => w.length > 0).length;
     if (wordCount < 30) {
-      console.error(`Error in ${file}: Synthesis section is under 30 words (Found ${wordCount} words)`);
+      console.error(
+        `Error in ${file}: Synthesis section is under 30 words (Found ${wordCount} words)`
+      );
       hasError = true;
     }
   } else {
@@ -79,5 +90,7 @@ for (const file of filesToCheck) {
 if (hasError) {
   process.exit(1);
 } else {
-  console.log('OKF Validation passed: All required frontmatter properties are present.');
+  console.log(
+    'OKF Validation passed: All required frontmatter properties are present.'
+  );
 }

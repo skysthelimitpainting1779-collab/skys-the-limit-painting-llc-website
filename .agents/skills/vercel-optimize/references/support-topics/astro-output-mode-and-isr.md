@@ -2,14 +2,14 @@
 id: astro-output-mode-and-isr
 title: Astro output mode and ISR
 status: active
-candidateKinds: ["uncached_route", "rendering_candidate"]
-frameworks: ["astro@*"]
+candidateKinds: ['uncached_route', 'rendering_candidate']
+frameworks: ['astro@*']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/frameworks/frontend/astro",
-    "https://docs.astro.build/en/guides/on-demand-rendering/",
-    "https://docs.astro.build/en/reference/configuration-reference/",
+    'https://vercel.com/docs/frameworks/frontend/astro',
+    'https://docs.astro.build/en/guides/on-demand-rendering/',
+    'https://docs.astro.build/en/reference/configuration-reference/',
   ]
 maxBriefChars: 850
 ---

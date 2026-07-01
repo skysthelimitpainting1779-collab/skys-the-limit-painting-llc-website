@@ -38,7 +38,7 @@ Do not write your own animation CSS — the recipes handle staggered timing, mot
 For every persistent element identified in Step 1, add a `viewTransitionName` style to pull it out of the page content's transition snapshot:
 
 ```jsx
-<header style={{ viewTransitionName: "site-header" }}>...</header>
+<header style={{ viewTransitionName: 'site-header' }}>...</header>
 ```
 
 Then add the persistent element isolation CSS from `css-recipes.md` (prevents the element from animating during page transitions). If the element uses `backdrop-blur` or `backdrop-filter`, use the backdrop-blur workaround from `css-recipes.md` instead.
@@ -51,8 +51,8 @@ For hierarchical navigations identified in Step 1, tag the navigation direction 
 
 ```jsx
 startTransition(() => {
-  addTransitionType("nav-forward");
-  router.push("/detail/1");
+  addTransitionType('nav-forward');
+  router.push('/detail/1');
 });
 ```
 
@@ -61,14 +61,14 @@ Then wrap each **page component** (not layout) in a type-keyed `<ViewTransition>
 ```jsx
 <ViewTransition
   enter={{
-    "nav-forward": "nav-forward",
-    "nav-back": "nav-back",
-    default: "none",
+    'nav-forward': 'nav-forward',
+    'nav-back': 'nav-back',
+    default: 'none',
   }}
   exit={{
-    "nav-forward": "nav-forward",
-    "nav-back": "nav-back",
-    default: "none",
+    'nav-forward': 'nav-forward',
+    'nav-back': 'nav-back',
+    default: 'none',
   }}
   default="none"
 >

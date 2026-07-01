@@ -2,14 +2,14 @@
 id: function-duration-io-and-after
 title: Function duration, I/O, and post-response work
 status: active
-candidateKinds: ["slow_route"]
-frameworks: ["next@>=15.0.0"]
+candidateKinds: ['slow_route']
+frameworks: ['next@>=15.0.0']
 priority: 75
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/functions/after",
-    "vercel-react-best-practices:async-parallel",
-    "vercel-react-best-practices:server-after-nonblocking",
+    'https://nextjs.org/docs/app/api-reference/functions/after',
+    'vercel-react-best-practices:async-parallel',
+    'vercel-react-best-practices:server-after-nonblocking',
   ]
 maxBriefChars: 850
 ---

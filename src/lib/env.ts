@@ -36,12 +36,25 @@ export const ENV = {
   GA_MEASUREMENT_ID: getEnv('GA_MEASUREMENT_ID'),
   FORMSPREE_FORM_ID: getEnv('FORMSPREE_FORM_ID') || 'xanybvkd',
   GOOGLE_SITE_VERIFICATION: getEnv('GOOGLE_SITE_VERIFICATION'),
-  FACEBOOK_URL: getEnv('FACEBOOK_URL') || 'https://facebook.com/skysthelimitpainting1779',
-  INSTAGRAM_URL: getEnv('INSTAGRAM_URL') || 'https://instagram.com/skysthelimitpainting1779',
-  LINKEDIN_URL: getEnv('LINKEDIN_URL') || 'https://linkedin.com/company/skys-the-limit-painting-llc',
-  TIKTOK_URL: getEnv('TIKTOK_URL') || 'https://tiktok.com/@skysthelimitpainting',
+  FACEBOOK_URL:
+    getEnv('FACEBOOK_URL') || 'https://facebook.com/skysthelimitpainting1779',
+  INSTAGRAM_URL:
+    getEnv('INSTAGRAM_URL') || 'https://instagram.com/skysthelimitpainting1779',
+  LINKEDIN_URL:
+    getEnv('LINKEDIN_URL') ||
+    'https://linkedin.com/company/skys-the-limit-painting-llc',
+  TIKTOK_URL:
+    getEnv('TIKTOK_URL') || 'https://tiktok.com/@skysthelimitpainting',
   BOOKING_URL: getEnv('BOOKING_URL') || '',
   // Explicitly reference process.env for Next.js client-side static substitution
-  SUPABASE_URL: process.env.NEXT_PUBLIC_backend_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || getEnv('SUPABASE_URL') || '',
-  SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_backend_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || getEnv('SUPABASE_ANON_KEY') || '',
+  SUPABASE_URL:
+    process.env.NEXT_PUBLIC_backend_SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    getEnv('SUPABASE_URL') ||
+    '',
+  SUPABASE_ANON_KEY:
+    process.env.NEXT_PUBLIC_backend_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    getEnv('SUPABASE_ANON_KEY') ||
+    '',
 };

@@ -2,13 +2,13 @@
 id: next-route-handler-get-cache-defaults
 title: Next.js Route Handler GET cache defaults
 status: active
-candidateKinds: ["uncached_route", "cache_header_gap"]
-frameworks: ["next@>=15.0.0"]
+candidateKinds: ['uncached_route', 'cache_header_gap']
+frameworks: ['next@>=15.0.0']
 priority: 91
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/file-conventions/route",
-    "https://vercel.com/docs/caching/cdn-cache",
+    'https://nextjs.org/docs/app/api-reference/file-conventions/route',
+    'https://vercel.com/docs/caching/cdn-cache',
   ]
 maxBriefChars: 850
 ---

@@ -1,6 +1,6 @@
 ---
 type: ops-control
-title: "Lead Pipeline State"
+title: 'Lead Pipeline State'
 tags: [pipeline, leads, crm, hubspot, operations, company-os]
 last_sync: 2026-06-24
 ---

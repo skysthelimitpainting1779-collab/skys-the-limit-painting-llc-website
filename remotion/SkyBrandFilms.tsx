@@ -27,10 +27,12 @@ type FrameAsset = {
 const assets = {
   hero: 'brand/remotion/sky-premium-market-hero-v2.png',
   generatedSpray: 'brand/generated/premium-residential-spray.png',
-  generatedFinishedRoom: 'brand/generated/premium-residential-finished-room.png',
+  generatedFinishedRoom:
+    'brand/generated/premium-residential-finished-room.png',
   generatedRoller: 'brand/generated/premium-residential-roller.png',
   generatedCommercialCrew: 'brand/generated/premium-commercial-crew.png',
-  generatedCommercialInspection: 'brand/generated/premium-commercial-inspection.png',
+  generatedCommercialInspection:
+    'brand/generated/premium-commercial-inspection.png',
   interiorAction: 'brand/gbp/SkyGBP_Interior_Action.png',
   exteriorAction: 'brand/gbp/SkyGBP_Exterior_Action_Logo.png',
   equipment: 'brand/gbp/SkyGBP_Branded_Equipment.png',
@@ -218,7 +220,10 @@ const BlueprintGrid = ({ opacity = 0.28 }: { opacity?: number }) => (
 
 const StripeLanguage = ({ compact = false }: { compact?: boolean }) => {
   const frame = useCurrentFrame();
-  const drift = interpolate(frame, [0, 180], [-60, 70], { ...clamp, easing: slowEase });
+  const drift = interpolate(frame, [0, 180], [-60, 70], {
+    ...clamp,
+    easing: slowEase,
+  });
 
   return (
     <AbsoluteFill>
@@ -230,7 +235,8 @@ const StripeLanguage = ({ compact = false }: { compact?: boolean }) => {
           width: compact ? 520 : 820,
           height: compact ? 5 : 7,
           transform: `translateX(${drift}px) rotate(-10deg)`,
-          background: 'linear-gradient(90deg, transparent, rgba(240,192,103,0.95), transparent)',
+          background:
+            'linear-gradient(90deg, transparent, rgba(240,192,103,0.95), transparent)',
           boxShadow: '0 0 42px rgba(240,192,103,0.24)',
         }}
       />
@@ -275,7 +281,8 @@ const CinematicGrade = ({ compact = false }: { compact?: boolean }) => (
         width: compact ? 460 : 760,
         height: compact ? 460 : 760,
         borderRadius: 999,
-        background: 'radial-gradient(circle, rgba(240,192,103,0.34), transparent 62%)',
+        background:
+          'radial-gradient(circle, rgba(240,192,103,0.34), transparent 62%)',
         filter: 'blur(35px)',
       }}
     />
@@ -285,12 +292,23 @@ const CinematicGrade = ({ compact = false }: { compact?: boolean }) => (
 const AnimatedFrame = ({ asset }: { asset: FrameAsset; key?: Key }) => {
   const frame = useCurrentFrame();
   const localFrame = frame - asset.start;
-  const fadeIn = interpolate(localFrame, [0, 24], [0, 1], { ...clamp, easing: ease });
-  const fadeOut = interpolate(localFrame, [asset.duration - 36, asset.duration], [1, 0], {
+  const fadeIn = interpolate(localFrame, [0, 24], [0, 1], {
     ...clamp,
-    easing: Easing.in(Easing.cubic),
+    easing: ease,
   });
-  const move = interpolate(localFrame, [0, asset.duration], [0, 1], { ...clamp, easing: slowEase });
+  const fadeOut = interpolate(
+    localFrame,
+    [asset.duration - 36, asset.duration],
+    [1, 0],
+    {
+      ...clamp,
+      easing: Easing.in(Easing.cubic),
+    }
+  );
+  const move = interpolate(localFrame, [0, asset.duration], [0, 1], {
+    ...clamp,
+    easing: slowEase,
+  });
 
   const scale = interpolate(move, [0, 1], [asset.fromScale, asset.toScale]);
   const x = interpolate(move, [0, 1], [asset.fromX, asset.toX]);
@@ -317,7 +335,10 @@ const AnimatedFrame = ({ asset }: { asset: FrameAsset; key?: Key }) => {
 
 const MeasurementMarks = ({ compact = false }: { compact?: boolean }) => {
   const frame = useCurrentFrame();
-  const progress = interpolate(frame, [0, compact ? 180 : 360], [0, 1], { ...clamp, easing: slowEase });
+  const progress = interpolate(frame, [0, compact ? 180 : 360], [0, 1], {
+    ...clamp,
+    easing: slowEase,
+  });
 
   return (
     <AbsoluteFill>
@@ -368,11 +389,12 @@ export type MarketLoopProps = {
 };
 
 export const MarketLoop = ({ market }: MarketLoopProps) => {
-  const assetsList = market === 'commercial' 
-    ? marketAssets.commercial 
-    : market === 'public-sector' 
-    ? marketAssets['public-sector'] 
-    : marketAssets.residential;
+  const assetsList =
+    market === 'commercial'
+      ? marketAssets.commercial
+      : market === 'public-sector'
+        ? marketAssets['public-sector']
+        : marketAssets.residential;
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#070706' }}>

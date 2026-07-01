@@ -15,16 +15,16 @@ permissions:
   pull-requests: write
 
 env:
-  NODE_VERSION: "24.x"
+  NODE_VERSION: '24.x'
   SITE_URL: https://skysthelimitpaintingllc.com
   VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
   LEAD_TO_EMAIL: skysthelimitpainting1779@gmail.com
-  LEAD_FROM_EMAIL: "Sky Leads <onboarding@resend.dev>"
+  LEAD_FROM_EMAIL: 'Sky Leads <onboarding@resend.dev>'
 
 jobs:
   lint:
-    name: "① Lint (TypeScript)"
+    name: '① Lint (TypeScript)'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,7 +52,7 @@ jobs:
       - name: Run TypeScript type check
         run: npm run lint
 
-      - name: "Report CI failure (Git Discipline: no auto commits/pushes)"
+      - name: 'Report CI failure (Git Discipline: no auto commits/pushes)'
         if: failure()
         run: |
           echo "::error::Lint job failed. Check logs and run URL for exact errors."
@@ -60,7 +60,7 @@ jobs:
           echo "Steps: npm run lint && npm test && npm run build, then commit + push."
 
   test:
-    name: "② Test (Node test runner)"
+    name: '② Test (Node test runner)'
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -89,7 +89,7 @@ jobs:
       - name: Run test suite
         run: node scripts/agent-os.js bootstrap && npm test
 
-      - name: "Report CI failure (Git Discipline: no auto commits/pushes)"
+      - name: 'Report CI failure (Git Discipline: no auto commits/pushes)'
         if: failure()
         run: |
           echo "::error::Test job failed. Check logs and run URL for exact test failures."
@@ -97,7 +97,7 @@ jobs:
           echo "Steps: npm run lint && npm test && npm run build, then commit + push."
 
   build:
-    name: "③ Build (Next.js)"
+    name: '③ Build (Next.js)'
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -145,7 +145,7 @@ jobs:
           retention-days: 1
           include-hidden-files: true
 
-      - name: "Report CI failure (Git Discipline: no auto commits/pushes)"
+      - name: 'Report CI failure (Git Discipline: no auto commits/pushes)'
         if: failure()
         run: |
           echo "::error::Build job failed. Check logs and run URL for Next.js build errors."
@@ -153,7 +153,7 @@ jobs:
           echo "Steps: npm run lint && npm test && npm run build, then commit + push."
 
   deploy-preview:
-    name: "④ Deploy Preview (Vercel)"
+    name: '④ Deploy Preview (Vercel)'
     runs-on: ubuntu-latest
     needs: build
     if: >
@@ -247,7 +247,7 @@ jobs:
               });
             }
 
-      - name: "Report CI failure (Git Discipline: no auto commits/pushes)"
+      - name: 'Report CI failure (Git Discipline: no auto commits/pushes)'
         if: failure()
         run: |
           echo "::error::Deploy (preview) job failed. Check logs for Vercel error."
@@ -255,7 +255,7 @@ jobs:
           echo "Verify secrets (VERCEL_TOKEN) and env vars in Vercel dashboard."
 
   deploy-production:
-    name: "⑤ Deploy Production (Vercel)"
+    name: '⑤ Deploy Production (Vercel)'
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -303,7 +303,7 @@ jobs:
         if: env.VERCEL_TOKEN != ''
         run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: "Report CI failure (Git Discipline: no auto commits/pushes)"
+      - name: 'Report CI failure (Git Discipline: no auto commits/pushes)'
         if: failure()
         run: |
           echo "::error::CRITICAL: Production deploy failed. Site may be out of date."

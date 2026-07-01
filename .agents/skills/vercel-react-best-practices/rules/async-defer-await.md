@@ -49,11 +49,11 @@ async function updateResource(resourceId: string, userId: string) {
   const resource = await getResource(resourceId);
 
   if (!resource) {
-    return { error: "Not found" };
+    return { error: 'Not found' };
   }
 
   if (!permissions.canEdit) {
-    return { error: "Forbidden" };
+    return { error: 'Forbidden' };
   }
 
   return await updateResourceData(resource, permissions);
@@ -64,13 +64,13 @@ async function updateResource(resourceId: string, userId: string) {
   const resource = await getResource(resourceId);
 
   if (!resource) {
-    return { error: "Not found" };
+    return { error: 'Not found' };
   }
 
   const permissions = await fetchPermissions(userId);
 
   if (!permissions.canEdit) {
-    return { error: "Forbidden" };
+    return { error: 'Forbidden' };
   }
 
   return await updateResourceData(resource, permissions);

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🧠 Agentic OS: Synchronizing structural memory graph..."
+# This ensures that every local commit automatically updates the Graphify knowledge base
+npx graphify update .

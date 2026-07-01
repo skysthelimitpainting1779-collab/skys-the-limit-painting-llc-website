@@ -1,6 +1,6 @@
 ---
 type: playbook
-title: "Architecture Custodian Playbook"
+title: 'Architecture Custodian Playbook'
 tags: [architecture, hygiene, dead-code, custodian, adversarial, playbook]
 last_sync: 2026-06-24
 ---

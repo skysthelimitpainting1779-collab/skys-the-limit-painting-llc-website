@@ -2,14 +2,14 @@
 id: usage-spike-triage
 title: Usage spike triage
 status: active
-candidateKinds: ["usage_spike_triage"]
-frameworks: ["*"]
+candidateKinds: ['usage_spike_triage']
+frameworks: ['*']
 priority: 95
 citations:
   [
-    "https://vercel.com/docs/alerts",
-    "https://vercel.com/docs/spend-management",
-    "https://vercel.com/docs/bot-management",
+    'https://vercel.com/docs/alerts',
+    'https://vercel.com/docs/spend-management',
+    'https://vercel.com/docs/bot-management',
   ]
 maxBriefChars: 950
 ---

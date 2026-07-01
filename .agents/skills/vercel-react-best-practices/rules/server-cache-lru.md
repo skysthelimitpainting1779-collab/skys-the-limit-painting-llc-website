@@ -12,7 +12,7 @@ tags: server, cache, lru, cross-request
 **Implementation:**
 
 ```typescript
-import { LRUCache } from "lru-cache";
+import { LRUCache } from 'lru-cache';
 
 const cache = new LRUCache<string, any>({
   max: 1000,

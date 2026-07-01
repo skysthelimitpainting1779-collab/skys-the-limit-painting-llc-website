@@ -2,12 +2,12 @@
 id: post-response-work-waituntil
 title: Post-response work with waitUntil
 status: active
-candidateKinds: ["slow_route", "external_api_slow"]
-frameworks: ["next@<15.0.0", "sveltekit@*", "astro@*", "nuxt@*", "unknown@*"]
+candidateKinds: ['slow_route', 'external_api_slow']
+frameworks: ['next@<15.0.0', 'sveltekit@*', 'astro@*', 'nuxt@*', 'unknown@*']
 priority: 78
 citations:
   [
-    "https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package",
+    'https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package',
   ]
 maxBriefChars: 800
 ---

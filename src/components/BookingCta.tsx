@@ -14,13 +14,17 @@ const bookingLabels = {
 
 import { ENV } from '../lib/env';
 
-export default function BookingCta({ audience = 'homeowner', className = '' }: BookingCtaProps) {
+export default function BookingCta({
+  audience = 'homeowner',
+  className = '',
+}: BookingCtaProps) {
   const bookingUrl = ENV.BOOKING_URL || '';
-  const label = audience === 'commercial' 
-    ? bookingLabels.commercial 
-    : audience === 'public-sector' 
-    ? bookingLabels['public-sector'] 
-    : bookingLabels.homeowner;
+  const label =
+    audience === 'commercial'
+      ? bookingLabels.commercial
+      : audience === 'public-sector'
+        ? bookingLabels['public-sector']
+        : bookingLabels.homeowner;
 
   if (bookingUrl) {
     return (

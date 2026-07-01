@@ -2,15 +2,15 @@
 id: build-minutes-monorepo-fanout
 title: Build Minutes monorepo fanout
 status: active
-candidateKinds: ["build_minutes_fanout"]
-frameworks: ["*"]
-scannerPatterns: ["turbo-force-bypass"]
+candidateKinds: ['build_minutes_fanout']
+frameworks: ['*']
+scannerPatterns: ['turbo-force-bypass']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/monorepos",
-    "https://vercel.com/docs/builds",
-    "https://turborepo.dev/docs/crafting-your-repository/caching",
+    'https://vercel.com/docs/monorepos',
+    'https://vercel.com/docs/builds',
+    'https://turborepo.dev/docs/crafting-your-repository/caching',
   ]
 maxBriefChars: 900
 ---

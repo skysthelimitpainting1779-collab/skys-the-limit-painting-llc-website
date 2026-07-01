@@ -2,14 +2,14 @@
 id: sveltekit-isr-prerender-safety
 title: SvelteKit ISR and prerender safety
 status: active
-candidateKinds: ["uncached_route", "isr_overrevalidation"]
-frameworks: ["sveltekit@*"]
+candidateKinds: ['uncached_route', 'isr_overrevalidation']
+frameworks: ['sveltekit@*']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/frameworks/full-stack/sveltekit",
-    "https://svelte.dev/docs/kit/adapter-vercel",
-    "https://svelte.dev/docs/kit/page-options",
+    'https://vercel.com/docs/frameworks/full-stack/sveltekit',
+    'https://svelte.dev/docs/kit/adapter-vercel',
+    'https://svelte.dev/docs/kit/page-options',
   ]
 maxBriefChars: 850
 ---

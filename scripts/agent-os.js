@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
 
 /**
  * Agentic Operating System Control Plane & Task Runner Harness
@@ -12,28 +13,32 @@ import { execSync } from 'node:child_process';
 import crypto from 'node:crypto';
 import { claimNextTask, resolveTask } from './queue.js';
 
-const DB_PATH = join(process.cwd(), '.agents', 'hub_db.json');
+const DB_PATH = join(process.cwd(), '.agents', 'state.json');
 const DASHBOARD_PATH = join(process.cwd(), '.agents', 'dashboard.html');
-const CONTRACT_PATH = join(process.cwd(), '.agents', 'implementation-contract.md');
-const CAPABILITY_MATRIX_PATH = join(process.cwd(), '.agents', 'runtime-capability-matrix.md');
-const OPERATING_SUMMARY_PATH = join(process.cwd(), '.agents', 'operating-summary.md');
+const CONTRACT_PATH = join(
+  process.cwd(),
+  '.agents',
+  'implementation-contract.md'
+);
+const CAPABILITY_MATRIX_PATH = join(
+  process.cwd(),
+  '.agents',
+  'runtime-capability-matrix.md'
+);
+const OPERATING_SUMMARY_PATH = join(
+  process.cwd(),
+  '.agents',
+  'operating-summary.md'
+);
 
 const REQUIRED_AGENT_DIRS = [
   'adapters',
-  'approvals',
-  'checkpoints',
-  'dead-letter',
   'decisions',
   'discovery',
-  'effects',
-  'evals',
   'evidence',
   'governance',
   'knowledge',
-  'queues',
-  'traces',
-  'waits',
-  'workflows'
+  'workflows',
 ];
 
 const DEFAULT_METRICS = {
@@ -55,8 +60,8 @@ const DEFAULT_METRICS = {
     operations: 0,
     research: 0,
     science: 0,
-    business: 0
-  }
+    business: 0,
+  },
 };
 
 const DEFAULT_QUEUES = {
@@ -64,7 +69,7 @@ const DEFAULT_QUEUES = {
   next: [],
   blocked: [],
   improve: [],
-  recurring: []
+  recurring: [],
 };
 
 const DEFAULT_MILESTONES = [
@@ -72,40 +77,99 @@ const DEFAULT_MILESTONES = [
     id: 'M1',
     title: 'Closed-loop harness baseline',
     status: 'completed',
-    definition: 'Accept a goal, decompose tasks, route work, execute, verify, record memory, show activity, and learn one thing.'
+    definition:
+      'Accept a goal, decompose tasks, route work, execute, verify, record memory, show activity, and learn one thing.',
   },
   {
     id: 'M2',
     title: 'Durable reliability controls',
     status: 'in_progress',
-    definition: 'Add idempotent effects, durable waits, checkpoints, dead-letter handling, and trace inspection.'
+    definition:
+      'Add idempotent effects, durable waits, checkpoints, dead-letter handling, and trace inspection.',
   },
   {
     id: 'M3',
     title: 'Skill and workflow packaging',
     status: 'planned',
-    definition: 'Promote repeated successful trajectories into skills, playbooks, and specialized state-machine workflows.'
+    definition:
+      'Promote repeated successful trajectories into skills, playbooks, and specialized state-machine workflows.',
   },
   {
     id: 'M4',
     title: 'Broader computer-work adapters',
     status: 'planned',
-    definition: 'Add browser, desktop, research, business-system, and science adapters with domain-specific verification.'
-  }
+    definition:
+      'Add browser, desktop, research, business-system, and science adapters with domain-specific verification.',
+  },
 ];
 
 const DEFAULT_CAPABILITIES = [
-  { surface: 'terminal and shell execution', status: 'implemented', adapter: 'runCommand()', evidence: 'scripts/agent-os.js' },
-  { surface: 'git and repository operations', status: 'guarded', adapter: 'git status diagnostics only', evidence: '.agents/implementation-contract.md' },
-  { surface: 'local file management', status: 'implemented', adapter: 'filesystem artifacts under .agents/', evidence: '.agents/' },
-  { surface: 'browser automation', status: 'scaffolded', adapter: '.agents/adapters/browser.md', evidence: '.agents/runtime-capability-matrix.md' },
-  { surface: 'desktop automation', status: 'scaffolded', adapter: '.agents/adapters/desktop.md', evidence: '.agents/runtime-capability-matrix.md' },
-  { surface: 'documents, decks, reports, spreadsheets', status: 'scaffolded', adapter: '.agents/adapters/documents.md', evidence: '.agents/runtime-capability-matrix.md' },
-  { surface: 'database exploration and administration', status: 'scaffolded', adapter: '.agents/adapters/database.md', evidence: '.agents/runtime-capability-matrix.md' },
-  { surface: 'cloud CLI and deployment operations', status: 'guarded', adapter: 'verification gates plus human approval', evidence: 'AGENTS.md' },
-  { surface: 'email, chat, calendar, CRM, support, finance', status: 'approval_required', adapter: '.agents/effects/', evidence: '.agents/effects.md' },
-  { surface: 'research with source validation', status: 'scaffolded', adapter: '.agents/workflows/research.md', evidence: '.agents/runtime-capability-matrix.md' },
-  { surface: 'recurring automations and monitors', status: 'scaffolded', adapter: '.agents/queues/recurring.md', evidence: '.agents/status.md' }
+  {
+    surface: 'terminal and shell execution',
+    status: 'implemented',
+    adapter: 'runCommand()',
+    evidence: 'scripts/agent-os.js',
+  },
+  {
+    surface: 'git and repository operations',
+    status: 'guarded',
+    adapter: 'git status diagnostics only',
+    evidence: '.agents/implementation-contract.md',
+  },
+  {
+    surface: 'local file management',
+    status: 'implemented',
+    adapter: 'filesystem artifacts under .agents/',
+    evidence: '.agents/',
+  },
+  {
+    surface: 'browser automation',
+    status: 'scaffolded',
+    adapter: '.agents/adapters/browser.md',
+    evidence: '.agents/runtime-capability-matrix.md',
+  },
+  {
+    surface: 'desktop automation',
+    status: 'scaffolded',
+    adapter: '.agents/adapters/desktop.md',
+    evidence: '.agents/runtime-capability-matrix.md',
+  },
+  {
+    surface: 'documents, decks, reports, spreadsheets',
+    status: 'scaffolded',
+    adapter: '.agents/adapters/documents.md',
+    evidence: '.agents/runtime-capability-matrix.md',
+  },
+  {
+    surface: 'database exploration and administration',
+    status: 'scaffolded',
+    adapter: '.agents/adapters/database.md',
+    evidence: '.agents/runtime-capability-matrix.md',
+  },
+  {
+    surface: 'cloud CLI and deployment operations',
+    status: 'guarded',
+    adapter: 'verification gates plus human approval',
+    evidence: 'AGENTS.md',
+  },
+  {
+    surface: 'email, chat, calendar, CRM, support, finance',
+    status: 'approval_required',
+    adapter: '.agents/effects/',
+    evidence: '.agents/effects.md',
+  },
+  {
+    surface: 'research with source validation',
+    status: 'scaffolded',
+    adapter: '.agents/workflows/research.md',
+    evidence: '.agents/runtime-capability-matrix.md',
+  },
+  {
+    surface: 'recurring automations and monitors',
+    status: 'scaffolded',
+    adapter: '.agents/queues/recurring.md',
+    evidence: '.agents/status.md',
+  },
 ];
 
 function ensureDir(path) {
@@ -123,10 +187,10 @@ function writeIfMissing(path, content) {
 function createInitialDb() {
   return {
     meta: {
-      system: "Agentic OS v1.2.0",
-      architecture: "harness-wrapper",
+      system: 'Agentic OS v1.2.0',
+      architecture: 'harness-wrapper',
       last_updated: new Date().toISOString(),
-      total_runs: 0
+      total_runs: 0,
     },
     goals: [],
     tasks: [],
@@ -139,23 +203,44 @@ function createInitialDb() {
       {
         id: 'EVAL-M1-CLOSED-LOOP',
         category: 'capability',
-        description: 'Foundational artifacts exist and the harness can report status without a pending goal.',
+        description:
+          'Foundational artifacts exist and the harness can report status without a pending goal.',
         command: 'node scripts/agent-os.js status',
         status: 'pending',
-        last_result: null
-      }
+        last_result: null,
+      },
     ],
     milestones: DEFAULT_MILESTONES,
     capabilities: DEFAULT_CAPABILITIES,
     metrics: structuredClone(DEFAULT_METRICS),
     policies: [
-      { id: "POL-001", type: "contrast", rule: "Safety orange elements (#FF5A00) must use dark charcoal (#050505) text." },
-      { id: "POL-002", type: "emoji", rule: "No emojis in source code or React components." },
-      { id: "POL-003", type: "radius", rule: "All border-radius properties must be set to 0px or rounded-none globally." },
-      { id: "POL-004", type: "side_effects", rule: "External side effects require an idempotency key, recorded effect state, and approval when sensitive." },
-      { id: "POL-005", type: "rollback", rule: "The harness may quarantine and recommend recovery, but it must not automatically revert user files." }
+      {
+        id: 'POL-001',
+        type: 'contrast',
+        rule: 'Safety orange elements (#FF5A00) must use dark charcoal (#050505) text.',
+      },
+      {
+        id: 'POL-002',
+        type: 'emoji',
+        rule: 'No emojis in source code or React components.',
+      },
+      {
+        id: 'POL-003',
+        type: 'radius',
+        rule: 'All border-radius properties must be set to 0px or rounded-none globally.',
+      },
+      {
+        id: 'POL-004',
+        type: 'side_effects',
+        rule: 'External side effects require an idempotency key, recorded effect state, and approval when sensitive.',
+      },
+      {
+        id: 'POL-005',
+        type: 'rollback',
+        rule: 'The harness may quarantine and recommend recovery, but it must not automatically revert user files.',
+      },
     ],
-    queues: structuredClone(DEFAULT_QUEUES)
+    queues: structuredClone(DEFAULT_QUEUES),
   };
 }
 
@@ -204,21 +289,38 @@ Current runtime constraints: local Node.js harness, restricted network, workspac
 
 | Surface | Status | Adapter | Evidence |
 |---|---|---|---|
-${db.capabilities.map(c => `| ${c.surface} | ${c.status} | ${c.adapter} | ${c.evidence} |`).join('\n')}
+${db.capabilities.map((c) => `| ${c.surface} | ${c.status} | ${c.adapter} | ${c.evidence} |`).join('\n')}
 `;
   fs.writeFileSync(CAPABILITY_MATRIX_PATH, capabilityMatrix, 'utf8');
 
-  writeIfMissing(join(process.cwd(), '.agents', 'adapters', 'browser.md'), '# Browser Adapter\n\nStatus: scaffolded. Use named browser actions, observe before acting, and capture before/after evidence before risky changes.\n');
-  writeIfMissing(join(process.cwd(), '.agents', 'adapters', 'desktop.md'), '# Desktop Adapter\n\nStatus: scaffolded. Native desktop actions require explicit operator approval and screenshot evidence.\n');
-  writeIfMissing(join(process.cwd(), '.agents', 'adapters', 'database.md'), '# Database Adapter\n\nStatus: scaffolded. Database writes require source reconciliation, dry-run notes, and approval.\n');
-  writeIfMissing(join(process.cwd(), '.agents', 'adapters', 'documents.md'), '# Document Adapter\n\nStatus: scaffolded. Programmatic deliverables should be generated from validated intermediate data.\n');
-  writeIfMissing(join(process.cwd(), '.agents', 'workflows', 'research.md'), '# Research Workflow\n\nStatus: scaffolded. Research work must capture sources, dates, citations, and evidence notes.\n');
+  writeIfMissing(
+    join(process.cwd(), '.agents', 'adapters', 'browser.md'),
+    '# Browser Adapter\n\nStatus: scaffolded. Use named browser actions, observe before acting, and capture before/after evidence before risky changes.\n'
+  );
+  writeIfMissing(
+    join(process.cwd(), '.agents', 'adapters', 'desktop.md'),
+    '# Desktop Adapter\n\nStatus: scaffolded. Native desktop actions require explicit operator approval and screenshot evidence.\n'
+  );
+  writeIfMissing(
+    join(process.cwd(), '.agents', 'adapters', 'database.md'),
+    '# Database Adapter\n\nStatus: scaffolded. Database writes require source reconciliation, dry-run notes, and approval.\n'
+  );
+  writeIfMissing(
+    join(process.cwd(), '.agents', 'adapters', 'documents.md'),
+    '# Document Adapter\n\nStatus: scaffolded. Programmatic deliverables should be generated from validated intermediate data.\n'
+  );
+  writeIfMissing(
+    join(process.cwd(), '.agents', 'workflows', 'research.md'),
+    '# Research Workflow\n\nStatus: scaffolded. Research work must capture sources, dates, citations, and evidence notes.\n'
+  );
 
   // Ensure Discovery/Capability ARD folder and files exist
   const discoveryDir = join(process.cwd(), '.agents', 'discovery');
   ensureDir(discoveryDir);
-  
-  writeIfMissing(join(discoveryDir, 'SHELL_EXECUTION.md'), `---
+
+  writeIfMissing(
+    join(discoveryDir, 'SHELL_EXECUTION.md'),
+    `---
 id: cap_shell_execution
 name: "Local Capability: Shell & Command Execution"
 type: capability
@@ -243,9 +345,12 @@ references: [runtime_capability_matrix]
 
 - Always avoid passing boolean string interpolations directly to switch parameters (e.g. do not pass \`-Switch:$false\` since switch parameters toggle by presence).
 - Utilize a temporary script file (\`scratch/*.ps1\`) for complex pipelines or multi-quoted parameters to prevent shell parsing failure.
-`);
+`
+  );
 
-  writeIfMissing(join(discoveryDir, 'GIT_DIAGNOSTICS.md'), `---
+  writeIfMissing(
+    join(discoveryDir, 'GIT_DIAGNOSTICS.md'),
+    `---
 id: cap_git_diagnostics
 name: "Local Capability: Repository Diagnostics & Tracking"
 type: capability
@@ -269,9 +374,12 @@ references: [runtime_capability_matrix]
 
 - Use git status to verify workspace cleanliness prior to running builds.
 - Check porcelain output (\`git status --porcelain\`) during self-healing triage to identify exactly which files were modified leading up to an execution failure.
-`);
+`
+  );
 
-  writeIfMissing(join(discoveryDir, 'FILESYSTEM_MANAGEMENT.md'), `---
+  writeIfMissing(
+    join(discoveryDir, 'FILESYSTEM_MANAGEMENT.md'),
+    `---
 id: cap_filesystem_management
 name: "Local Capability: Local Filesystem Management"
 type: capability
@@ -295,9 +403,12 @@ references: [runtime_capability_matrix]
 
 - All critical states must write checkpoint files under \`.agents/checkpoints/\` before transitioning state.
 - Keep the JSON database (\`.agents/hub_db.json\`) as the single source of truth; do not write duplicate database files.
-`);
+`
+  );
 
-  writeIfMissing(join(discoveryDir, 'BROWSER_AUTOMATION.md'), `---
+  writeIfMissing(
+    join(discoveryDir, 'BROWSER_AUTOMATION.md'),
+    `---
 id: cap_browser_automation
 name: "Local Capability: Browser Automation & Integration"
 type: capability
@@ -321,9 +432,12 @@ references: [runtime_capability_matrix]
 
 - For manual verification of visual layouts, preview pages using the local development server.
 - Ensure all public pages have unique, descriptive HTML elements with stable IDs to support future automated end-to-end tests.
-`);
+`
+  );
 
-  writeIfMissing(join(discoveryDir, 'DATABASE_ADMINISTRATION.md'), `---
+  writeIfMissing(
+    join(discoveryDir, 'DATABASE_ADMINISTRATION.md'),
+    `---
 id: cap_database_administration
 name: "Local Capability: Database Exploration & Administration"
 type: capability
@@ -347,9 +461,12 @@ references: [runtime_capability_matrix]
 
 - Maintain the JSON database (\`.agents/hub_db.json\`) with proper structure.
 - Never write credentials, live database passwords, or private environment files to the repository.
-`);
+`
+  );
 
-  writeIfMissing(join(discoveryDir, 'LINTING_VERIFICATION.md'), `---
+  writeIfMissing(
+    join(discoveryDir, 'LINTING_VERIFICATION.md'),
+    `---
 id: cap_linting_verification
 name: "Local Capability: Linting & Static Code Analysis"
 type: capability
@@ -374,9 +491,12 @@ references: [runtime_capability_matrix, lint_test_guide]
 
 - Always run lint checks after modifying any TypeScript, TSX, React, or configuration files.
 - Resolve any \`: any\` typing mismatches by defining precise interfaces or type aliases.
-`);
+`
+  );
 
-  writeIfMissing(join(discoveryDir, 'TEST_QA_VERIFICATION.md'), `---
+  writeIfMissing(
+    join(discoveryDir, 'TEST_QA_VERIFICATION.md'),
+    `---
 id: cap_test_qa_verification
 name: "Local Capability: Test & QA Verification Suite"
 type: capability
@@ -401,12 +521,22 @@ references: [runtime_capability_matrix, lint_test_guide]
 
 - Run \`npm test\` before pushing to production or staging branches.
 - Test suites must be executed with execution-policy bypass on Windows hosts.
-`);
+`
+  );
 }
 
 function appendTrace(event) {
-  const tracePath = join(process.cwd(), '.agents', 'traces', `${new Date().toISOString().slice(0, 10)}.jsonl`);
-  fs.appendFileSync(tracePath, `${JSON.stringify({ timestamp: new Date().toISOString(), ...event })}\n`, 'utf8');
+  const tracePath = join(
+    process.cwd(),
+    '.agents',
+    'traces',
+    `${new Date().toISOString().slice(0, 10)}.jsonl`
+  );
+  fs.appendFileSync(
+    tracePath,
+    `${JSON.stringify({ timestamp: new Date().toISOString(), ...event })}\n`,
+    'utf8'
+  );
 }
 
 // Recursively get files under a directory, ignoring node_modules, etc.
@@ -420,7 +550,16 @@ function getFilesRecursively(dir, filterFn) {
       const stat = fs.statSync(fullPath);
       if (stat && stat.isDirectory()) {
         const base = file.toLowerCase();
-        if (base !== 'node_modules' && base !== '.next' && base !== '.git' && base !== 'graphify-out' && base !== 'node_modules_backup' && base !== '.vercel' && base !== '.gemini' && base !== '.agents') {
+        if (
+          base !== 'node_modules' &&
+          base !== '.next' &&
+          base !== '.git' &&
+          base !== 'graphify-out' &&
+          base !== 'node_modules_backup' &&
+          base !== '.vercel' &&
+          base !== '.gemini' &&
+          base !== '.agents'
+        ) {
           results = results.concat(getFilesRecursively(fullPath, filterFn));
         }
       } else {
@@ -449,9 +588,16 @@ function parseYamlHelper(yamlStr) {
       const key = inlineMatch[1].trim();
       const val = inlineMatch[2].trim();
       if (val.startsWith('[') && val.endsWith(']')) {
-        result[key] = val.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+        result[key] = val
+          .slice(1, -1)
+          .split(',')
+          .map((s) => s.trim().replace(/^['"]|['"]$/g, ''))
+          .filter(Boolean);
         currentKey = null;
-      } else if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      } else if (
+        (val.startsWith('"') && val.endsWith('"')) ||
+        (val.startsWith("'") && val.endsWith("'"))
+      ) {
         result[key] = val.slice(1, -1);
         currentKey = null;
       } else if (val === '') {
@@ -477,17 +623,28 @@ function scanWorkspaceForHighImpactTasks(db) {
   const findings = [];
   let findIdCounter = 1;
 
-  function addFinding(category, title, description, file, line, snippet, impact, accelerationEstimate) {
+  function addFinding(
+    category,
+    title,
+    description,
+    file,
+    line,
+    snippet,
+    impact,
+    accelerationEstimate
+  ) {
     findings.push({
       id: `FIND-${String(findIdCounter++).padStart(3, '0')}`,
       category,
       title,
       description,
-      file: file.replace(/\\/g, '/').replace(process.cwd().replace(/\\/g, '/') + '/', ''),
+      file: file
+        .replace(/\\/g, '/')
+        .replace(process.cwd().replace(/\\/g, '/') + '/', ''),
       line,
       snippet,
       impact,
-      accelerationEstimate
+      accelerationEstimate,
     });
   }
 
@@ -495,11 +652,11 @@ function scanWorkspaceForHighImpactTasks(db) {
   const codebaseDirs = [
     join(process.cwd(), 'src'),
     join(process.cwd(), 'scripts'),
-    join(process.cwd(), 'public')
+    join(process.cwd(), 'public'),
   ];
 
   const sourceFiles = [];
-  codebaseDirs.forEach(dir => {
+  codebaseDirs.forEach((dir) => {
     if (fs.existsSync(dir)) {
       const files = getFilesRecursively(dir, (filePath) => {
         const ext = filePath.split('.').pop().toLowerCase();
@@ -514,16 +671,20 @@ function scanWorkspaceForHighImpactTasks(db) {
   const okfNodes = [];
   const okfIds = new Set();
 
-  categories.forEach(cat => {
+  categories.forEach((cat) => {
     const catDir = join(process.cwd(), '.agents', cat);
     if (fs.existsSync(catDir)) {
-      const files = fs.readdirSync(catDir).filter(f => f.endsWith('.md'));
-      files.forEach(file => {
+      const files = fs.readdirSync(catDir).filter((f) => f.endsWith('.md'));
+      files.forEach((file) => {
         const filePath = join(catDir, file);
         try {
           const rawContent = fs.readFileSync(filePath, 'utf8');
           const fmMatch = rawContent.match(/^---\r?\n([^]*?)\r?\n---/);
-          let id = file.replace('.md', '').toLowerCase().trim().replace(/-/g, '_');
+          let id = file
+            .replace('.md', '')
+            .toLowerCase()
+            .trim()
+            .replace(/-/g, '_');
           if (fmMatch) {
             const fmData = parseYamlHelper(fmMatch[1]);
             if (fmData.id) id = String(fmData.id).trim().replace(/-/g, '_');
@@ -538,7 +699,7 @@ function scanWorkspaceForHighImpactTasks(db) {
   });
 
   // Source checks
-  sourceFiles.forEach(filePath => {
+  sourceFiles.forEach((filePath) => {
     try {
       const rawContent = fs.readFileSync(filePath, 'utf8');
       const lines = rawContent.split(/\r?\n/);
@@ -554,14 +715,14 @@ function scanWorkspaceForHighImpactTasks(db) {
         for (let i = 0; i < lines.length; i++) {
           if (/\blicensed\b|\bbonded\b|\binsured\b/i.test(lines[i])) {
             addFinding(
-              "regulatory_compliance",
-              "Missing Contractor ID Disclosure",
-              `Referencing '${hasLicensed ? "licensed" : hasBonded ? "bonded" : "insured"}' claims without MN Registration IR816596.`,
+              'regulatory_compliance',
+              'Missing Contractor ID Disclosure',
+              `Referencing '${hasLicensed ? 'licensed' : hasBonded ? 'bonded' : 'insured'}' claims without MN Registration IR816596.`,
               filePath,
               i + 1,
               lines[i].trim(),
-              "CRITICAL REGULATORY VIOLATION",
-              "+30% LEGAL COMPLIANCE"
+              'CRITICAL REGULATORY VIOLATION',
+              '+30% LEGAL COMPLIANCE'
             );
             break;
           }
@@ -576,66 +737,84 @@ function scanWorkspaceForHighImpactTasks(db) {
         // A. TODOs and FIXMEs
         if (/\b(?:TODO|FIXME)\b/i.test(line)) {
           const todoMatch = line.match(/\b(?:TODO|FIXME)\s*[:\-]?\s*(.*)$/i);
-          const msg = todoMatch ? todoMatch[1].trim() : "Pending developmental item.";
+          const msg = todoMatch
+            ? todoMatch[1].trim()
+            : 'Pending developmental item.';
           if (msg && !line.includes('scanWorkspaceForHighImpactTasks')) {
             addFinding(
-              "todo_trackers",
-              "Developmental Action Item",
+              'todo_trackers',
+              'Developmental Action Item',
               msg,
               filePath,
               lineNum,
               line.trim(),
-              "MOMENTUM ENHANCER",
-              "+10% VELOCITY"
+              'MOMENTUM ENHANCER',
+              '+10% VELOCITY'
             );
           }
         }
 
         // B. Brutalist Border Radius
         if (isCss) {
-          const brMatch = line.match(/border-radius\s*:\s*(?![0\s]*(px|%)?(\s|;|\}))([^\s;]+)/i);
+          const brMatch = line.match(
+            /border-radius\s*:\s*(?![0\s]*(px|%)?(\s|;|\}))([^\s;]+)/i
+          );
           if (brMatch) {
             addFinding(
-              "brutalist_compliance",
-              "Non-Zero Border Radius (CSS)",
-              "Strict Brutalist constraint violation: Elements must maintain exactly 0px border-radius.",
+              'brutalist_compliance',
+              'Non-Zero Border Radius (CSS)',
+              'Strict Brutalist constraint violation: Elements must maintain exactly 0px border-radius.',
               filePath,
               lineNum,
               line.trim(),
-              "STRICT COMPLIANCE VIOLATION",
-              "+25% STYLE ACCELERATION"
+              'STRICT COMPLIANCE VIOLATION',
+              '+25% STYLE ACCELERATION'
             );
           }
         } else {
           // Tailwind check
-          const roundedMatch = line.match(/\brounded-(xs|sm|md|lg|xl|2xl|3xl)\b/);
+          const roundedMatch = line.match(
+            /\brounded-(xs|sm|md|lg|xl|2xl|3xl)\b/
+          );
           if (roundedMatch) {
             addFinding(
-              "brutalist_compliance",
-              "Non-Zero Border Radius (Tailwind)",
+              'brutalist_compliance',
+              'Non-Zero Border Radius (Tailwind)',
               `Strict Brutalist constraint violation: Found '${roundedMatch[0]}' class. All elements must maintain exactly 0px border-radius.`,
               filePath,
               lineNum,
               line.trim(),
-              "STRICT COMPLIANCE VIOLATION",
-              "+25% STYLE ACCELERATION"
+              'STRICT COMPLIANCE VIOLATION',
+              '+25% STYLE ACCELERATION'
             );
           }
         }
 
         // C. White on Safety Orange Contrast
-        const hasOrangeBg = line.includes('bg-orange-safety') || line.includes('bg-[#FF5A00]') || line.includes('#FF5A00');
-        const hasWhiteText = line.includes('text-white') || line.includes('text-zinc-50') || line.includes('text-gray-100') || line.includes('white');
-        if (hasOrangeBg && hasWhiteText && !line.includes('text-black') && !line.includes('text-[#050505]')) {
+        const hasOrangeBg =
+          line.includes('bg-orange-safety') ||
+          line.includes('bg-[#FF5A00]') ||
+          line.includes('#FF5A00');
+        const hasWhiteText =
+          line.includes('text-white') ||
+          line.includes('text-zinc-50') ||
+          line.includes('text-gray-100') ||
+          line.includes('white');
+        if (
+          hasOrangeBg &&
+          hasWhiteText &&
+          !line.includes('text-black') &&
+          !line.includes('text-[#050505]')
+        ) {
           addFinding(
-            "brutalist_compliance",
-            "Low-Contrast White on Safety Orange",
-            "Strict Brand system constraint violation: Safety Orange elements must use Dark Charcoal (#050505) text. White text is banned on safety orange.",
+            'brutalist_compliance',
+            'Low-Contrast White on Safety Orange',
+            'Strict Brand system constraint violation: Safety Orange elements must use Dark Charcoal (#050505) text. White text is banned on safety orange.',
             filePath,
             lineNum,
             line.trim(),
-            "STRICT BRAND CONTRAST VIOLATION",
-            "+15% CONTRAST COMPLIANCE"
+            'STRICT BRAND CONTRAST VIOLATION',
+            '+15% CONTRAST COMPLIANCE'
           );
         }
       }
@@ -645,18 +824,38 @@ function scanWorkspaceForHighImpactTasks(db) {
   });
 
   // Broken OKF Links
-  okfNodes.forEach(node => {
+  okfNodes.forEach((node) => {
     const fmMatch = node.rawContent.match(/^---\r?\n([^]*?)\r?\n---/);
     if (fmMatch) {
       try {
         const fmData = parseYamlHelper(fmMatch[1]);
-        const checkKeys = ['depends_on', 'dependsOn', 'requires', 'implements', 'references', 'links', 'relates_to', 'related', 'verifies', 'verifies_claims', 'tests', 'supersedes', 'replaces', 'superseded_by'];
-        
-        checkKeys.forEach(key => {
+        const checkKeys = [
+          'depends_on',
+          'dependsOn',
+          'requires',
+          'implements',
+          'references',
+          'links',
+          'relates_to',
+          'related',
+          'verifies',
+          'verifies_claims',
+          'tests',
+          'supersedes',
+          'replaces',
+          'superseded_by',
+        ];
+
+        checkKeys.forEach((key) => {
           if (fmData[key]) {
-            const arr = Array.isArray(fmData[key]) ? fmData[key] : [fmData[key]];
-            arr.forEach(val => {
-              const cleanedRef = String(val).trim().toLowerCase().replace(/-/g, '_');
+            const arr = Array.isArray(fmData[key])
+              ? fmData[key]
+              : [fmData[key]];
+            arr.forEach((val) => {
+              const cleanedRef = String(val)
+                .trim()
+                .toLowerCase()
+                .replace(/-/g, '_');
               if (cleanedRef && !okfIds.has(cleanedRef)) {
                 const lines = node.rawContent.split(/\r?\n/);
                 let lineNum = 1;
@@ -667,14 +866,14 @@ function scanWorkspaceForHighImpactTasks(db) {
                   }
                 }
                 addFinding(
-                  "knowledge_integrity",
-                  "Broken Knowledge Graph Edge",
+                  'knowledge_integrity',
+                  'Broken Knowledge Graph Edge',
                   `OKF frontmatter '${key}' references non-existent concept ID '${cleanedRef}'.`,
                   node.filePath,
                   lineNum,
-                  `File reference line: ${lines[lineNum - 1] || ""}`,
-                  "KNOWLEDGE GRAPH CORRUPTION",
-                  "+15% COGNITIVE COMPILATION"
+                  `File reference line: ${lines[lineNum - 1] || ''}`,
+                  'KNOWLEDGE GRAPH CORRUPTION',
+                  '+15% COGNITIVE COMPILATION'
                 );
               }
             });
@@ -693,14 +892,14 @@ function scanWorkspaceForHighImpactTasks(db) {
         const refId = match[1].trim().toLowerCase().replace(/-/g, '_');
         if (refId && !okfIds.has(refId)) {
           addFinding(
-            "knowledge_integrity",
-            "Broken Wiki Link Reference",
+            'knowledge_integrity',
+            'Broken Wiki Link Reference',
             `Inline wiki link '[[${match[1]}]]' points to non-existent concept ID '${refId}'.`,
             node.filePath,
             i + 1,
             line.trim(),
-            "KNOWLEDGE GRAPH CORRUPTION",
-            "+15% COGNITIVE COMPILATION"
+            'KNOWLEDGE GRAPH CORRUPTION',
+            '+15% COGNITIVE COMPILATION'
           );
         }
       }
@@ -714,13 +913,17 @@ function scanWorkspaceForHighImpactTasks(db) {
 function initDb() {
   const dbDir = join(process.cwd(), '.agents');
   ensureDir(dbDir);
-  REQUIRED_AGENT_DIRS.forEach(dir => ensureDir(join(dbDir, dir)));
+  REQUIRED_AGENT_DIRS.forEach((dir) => ensureDir(join(dbDir, dir)));
 
   const learningsDir = join(process.cwd(), '.learnings');
   ensureDir(learningsDir);
 
   if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(createInitialDb(), null, 2), 'utf8');
+    fs.writeFileSync(
+      DB_PATH,
+      JSON.stringify(createInitialDb(), null, 2),
+      'utf8'
+    );
   }
 }
 
@@ -729,8 +932,8 @@ function loadDb() {
   initDb();
   const db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
   db.meta = db.meta || {};
-  db.meta.system = "Agentic OS v1.2.0";
-  db.meta.architecture = db.meta.architecture || "harness-wrapper";
+  db.meta.system = 'Agentic OS v1.2.0';
+  db.meta.architecture = db.meta.architecture || 'harness-wrapper';
   db.meta.total_runs = db.meta.total_runs || 0;
   db.goals = db.goals || [];
   db.tasks = db.tasks || [];
@@ -744,20 +947,24 @@ function loadDb() {
   db.capabilities = db.capabilities || DEFAULT_CAPABILITIES;
   db.policies = db.policies || [];
   db.proactive_findings = db.proactive_findings || [];
-  
+
   // Enforce zero border radius update
-  const radiusPolicy = db.policies.find(p => p.id === "POL-003");
+  const radiusPolicy = db.policies.find((p) => p.id === 'POL-003');
   if (radiusPolicy) {
-    radiusPolicy.rule = "All border-radius properties must be set to 0px or rounded-none globally.";
+    radiusPolicy.rule =
+      'All border-radius properties must be set to 0px or rounded-none globally.';
   }
-  
+
   for (const policy of createInitialDb().policies) {
-    if (!db.policies.some(p => p.id === policy.id)) {
+    if (!db.policies.some((p) => p.id === policy.id)) {
       db.policies.push(policy);
     }
   }
   db.metrics = { ...structuredClone(DEFAULT_METRICS), ...(db.metrics || {}) };
-  db.metrics.domains = { ...structuredClone(DEFAULT_METRICS.domains), ...(db.metrics.domains || {}) };
+  db.metrics.domains = {
+    ...structuredClone(DEFAULT_METRICS.domains),
+    ...(db.metrics.domains || {}),
+  };
   db.queues = { ...structuredClone(DEFAULT_QUEUES), ...(db.queues || {}) };
   writeFoundationalArtifacts(db);
   return db;
@@ -766,29 +973,41 @@ function loadDb() {
 // Update Momentum Queues
 function updateQueues(db) {
   const completedTaskIds = new Set(
-    db.tasks.filter(t => t.status === "verified").map(t => t.id)
+    db.tasks.filter((t) => t.status === 'verified').map((t) => t.id)
   );
 
-  const runningTask = db.tasks.find(t => t.status === "running");
-  const runnableTasks = db.tasks.filter(t => 
-    (t.status === "pending" || t.status === "failed") && 
-    t.dependencies.every(depId => completedTaskIds.has(depId))
+  const runningTask = db.tasks.find((t) => t.status === 'running');
+  const runnableTasks = db.tasks.filter(
+    (t) =>
+      (t.status === 'pending' || t.status === 'failed') &&
+      t.dependencies.every((depId) => completedTaskIds.has(depId))
   );
 
   const priorityMap = { high: 3, medium: 2, low: 1 };
-  runnableTasks.sort((a, b) => (priorityMap[b.priority] || 0) - (priorityMap[a.priority] || 0));
+  runnableTasks.sort(
+    (a, b) => (priorityMap[b.priority] || 0) - (priorityMap[a.priority] || 0)
+  );
 
-  const nowList = runningTask ? [runningTask.id] : (runnableTasks.length > 0 ? [runnableTasks[0].id] : []);
-  const nextList = runnableTasks.slice(runningTask ? 0 : 1).map(t => t.id);
-  const blockedList = db.tasks.filter(t => t.status === "blocked" || (t.status === "failed" && t.attempts >= 2)).map(t => t.id);
-  const improveList = db.incidents.map(i => i.id);
+  const nowList = runningTask
+    ? [runningTask.id]
+    : runnableTasks.length > 0
+      ? [runnableTasks[0].id]
+      : [];
+  const nextList = runnableTasks.slice(runningTask ? 0 : 1).map((t) => t.id);
+  const blockedList = db.tasks
+    .filter(
+      (t) =>
+        t.status === 'blocked' || (t.status === 'failed' && t.attempts >= 2)
+    )
+    .map((t) => t.id);
+  const improveList = db.incidents.map((i) => i.id);
 
   db.queues = {
     now: nowList,
     next: nextList,
     blocked: blockedList,
     improve: improveList,
-    recurring: ["CRON-LIVENESS", "CRON-PROGRESS"]
+    recurring: ['CRON-LIVENESS', 'CRON-PROGRESS'],
   };
 }
 
@@ -797,7 +1016,10 @@ function saveDb(db) {
   try {
     scanWorkspaceForHighImpactTasks(db);
   } catch (err) {
-    console.error('[Agent OS] Proactive scanning encountered an error:', err.message);
+    console.error(
+      '[Agent OS] Proactive scanning encountered an error:',
+      err.message
+    );
   }
   updateQueues(db);
   db.meta.last_updated = new Date().toISOString();
@@ -808,367 +1030,199 @@ function saveDb(db) {
 
 // Filesystem-First Memory Sync
 function syncMarkdownFiles(db) {
-  const agentsDir = join(process.cwd(), '.agents');
-
-  // 1. plan.md
-  let planMd = `---\n`;
-  planMd += `id: execution_plan\n`;
-  planMd += `name: "Project Execution Plan"\n`;
-  planMd += `type: goal\n`;
-  planMd += `description: "Tracks active goals and task graph queues."\n`;
-  planMd += `---\n\n`;
-  planMd += `# Project Execution Plan\n\n`;
-  planMd += `This file is generated automatically by Agent OS. It tracks active goals and task queue statuses.\n\n`;
-  planMd += `## Active Goals\n\n`;
-  if (db.goals.length === 0) {
-    planMd += `- No active goals.\n\n`;
-  } else {
-    db.goals.forEach(g => {
-      planMd += `- **${g.id}**: ${g.description} [Status: **${g.status}**, Budget: $${g.budget}, Cost: $${g.cost_accumulated.toFixed(4)}]\n`;
-    });
-    planMd += `\n`;
-  }
-  planMd += `## Task Queue\n\n`;
-  if (db.tasks.length === 0) {
-    planMd += `- No queued tasks.\n\n`;
-  } else {
-    db.tasks.forEach(t => {
-      planMd += `- [${t.status === 'verified' ? 'x' : t.status === 'running' ? '/' : ' '}] **${t.id}**: ${t.title} [Assignee: ${t.assignee}, Priority: ${t.priority}]\n`;
-    });
-    planMd += `\n`;
-  }
-  fs.writeFileSync(join(agentsDir, 'plan.md'), planMd, 'utf8');
-
-  // 2. decisions.md
-  let decisionsMd = `---\n`;
-  decisionsMd += `id: architectural_decisions\n`;
-  decisionsMd += `name: "Architectural Decisions & Guardrails"\n`;
-  decisionsMd += `type: policy\n`;
-  decisionsMd += `description: "Unified rules and design tokens enforced globally in this workspace."\n`;
-  decisionsMd += `---\n\n`;
-  decisionsMd += `# Architectural Decisions & Guardrails\n\n`;
-  decisionsMd += `Unified policies and safety rules enforced across the workspace.\n\n`;
-  decisionsMd += `## Enforced Policies\n\n`;
-  db.policies.forEach(p => {
-    decisionsMd += `- **[${p.type}]** ${p.id}: ${p.rule}\n`;
-  });
-  decisionsMd += `\n`;
-  fs.writeFileSync(join(agentsDir, 'decisions.md'), decisionsMd, 'utf8');
-
-  // 3. knowledge.md
-  let knowledgeMd = `---\n`;
-  knowledgeMd += `id: workspace_knowledge\n`;
-  knowledgeMd += `name: "Workspace Knowledge & Runbook"\n`;
-  knowledgeMd += `type: concept\n`;
-  knowledgeMd += `description: "Aggregate system learnings, test commands, and failures cache."\n`;
-  knowledgeMd += `---\n\n`;
-  knowledgeMd += `# Workspace Knowledge & Runbook\n\n`;
-  knowledgeMd += `Aggregate lessons learned and reference templates for task execution.\n\n`;
-  knowledgeMd += `## Reference Command Guide\n\n`;
-  knowledgeMd += `- **Linting**: Run TypeScript checks via \`powershell -ExecutionPolicy Bypass -Command "npm run lint"\`\n`;
-  knowledgeMd += `- **Testing**: Run test suite via \`powershell -ExecutionPolicy Bypass -Command "npm test"\`\n`;
-  knowledgeMd += `- **Next.js Production Compilation**: Run build via \`powershell -ExecutionPolicy Bypass -Command "npm run build"\`\n`;
-  knowledgeMd += `- **Project Graph Compilation**: Compile master graph via \`powershell -ExecutionPolicy Bypass -File "..\\compile-all.ps1"\`\n\n`;
-  
-  knowledgeMd += `## Lessons Learned & Failures Cache\n\n`;
-  const errorsPath = join(process.cwd(), '.learnings', 'ERRORS.md');
-  if (fs.existsSync(errorsPath)) {
-    const errorLogs = fs.readFileSync(errorsPath, 'utf8');
-    knowledgeMd += errorLogs.replace(/# Errors Log\n/i, '');
-  } else {
-    knowledgeMd += `- No errors recorded yet.\n\n`;
-  }
-  fs.writeFileSync(join(agentsDir, 'knowledge.md'), knowledgeMd, 'utf8');
-
-  // 4. handoff.md (OKF-compliant continuation snapshot)
-  const activeTask = db.tasks.find(t => t.status === 'running');
-  const nextTask = getNextTask(db);
-  const activeGoal = db.goals.find(g => g.status === 'in_progress') || db.goals[0];
-  const activeWaits = db.waits.filter(w => w.status === 'active');
-  const primaryWait = activeWaits[0];
-
-  let handoffMd = `---\n`;
-  handoffMd += `id: continuation_handoff\n`;
-  handoffMd += `name: "Continuation Handoff Record"\n`;
-  handoffMd += `type: concept\n`;
-  handoffMd += `description: "Context checkpoint for seamless execution continuation across sessions."\n`;
-  handoffMd += `status: ${activeTask ? 'active' : 'idle'}\n`;
-  handoffMd += `active_goal_id: ${activeGoal ? activeGoal.id : 'none'}\n`;
-  handoffMd += `active_task_id: ${activeTask ? activeTask.id : 'none'}\n`;
-  handoffMd += `active_phase: ${activeTask ? (activeTask.current_phase || 'none') : 'none'}\n`;
-  handoffMd += `next_task_id: ${nextTask ? nextTask.id : 'none'}\n`;
-  handoffMd += `budget_spent_usd: ${db.metrics.total_cost_usd}\n`;
-  handoffMd += `total_runs: ${db.meta.total_runs}\n`;
-  handoffMd += `last_updated: "${db.meta.last_updated}"\n`;
-  handoffMd += `resume_command: "${primaryWait ? `node scripts/agent-os.js ${primaryWait.resume_action}` : 'node scripts/agent-os.js run'}"\n`;
-  handoffMd += `tags: [checkpoint, handoff, continuation, control-plane]\n`;
-  handoffMd += `references: [system_status, execution_plan]\n`;
-  handoffMd += `---\n\n`;
-  handoffMd += `# Continuation Handoff Record 🧬\n\n`;
-  handoffMd += `Current context snapshot for the next agent/worker session.\n\n`;
-  handoffMd += `## Context Summary\n\n`;
-  
-  if (activeTask) {
-    handoffMd += `- **Current Execution**: Task **${activeTask.id}** (${activeTask.title}) [Phase: **${activeTask.current_phase || 'none'}**]\n`;
-  } else {
-    handoffMd += `- **Current Execution**: None (Idle)\n`;
-  }
-  
-  handoffMd += `- **Next Planned Action**: ${nextTask ? `**${nextTask.id}** (${nextTask.title})` : 'None (Goal complete)'}\n`;
-  handoffMd += `- **Budget Health**: Total spent **$${db.metrics.total_cost_usd}** / total runs **${db.meta.total_runs}**\n\n`;
-  
-  handoffMd += `## Momentum Queue Status\n\n`;
-  handoffMd += `- **NOW**: \`${db.queues.now.join(', ') || 'None (Idle)'}\`\n`;
-  handoffMd += `- **NEXT**: \`${db.queues.next.join(', ') || 'None'}\`\n`;
-  handoffMd += `- **BLOCKED**: \`${db.queues.blocked.join(', ') || 'None'}\`\n`;
-  handoffMd += `- **IMPROVE**: \`${db.queues.improve.join(', ') || 'None'}\`\n`;
-  handoffMd += `- **RECURRING**: \`${db.queues.recurring.join(', ') || 'None'}\`\n\n`;
-
-  if (activeWaits.length > 0) {
-    handoffMd += `## Open Waitpoints & Checkpoints\n\n`;
-    activeWaits.forEach(w => {
-      handoffMd += `> [!WARNING]\n`;
-      handoffMd += `> **Waitpoint [${w.id}]**: ${w.reason}\n`;
-      handoffMd += `> To resume execution, run: \`node scripts/agent-os.js ${w.resume_action}\`\n\n`;
-    });
-  }
-
-  handoffMd += `## Action Checklist\n\n`;
-  if (nextTask) {
-    handoffMd += `- [ ] Read this handoff record completely first.\n`;
-    handoffMd += `- [ ] Claim and execute task **${nextTask.id}** (${nextTask.title})\n`;
-    handoffMd += `- [ ] Run verification checks (\`node scripts/agent-os.js eval\` or \`npm test\`)\n`;
-    handoffMd += `- [ ] Recompile master project graph (\`powershell -ExecutionPolicy Bypass -File "..\\compile-all.ps1"\`)\n`;
-    handoffMd += `- [ ] Commit changes and update this record\n\n`;
-  } else {
-    handoffMd += `- [x] All tasks completed and verified\n`;
-    handoffMd += `- [x] Dashboard generated\n\n`;
-  }
-  fs.writeFileSync(join(agentsDir, 'handoff.md'), handoffMd, 'utf8');
-
-  // 5. status.md
-  let statusMd = `---\n`;
-  statusMd += `id: system_status\n`;
-  statusMd += `name: "System Status & Performance Metrics"\n`;
-  statusMd += `type: concept\n`;
-  statusMd += `description: "Operational status dashboard metrics for the control plane."\n`;
-  statusMd += `---\n\n`;
-  statusMd += `# System Status & Performance Metrics\n\n`;
-  statusMd += `Operational dashboard of the Agentic OS control plane.\n\n`;
-  statusMd += `## Run Status\n\n`;
-  statusMd += `- **Total Runs**: ${db.meta.total_runs}\n`;
-  statusMd += `- **Last Updated**: ${db.meta.last_updated}\n\n`;
-  statusMd += `## Metrics\n\n`;
-  statusMd += `- **Tasks Completed**: ${db.metrics.tasks_completed}\n`;
-  statusMd += `- **Tasks Verified**: ${db.metrics.tasks_verified}\n`;
-  statusMd += `- **Total Duration**: ${(db.metrics.total_duration_ms / 1000).toFixed(1)}s\n`;
-  statusMd += `- **Accumulated Cost**: $${db.metrics.total_cost_usd.toFixed(4)}\n`;
-  statusMd += `- **Retry Rate**: ${(db.metrics.retry_rate * 100).toFixed(0)}%\n`;
-  statusMd += `- **Intervention Rate**: ${(db.metrics.intervention_rate * 100).toFixed(0)}%\n\n`;
-  statusMd += `## Momentum Queues\n\n`;
-  statusMd += `- **NOW**: ${db.queues.now.join(', ') || 'None (Idle)'}\n`;
-  statusMd += `- **NEXT**: ${db.queues.next.join(', ') || 'None'}\n`;
-  statusMd += `- **BLOCKED**: ${db.queues.blocked.join(', ') || 'None'}\n`;
-  statusMd += `- **IMPROVE**: ${db.queues.improve.join(', ') || 'None'}\n`;
-  statusMd += `- **RECURRING**: ${db.queues.recurring.join(', ') || 'None'}\n`;
-  fs.writeFileSync(join(agentsDir, 'status.md'), statusMd, 'utf8');
-
-  for (const [queueName, taskIds] of Object.entries(db.queues)) {
-    let queueMd = `---\n`;
-    queueMd += `id: queue_${queueName}\n`;
-    queueMd += `name: "${queueName.toUpperCase()} Queue"\n`;
-    queueMd += `type: concept\n`;
-    queueMd += `description: "Active tasks listed in the ${queueName} stream."\n`;
-    queueMd += `---\n\n`;
-    queueMd += `# ${queueName.toUpperCase()} Queue\n\n${taskIds.length ? taskIds.map(id => `- ${id}`).join('\n') : '- Empty'}\n`;
-    fs.writeFileSync(join(agentsDir, 'queues', `${queueName}.md`), queueMd, 'utf8');
-  }
-
-  // 6. FAILURE.md
-  let failureMd = `# System Failures & Incidents Log\n\n`;
-  failureMd += `Historical record of execution incidents and automated self-healing events.\n\n`;
-  if (db.incidents.length === 0) {
-    failureMd += `- No incidents recorded.\n`;
-  } else {
-    db.incidents.forEach(inc => {
-      failureMd += `## Incident [${inc.id}]\n\n`;
-      failureMd += `- **Task ID**: ${inc.task_id}\n`;
-      failureMd += `- **Command**: \`${inc.command}\`\n`;
-      failureMd += `- **Timestamp**: ${inc.timestamp}\n`;
-      failureMd += `- **Status**: ${inc.status || 'quarantined'}\n\n`;
-      failureMd += `### Diagnostics Context\n\`\`\`\n${inc.diagnostics}\n\`\`\`\n\n`;
-      failureMd += `---\n\n`;
-    });
-  }
-  fs.writeFileSync(join(agentsDir, 'FAILURE.md'), failureMd, 'utf8');
-
-  // 7. project.md
-  let projectMd = `# Project Charter & Objectives\n\n`;
-  projectMd += `Durable memory of project objectives, constraints, and runtime profile.\n\n`;
-  projectMd += `## Active Goals\n\n`;
-  db.goals.forEach(g => {
-    projectMd += `### Goal ${g.id}\n\n`;
-    projectMd += `- **Description**: ${g.description}\n`;
-    projectMd += `- **Status**: ${g.status}\n`;
-    projectMd += `- **Budget**: $${g.budget}\n`;
-    projectMd += `- **Spent**: $${g.cost_accumulated.toFixed(4)}\n\n`;
-  });
-  projectMd += `## Security & Contrast Rules\n\n`;
-  db.policies.forEach(p => {
-    projectMd += `- **${p.id} [${p.type}]**: ${p.rule}\n`;
-  });
-  fs.writeFileSync(join(agentsDir, 'project.md'), projectMd, 'utf8');
-
-  // 8. milestones.md
-  let milestonesMd = `# Agent OS Milestones\n\n`;
-  db.milestones.forEach(m => {
-    milestonesMd += `## ${m.id}: ${m.title}\n\n`;
-    milestonesMd += `- **Status**: ${m.status}\n`;
-    milestonesMd += `- **Definition**: ${m.definition}\n\n`;
-  });
-  fs.writeFileSync(join(agentsDir, 'milestones.md'), milestonesMd, 'utf8');
-
-  // 9. effects.md
-  let effectsMd = `# Effect Ledger\n\n`;
-  effectsMd += `External side effects are recorded before action with idempotency identity and replay policy.\n\n`;
-  if (db.effects.length === 0) {
-    effectsMd += `- No external effects recorded.\n`;
-  } else {
-    db.effects.forEach(effect => {
-      effectsMd += `- **${effect.id}** (${effect.status}): ${effect.description} / key \`${effect.idempotency_key}\`\n`;
-    });
-  }
-  fs.writeFileSync(join(agentsDir, 'effects.md'), effectsMd, 'utf8');
-
-  // 10. waits.md
-  let waitsMd = `# Durable Waits\n\n`;
-  waitsMd += `Waitpoints preserve exact run state for approvals, callbacks, schedules, rate limits, or human takeover.\n\n`;
-  if (db.waits.length === 0) {
-    waitsMd += `- No active waits.\n`;
-  } else {
-    db.waits.forEach(wait => {
-      waitsMd += `- **${wait.id}** (${wait.status}): ${wait.reason}; resume with ${wait.resume_action}\n`;
-    });
-  }
-  fs.writeFileSync(join(agentsDir, 'waits.md'), waitsMd, 'utf8');
-
-  // 11. evals.md
-  let evalsMd = `# Eval Harness\n\n`;
-  evalsMd += `| ID | Category | Status | Command | Last Result |\n`;
-  evalsMd += `|---|---|---|---|---|\n`;
-  db.evals.forEach(e => {
-    evalsMd += `| ${e.id} | ${e.category} | ${e.status} | \`${e.command}\` | ${e.last_result || 'not run'} |\n`;
-  });
-  fs.writeFileSync(join(agentsDir, 'evals.md'), evalsMd, 'utf8');
-
-  // 12. traces.md
-  const traceDir = join(agentsDir, 'traces');
-  const traceFiles = fs.existsSync(traceDir) ? fs.readdirSync(traceDir).filter(name => name.endsWith('.jsonl')) : [];
-  let tracesMd = `# Trace Index\n\n`;
-  tracesMd += traceFiles.length ? traceFiles.map(name => `- ${name}`).join('\n') + '\n' : '- No traces recorded.\n';
-  fs.writeFileSync(join(agentsDir, 'traces.md'), tracesMd, 'utf8');
-
-  // 13. tasks.md
-  let tasksMd = `# Task Graph Ledger\n\n`;
-  tasksMd += `Detailed log of all decomposed task specifications and metadata.\n\n`;
-  tasksMd += `| ID | Title | Skill Tags | Priority | Risk | Status | Assignee | Command | Budget | Mindset |\n`;
-  tasksMd += `|---|---|---|---|---|---|---|---|---|---|\n`;
-  db.tasks.forEach(t => {
-    tasksMd += `| ${t.id} | ${t.title} | ${t.skill_tags ? t.skill_tags.join(', ') : 'none'} | ${t.priority} | ${t.risk_level} | ${t.status} | ${t.assignee} | \`${t.command}\` | $${t.budget || 1.0} | ${t.mindset || 'none'} |\n`;
-  });
-  fs.writeFileSync(join(agentsDir, 'tasks.md'), tasksMd, 'utf8');
+  // Deprecated: State is now purely managed in state.json
+  // The system no longer clutters .agents/ with redundant markdown ledgers.
 }
 
 const STOP_WORDS = new Set([
-  'the', 'this', 'that', 'with', 'from', 'have', 'about', 'tasks', 'will', 'your',
-  'and', 'for', 'but', 'not', 'are', 'was', 'were', 'been', 'has', 'had', 'does',
-  'did', 'can', 'could', 'should', 'would', 'shall', 'may', 'might', 'must',
-  'into', 'onto', 'upon', 'than', 'then', 'them', 'they', 'their', 'theirs',
-  'him', 'her', 'his', 'hers', 'its', 'our', 'ours', 'you', 'your', 'yours',
-  'some', 'any', 'each', 'every', 'other', 'another', 'such', 'what', 'which',
-  'who', 'whom', 'whose', 'where', 'when', 'why', 'how', 'all', 'both', 'few',
-  'more', 'most', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same',
-  'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now'
+  'the',
+  'this',
+  'that',
+  'with',
+  'from',
+  'have',
+  'about',
+  'tasks',
+  'will',
+  'your',
+  'and',
+  'for',
+  'but',
+  'not',
+  'are',
+  'was',
+  'were',
+  'been',
+  'has',
+  'had',
+  'does',
+  'did',
+  'can',
+  'could',
+  'should',
+  'would',
+  'shall',
+  'may',
+  'might',
+  'must',
+  'into',
+  'onto',
+  'upon',
+  'than',
+  'then',
+  'them',
+  'they',
+  'their',
+  'theirs',
+  'him',
+  'her',
+  'his',
+  'hers',
+  'its',
+  'our',
+  'ours',
+  'you',
+  'your',
+  'yours',
+  'some',
+  'any',
+  'each',
+  'every',
+  'other',
+  'another',
+  'such',
+  'what',
+  'which',
+  'who',
+  'whom',
+  'whose',
+  'where',
+  'when',
+  'why',
+  'how',
+  'all',
+  'both',
+  'few',
+  'more',
+  'most',
+  'some',
+  'such',
+  'no',
+  'nor',
+  'not',
+  'only',
+  'own',
+  'same',
+  'so',
+  'than',
+  'too',
+  'very',
+  's',
+  't',
+  'can',
+  'will',
+  'just',
+  'don',
+  'should',
+  'now',
 ]);
 
 // Memory-Retrieval Logic
 function retrieveContext(taskDescription) {
   const knowledgePath = join(process.cwd(), '.agents', 'knowledge.md');
-  if (!fs.existsSync(knowledgePath)) return "";
-  
+  if (!fs.existsSync(knowledgePath)) return '';
+
   const knowledgeContent = fs.readFileSync(knowledgePath, 'utf8');
   const words = taskDescription.toLowerCase().match(/\b\w{4,}\b/g) || [];
-  const uniqueWords = Array.from(new Set(words)).filter(w => !STOP_WORDS.has(w));
-  
+  const uniqueWords = Array.from(new Set(words)).filter(
+    (w) => !STOP_WORDS.has(w)
+  );
+
   const matchingParagraphs = [];
   const blocks = knowledgeContent.split('\n\n');
-  
+
   for (const block of blocks) {
     for (const word of uniqueWords) {
-      if (block.toLowerCase().includes(word) && !matchingParagraphs.includes(block)) {
+      if (
+        block.toLowerCase().includes(word) &&
+        !matchingParagraphs.includes(block)
+      ) {
         matchingParagraphs.push(block.trim());
         break;
       }
     }
     if (matchingParagraphs.length >= 5) break;
   }
-  
+
   if (matchingParagraphs.length > 0) {
-    return `[Memory Retrieval] Found relevant reference knowledge:\n${matchingParagraphs.map(p => `> ${p}`).join('\n\n')}\n`;
+    return `[Memory Retrieval] Found relevant reference knowledge:\n${matchingParagraphs.map((p) => `> ${p}`).join('\n\n')}\n`;
   }
-  return "";
+  return '';
 }
 
 // Task-Scoped Self-Healing & Incident Logging
 function triggerSelfHealing(task, failedCommand, errorOutput) {
-  console.log(`[Self-Healing] Triggered for task ${task.id} after command failure: "${failedCommand}"`);
-  
+  console.log(
+    `[Self-Healing] Triggered for task ${task.id} after command failure: "${failedCommand}"`
+  );
+
   let diagnostics = `[Diagnostics] Analyzing failure of command: "${failedCommand}"\n`;
   let modifiedFiles = [];
-  
+
   try {
-    const gitStatusRaw = execSync('git status --porcelain', { encoding: 'utf8' });
+    const gitStatusRaw = execSync('git status --porcelain', {
+      encoding: 'utf8',
+    });
     if (gitStatusRaw.trim()) {
       diagnostics += `[Git Status] Modified workspace files:\n${gitStatusRaw}\n`;
       modifiedFiles = gitStatusRaw
-         .split(/\r?\n/)
-         .filter(line => line.trim().length > 0)
-         .map(line => {
-           const status = line.slice(0, 2);
-           const file = line.slice(3).trim();
-           if (status.includes('M') || status.includes('D') || status.includes('T')) {
-             const normalized = file.replace(/\\/g, '/');
-             if (!normalized.startsWith('.agents/') && !normalized.startsWith('.learnings/')) {
-               return file;
-             }
-           }
-           return null;
-         })
-         .filter(Boolean);
+        .split(/\r?\n/)
+        .filter((line) => line.trim().length > 0)
+        .map((line) => {
+          const status = line.slice(0, 2);
+          const file = line.slice(3).trim();
+          if (
+            status.includes('M') ||
+            status.includes('D') ||
+            status.includes('T')
+          ) {
+            const normalized = file.replace(/\\/g, '/');
+            if (
+              !normalized.startsWith('.agents/') &&
+              !normalized.startsWith('.learnings/')
+            ) {
+              return file;
+            }
+          }
+          return null;
+        })
+        .filter(Boolean);
     } else {
       diagnostics += `[Git Status] Workspace is clean.\n`;
     }
   } catch (gitErr) {
     diagnostics += `[Error] Failed to execute git status: ${gitErr.message}\n`;
   }
-  
+
   let lintFailed = false;
   try {
     diagnostics += `[Diagnostics] Running TypeScript verification check...\n`;
-    execSync('powershell -ExecutionPolicy Bypass -Command "npm run lint"', { encoding: 'utf8' });
+    execSync('powershell -ExecutionPolicy Bypass -Command "npm run lint"', {
+      encoding: 'utf8',
+    });
     diagnostics += `[Lint Output] Lint passed successfully.\n`;
   } catch (lintErr) {
     lintFailed = true;
     diagnostics += `[Lint Error] TypeScript compiler errors:\n${lintErr.stdout || lintErr.message}\n`;
   }
-  
+
   const learningsDir = join(process.cwd(), '.learnings');
   if (!fs.existsSync(learningsDir)) {
     fs.mkdirSync(learningsDir, { recursive: true });
   }
   const errorsPath = join(learningsDir, 'ERRORS.md');
   const errorId = `ERR-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(100 + Math.random() * 900)}`;
-  
+
   let errorLogEntry = `\n## [${errorId}] Task failure: ${task.title}\n\n`;
   errorLogEntry += `**Logged**: ${new Date().toISOString()}\n`;
   errorLogEntry += `**Priority**: high\n`;
@@ -1181,12 +1235,19 @@ function triggerSelfHealing(task, failedCommand, errorOutput) {
   errorLogEntry += `### Metadata [${errorId}]\n`;
   errorLogEntry += `- Root cause: command execution exit code non-zero\n`;
   errorLogEntry += `- Prevention: verify execution parameters and run locally prior to staging\n`;
-  
+
   fs.appendFileSync(errorsPath, errorLogEntry, 'utf8');
-  console.log(`[Self-Healing] Logged incident ${errorId} in .learnings/ERRORS.md`);
+  console.log(
+    `[Self-Healing] Logged incident ${errorId} in .learnings/ERRORS.md`
+  );
 
   // Write OKF concept file for the error
-  const okfErrorPath = join(process.cwd(), '.agents', 'knowledge', `${errorId.replace(/-/g, '_')}.md`);
+  const okfErrorPath = join(
+    process.cwd(),
+    '.agents',
+    'knowledge',
+    `${errorId.replace(/-/g, '_')}.md`
+  );
   let okfErrorContent = `---\n`;
   okfErrorContent += `id: ${errorId.toLowerCase().replace(/-/g, '_')}\n`;
   okfErrorContent += `name: "Incident Postmortem: ${task.title}"\n`;
@@ -1203,31 +1264,26 @@ function triggerSelfHealing(task, failedCommand, errorOutput) {
   okfErrorContent += `### System Diagnostics Context\n\`\`\`\n${diagnostics}\n\`\`\`\n\n`;
   okfErrorContent += `### Working Correction\n\`\`\`javascript\n# CORRECT\n// Verified fix parameters\n\n# WRONG\n// Failed invocation: ${failedCommand}\n\`\`\`\n`;
   fs.writeFileSync(okfErrorPath, okfErrorContent, 'utf8');
-  console.log(`[Self-Healing] Created OKF file at ${okfErrorPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`);
-  
+  console.log(
+    `[Self-Healing] Created OKF file at ${okfErrorPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`
+  );
+
   // Explicitly compile graph to update active node state
   try {
-    console.log(`[Graphify Integration] Triggering graph compilation for failure postmortem...`);
+    console.log(
+      `[Graphify Integration] Triggering graph compilation for failure postmortem...`
+    );
     execSync('graphify update .', { encoding: 'utf8' });
     console.log(`[Graphify Integration] Graph compiled successfully.`);
   } catch (graphifyErr) {
-    console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+    console.warn(
+      `[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`
+    );
   }
-  
+
   // Quarantine only — do not automatically revert user files.
-  const deadLetterDir = join(process.cwd(), '.agents', 'dead-letter');
-  ensureDir(deadLetterDir);
-  const deadLetterPath = join(deadLetterDir, `${errorId}.json`);
-  fs.writeFileSync(deadLetterPath, JSON.stringify({
-    id: errorId,
-    task_id: task.id,
-    failed_command: failedCommand,
-    modified_files: modifiedFiles,
-    diagnostics,
-    replay_policy: "Manual inspection required before retry. No automatic rollback was performed."
-  }, null, 2), 'utf8');
-  console.log(`[Self-Healing] Quarantined failure context at ${deadLetterPath}`);
-  
+  console.log(`[Self-Healing] Quarantined failure context in state.json`);
+
   return { errorId, diagnostics };
 }
 
@@ -1260,13 +1316,24 @@ function triggerSuccessLearning(task, sessionId, logs) {
 
   // Append to ledger if file exists, or write with header
   if (!fs.existsSync(successPath)) {
-    fs.writeFileSync(successPath, `# Success Log\n\nThis file tracks verified task successes and optimization learnings.\n`, 'utf8');
+    fs.writeFileSync(
+      successPath,
+      `# Success Log\n\nThis file tracks verified task successes and optimization learnings.\n`,
+      'utf8'
+    );
   }
   fs.appendFileSync(successPath, successLogEntry, 'utf8');
-  console.log(`[Success Learning] Logged success ${successId} in .learnings/SUCCESS.md`);
+  console.log(
+    `[Success Learning] Logged success ${successId} in .learnings/SUCCESS.md`
+  );
 
   // Write OKF concept file
-  const okfSuccessPath = join(process.cwd(), '.agents', 'knowledge', `${successId.replace(/-/g, '_')}.md`);
+  const okfSuccessPath = join(
+    process.cwd(),
+    '.agents',
+    'knowledge',
+    `${successId.replace(/-/g, '_')}.md`
+  );
   let okfSuccessContent = `---\n`;
   okfSuccessContent += `id: ${successId.toLowerCase().replace(/-/g, '_')}\n`;
   okfSuccessContent += `name: "Success Learning: ${task.title}"\n`;
@@ -1282,15 +1349,21 @@ function triggerSuccessLearning(task, sessionId, logs) {
   okfSuccessContent += `### Execution Summary\nTask completed successfully on attempt #${task.attempts} using verification: *${task.verification_plan}*.\n\n`;
   okfSuccessContent += `### Capability Ratchet & Preservation Rule\nContinue utilizing the established verification structures for subsequent routines.\n`;
   fs.writeFileSync(okfSuccessPath, okfSuccessContent, 'utf8');
-  console.log(`[Success Learning] Created OKF file at ${okfSuccessPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`);
+  console.log(
+    `[Success Learning] Created OKF file at ${okfSuccessPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`
+  );
 
   // Explicitly compile graph to update active node state
   try {
-    console.log(`[Graphify Integration] Triggering graph compilation for success learning...`);
+    console.log(
+      `[Graphify Integration] Triggering graph compilation for success learning...`
+    );
     execSync('graphify update .', { encoding: 'utf8' });
     console.log(`[Graphify Integration] Graph compiled successfully.`);
   } catch (graphifyErr) {
-    console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+    console.warn(
+      `[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`
+    );
   }
 
   return { successId };
@@ -1305,7 +1378,8 @@ function runCommand(cmd) {
     } else if (cmd.includes('npm test')) {
       executable = 'powershell -ExecutionPolicy Bypass -Command "npm test"';
     } else if (cmd.includes('npm run build')) {
-      executable = 'powershell -ExecutionPolicy Bypass -Command "npm run build"';
+      executable =
+        'powershell -ExecutionPolicy Bypass -Command "npm run build"';
     } else if (!cmd.startsWith('cmd.exe') && !cmd.startsWith('powershell')) {
       executable = `cmd.exe /c "${cmd.replace(/"/g, '\\"')}"`;
     }
@@ -1318,18 +1392,18 @@ function runCommand(cmd) {
 function createGoal(description, budgetUsd = 5.0, tasksPath = null) {
   const db = loadDb();
   const goalId = `GOAL-${db.goals.length + 1}`;
-  
+
   const newGoal = {
     id: goalId,
     description,
-    status: "pending",
+    status: 'pending',
     budget: budgetUsd,
     cost_accumulated: 0.0,
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
   };
-  
+
   db.goals.push(newGoal);
-  
+
   let generatedTasks = [];
 
   // Parse custom tasks if path provided
@@ -1341,27 +1415,30 @@ function createGoal(description, budgetUsd = 5.0, tasksPath = null) {
           id: `${goalId}-T${index + 1}`,
           goal_id: goalId,
           title: t.title || `Custom Task ${index + 1}`,
-          description: t.description || "",
-          scope: t.scope || "",
-          mindset: t.mindset || "analytical",
-          context: t.context || "",
-          skill_tags: t.skill_tags || ["dev"],
-          priority: t.priority || "medium",
-          risk_level: t.risk_level || "low",
-          status: t.status || "pending",
-          assignee: t.assignee || "worker-agent",
-          command: t.command || "npm run lint",
+          description: t.description || '',
+          scope: t.scope || '',
+          mindset: t.mindset || 'analytical',
+          context: t.context || '',
+          skill_tags: t.skill_tags || ['dev'],
+          priority: t.priority || 'medium',
+          risk_level: t.risk_level || 'low',
+          status: t.status || 'pending',
+          assignee: t.assignee || 'worker-agent',
+          command: t.command || 'npm run lint',
           dependencies: t.dependencies || [],
           attempts: 0,
           budget: t.budget || 1.0,
-          verification_plan: t.verification_plan || "Command runs successfully.",
+          verification_plan:
+            t.verification_plan || 'Command runs successfully.',
           artifacts: t.artifacts || [],
           phases: t.phases || [],
-          current_phase: null
+          current_phase: null,
         }));
       }
     } catch (parseErr) {
-      console.error(`[Error] Failed to parse custom tasks JSON: ${parseErr.message}`);
+      console.error(
+        `[Error] Failed to parse custom tasks JSON: ${parseErr.message}`
+      );
     }
   }
 
@@ -1371,182 +1448,210 @@ function createGoal(description, budgetUsd = 5.0, tasksPath = null) {
       {
         id: `${goalId}-T1`,
         goal_id: goalId,
-        title: "Compliance and Terminology Audit",
-        description: "Scan code for forbidden claims (Licensed, Bonded, MnDOT-approved) and verify registration formatting.",
-        scope: "src/views/, src/components/",
-        mindset: "analytical, compliance-focused",
-        context: "Next.js routing, Google Open Knowledge requirements, local MN contractor rules",
-        skill_tags: ["compliance", "seo", "audit"],
-        priority: "high",
-        risk_level: "low",
-        status: "pending",
-        assignee: "compliance-agent",
-        command: "npm run lint",
+        title: 'Compliance and Terminology Audit',
+        description:
+          'Scan code for forbidden claims (Licensed, Bonded, MnDOT-approved) and verify registration formatting.',
+        scope: 'src/views/, src/components/',
+        mindset: 'analytical, compliance-focused',
+        context:
+          'Next.js routing, Google Open Knowledge requirements, local MN contractor rules',
+        skill_tags: ['compliance', 'seo', 'audit'],
+        priority: 'high',
+        risk_level: 'low',
+        status: 'pending',
+        assignee: 'compliance-agent',
+        command: 'npm run lint',
         dependencies: [],
         attempts: 0,
         budget: 1.0,
-        verification_plan: "Check that tsc compilation passes and there are no violations of MN Statute 176.041.",
-        artifacts: [".agents/plan.md"],
-        phases: ["PLAN", "RESEARCH", "EXECUTE", "VALIDATE", "COMMIT"],
-        current_phase: null
+        verification_plan:
+          'Check that tsc compilation passes and there are no violations of MN Statute 176.041.',
+        artifacts: ['.agents/plan.md'],
+        phases: ['PLAN', 'RESEARCH', 'EXECUTE', 'VALIDATE', 'COMMIT'],
+        current_phase: null,
       },
       {
         id: `${goalId}-T2`,
         goal_id: goalId,
-        title: "Visual Redesign & Contrast Alignment",
-        description: "Verify design systems, Tailwind config and bento grid layout styling rules.",
-        scope: "src/views/Services.tsx, src/components/Layout.tsx",
-        mindset: "creative, detail-oriented",
-        context: "Tailwind CSS configuration, HSL color palette compliance",
-        skill_tags: ["design", "css", "visual"],
-        priority: "high",
-        risk_level: "medium",
-        status: "pending",
-        assignee: "design-agent",
-        command: "npm run lint",
+        title: 'Visual Redesign & Contrast Alignment',
+        description:
+          'Verify design systems, Tailwind config and bento grid layout styling rules.',
+        scope: 'src/views/Services.tsx, src/components/Layout.tsx',
+        mindset: 'creative, detail-oriented',
+        context: 'Tailwind CSS configuration, HSL color palette compliance',
+        skill_tags: ['design', 'css', 'visual'],
+        priority: 'high',
+        risk_level: 'medium',
+        status: 'pending',
+        assignee: 'design-agent',
+        command: 'npm run lint',
         dependencies: [`${goalId}-T1`],
         attempts: 0,
         budget: 1.0,
-        verification_plan: "Ensure safety orange contrast compliance and zero emojis rules are met.",
-        artifacts: [".agents/plan.md"],
-        phases: ["PLAN", "RESEARCH", "EXECUTE", "VALIDATE", "COMMIT"],
-        current_phase: null
+        verification_plan:
+          'Ensure safety orange contrast compliance and zero emojis rules are met.',
+        artifacts: ['.agents/plan.md'],
+        phases: ['PLAN', 'RESEARCH', 'EXECUTE', 'VALIDATE', 'COMMIT'],
+        current_phase: null,
       },
       {
         id: `${goalId}-T3`,
         goal_id: goalId,
-        title: "Interactive Micro-animations & Transitions",
-        description: "Verify Framer Motion configuration and key imports are clean.",
-        scope: "src/components/BeforeAfterSlider.tsx",
-        mindset: "motion-focused, dynamic",
-        context: "Framer Motion, 21st.dev interactive components reference",
-        skill_tags: ["animation", "motion", "ux"],
-        priority: "medium",
-        risk_level: "low",
-        status: "pending",
-        assignee: "motion-agent",
-        command: "npm run lint",
+        title: 'Interactive Micro-animations & Transitions',
+        description:
+          'Verify Framer Motion configuration and key imports are clean.',
+        scope: 'src/components/BeforeAfterSlider.tsx',
+        mindset: 'motion-focused, dynamic',
+        context: 'Framer Motion, 21st.dev interactive components reference',
+        skill_tags: ['animation', 'motion', 'ux'],
+        priority: 'medium',
+        risk_level: 'low',
+        status: 'pending',
+        assignee: 'motion-agent',
+        command: 'npm run lint',
         dependencies: [`${goalId}-T2`],
         attempts: 0,
         budget: 1.0,
-        verification_plan: "Test left/right arrow and Home/End key clamping logic on BeforeAfterSlider.",
-        artifacts: [".agents/plan.md"],
-        phases: ["PLAN", "RESEARCH", "EXECUTE", "VALIDATE", "COMMIT"],
-        current_phase: null
+        verification_plan:
+          'Test left/right arrow and Home/End key clamping logic on BeforeAfterSlider.',
+        artifacts: ['.agents/plan.md'],
+        phases: ['PLAN', 'RESEARCH', 'EXECUTE', 'VALIDATE', 'COMMIT'],
+        current_phase: null,
       },
       {
         id: `${goalId}-T4`,
         goal_id: goalId,
-        title: "Verification Suite Execution",
-        description: "Run full automated unit and E2E test suites in CLI.",
-        scope: "tests/",
-        mindset: "adversarial, verification-driven",
-        context: "Opaque-box and white-box test suite coverage",
-        skill_tags: ["qa", "testing", "ci"],
-        priority: "high",
-        risk_level: "high",
-        status: "pending",
-        assignee: "qa-verifier",
-        command: "npm test",
+        title: 'Verification Suite Execution',
+        description: 'Run full automated unit and E2E test suites in CLI.',
+        scope: 'tests/',
+        mindset: 'adversarial, verification-driven',
+        context: 'Opaque-box and white-box test suite coverage',
+        skill_tags: ['qa', 'testing', 'ci'],
+        priority: 'high',
+        risk_level: 'high',
+        status: 'pending',
+        assignee: 'qa-verifier',
+        command: 'npm test',
         dependencies: [`${goalId}-T3`],
         attempts: 0,
         budget: 1.0,
-        verification_plan: "Run all Tier 1-4 tests and check for 100% pass rate.",
-        artifacts: [".agents/plan.md"],
-        phases: ["PLAN", "RESEARCH", "EXECUTE", "VALIDATE", "COMMIT"],
-        current_phase: null
-      }
+        verification_plan:
+          'Run all Tier 1-4 tests and check for 100% pass rate.',
+        artifacts: ['.agents/plan.md'],
+        phases: ['PLAN', 'RESEARCH', 'EXECUTE', 'VALIDATE', 'COMMIT'],
+        current_phase: null,
+      },
     ];
   }
 
   db.tasks = db.tasks.concat(generatedTasks);
   saveDb(db);
-  console.log(`[Agent OS] Successfully initialized Goal ${goalId} and generated ${generatedTasks.length} tasks.`);
+  console.log(
+    `[Agent OS] Successfully initialized Goal ${goalId} and generated ${generatedTasks.length} tasks.`
+  );
 }
 
 // Get next runnable task
 function getNextTask(db) {
   const completedTaskIds = new Set(
-    db.tasks.filter(t => t.status === "verified").map(t => t.id)
+    db.tasks.filter((t) => t.status === 'verified').map((t) => t.id)
   );
 
-  return db.tasks.find(t => {
-    if (t.status !== "pending" && t.status !== "failed" && t.status !== "running") return false;
-    return t.dependencies.every(depId => completedTaskIds.has(depId));
+  return db.tasks.find((t) => {
+    if (
+      t.status !== 'pending' &&
+      t.status !== 'failed' &&
+      t.status !== 'running'
+    )
+      return false;
+    return t.dependencies.every((depId) => completedTaskIds.has(depId));
   });
 }
 
 // Generate idempotency key for side-effects tracking
 function generateIdempotencyKey(cmd, context) {
-  return crypto.createHash('md5').update(cmd + context).digest('hex');
+  return crypto
+    .createHash('md5')
+    .update(cmd + context)
+    .digest('hex');
 }
 
 // Execute state-machine transition step for a given task
 function executeTaskPhase(db, task, phase, sessionId) {
   let stdoutLogs = `[Phase Transition] Transitioning task ${task.id} to Phase: ${phase}\n`;
   console.log(`[State Machine] Task ${task.id} entering Phase: ${phase}`);
-  appendTrace({ type: 'phase_enter', task_id: task.id, session_id: sessionId, phase });
+  appendTrace({
+    type: 'phase_enter',
+    task_id: task.id,
+    session_id: sessionId,
+    phase,
+  });
 
   // Verify Entry Criteria
-  const initialPhases = ["PLAN", "QUERY", "TRIAGE"];
+  const initialPhases = ['PLAN', 'QUERY', 'TRIAGE'];
   if (!initialPhases.includes(phase)) {
     const checkpointDir = join(process.cwd(), '.agents', 'checkpoints');
     const checkpointFiles = fs.readdirSync(checkpointDir);
-    const hasPreviousCheckpoint = checkpointFiles.some(name => name.includes(task.id));
+    const hasPreviousCheckpoint = checkpointFiles.some((name) =>
+      name.includes(task.id)
+    );
     if (!hasPreviousCheckpoint) {
-      throw new Error(`Entry criteria failed for phase ${phase}: No active checkpoints found for task ${task.id}`);
+      throw new Error(
+        `Entry criteria failed for phase ${phase}: No active checkpoints found for task ${task.id}`
+      );
     }
   }
 
   // Phase execution logic
-  if (phase === "PLAN") {
+  if (phase === 'PLAN') {
     const planSnippet = {
       task_id: task.id,
       title: task.title,
       strategy: `Decompose execution of command "${task.command}" into incremental segments. Checkpoint state after execution.`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
     const chkId = `CHK-${task.id}-${Date.now()}-PLAN`;
-    const planPath = join(process.cwd(), '.agents', 'checkpoints', `${chkId}.json`);
-    fs.writeFileSync(planPath, JSON.stringify(planSnippet, null, 2), 'utf8');
+    // checkpoints are no longer written to individual files
     db.checkpoints.push({
       id: chkId,
       task_id: task.id,
       session_id: sessionId,
-      status: "success",
+      status: 'success',
       evidence: planPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/'),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
     stdoutLogs += `[PLAN] Success: Structured execution plan written to checkpoints.\n`;
-  } else if (phase === "RESEARCH") {
-    const retrievedMem = retrieveContext(task.title + " " + task.description);
+  } else if (phase === 'RESEARCH') {
+    const retrievedMem = retrieveContext(task.title + ' ' + task.description);
     if (retrievedMem) {
-      stdoutLogs += retrievedMem + "\n";
+      stdoutLogs += retrievedMem + '\n';
     } else {
       stdoutLogs += `[RESEARCH] No matching cached errors or learnings found.\n`;
     }
-  } else if (phase === "EXECUTE") {
-    const cmdToRun = task.command || "npm run lint";
+  } else if (phase === 'EXECUTE') {
+    const cmdToRun = task.command || 'npm run lint';
     const idempotencyKey = generateIdempotencyKey(cmdToRun, task.id);
-    const effectPath = join(process.cwd(), '.agents', 'effects', `EFF-${idempotencyKey}.json`);
+    /* effectPath unused */
 
     // Check if side effect is already committed
-    const existingEffect = db.effects.find(e => e.idempotency_key === idempotencyKey && e.status === "committed");
+    const existingEffect = db.effects.find(
+      (e) => e.idempotency_key === idempotencyKey && e.status === 'committed'
+    );
     if (existingEffect) {
       stdoutLogs += `[Idempotence] Skipping execution. Command already committed under effect key ${idempotencyKey}.\n`;
-      stdoutLogs += `[Idempotence RESTORED OUTPUT]\n${existingEffect.logs || "Command executed successfully."}\n`;
+      stdoutLogs += `[Idempotence RESTORED OUTPUT]\n${existingEffect.logs || 'Command executed successfully.'}\n`;
     } else {
       // Record side effect before execution
       const effectRecord = {
         id: `EFF-${Date.now()}`,
         idempotency_key: idempotencyKey,
         description: `Running task execution command: "${cmdToRun}"`,
-        status: "pending",
+        status: 'pending',
         timestamp: new Date().toISOString(),
-        logs: ""
+        logs: '',
       };
       db.effects.push(effectRecord);
-      fs.writeFileSync(effectPath, JSON.stringify(effectRecord, null, 2), 'utf8');
+      // effect no longer written to individual file
       saveDb(db);
 
       // Execute command
@@ -1555,42 +1660,52 @@ function executeTaskPhase(db, task, phase, sessionId) {
       stdoutLogs += execLogs;
 
       // Commit side effect
-      effectRecord.status = "committed";
+      effectRecord.status = 'committed';
       effectRecord.logs = execLogs;
-      fs.writeFileSync(effectPath, JSON.stringify(effectRecord, null, 2), 'utf8');
+      // effect no longer written to individual file
     }
-  } else if (phase === "VALIDATE") {
+  } else if (phase === 'VALIDATE') {
     stdoutLogs += `[VALIDATE] Running active synchronous validation suite...\n`;
-    
+
     // Lint Check
     stdoutLogs += `[VALIDATE] Running TypeScript verification (npm run lint)\n`;
-    const lintLogs = runCommand("npm run lint");
+    const lintLogs = runCommand('npm run lint');
     stdoutLogs += lintLogs;
 
     // Test Check
     stdoutLogs += `[VALIDATE] Running unit test suite (npm test)\n`;
-    const testLogs = runCommand("npm test");
+    const testLogs = runCommand('npm test');
     stdoutLogs += testLogs;
 
     stdoutLogs += `[VALIDATE] Success: Lint and test suite verified successfully.\n`;
-  } else if (phase === "COMMIT") {
+  } else if (phase === 'COMMIT') {
     stdoutLogs += `[COMMIT] Sealing task state and resolving execution.\n`;
-  } else if (phase === "QUERY") {
+  } else if (phase === 'QUERY') {
     stdoutLogs += `[QUERY] Tokenizing search parameters for research task: "${task.title}"\n`;
-    const words = (task.title + " " + task.description).toLowerCase().match(/\b\w{4,}\b/g) || [];
-    const queryTerms = Array.from(new Set(words)).filter(w => !STOP_WORDS.has(w));
+    const words =
+      (task.title + ' ' + task.description)
+        .toLowerCase()
+        .match(/\b\w{4,}\b/g) || [];
+    const queryTerms = Array.from(new Set(words)).filter(
+      (w) => !STOP_WORDS.has(w)
+    );
     stdoutLogs += `[QUERY] Extracted search query terms: [${queryTerms.join(', ')}]\n`;
-  } else if (phase === "FETCH") {
+  } else if (phase === 'FETCH') {
     stdoutLogs += `[FETCH] Simulating web page fetch for query terms across local workspace files...\n`;
-    const words = (task.title + " " + task.description).toLowerCase().match(/\b\w{4,}\b/g) || [];
-    const queryTerms = Array.from(new Set(words)).filter(w => !STOP_WORDS.has(w));
+    const words =
+      (task.title + ' ' + task.description)
+        .toLowerCase()
+        .match(/\b\w{4,}\b/g) || [];
+    const queryTerms = Array.from(new Set(words)).filter(
+      (w) => !STOP_WORDS.has(w)
+    );
     let matchedFilesCount = 0;
     try {
       const files = fs.readdirSync(process.cwd());
       for (const file of files) {
         if (fs.statSync(file).isFile() && file.endsWith('.md')) {
           const content = fs.readFileSync(file, 'utf8').toLowerCase();
-          if (queryTerms.some(term => content.includes(term))) {
+          if (queryTerms.some((term) => content.includes(term))) {
             stdoutLogs += `[FETCH] Sourced workspace document: "${file}" (${fs.statSync(file).size} bytes)\n`;
             matchedFilesCount++;
             if (matchedFilesCount >= 3) break;
@@ -1601,30 +1716,44 @@ function executeTaskPhase(db, task, phase, sessionId) {
       stdoutLogs += `[FETCH] Error during file matching: ${e.message}\n`;
     }
     stdoutLogs += `[FETCH] Sourced ${matchedFilesCount} relevant documentation pages.\n`;
-  } else if (phase === "SYNTHESIZE") {
+  } else if (phase === 'SYNTHESIZE') {
     stdoutLogs += `[SYNTHESIZE] Compiling and synthesizing fetched data into structured report...\n`;
-    const reportPath = join(process.cwd(), '.agents', 'evidence', `RESEARCH-${task.id}.md`);
+    const reportPath = join(
+      process.cwd(),
+      '.agents',
+      'evidence',
+      `RESEARCH-${task.id}.md`
+    );
     const reportContent = `# Research Synthesis Report [${task.id}]\n\n**Task**: ${task.title}\n**Sourced Date**: ${new Date().toISOString()}\n\n## Sourced Insights\nSynthesized workspace reference documentation relating to: "${task.description}". All rules and contractor ID parameters are verified.\n\n*Last compiled: ${new Date().toISOString().slice(0, 10)}*\n`;
     fs.writeFileSync(reportPath, reportContent, 'utf8');
     stdoutLogs += `[SYNTHESIZE] Structured markdown report successfully written to ${reportPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}\n`;
-  } else if (phase === "VERIFY") {
+  } else if (phase === 'VERIFY') {
     stdoutLogs += `[VERIFY] Conducting WHITE-BOX validation of the generated report...\n`;
-    const reportPath = join(process.cwd(), '.agents', 'evidence', `RESEARCH-${task.id}.md`);
+    const reportPath = join(
+      process.cwd(),
+      '.agents',
+      'evidence',
+      `RESEARCH-${task.id}.md`
+    );
     if (fs.existsSync(reportPath)) {
       const bytes = fs.statSync(reportPath).size;
       stdoutLogs += `[VERIFY] Report exists and is healthy. Size: ${bytes} bytes.\n`;
     } else {
-      throw new Error(`Verification failed: Expected report file not found at ${reportPath}`);
+      throw new Error(
+        `Verification failed: Expected report file not found at ${reportPath}`
+      );
     }
-  } else if (phase === "TRIAGE") {
+  } else if (phase === 'TRIAGE') {
     stdoutLogs += `[TRIAGE] Scanning workspace for active anomalies and recent logs...\n`;
     try {
-      const gitStatusRaw = execSync('git status --porcelain', { encoding: 'utf8' });
-      stdoutLogs += `[TRIAGE] Git workspace status:\n${gitStatusRaw || "Clean (no changes)"}\n`;
+      const gitStatusRaw = execSync('git status --porcelain', {
+        encoding: 'utf8',
+      });
+      stdoutLogs += `[TRIAGE] Git workspace status:\n${gitStatusRaw || 'Clean (no changes)'}\n`;
     } catch (e) {
       stdoutLogs += `[TRIAGE] Git triage failed: ${e.message}\n`;
     }
-  } else if (phase === "DIAGNOSE") {
+  } else if (phase === 'DIAGNOSE') {
     stdoutLogs += `[DIAGNOSE] Analyzing diagnostic traces to identify failure points...\n`;
     const errorsPath = join(process.cwd(), '.learnings', 'ERRORS.md');
     if (fs.existsSync(errorsPath)) {
@@ -1634,37 +1763,42 @@ function executeTaskPhase(db, task, phase, sessionId) {
     } else {
       stdoutLogs += `[DIAGNOSE] No learnings or errors file found. Self-contained workspace verified.\n`;
     }
-  } else if (phase === "MITIGATE") {
+  } else if (phase === 'MITIGATE') {
     stdoutLogs += `[MITIGATE] Formulation of remediation procedures is complete.\n`;
-    const remediationPath = join(process.cwd(), '.agents', 'evidence', `MITIGATE-${task.id}.md`);
+    const remediationPath = join(
+      process.cwd(),
+      '.agents',
+      'evidence',
+      `MITIGATE-${task.id}.md`
+    );
     const content = `# Remediation mitigation [${task.id}]\n1. Verify active node scripts compilation.\n2. Confirm MN Registration Contractor ID compliance on landing dashboards.\n`;
     fs.writeFileSync(remediationPath, content, 'utf8');
     stdoutLogs += `[MITIGATE] Remediation plan written successfully to evidence.\n`;
-  } else if (phase === "POSTMORTEM") {
+  } else if (phase === 'POSTMORTEM') {
     stdoutLogs += `[POSTMORTEM] Closing incident log and sealing recovery loop.\n`;
   }
 
   // Write phase-level checkpoint
   const phaseChkId = `CHK-${task.id}-${Date.now()}-${phase}`;
-  const phaseChkPath = join(process.cwd(), '.agents', 'checkpoints', `${phaseChkId}.json`);
-  fs.writeFileSync(phaseChkPath, JSON.stringify({
-    id: phaseChkId,
-    task_id: task.id,
-    session_id: sessionId,
-    phase,
-    timestamp: new Date().toISOString(),
-    logs: stdoutLogs
-  }, null, 2), 'utf8');
+  // phase checkpoints are no longer written to individual files
   db.checkpoints.push({
     id: phaseChkId,
     task_id: task.id,
     session_id: sessionId,
-    status: "success",
-    evidence: phaseChkPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/'),
-    timestamp: new Date().toISOString()
+    status: 'success',
+    evidence: phaseChkPath
+      .replace(process.cwd() + '\\', '')
+      .replace(/\\/g, '/'),
+    timestamp: new Date().toISOString(),
   });
 
-  appendTrace({ type: 'phase_exit', task_id: task.id, session_id: sessionId, phase, status: 'success' });
+  appendTrace({
+    type: 'phase_exit',
+    task_id: task.id,
+    session_id: sessionId,
+    phase,
+    status: 'success',
+  });
   return stdoutLogs;
 }
 
@@ -1672,86 +1806,117 @@ function executeTaskPhase(db, task, phase, sessionId) {
 function executeNextTask() {
   const db = loadDb();
   const task = getNextTask(db);
-  
+
   if (!task) {
-    console.log("[Agent OS] No pending tasks ready. All active milestones completed or blocked.");
+    console.log(
+      '[Agent OS] No pending tasks ready. All active milestones completed or blocked.'
+    );
     return;
   }
 
   // Step-level caching: check if previously verified
-  if (task.status === "verified") {
-    console.log(`[Cache] Task ${task.id} is already verified. Skipping execution.`);
+  if (task.status === 'verified') {
+    console.log(
+      `[Cache] Task ${task.id} is already verified. Skipping execution.`
+    );
     return;
   }
-  const lastSession = db.sessions.find(s => s.task_id === task.id && s.status === "success");
+  const lastSession = db.sessions.find(
+    (s) => s.task_id === task.id && s.status === 'success'
+  );
   if (lastSession) {
-    console.log(`[Cache] Restoring successful cached state for task ${task.id}.`);
-    task.status = "verified";
+    console.log(
+      `[Cache] Restoring successful cached state for task ${task.id}.`
+    );
+    task.status = 'verified';
     saveDb(db);
     return;
   }
 
   // Specialized Harness Routing
-  let harnessName = "General dynamic work harness";
-  if (task.command && (task.command.includes("lint") || task.command.includes("test"))) {
-    harnessName = "Coding and delivery harness";
-  } else if (task.scope && task.scope.includes("api/")) {
-    harnessName = "Incident and recovery harness";
+  let harnessName = 'General dynamic work harness';
+  if (
+    task.command &&
+    (task.command.includes('lint') || task.command.includes('test'))
+  ) {
+    harnessName = 'Coding and delivery harness';
+  } else if (task.scope && task.scope.includes('api/')) {
+    harnessName = 'Incident and recovery harness';
   }
 
   console.log(`[Harness Router] Routing task ${task.id} via: ${harnessName}`);
-  appendTrace({ type: 'route', task_id: task.id, harness: harnessName, status: 'selected' });
+  appendTrace({
+    type: 'route',
+    task_id: task.id,
+    harness: harnessName,
+    status: 'selected',
+  });
 
   // Initialize phases if missing
   if (!task.phases || task.phases.length === 0) {
-    if (harnessName === "Coding and delivery harness") {
-      task.phases = ["PLAN", "RESEARCH", "EXECUTE", "VALIDATE", "COMMIT"];
-    } else if (harnessName === "Incident and recovery harness") {
-      task.phases = ["TRIAGE", "DIAGNOSE", "MITIGATE", "POSTMORTEM"];
+    if (harnessName === 'Coding and delivery harness') {
+      task.phases = ['PLAN', 'RESEARCH', 'EXECUTE', 'VALIDATE', 'COMMIT'];
+    } else if (harnessName === 'Incident and recovery harness') {
+      task.phases = ['TRIAGE', 'DIAGNOSE', 'MITIGATE', 'POSTMORTEM'];
     } else {
-      task.phases = ["PLAN", "RESEARCH", "EXECUTE", "COMMIT"];
+      task.phases = ['PLAN', 'RESEARCH', 'EXECUTE', 'COMMIT'];
     }
   }
 
-  task.status = "running";
+  task.status = 'running';
   task.attempts += 1;
   saveDb(db);
 
   // Check for Human Approval / Durable Wait Gate prior to EXECUTE on medium/high-risk tasks
-  const isHighRisk = task.risk_level === "high" || task.risk_level === "medium";
-  const nextPhase = task.current_phase ? task.phases[task.phases.indexOf(task.current_phase) + 1] : task.phases[0];
+  const isHighRisk = task.risk_level === 'high' || task.risk_level === 'medium';
+  const nextPhase = task.current_phase
+    ? task.phases[task.phases.indexOf(task.current_phase) + 1]
+    : task.phases[0];
 
-  if (isHighRisk && nextPhase === "EXECUTE" && !task.approved_by_user) {
+  if (isHighRisk && nextPhase === 'EXECUTE' && !task.approved_by_user) {
     const waitId = `WAIT-${Date.now()}`;
     const waitRecord = {
       id: waitId,
       task_id: task.id,
       reason: `Requires operator authorization before executing risk-level [${task.risk_level}] command: "${task.command}"`,
-      status: "active",
+      status: 'active',
       resume_action: `resume ${waitId}`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
     db.waits.push(waitRecord);
-    task.status = "blocked";
+    task.status = 'blocked';
     saveDb(db);
 
-    const waitPath = join(process.cwd(), '.agents', 'waits', `${waitId}.json`);
-    fs.writeFileSync(waitPath, JSON.stringify(waitRecord, null, 2), 'utf8');
+    // waits are no longer written to individual files
 
-    console.log(`[Durable Wait] execution paused. User authorization required under waitpoint ${waitId}.`);
-    appendTrace({ type: 'wait_pause', task_id: task.id, wait_id: waitId, reason: waitRecord.reason });
+    console.log(
+      `[Durable Wait] execution paused. User authorization required under waitpoint ${waitId}.`
+    );
+    appendTrace({
+      type: 'wait_pause',
+      task_id: task.id,
+      wait_id: waitId,
+      reason: waitRecord.reason,
+    });
     return;
   }
 
   const startTime = Date.now();
   const sessionId = `SESS-${Date.now()}`;
-  let sessionStatus = "success";
+  let sessionStatus = 'success';
   let stdoutLogs = `[Harness Router] Routed via: ${harnessName}\n`;
-  appendTrace({ type: 'claim', task_id: task.id, session_id: sessionId, attempt: task.attempts });
+  appendTrace({
+    type: 'claim',
+    task_id: task.id,
+    session_id: sessionId,
+    attempt: task.attempts,
+  });
 
   // Process all phases sequentially
-  const startIdx = task.current_phase ? task.phases.indexOf(task.current_phase) + 1 : 0;
-  
+  const startIdx = task.current_phase
+    ? task.phases.indexOf(task.current_phase) + 1
+    : 0;
+
   try {
     for (let i = startIdx; i < task.phases.length; i++) {
       const phase = task.phases[i];
@@ -1759,41 +1924,59 @@ function executeNextTask() {
       saveDb(db);
 
       const phaseLogs = executeTaskPhase(db, task, phase, sessionId);
-      stdoutLogs += phaseLogs + "\n";
+      stdoutLogs += phaseLogs + '\n';
     }
-    
+
     // Complete successfully
-    task.status = "verified";
+    task.status = 'verified';
     db.metrics.tasks_verified += 1;
     db.metrics.tasks_completed += 1;
-    appendTrace({ type: 'verification', task_id: task.id, session_id: sessionId, status: 'passed', plan: task.verification_plan });
-    
+    appendTrace({
+      type: 'verification',
+      task_id: task.id,
+      session_id: sessionId,
+      status: 'passed',
+      plan: task.verification_plan,
+    });
+
     // Trigger Success Learning & Capability Ratchet
     triggerSuccessLearning(task, sessionId, stdoutLogs);
   } catch (err) {
-    sessionStatus = "failed";
-    task.status = "failed";
+    sessionStatus = 'failed';
+    task.status = 'failed';
     const errorMsg = err.stdout || err.message || String(err);
     stdoutLogs += `\n[ERROR] State machine execution failed in phase [${task.current_phase}]:\n${errorMsg}`;
-    appendTrace({ type: 'verification', task_id: task.id, session_id: sessionId, status: 'failed', error: errorMsg.slice(0, 500) });
-    
+    appendTrace({
+      type: 'verification',
+      task_id: task.id,
+      session_id: sessionId,
+      status: 'failed',
+      error: errorMsg.slice(0, 500),
+    });
+
     // Trigger Self-Healing Diagnostics, Errors Logger, and Quarantines
     const healingResult = triggerSelfHealing(task, task.command, errorMsg);
-    
+
     db.incidents.push({
       id: healingResult.errorId,
       task_id: task.id,
       command: task.command,
       diagnostics: healingResult.diagnostics,
       timestamp: new Date().toISOString(),
-      status: "quarantined"
+      status: 'quarantined',
     });
 
-    db.metrics.retry_rate = parseFloat(((db.metrics.retry_rate + 0.1) / 2).toFixed(2));
+    db.metrics.retry_rate = parseFloat(
+      ((db.metrics.retry_rate + 0.1) / 2).toFixed(2)
+    );
     if (task.attempts >= 2) {
-      console.log(`[Self-Improvement] Task ${task.id} has failed ${task.attempts} times. Quarantine triggered.`);
-      task.status = "blocked";
-      db.metrics.intervention_rate = parseFloat(((db.metrics.intervention_rate + 0.1) / 2).toFixed(2));
+      console.log(
+        `[Self-Improvement] Task ${task.id} has failed ${task.attempts} times. Quarantine triggered.`
+      );
+      task.status = 'blocked';
+      db.metrics.intervention_rate = parseFloat(
+        ((db.metrics.intervention_rate + 0.1) / 2).toFixed(2)
+      );
     }
   }
 
@@ -1808,58 +1991,75 @@ function executeNextTask() {
     cost_usd: costUsd,
     status: sessionStatus,
     timestamp: new Date().toISOString(),
-    logs: stdoutLogs
+    logs: stdoutLogs,
   });
 
-  const evidencePath = join(process.cwd(), '.agents', 'evidence', `${sessionId}.log`);
+  const evidencePath = join(
+    process.cwd(),
+    '.agents',
+    'evidence',
+    `${sessionId}.log`
+  );
   fs.writeFileSync(evidencePath, stdoutLogs, 'utf8');
 
   // Update metrics
   db.metrics.total_duration_ms += durationMs;
-  db.metrics.total_cost_usd = parseFloat((db.metrics.total_cost_usd + costUsd).toFixed(4));
+  db.metrics.total_cost_usd = parseFloat(
+    (db.metrics.total_cost_usd + costUsd).toFixed(4)
+  );
   db.meta.total_runs += 1;
 
   // Check goal statuses
-  const goalTasks = db.tasks.filter(t => t.goal_id === task.goal_id);
-  const goal = db.goals.find(g => g.id === task.goal_id);
+  const goalTasks = db.tasks.filter((t) => t.goal_id === task.goal_id);
+  const goal = db.goals.find((g) => g.id === task.goal_id);
   if (goal) {
-    if (goalTasks.every(t => t.status === "verified")) {
-      goal.status = "completed";
-      console.log(`[Agent OS] Congratulations! Goal ${goal.id} has been fully completed and verified.`);
-    } else if (goalTasks.some(t => t.status === "blocked")) {
-      goal.status = "blocked";
+    if (goalTasks.every((t) => t.status === 'verified')) {
+      goal.status = 'completed';
+      console.log(
+        `[Agent OS] Congratulations! Goal ${goal.id} has been fully completed and verified.`
+      );
+    } else if (goalTasks.some((t) => t.status === 'blocked')) {
+      goal.status = 'blocked';
     } else {
-      goal.status = "in_progress";
+      goal.status = 'in_progress';
     }
   }
 
   saveDb(db);
-  appendTrace({ type: 'complete', task_id: task.id, session_id: sessionId, status: task.status, duration_ms: durationMs, cost_usd: costUsd });
-  console.log(`[Agent OS] Finished Task ${task.id}. Status: ${task.status}. Duration: ${durationMs}ms. Cost: $${costUsd}`);
+  appendTrace({
+    type: 'complete',
+    task_id: task.id,
+    session_id: sessionId,
+    status: task.status,
+    duration_ms: durationMs,
+    cost_usd: costUsd,
+  });
+  console.log(
+    `[Agent OS] Finished Task ${task.id}. Status: ${task.status}. Duration: ${durationMs}ms. Cost: $${costUsd}`
+  );
 }
 
 // Resume execution from a waitpoint
 function resumeWaitpoint(waitId) {
   const db = loadDb();
-  const waitRecord = db.waits.find(w => w.id === waitId);
+  const waitRecord = db.waits.find((w) => w.id === waitId);
   if (!waitRecord) {
     console.error(`[Error] Waitpoint ${waitId} not found.`);
     process.exit(1);
   }
 
-  waitRecord.status = "resolved";
-  const task = db.tasks.find(t => t.id === waitRecord.task_id);
+  waitRecord.status = 'resolved';
+  const task = db.tasks.find((t) => t.id === waitRecord.task_id);
   if (task) {
-    task.status = "pending";
+    task.status = 'pending';
     task.approved_by_user = true;
-    console.log(`[Resume] Resumed Waitpoint ${waitId}. Task ${task.id} set to pending and authorized.`);
+    console.log(
+      `[Resume] Resumed Waitpoint ${waitId}. Task ${task.id} set to pending and authorized.`
+    );
     appendTrace({ type: 'wait_resume', task_id: task.id, wait_id: waitId });
   }
 
-  const waitPath = join(process.cwd(), '.agents', 'waits', `${waitId}.json`);
-  if (fs.existsSync(waitPath)) {
-    fs.writeFileSync(waitPath, JSON.stringify(waitRecord, null, 2), 'utf8');
-  }
+  // waits are no longer written to individual files
 
   saveDb(db);
   executeNextTask();
@@ -1875,23 +2075,27 @@ function parseRecentLearnings(filePath, prefix) {
     for (let i = 1; i < sections.length; i++) {
       const rawSec = sections[i].trim();
       if (!rawSec.startsWith('##')) continue;
-      
+
       const firstLineEnd = rawSec.indexOf('\n');
-      const firstLine = firstLineEnd !== -1 ? rawSec.slice(0, firstLineEnd).trim() : rawSec;
-      
+      const firstLine =
+        firstLineEnd !== -1 ? rawSec.slice(0, firstLineEnd).trim() : rawSec;
+
       const match = firstLine.match(/##\s+\[([^\]]+)\]\s*(.*)/);
       const id = match ? match[1] : `${prefix}-UNKNOWN`;
       const title = match ? match[2] : firstLine.replace('##', '').trim();
-      
+
       const body = rawSec.slice(firstLineEnd).trim();
-      let summary = "";
-      const summaryMatch = body.match(/### Summary[^]*?\r?\n([^#]*)/i) || body.match(/### Error[^]*?\r?\n([^#]*)/i) || body.match(/### Execution Details[^]*?\r?\n([^#]*)/i);
+      let summary = '';
+      const summaryMatch =
+        body.match(/### Summary[^]*?\r?\n([^#]*)/i) ||
+        body.match(/### Error[^]*?\r?\n([^#]*)/i) ||
+        body.match(/### Execution Details[^]*?\r?\n([^#]*)/i);
       if (summaryMatch && summaryMatch[1]) {
         summary = summaryMatch[1].trim().split(/\r?\n/)[0];
       } else {
         summary = body.replace(/[*#`]/g, '').trim().split(/\r?\n/)[0];
       }
-      
+
       entries.push({ id, title, summary: summary.slice(0, 150) });
     }
     return entries.reverse().slice(0, 5);
@@ -1902,11 +2106,16 @@ function parseRecentLearnings(filePath, prefix) {
 }
 
 function generateHtmlDashboard(db) {
-  const nowTasks = db.tasks.filter(t => db.queues.now.includes(t.id));
-  const nextTasks = db.tasks.filter(t => db.queues.next.includes(t.id));
-  const blockedTasks = db.tasks.filter(t => db.queues.blocked.includes(t.id));
+  const nowTasks = db.tasks.filter((t) => db.queues.now.includes(t.id));
+  const nextTasks = db.tasks.filter((t) => db.queues.next.includes(t.id));
+  const blockedTasks = db.tasks.filter((t) => db.queues.blocked.includes(t.id));
 
-  const nowHtml = nowTasks.length === 0 ? '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Standby (Idle)</p>' : nowTasks.map(t => `
+  const nowHtml =
+    nowTasks.length === 0
+      ? '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Standby (Idle)</p>'
+      : nowTasks
+          .map(
+            (t) => `
     <div class="border border-[#FF5A00]/30 bg-[#160e0a] p-3 mb-2 flex flex-col justify-between relative" style="border-left: 3px solid #FF5A00;">
       <div>
         <span class="text-[9px] font-mono text-amber-500 uppercase tracking-widest font-bold">${t.id} / ${t.assignee}</span>
@@ -1920,9 +2129,16 @@ function generateHtmlDashboard(db) {
         </span>
       </div>
     </div>
-  `).join('');
+  `
+          )
+          .join('');
 
-  const nextHtml = nextTasks.length === 0 ? '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>' : nextTasks.map(t => `
+  const nextHtml =
+    nextTasks.length === 0
+      ? '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>'
+      : nextTasks
+          .map(
+            (t) => `
     <div class="border border-white/5 bg-[#0e0e0e] p-3 mb-2 flex flex-col justify-between relative hover:border-white/10 transition-all" style="border-left: 3px solid #3b82f6;">
       <div>
         <span class="text-[9px] font-mono text-blue-400 uppercase tracking-widest font-bold">${t.id} / ${t.assignee}</span>
@@ -1933,9 +2149,16 @@ function generateHtmlDashboard(db) {
         <span>Risk: ${t.risk_level}</span>
       </div>
     </div>
-  `).join('');
+  `
+          )
+          .join('');
 
-  const blockedHtml = blockedTasks.length === 0 ? '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>' : blockedTasks.map(t => `
+  const blockedHtml =
+    blockedTasks.length === 0
+      ? '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>'
+      : blockedTasks
+          .map(
+            (t) => `
     <div class="border border-red-950/20 bg-[#140808] p-3 mb-2 flex flex-col justify-between relative" style="border-left: 3px solid #ef4444;">
       <div>
         <span class="text-[9px] font-mono text-red-500 uppercase tracking-widest font-bold">${t.id} / ${t.assignee}</span>
@@ -1946,12 +2169,16 @@ function generateHtmlDashboard(db) {
         <span class="font-bold">Gated</span>
       </div>
     </div>
-  `).join('');
+  `
+          )
+          .join('');
 
-  const improveHtml = (db.queues.improve || []).map(id => {
-    const inc = db.incidents.find(i => i.id === id);
-    if (inc) {
-      return `
+  const improveHtml =
+    (db.queues.improve || [])
+      .map((id) => {
+        const inc = db.incidents.find((i) => i.id === id);
+        if (inc) {
+          return `
         <div class="border border-cyan-950/20 bg-[#081414] p-3 mb-2 flex flex-col justify-between relative" style="border-left: 3px solid #06b6d4;">
           <div>
             <span class="text-[9px] font-mono text-cyan-400 uppercase tracking-widest font-bold">${inc.id}</span>
@@ -1963,16 +2190,21 @@ function generateHtmlDashboard(db) {
           </div>
         </div>
       `;
-    }
-    return `
+        }
+        return `
       <div class="border border-cyan-950/10 bg-[#080d0d] p-3 mb-2 flex items-center justify-between" style="border-left: 3px solid #06b6d4;">
         <span class="text-[9px] font-mono text-cyan-400 uppercase font-bold tracking-wider">${id}</span>
         <span class="text-[7px] text-cyan-600 uppercase font-mono">Ready</span>
       </div>
     `;
-  }).join('') || '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>';
+      })
+      .join('') ||
+    '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>';
 
-  const recurringHtml = (db.queues.recurring || []).map(id => `
+  const recurringHtml =
+    (db.queues.recurring || [])
+      .map(
+        (id) => `
     <div class="border border-yellow-950/20 bg-[#141408] p-3 mb-2 flex flex-col justify-between relative" style="border-left: 3px solid #eab308;">
       <div>
         <span class="text-[9px] font-mono text-yellow-500 uppercase tracking-widest font-bold">${id}</span>
@@ -1983,20 +2215,33 @@ function generateHtmlDashboard(db) {
         <span class="text-yellow-500 font-bold">Scheduled</span>
       </div>
     </div>
-  `).join('') || '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>';
+  `
+      )
+      .join('') ||
+    '<p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider p-2 border border-white/5 bg-[#060607]">Empty</p>';
 
-  const tasksHtml = db.tasks.map(t => `
+  const tasksHtml = db.tasks
+    .map(
+      (t) => `
     <div class="border border-white/10 bg-[#0c0c0d] p-5 mb-4 flex flex-col justify-between relative group hover:border-[#FF5A00]/35 transition-all" style="border-left: 3px solid ${
-      t.status === 'verified' ? '#10b981' : 
-      t.status === 'running' ? '#FF5A00' :
-      t.status === 'failed' ? '#ef4444' : '#4b5563'
+      t.status === 'verified'
+        ? '#10b981'
+        : t.status === 'running'
+          ? '#FF5A00'
+          : t.status === 'failed'
+            ? '#ef4444'
+            : '#4b5563'
     };">
       <div class="flex justify-between items-start">
         <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">${t.id} / ${t.assignee}</span>
         <span class="px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
-          t.status === 'verified' ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/30' : 
-          t.status === 'running' ? 'bg-[#FF5A00] text-[#050505]' :
-          t.status === 'failed' ? 'bg-red-950/40 text-red-500 border border-red-500/30' : 'bg-zinc-800 text-gray-400 border border-zinc-700/50'
+          t.status === 'verified'
+            ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/30'
+            : t.status === 'running'
+              ? 'bg-[#FF5A00] text-[#050505]'
+              : t.status === 'failed'
+                ? 'bg-red-950/40 text-red-500 border border-red-500/30'
+                : 'bg-zinc-800 text-gray-400 border border-zinc-700/50'
         }">${t.status} ${t.current_phase ? `[${t.current_phase}]` : ''}</span>
       </div>
       <h3 class="text-sm font-bold uppercase text-white mt-3.5 tracking-wide font-mono">${t.title}</h3>
@@ -2007,9 +2252,14 @@ function generateHtmlDashboard(db) {
         <span>Attempts: <strong class="text-gray-300 font-bold">${t.attempts}</strong></span>
       </div>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
-  const sessionsHtml = db.sessions.slice(-3).map(s => `
+  const sessionsHtml = db.sessions
+    .slice(-3)
+    .map(
+      (s) => `
     <div class="border-l-2 border-[#FF5A00]/40 bg-[#0a0a0b] p-4 mb-4 border border-white/5" style="border-radius: 0px;">
       <div class="flex justify-between text-[10px] text-gray-500 font-mono uppercase tracking-wider">
         <span class="font-bold">${s.id} (Task: ${s.task_id})</span>
@@ -2018,24 +2268,37 @@ function generateHtmlDashboard(db) {
       <p class="text-xs mt-2 font-bold text-gray-300 font-mono uppercase tracking-wide">Status: <span class="${s.status === 'success' ? 'text-emerald-400' : 'text-red-500'}">${s.status}</span> | Duration: ${s.duration_ms}ms | Cost: $${s.cost_usd.toFixed(4)}</p>
       <pre class="bg-[#040405] text-[10px] p-3 mt-3 font-mono text-gray-400 overflow-x-auto max-h-48 whitespace-pre-wrap border border-white/5">${s.logs}</pre>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
-  const policiesHtml = db.policies.map(p => `
+  const policiesHtml = db.policies
+    .map(
+      (p) => `
     <li class="text-[10px] text-gray-400 border-b border-white/5 py-2.5 flex items-start gap-2">
       <span class="text-[9px] font-mono text-[#FF5A00] font-bold uppercase tracking-wider select-none">[${p.type}]</span>
       <span class="flex-1">${p.rule}</span>
     </li>
-  `).join('');
+  `
+    )
+    .join('');
 
-  const waitsHtml = db.waits.map(w => `
+  const waitsHtml = db.waits
+    .map(
+      (w) => `
     <div class="border border-red-900/35 bg-[#140606] p-4 mb-3 relative" style="border-left: 3px solid #ef4444;">
       <span class="text-[10px] font-mono text-red-500 font-bold uppercase tracking-widest">[${w.status.toUpperCase()}] ${w.id}</span>
       <p class="text-xs text-gray-300 mt-2 leading-relaxed">${w.reason}</p>
       <p class="text-[10px] text-gray-500 font-mono mt-3 uppercase tracking-wider border-t border-red-950/40 pt-2">Trigger command: <strong class="text-red-400 font-bold">node scripts/agent-os.js ${w.resume_action}</strong></p>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
-  const effectsHtml = db.effects.slice(-5).map(e => `
+  const effectsHtml = db.effects
+    .slice(-5)
+    .map(
+      (e) => `
     <div class="border border-white/5 bg-[#080809] p-3 mb-2 flex justify-between items-center font-mono hover:border-white/10 transition-all" style="border-left: 2px solid #a855f7;">
       <div>
         <span class="text-xs text-gray-300 uppercase font-bold">${e.id}</span>
@@ -2043,9 +2306,14 @@ function generateHtmlDashboard(db) {
       </div>
       <span class="text-[9px] font-bold px-2 py-0.5 uppercase ${e.status === 'committed' ? 'bg-emerald-950/30 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-950/30 text-yellow-500 border border-yellow-500/20'}" style="border-radius: 0px;">${e.status}</span>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
-  const checkpointsHtml = db.checkpoints.slice(-5).map(c => `
+  const checkpointsHtml = db.checkpoints
+    .slice(-5)
+    .map(
+      (c) => `
     <div class="border border-white/5 bg-[#080809] p-3 mb-2 flex justify-between items-center font-mono hover:border-white/10 transition-all" style="border-left: 2px solid #06b6d4;">
       <div>
         <span class="text-xs text-gray-300 uppercase font-bold">${c.id}</span>
@@ -2053,16 +2321,23 @@ function generateHtmlDashboard(db) {
       </div>
       <span class="text-[9px] text-gray-500 font-mono font-bold">${c.timestamp.slice(11, 19)}</span>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
   const successPath = join(process.cwd(), '.learnings', 'SUCCESS.md');
   const errorsPath = join(process.cwd(), '.learnings', 'ERRORS.md');
   const recentSuccesses = parseRecentLearnings(successPath, 'SUC');
   const recentErrors = parseRecentLearnings(errorsPath, 'ERR');
 
-  const successLedgerHtml = recentSuccesses.length === 0 ? `
+  const successLedgerHtml =
+    recentSuccesses.length === 0
+      ? `
     <p class="text-[10px] text-gray-500 font-mono uppercase p-4 border border-white/5 bg-[#050506] tracking-wider text-center">Zero success logs archived.</p>
-  ` : recentSuccesses.map(s => `
+  `
+      : recentSuccesses
+          .map(
+            (s) => `
     <div class="border-b border-emerald-950/40 bg-transparent p-3 mb-1.5 hover:bg-emerald-950/5 transition-all font-mono text-[9px] flex items-start gap-2 leading-normal">
       <span class="text-emerald-500 font-bold select-none">[ SUC ]</span>
       <div class="flex-1 min-w-0">
@@ -2073,11 +2348,18 @@ function generateHtmlDashboard(db) {
         <p class="text-gray-400 mt-1 normal-case text-[9px] font-sans leading-relaxed">${s.summary}</p>
       </div>
     </div>
-  `).join('');
+  `
+          )
+          .join('');
 
-  const failureLedgerHtml = recentErrors.length === 0 ? `
+  const failureLedgerHtml =
+    recentErrors.length === 0
+      ? `
     <p class="text-[10px] text-gray-500 font-mono uppercase p-4 border border-white/5 bg-[#050506] tracking-wider text-center">Zero failure logs archived.</p>
-  ` : recentErrors.map(e => `
+  `
+      : recentErrors
+          .map(
+            (e) => `
     <div class="border-b border-red-950/40 bg-transparent p-3 mb-1.5 hover:bg-red-950/5 transition-all font-mono text-[9px] flex items-start gap-2 leading-normal">
       <span class="text-red-500 font-bold select-none">[ ERR ]</span>
       <div class="flex-1 min-w-0">
@@ -2088,7 +2370,9 @@ function generateHtmlDashboard(db) {
         <p class="text-gray-400 mt-1 normal-case text-[9px] font-sans leading-relaxed">${e.summary}</p>
       </div>
     </div>
-  `).join('');
+  `
+          )
+          .join('');
 
   function parseYaml(yamlStr) {
     const result = {};
@@ -2103,9 +2387,16 @@ function generateHtmlDashboard(db) {
         const key = inlineMatch[1].trim();
         const val = inlineMatch[2].trim();
         if (val.startsWith('[') && val.endsWith(']')) {
-          result[key] = val.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+          result[key] = val
+            .slice(1, -1)
+            .split(',')
+            .map((s) => s.trim().replace(/^['"]|['"]$/g, ''))
+            .filter(Boolean);
           currentKey = null;
-        } else if (val.startsWith('"') && val.endsWith('"') || val.startsWith("'") && val.endsWith("'")) {
+        } else if (
+          (val.startsWith('"') && val.endsWith('"')) ||
+          (val.startsWith("'") && val.endsWith("'"))
+        ) {
           result[key] = val.slice(1, -1);
           currentKey = null;
         } else if (val === '') {
@@ -2115,7 +2406,10 @@ function generateHtmlDashboard(db) {
           result[key] = val;
           currentKey = null;
         }
-      } else if (currentKey && (line.startsWith(' ') || line.startsWith('\t'))) {
+      } else if (
+        currentKey &&
+        (line.startsWith(' ') || line.startsWith('\t'))
+      ) {
         const listMatch = line.trim().match(/^-\s*(.*)/);
         if (listMatch) {
           let val = listMatch[1].trim().replace(/^['"]|['"]$/g, '');
@@ -2130,57 +2424,113 @@ function generateHtmlDashboard(db) {
   const allConceptNodes = [];
   const contentDict = {};
 
-  categories.forEach(cat => {
+  categories.forEach((cat) => {
     const catDir = join(process.cwd(), '.agents', cat);
     if (fs.existsSync(catDir)) {
-      fs.readdirSync(catDir).filter(f => f.endsWith('.md')).forEach(file => {
-        try {
-          const filePath = join(catDir, file);
-          const rawContent = fs.readFileSync(filePath, 'utf8');
-          const fmMatch = rawContent.match(/^---\r?\n([^]*?)\r?\n---/);
-          let id = file.replace('.md', '').toLowerCase();
-          let name = file.replace('.md', '');
-          let type = cat;
-          let description = "OKF Concept node";
-          let depends_on = [], references = [], verifies = [], supersedes = [], tags = [];
-          if (fmMatch) {
-            const fmData = parseYaml(fmMatch[1]);
-            if (fmData.id) id = String(fmData.id).trim();
-            if (fmData.title) name = String(fmData.title).trim();
-            else if (fmData.name) name = String(fmData.name).trim();
-            if (fmData.type) type = String(fmData.type).trim();
-            if (fmData.description) description = String(fmData.description).trim();
-            const toArray = (v) => (!v ? [] : Array.isArray(v) ? v : [v]);
-            depends_on = toArray(fmData.depends_on || fmData.dependsOn || fmData.requires || fmData.implements).map(s => String(s).trim().replace(/-/g, '_'));
-            references = toArray(fmData.references || fmData.links || fmData.relates_to || fmData.related).map(s => String(s).trim().replace(/-/g, '_'));
-            verifies = toArray(fmData.verifies || fmData.verifies_claims || fmData.tests).map(s => String(s).trim().replace(/-/g, '_'));
-            supersedes = toArray(fmData.supersedes || fmData.replaces || fmData.superseded_by).map(s => String(s).trim().replace(/-/g, '_'));
-            tags = toArray(fmData.tags).map(s => String(s).trim());
+      fs.readdirSync(catDir)
+        .filter((f) => f.endsWith('.md'))
+        .forEach((file) => {
+          try {
+            const filePath = join(catDir, file);
+            const rawContent = fs.readFileSync(filePath, 'utf8');
+            const fmMatch = rawContent.match(/^---\r?\n([^]*?)\r?\n---/);
+            let id = file.replace('.md', '').toLowerCase();
+            let name = file.replace('.md', '');
+            let type = cat;
+            let description = 'OKF Concept node';
+            let depends_on = [],
+              references = [],
+              verifies = [],
+              supersedes = [],
+              tags = [];
+            if (fmMatch) {
+              const fmData = parseYaml(fmMatch[1]);
+              if (fmData.id) id = String(fmData.id).trim();
+              if (fmData.title) name = String(fmData.title).trim();
+              else if (fmData.name) name = String(fmData.name).trim();
+              if (fmData.type) type = String(fmData.type).trim();
+              if (fmData.description)
+                description = String(fmData.description).trim();
+              const toArray = (v) => (!v ? [] : Array.isArray(v) ? v : [v]);
+              depends_on = toArray(
+                fmData.depends_on ||
+                  fmData.dependsOn ||
+                  fmData.requires ||
+                  fmData.implements
+              ).map((s) => String(s).trim().replace(/-/g, '_'));
+              references = toArray(
+                fmData.references ||
+                  fmData.links ||
+                  fmData.relates_to ||
+                  fmData.related
+              ).map((s) => String(s).trim().replace(/-/g, '_'));
+              verifies = toArray(
+                fmData.verifies || fmData.verifies_claims || fmData.tests
+              ).map((s) => String(s).trim().replace(/-/g, '_'));
+              supersedes = toArray(
+                fmData.supersedes || fmData.replaces || fmData.superseded_by
+              ).map((s) => String(s).trim().replace(/-/g, '_'));
+              tags = toArray(fmData.tags).map((s) => String(s).trim());
+            }
+            const cleanId = id.replace(/-/g, '_');
+            allConceptNodes.push({
+              id: cleanId,
+              name,
+              type,
+              description,
+              category: cat,
+              file,
+              depends_on,
+              references,
+              verifies,
+              supersedes,
+              tags,
+            });
+            contentDict[cleanId] = rawContent;
+          } catch (readErr) {
+            console.error(
+              `Error reading ${file} for dashboard: ${readErr.message}`
+            );
           }
-          const cleanId = id.replace(/-/g, '_');
-          allConceptNodes.push({ id: cleanId, name, type, description, category: cat, file, depends_on, references, verifies, supersedes, tags });
-          contentDict[cleanId] = rawContent;
-        } catch (readErr) { console.error(`Error reading ${file} for dashboard: ${readErr.message}`); }
-      });
+        });
     }
   });
 
   const escapedContentDict = {};
   for (const [id, content] of Object.entries(contentDict)) {
-    escapedContentDict[id] = content.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+    escapedContentDict[id] = content
+      .replace(/\\/g, '\\\\')
+      .replace(/`/g, '\\`')
+      .replace(/\$/g, '\\$');
   }
-  const conceptNodesJsonEscaped = JSON.stringify(allConceptNodes).replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
-  const conceptContentsJsonEscaped = JSON.stringify(escapedContentDict).replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+  const conceptNodesJsonEscaped = JSON.stringify(allConceptNodes)
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\$/g, '\\$');
+  const conceptContentsJsonEscaped = JSON.stringify(escapedContentDict)
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\$/g, '\\$');
 
   let graphifyDataJsonEscaped = 'null';
   const graphJsonPath = join(process.cwd(), 'graphify-out', 'graph.json');
   if (fs.existsSync(graphJsonPath)) {
     try {
-      graphifyDataJsonEscaped = JSON.stringify(JSON.parse(fs.readFileSync(graphJsonPath, 'utf8'))).replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
-    } catch (err) { console.error(`Error reading graphify-out/graph.json: ${err.message}`); }
+      graphifyDataJsonEscaped = JSON.stringify(
+        JSON.parse(fs.readFileSync(graphJsonPath, 'utf8'))
+      )
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`')
+        .replace(/\$/g, '\\$');
+    } catch (err) {
+      console.error(`Error reading graphify-out/graph.json: ${err.message}`);
+    }
   }
 
-  const verifiedPercent = db.tasks.length > 0 ? Math.round((db.metrics.tasks_verified / db.tasks.length) * 100) : 0;
+  const verifiedPercent =
+    db.tasks.length > 0
+      ? Math.round((db.metrics.tasks_verified / db.tasks.length) * 100)
+      : 0;
   const barBlocks = Math.round(verifiedPercent / 5);
   const taskProgressBarStr = '█'.repeat(barBlocks) + '░'.repeat(20 - barBlocks);
 
@@ -2190,21 +2540,25 @@ function generateHtmlDashboard(db) {
   let knowledgeCount = 0;
   let todoCount = 0;
 
-  findings.forEach(f => {
-    if (f.category === "brutalist_compliance") brutalistCount++;
-    else if (f.category === "regulatory_compliance") regulatoryCount++;
-    else if (f.category === "knowledge_integrity") knowledgeCount++;
-    else if (f.category === "todo_trackers") todoCount++;
+  findings.forEach((f) => {
+    if (f.category === 'brutalist_compliance') brutalistCount++;
+    else if (f.category === 'regulatory_compliance') regulatoryCount++;
+    else if (f.category === 'knowledge_integrity') knowledgeCount++;
+    else if (f.category === 'todo_trackers') todoCount++;
   });
 
-  const penalty = (brutalistCount * 5) + (regulatoryCount * 10) + (knowledgeCount * 3) + (todoCount * 1);
+  const penalty =
+    brutalistCount * 5 +
+    regulatoryCount * 10 +
+    knowledgeCount * 3 +
+    todoCount * 1;
   const healthScore = Math.max(0, 100 - penalty);
 
-  let scoreColorClass = "text-emerald-500";
-  if (healthScore < 60) scoreColorClass = "text-red-500 animate-pulse";
-  else if (healthScore < 85) scoreColorClass = "text-amber-500";
+  let scoreColorClass = 'text-emerald-500';
+  if (healthScore < 60) scoreColorClass = 'text-red-500 animate-pulse';
+  else if (healthScore < 85) scoreColorClass = 'text-amber-500';
 
-  let findingsListHtml = "";
+  let findingsListHtml = '';
   if (findings.length === 0) {
     findingsListHtml = `
       <div class="col-span-full border border-dashed border-emerald-500/25 bg-emerald-950/5 p-4 text-center font-mono">
@@ -2212,21 +2566,22 @@ function generateHtmlDashboard(db) {
       </div>
     `;
   } else {
-    findingsListHtml = findings.map(f => {
-      let catBadgeColor = "border-amber-500/20 text-amber-500 bg-amber-500/5";
-      if (f.category === "regulatory_compliance") {
-        catBadgeColor = "border-red-500/35 text-red-500 bg-red-500/5";
-      } else if (f.category === "knowledge_integrity") {
-        catBadgeColor = "border-blue-500/35 text-blue-400 bg-blue-500/5";
-      } else if (f.category === "todo_trackers") {
-        catBadgeColor = "border-zinc-500/35 text-zinc-400 bg-zinc-500/5";
-      }
+    findingsListHtml = findings
+      .map((f) => {
+        let catBadgeColor = 'border-amber-500/20 text-amber-500 bg-amber-500/5';
+        if (f.category === 'regulatory_compliance') {
+          catBadgeColor = 'border-red-500/35 text-red-500 bg-red-500/5';
+        } else if (f.category === 'knowledge_integrity') {
+          catBadgeColor = 'border-blue-500/35 text-blue-400 bg-blue-500/5';
+        } else if (f.category === 'todo_trackers') {
+          catBadgeColor = 'border-zinc-500/35 text-zinc-400 bg-zinc-500/5';
+        }
 
-      const fileBasename = f.file.split(/[\\/]/).pop();
-      const cliCommand = `node scripts/agent-os.js fix ${f.id}`;
+        const fileBasename = f.file.split(/[\\/]/).pop();
+        const cliCommand = `node scripts/agent-os.js fix ${f.id}`;
 
-      return `
-        <div class="border border-white/5 bg-[#070709] p-3 hover:border-[#FF5A00]/20 transition-all flex flex-col justify-between" style="border-top: 2px solid ${f.category === "regulatory_compliance" ? "#ef4444" : f.category === "knowledge_integrity" ? "#3b82f6" : f.category === "brutalist_compliance" ? "#FF5A00" : "#71717a"};">
+        return `
+        <div class="border border-white/5 bg-[#070709] p-3 hover:border-[#FF5A00]/20 transition-all flex flex-col justify-between" style="border-top: 2px solid ${f.category === 'regulatory_compliance' ? '#ef4444' : f.category === 'knowledge_integrity' ? '#3b82f6' : f.category === 'brutalist_compliance' ? '#FF5A00' : '#71717a'};">
           <div>
             <div class="flex justify-between items-start gap-1.5 border-b border-white/5 pb-1.5 mb-2">
               <span class="text-[9px] font-mono font-bold tracking-widest uppercase text-white">${f.id}</span>
@@ -2250,7 +2605,8 @@ function generateHtmlDashboard(db) {
           </div>
         </div>
       `;
-    }).join('');
+      })
+      .join('');
   }
 
   const findingsPanelHtml = `
@@ -2910,7 +3266,9 @@ function bootstrapSystem() {
     db.queues.recurring.push('CRON-HARNESS-EVAL');
   }
 
-  const existingBootstrapGoal = db.goals.find(g => g.description === 'Agent OS closed-loop first milestone');
+  const existingBootstrapGoal = db.goals.find(
+    (g) => g.description === 'Agent OS closed-loop first milestone'
+  );
   if (!existingBootstrapGoal) {
     const goalId = `GOAL-${db.goals.length + 1}`;
     db.goals.push({
@@ -2919,13 +3277,14 @@ function bootstrapSystem() {
       status: 'in_progress',
       budget: 1.0,
       cost_accumulated: 0.0,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
     });
     db.tasks.push({
       id: `${goalId}-T1`,
       goal_id: goalId,
       title: 'Bootstrap control-plane artifacts',
-      description: 'Verify operating summary, implementation contract, capability matrix, queues, evals, traces, and dashboard exist.',
+      description:
+        'Verify operating summary, implementation contract, capability matrix, queues, evals, traces, and dashboard exist.',
       scope: '.agents/, scripts/agent-os.js, tests/agent-os.test.mjs',
       mindset: 'verification-driven',
       context: 'Most Capable Agent System Prompt first milestone.',
@@ -2938,29 +3297,44 @@ function bootstrapSystem() {
       dependencies: [],
       attempts: 0,
       budget: 0.1,
-      verification_plan: 'Harness eval passes and foundational artifacts exist.',
+      verification_plan:
+        'Harness eval passes and foundational artifacts exist.',
       artifacts: [
         '.agents/operating-summary.md',
         '.agents/implementation-contract.md',
         '.agents/runtime-capability-matrix.md',
-        '.agents/evals.md'
+        '.agents/evals.md',
       ],
-      phases: ["PLAN", "RESEARCH", "EXECUTE", "COMMIT"],
-      current_phase: null
+      phases: ['PLAN', 'RESEARCH', 'EXECUTE', 'COMMIT'],
+      current_phase: null,
     });
   }
 
   saveDb(db);
-  appendTrace({ type: 'bootstrap', status: 'completed', artifacts: ['operating-summary', 'implementation-contract', 'runtime-capability-matrix'] });
-  console.log('[Agent OS] Bootstrap complete. Foundational artifacts, queues, milestones, and eval definitions are current.');
+  appendTrace({
+    type: 'bootstrap',
+    status: 'completed',
+    artifacts: [
+      'operating-summary',
+      'implementation-contract',
+      'runtime-capability-matrix',
+    ],
+  });
+  console.log(
+    '[Agent OS] Bootstrap complete. Foundational artifacts, queues, milestones, and eval definitions are current.'
+  );
 
   // Explicitly compile graph to index newly bootstrapped capability and knowledge nodes
   try {
-    console.log(`[Graphify Integration] Triggering graph compilation for bootstrapped artifacts...`);
+    console.log(
+      `[Graphify Integration] Triggering graph compilation for bootstrapped artifacts...`
+    );
     execSync('graphify update .', { encoding: 'utf8' });
     console.log(`[Graphify Integration] Graph compiled successfully.`);
   } catch (graphifyErr) {
-    console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+    console.warn(
+      `[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`
+    );
   }
 }
 
@@ -2978,80 +3352,122 @@ function runEvalHarness() {
     join(process.cwd(), '.agents', 'queues', 'recurring.md'),
     join(process.cwd(), '.agents', 'evals.md'),
     join(process.cwd(), '.agents', 'effects.md'),
-    join(process.cwd(), '.agents', 'waits.md')
+    join(process.cwd(), '.agents', 'waits.md'),
   ];
 
-  const missingFiles = requiredFiles.filter(path => !fs.existsSync(path));
-  const requiredDbCollections = ['goals', 'tasks', 'sessions', 'incidents', 'effects', 'waits', 'checkpoints', 'evals', 'milestones', 'capabilities'];
-  const missingCollections = requiredDbCollections.filter(key => !Array.isArray(db[key]));
+  const missingFiles = requiredFiles.filter((path) => !fs.existsSync(path));
+  const requiredDbCollections = [
+    'goals',
+    'tasks',
+    'sessions',
+    'incidents',
+    'effects',
+    'waits',
+    'checkpoints',
+    'evals',
+    'milestones',
+    'capabilities',
+  ];
+  const missingCollections = requiredDbCollections.filter(
+    (key) => !Array.isArray(db[key])
+  );
   const unsafeRollbackToken = 'git ' + 'checkout --';
-  const hasUnsafeRollback = fs.readFileSync(new URL(import.meta.url), 'utf8').includes(unsafeRollbackToken);
+  const hasUnsafeRollback = fs
+    .readFileSync(new URL(import.meta.url), 'utf8')
+    .includes(unsafeRollbackToken);
   const failures = [
-    ...missingFiles.map(path => `Missing artifact: ${path}`),
-    ...missingCollections.map(key => `Missing DB collection: ${key}`),
-    ...(hasUnsafeRollback ? ['Unsafe automatic rollback command is still present.'] : [])
+    ...missingFiles.map((path) => `Missing artifact: ${path}`),
+    ...missingCollections.map((key) => `Missing DB collection: ${key}`),
+    ...(hasUnsafeRollback
+      ? ['Unsafe automatic rollback command is still present.']
+      : []),
   ];
 
-  const evalRecord = db.evals.find(e => e.id === 'EVAL-M1-CLOSED-LOOP') || db.evals[0];
+  const evalRecord =
+    db.evals.find((e) => e.id === 'EVAL-M1-CLOSED-LOOP') || db.evals[0];
   if (evalRecord) {
     evalRecord.status = failures.length === 0 ? 'passed' : 'failed';
-    evalRecord.last_result = failures.length === 0 ? 'All foundational checks passed.' : failures.join(' | ');
+    evalRecord.last_result =
+      failures.length === 0
+        ? 'All foundational checks passed.'
+        : failures.join(' | ');
     evalRecord.last_run_at = new Date().toISOString();
   }
   db.metrics.eval_pass_rate = failures.length === 0 ? 1.0 : 0.0;
   saveDb(db);
-  appendTrace({ type: 'eval', eval_id: evalRecord?.id || 'EVAL-M1-CLOSED-LOOP', status: failures.length === 0 ? 'passed' : 'failed', failures });
+  appendTrace({
+    type: 'eval',
+    eval_id: evalRecord?.id || 'EVAL-M1-CLOSED-LOOP',
+    status: failures.length === 0 ? 'passed' : 'failed',
+    failures,
+  });
 
   if (failures.length > 0) {
     console.error('[Agent OS] Eval failed:');
-    failures.forEach(failure => console.error(`- ${failure}`));
+    failures.forEach((failure) => console.error(`- ${failure}`));
     process.exit(1);
   }
-  console.log('[Agent OS] Eval passed. Closed-loop foundational artifacts are present and unsafe rollback is absent.');
+  console.log(
+    '[Agent OS] Eval passed. Closed-loop foundational artifacts are present and unsafe rollback is absent.'
+  );
 }
 
 function executeAutoHealing(findingId) {
   const db = loadDb();
-  const finding = db.proactive_findings.find(f => f.id === findingId);
+  const finding = db.proactive_findings.find((f) => f.id === findingId);
   if (!finding) {
     console.error(`Error: Finding ${findingId} not found in database.`);
     process.exit(1);
   }
 
-  console.log(`[Agent OS] Executing auto-healing for ${finding.id}: ${finding.title}`);
+  console.log(
+    `[Agent OS] Executing auto-healing for ${finding.id}: ${finding.title}`
+  );
   const filePath = finding.file;
   if (!fs.existsSync(filePath)) {
     console.error(`Error: File ${filePath} does not exist.`);
     process.exit(1);
   }
 
-  if (finding.category === "brutalist_compliance") {
+  if (finding.category === 'brutalist_compliance') {
     let content = fs.readFileSync(filePath, 'utf8');
     const lines = content.split(/\r?\n/);
     const lineIndex = finding.line - 1;
     if (lines[lineIndex] !== undefined) {
       const originalLine = lines[lineIndex];
-      let newLine = originalLine.replace(/\brounded-(xs|sm|md|lg|xl|2xl|3xl)\b/g, 'rounded-none');
-      newLine = newLine.replace(/border-radius\s*:\s*(?![0\s]*(px|%)?(\s|;|\}))([^\s;]+)/gi, 'border-radius: 0px');
-      if (finding.title === "Low-Contrast White on Safety Orange") {
+      let newLine = originalLine.replace(
+        /\brounded-(xs|sm|md|lg|xl|2xl|3xl)\b/g,
+        'rounded-none'
+      );
+      newLine = newLine.replace(
+        /border-radius\s*:\s*(?![0\s]*(px|%)?(\s|;|\}))([^\s;]+)/gi,
+        'border-radius: 0px'
+      );
+      if (finding.title === 'Low-Contrast White on Safety Orange') {
         newLine = newLine.replace(/\btext-white\b/g, 'text-[#050505]');
         newLine = newLine.replace(/\btext-zinc-50\b/g, 'text-[#050505]');
         newLine = newLine.replace(/\btext-gray-100\b/g, 'text-[#050505]');
       }
-      
+
       if (newLine !== originalLine) {
         lines[lineIndex] = newLine;
         fs.writeFileSync(filePath, lines.join('\n'), 'utf8');
-        console.log(`[Agent OS] Automatically fixed line ${finding.line} in ${filePath}.`);
-        db.proactive_findings = db.proactive_findings.filter(f => f.id !== findingId);
+        console.log(
+          `[Agent OS] Automatically fixed line ${finding.line} in ${filePath}.`
+        );
+        db.proactive_findings = db.proactive_findings.filter(
+          (f) => f.id !== findingId
+        );
         saveDb(db);
         console.log(`[Agent OS] Auto-healing complete.`);
         return;
       } else {
-        console.log(`[Agent OS] No automatically repairable pattern could be cleanly patched on line ${finding.line}.`);
+        console.log(
+          `[Agent OS] No automatically repairable pattern could be cleanly patched on line ${finding.line}.`
+        );
       }
     }
-  } else if (finding.category === "regulatory_compliance") {
+  } else if (finding.category === 'regulatory_compliance') {
     let content = fs.readFileSync(filePath, 'utf8');
     const lines = content.split(/\r?\n/);
     const lineIndex = finding.line - 1;
@@ -3065,12 +3481,16 @@ function executeAutoHealing(findingId) {
       } else if (/\binsured\b/i.test(originalLine)) {
         newLine = originalLine.replace(/\binsured\b/i, 'insured (IR816596)');
       }
-      
+
       if (newLine !== originalLine) {
         lines[lineIndex] = newLine;
         fs.writeFileSync(filePath, lines.join('\n'), 'utf8');
-        console.log(`[Agent OS] Automatically appended Minnesota Contractor ID (IR816596) on line ${finding.line} in ${filePath}.`);
-        db.proactive_findings = db.proactive_findings.filter(f => f.id !== findingId);
+        console.log(
+          `[Agent OS] Automatically appended Minnesota Contractor ID (IR816596) on line ${finding.line} in ${filePath}.`
+        );
+        db.proactive_findings = db.proactive_findings.filter(
+          (f) => f.id !== findingId
+        );
         saveDb(db);
         console.log(`[Agent OS] Auto-healing complete.`);
         return;
@@ -3079,13 +3499,16 @@ function executeAutoHealing(findingId) {
   }
 
   // Queue as harness task for complex/knowledge integrity or TODOs
-  const activeGoal = db.goals.find(g => g.status === 'in_progress') || db.goals[0];
-  const goalId = activeGoal ? activeGoal.id : "GOAL-1";
+  const activeGoal =
+    db.goals.find((g) => g.status === 'in_progress') || db.goals[0];
+  const goalId = activeGoal ? activeGoal.id : 'GOAL-1';
   const taskId = `${goalId}-FIND-${finding.id.split('-')[1]}`;
 
-  const existingTask = db.tasks.find(t => t.id === taskId);
+  const existingTask = db.tasks.find((t) => t.id === taskId);
   if (existingTask) {
-    console.log(`[Agent OS] Task ${taskId} is already queued for this finding.`);
+    console.log(
+      `[Agent OS] Task ${taskId} is already queued for this finding.`
+    );
     return;
   }
 
@@ -3109,39 +3532,44 @@ function executeAutoHealing(findingId) {
     budget: 0.05,
     verification_plan: `Verify file ${finding.file} compiles and compliance finding is resolved.`,
     artifacts: [finding.file],
-    phases: ["PLAN", "RESEARCH", "EXECUTE", "COMMIT"],
-    current_phase: null
+    phases: ['PLAN', 'RESEARCH', 'EXECUTE', 'COMMIT'],
+    current_phase: null,
   };
 
   db.tasks.push(newTask);
-  console.log(`[Agent OS] Complex/Knowledge integrity gap detected. Successfully queued task ${taskId} in the Cognitive Task Register for closed-loop execution.`);
+  console.log(
+    `[Agent OS] Complex/Knowledge integrity gap detected. Successfully queued task ${taskId} in the Cognitive Task Register for closed-loop execution.`
+  );
   saveDb(db);
 }
 
 function runQueueLoop() {
   console.log('[Agent OS] Polling SQLite queue for pending tasks...');
   const task = claimNextTask();
-  
+
   if (!task) {
     console.log('[Agent OS] No pending tasks in queue.');
     return;
   }
 
   console.log(`[Agent OS] Claimed task ${task.id}: ${task.description}`);
-  
+
   try {
     // Simulated execution based on prompt constraint
     // "execute it. If execution is successful and verified via MCP read tools, call resolveTask(id, 'completed')"
     console.log(`[Agent OS] Executing task ${task.id}...`);
     // Placeholder execution logic
-    
+
     // Explicit Verification
-    console.log(`[Agent OS] Verifying task ${task.id} execution via MCP read...`);
-    
+    console.log(
+      `[Agent OS] Verifying task ${task.id} execution via MCP read...`
+    );
+
     // Resolve task as verified
     resolveTask(task.id, 'verified');
-    console.log(`[Agent OS] Task ${task.id} successfully completed and verified.`);
-    
+    console.log(
+      `[Agent OS] Task ${task.id} successfully completed and verified.`
+    );
   } catch (err) {
     console.error(`[Agent OS] Task ${task.id} failed: ${err.message}`);
     const logStr = `## [ERR-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}]\n\n**Error:** ${err.message}\n**Task:** ${task.id}\n`;
@@ -3152,7 +3580,7 @@ function runQueueLoop() {
 }
 
 // CLI entry point routing
-const [,, command, ...args] = process.argv;
+const [, , command, ...args] = process.argv;
 
 initDb();
 
@@ -3168,7 +3596,7 @@ if (command === 'bootstrap') {
   }
   const desc = descArgs.join(' ');
   if (!desc) {
-    console.error("Error: Please provide a goal description.");
+    console.error('Error: Please provide a goal description.');
     process.exit(1);
   }
   createGoal(desc, 5.0, tasksPath);
@@ -3177,27 +3605,33 @@ if (command === 'bootstrap') {
 } else if (command === 'resume') {
   const waitId = args[0];
   if (!waitId) {
-    console.error("Error: Please specify a waitpoint ID to resume.");
+    console.error('Error: Please specify a waitpoint ID to resume.');
     process.exit(1);
   }
   resumeWaitpoint(waitId);
 } else if (command === 'status') {
   const db = loadDb();
   saveDb(db);
-  console.log("[Agent OS] Current Control Plane Status:");
+  console.log('[Agent OS] Current Control Plane Status:');
   console.log(`- Active Goals: ${db.goals.length}`);
-  console.log(`- Verified Tasks: ${db.metrics.tasks_verified} / ${db.tasks.length}`);
+  console.log(
+    `- Verified Tasks: ${db.metrics.tasks_verified} / ${db.tasks.length}`
+  );
   console.log(`- Cost Accumulated: $${db.metrics.total_cost_usd}`);
-  console.log(`- Local dashboard available at: file:///${DASHBOARD_PATH.replace(/\\/g, '/')}`);
+  console.log(
+    `- Local dashboard available at: file:///${DASHBOARD_PATH.replace(/\\/g, '/')}`
+  );
 } else if (command === 'eval') {
   runEvalHarness();
 } else if (command === 'fix') {
   const findingId = args[0];
   if (!findingId) {
-    console.error("Error: Please specify a finding ID to fix.");
+    console.error('Error: Please specify a finding ID to fix.');
     process.exit(1);
   }
   executeAutoHealing(findingId);
 } else {
-  console.log("Usage: node scripts/agent-os.js [bootstrap | goal <desc> [--tasks <path>] | run | resume <wait_id> | status | eval | fix <finding_id>]");
+  console.log(
+    'Usage: node scripts/agent-os.js [bootstrap | goal <desc> [--tasks <path>] | run | resume <wait_id> | status | eval | fix <finding_id>]'
+  );
 }

@@ -13,19 +13,21 @@ export default function SpecInspector() {
   const playCalibrateSound = (high = false) => {
     if (typeof window === 'undefined') return;
     try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const ctx = new (
+        window.AudioContext || (window as any).webkitAudioContext
+      )();
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      
+
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(high ? 900 : 380, ctx.currentTime);
-      
+
       gain.gain.setValueAtTime(0.02, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
-      
+
       osc.connect(gain);
       gain.connect(ctx.destination);
-      
+
       osc.start();
       osc.stop(ctx.currentTime + 0.15);
     } catch (e) {
@@ -46,7 +48,7 @@ export default function SpecInspector() {
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', handleResize);
-    
+
     // Set initial size
     handleResize();
 
@@ -75,24 +77,24 @@ export default function SpecInspector() {
         {isActive && (
           <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden font-mono select-none text-xs text-white">
             {/* Horizontal tracking line */}
-            <div 
+            <div
               className="absolute left-0 w-full border-t border-dashed border-white/15 transition-all duration-75 ease-out"
               style={{ top: mousePos.y }}
             />
             {/* Vertical tracking line */}
-            <div 
+            <div
               className="absolute top-0 h-full border-l border-dashed border-white/15 transition-all duration-75 ease-out"
               style={{ left: mousePos.x }}
             />
 
             {/* Pointer Coordinates Box */}
-            <div 
-              className="absolute bg-[#050505] border border-white/30 px-2 py-1 flex flex-col gap-0.5 z-[99] select-none text-white shadow-lg pointer-events-none transition-all duration-75 ease-out"
-              style={{ 
-                left: mousePos.x + 15, 
+            <div
+              className="absolute bg-[#050505] border border-white/30 px-2 py-1 flex flex-col gap-0.5 z-[99] select-none text-white  pointer-events-none transition-all duration-75 ease-out"
+              style={{
+                left: mousePos.x + 15,
                 top: mousePos.y + 15,
                 // Stay on screen if cursor is too close to margins
-                transform: `${mousePos.x > viewport.w - 140 ? 'translateX(-120%)' : ''} ${mousePos.y > viewport.h - 80 ? 'translateY(-120%)' : ''}`
+                transform: `${mousePos.x > viewport.w - 140 ? 'translateX(-120%)' : ''} ${mousePos.y > viewport.h - 80 ? 'translateY(-120%)' : ''}`,
               }}
             >
               <div className="flex items-center gap-1.5 font-bold">
@@ -104,11 +106,11 @@ export default function SpecInspector() {
             </div>
 
             {/* TOP LEFT METRICS PANEL */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="absolute left-6 top-6 bg-[#050505]/90 border border-white/30 p-4 w-60 flex flex-col gap-2 shadow-2xl backdrop-blur-md pointer-events-auto"
+              className="absolute left-6 top-6 bg-[#050505]/90 border border-white/30 p-4 w-60 flex flex-col gap-2  backdrop-blur-md pointer-events-auto"
             >
               <div className="flex items-center justify-between border-b border-white/20 pb-2">
                 <span className="font-bold flex items-center gap-1.5 text-white">
@@ -122,7 +124,9 @@ export default function SpecInspector() {
               <div className="space-y-1 text-gray-400">
                 <div className="flex justify-between">
                   <span>VIEWPORT:</span>
-                  <span className="text-white">{viewport.w}W x {viewport.h}H</span>
+                  <span className="text-white">
+                    {viewport.w}W x {viewport.h}H
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>GRID SNAP:</span>
@@ -142,18 +146,19 @@ export default function SpecInspector() {
             </motion.div>
 
             {/* BOTTOM LEFT REPUTATION HUD */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="absolute left-6 bottom-24 bg-[#050505]/90 border border-white/10 p-4 w-60 flex flex-col gap-2 shadow-2xl backdrop-blur-md pointer-events-auto"
+              className="absolute left-6 bottom-24 bg-[#050505]/90 border border-white/10 p-4 w-60 flex flex-col gap-2  backdrop-blur-md pointer-events-auto"
             >
               <div className="flex items-center gap-1.5 font-bold text-white border-b border-white/10 pb-2">
                 <Cpu size={12} className="text-white" />
                 CRAFTSMAN OVERLAYS
               </div>
               <p className="text-[10px] text-gray-400 leading-normal">
-                This mode overlays raw mechanical trade lines, demonstrating our strict blueprint layout discipline.
+                This mode overlays raw mechanical trade lines, demonstrating our
+                strict blueprint layout discipline.
               </p>
             </motion.div>
           </div>
@@ -164,17 +169,23 @@ export default function SpecInspector() {
       <div className="fixed bottom-6 left-6 z-[99]">
         <button
           onClick={toggleInspector}
-          className={`flex items-center gap-2 px-3 py-2 text-xs font-mono font-bold  border rounded-none shadow-xl transition-all duration-300 ${
+          className={`flex items-center gap-2 px-3 py-2 text-xs font-mono font-bold  border rounded-none  transition-all duration-300 ${
             isActive
               ? 'bg-white border-white text-[#050505] hover:bg-white hover:border-white scale-105'
               : 'bg-[#050505] border-white/30 text-white hover:border-white hover:bg-[#111]'
           }`}
         >
           <span className={`relative flex h-2 w-2 shrink-0`}>
-            <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${
-              isActive ? 'bg-black animate-ping' : 'bg-white animate-pulse-ring'
-            }`} />
-            <span className={`relative inline-flex rounded-full h-2 w-2 ${isActive ? 'bg-black' : 'bg-white'}`} />
+            <span
+              className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                isActive
+                  ? 'bg-black animate-ping'
+                  : 'bg-white animate-pulse-ring'
+              }`}
+            />
+            <span
+              className={`relative inline-flex rounded-full h-2 w-2 ${isActive ? 'bg-black' : 'bg-white'}`}
+            />
           </span>
           {isActive ? 'SPEC INSPECTION [ON]' : 'SPEC CALIBRATOR'}
         </button>

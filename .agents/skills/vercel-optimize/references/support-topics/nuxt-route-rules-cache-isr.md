@@ -3,14 +3,14 @@ id: nuxt-route-rules-cache-isr
 title: Nuxt routeRules cache and ISR
 status: active
 candidateKinds:
-  ["uncached_route", "isr_overrevalidation", "rendering_candidate"]
-frameworks: ["nuxt@>=3.0.0"]
+  ['uncached_route', 'isr_overrevalidation', 'rendering_candidate']
+frameworks: ['nuxt@>=3.0.0']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/frameworks/full-stack/nuxt",
-    "https://nuxt.com/docs/4.x/api/utils/define-route-rules",
-    "https://nuxt.com/docs/4.x/guide/concepts/rendering",
+    'https://vercel.com/docs/frameworks/full-stack/nuxt',
+    'https://nuxt.com/docs/4.x/api/utils/define-route-rules',
+    'https://nuxt.com/docs/4.x/guide/concepts/rendering',
   ]
 maxBriefChars: 850
 ---

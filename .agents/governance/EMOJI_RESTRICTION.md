@@ -1,8 +1,8 @@
 ---
 id: emoji_restriction
-name: "Governance Policy: Zero Emojis in Source Code"
+name: 'Governance Policy: Zero Emojis in Source Code'
 type: policy
-description: "Restricts all graphic emojis from compiled source code and frontend components to ensure a premium visual design."
+description: 'Restricts all graphic emojis from compiled source code and frontend components to ensure a premium visual design.'
 tags: [governance, design-system, visual]
 references: [architectural_decisions]
 ---

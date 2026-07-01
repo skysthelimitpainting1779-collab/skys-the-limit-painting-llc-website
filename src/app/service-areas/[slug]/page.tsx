@@ -15,7 +15,9 @@ function getPublicSupabase() {
   return createSupabaseClient(supabaseUrl, supabaseAnonKey);
 }
 
-export async function getServiceAreaPage(slug: string): Promise<LandingPage | null> {
+export async function getServiceAreaPage(
+  slug: string
+): Promise<LandingPage | null> {
   // 1. Try fetching from the database first
   try {
     const supabase = getPublicSupabase();
@@ -35,20 +37,43 @@ export async function getServiceAreaPage(slug: string): Promise<LandingPage | nu
           eyebrow: 'Local service / coverage',
           headline: `Owner-operated painting in ${dbArea.city}, built for homes, properties, and facility work.`,
           description: dbArea.description,
-          metaTitle: dbArea.meta_title || `${dbArea.city} Painting Contractor | Sky's the Limit`,
-          metaDescription: dbArea.meta_desc || `Looking for top-tier painting services in ${dbArea.city}, MN? Contact Sky's the Limit Painting LLC for residential and commercial projects.`,
+          metaTitle:
+            dbArea.meta_title ||
+            `${dbArea.city} Painting Contractor | Sky's the Limit`,
+          metaDescription:
+            dbArea.meta_desc ||
+            `Looking for top-tier painting services in ${dbArea.city}, MN? Contact Sky's the Limit Painting LLC for residential and commercial projects.`,
           image: '/brand/generated/sky-local-authority.webp',
           accent: 'Local authority',
           market: 'Residential',
-          proof: [`Based in ${dbArea.city}`, 'Owner-led project communication', 'Residential, commercial, and facility-ready scope'],
-          scope: ['Interior repainting', 'Exterior refreshes', 'Commercial interior work', 'Facility painting inquiries', 'Pavement-marking and striping conversations'],
+          proof: [
+            `Based in ${dbArea.city}`,
+            'Owner-led project communication',
+            'Residential, commercial, and facility-ready scope',
+          ],
+          scope: [
+            'Interior repainting',
+            'Exterior refreshes',
+            'Commercial interior work',
+            'Facility painting inquiries',
+            'Pavement-marking and striping conversations',
+          ],
           process: [
-            { title: 'Local Scope Review', body: 'Clarify surfaces, access, project timing, and the finish standard before a recommendation is made.' },
-            { title: 'Prep-Led Estimate', body: 'Treat patching, sanding, masking, caulking, and protection as the foundation of the estimate.' },
-            { title: 'Owner Follow-Through', body: 'Keep the project tied to Anthony’s direct communication, photos, and jobsite accountability.' },
+            {
+              title: 'Local Scope Review',
+              body: 'Clarify surfaces, access, project timing, and the finish standard before a recommendation is made.',
+            },
+            {
+              title: 'Prep-Led Estimate',
+              body: 'Treat patching, sanding, masking, caulking, and protection as the foundation of the estimate.',
+            },
+            {
+              title: 'Owner Follow-Through',
+              body: 'Keep the project tied to Anthony’s direct communication, photos, and jobsite accountability.',
+            },
           ],
           related: ['residential', 'commercial', 'public-sector'],
-          neighborhoods: [dbArea.city]
+          neighborhoods: [dbArea.city],
         };
       }
     }
@@ -78,10 +103,10 @@ export async function generateStaticParams() {
         const dbParams = dbAreas.map((area: { slug: string }) => ({
           slug: area.slug,
         }));
-        
+
         const allParams = [...staticParams];
-        dbParams.forEach(param => {
-          if (!allParams.some(p => p.slug === param.slug)) {
+        dbParams.forEach((param) => {
+          if (!allParams.some((p) => p.slug === param.slug)) {
             allParams.push(param);
           }
         });
@@ -100,7 +125,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const page = await getServiceAreaPage(slug);
   if (!page) {

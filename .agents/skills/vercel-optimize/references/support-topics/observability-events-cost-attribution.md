@@ -2,13 +2,13 @@
 id: observability-events-cost-attribution
 title: Observability Events cost attribution
 status: active
-candidateKinds: ["observability_events_attribution"]
-frameworks: ["*"]
+candidateKinds: ['observability_events_attribution']
+frameworks: ['*']
 priority: 92
 citations:
   [
-    "https://vercel.com/docs/observability/observability-plus",
-    "https://vercel.com/docs/alerts",
+    'https://vercel.com/docs/observability/observability-plus',
+    'https://vercel.com/docs/alerts',
   ]
 maxBriefChars: 900
 ---

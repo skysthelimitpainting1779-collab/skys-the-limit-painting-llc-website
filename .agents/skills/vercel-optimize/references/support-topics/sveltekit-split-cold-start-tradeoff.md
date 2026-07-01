@@ -2,13 +2,13 @@
 id: sveltekit-split-cold-start-tradeoff
 title: SvelteKit split function cold-start tradeoff
 status: active
-candidateKinds: ["cold_start", "slow_route"]
-frameworks: ["sveltekit@*"]
+candidateKinds: ['cold_start', 'slow_route']
+frameworks: ['sveltekit@*']
 priority: 82
 citations:
   [
-    "https://vercel.com/docs/frameworks/full-stack/sveltekit",
-    "https://svelte.dev/docs/kit/adapter-vercel",
+    'https://vercel.com/docs/frameworks/full-stack/sveltekit',
+    'https://svelte.dev/docs/kit/adapter-vercel',
   ]
 maxBriefChars: 800
 ---

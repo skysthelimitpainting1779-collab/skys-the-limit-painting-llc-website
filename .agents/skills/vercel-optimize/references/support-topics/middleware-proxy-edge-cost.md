@@ -2,13 +2,13 @@
 id: middleware-proxy-edge-cost
 title: Middleware edge cost
 status: active
-candidateKinds: ["middleware_heavy"]
-frameworks: ["next@>=12.0.0"]
+candidateKinds: ['middleware_heavy']
+frameworks: ['next@>=12.0.0']
 priority: 90
 citations:
   [
-    "https://nextjs.org/docs/app/building-your-application/routing/middleware",
-    "https://vercel.com/docs/routing-middleware",
+    'https://nextjs.org/docs/app/building-your-application/routing/middleware',
+    'https://vercel.com/docs/routing-middleware',
   ]
 maxBriefChars: 850
 ---

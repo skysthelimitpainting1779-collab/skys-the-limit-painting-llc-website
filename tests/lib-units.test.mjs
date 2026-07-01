@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test, describe } from 'node:test';
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) =>
+  readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 // ---------------------------------------------------------------------------
 // Re-implement pure functions from lib modules for real unit testing
@@ -11,7 +12,11 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf
 // From src/lib/env.ts
 function getEnv(key) {
   if (typeof process !== 'undefined' && process.env) {
-    return process.env[key] || process.env[`NEXT_PUBLIC_${key}`] || process.env[`VITE_${key}`];
+    return (
+      process.env[key] ||
+      process.env[`NEXT_PUBLIC_${key}`] ||
+      process.env[`VITE_${key}`]
+    );
   }
   return undefined;
 }
@@ -32,7 +37,9 @@ function buildEstimateMailto(fields) {
 }
 
 // From src/lib/seo.ts
-const siteUrl = (getEnv('SITE_URL') || 'https://www.skysthelimitpaintingllc.com').replace(/\/$/, '');
+const siteUrl = (
+  getEnv('SITE_URL') || 'https://www.skysthelimitpaintingllc.com'
+).replace(/\/$/, '');
 
 function serviceSchema(name, description, path) {
   return {
@@ -112,14 +119,20 @@ function readUtmParamsServerFallback() {
 // ENV module tests
 // ---------------------------------------------------------------------------
 describe('lib/env - Environment variable loading', () => {
-
   test('ENV object exported with all expected keys', () => {
     const src = read('src/lib/env.ts');
     const expectedKeys = [
-      'SITE_URL', 'GA_MEASUREMENT_ID', 'FORMSPREE_FORM_ID',
-      'GOOGLE_SITE_VERIFICATION', 'FACEBOOK_URL', 'INSTAGRAM_URL',
-      'LINKEDIN_URL', 'TIKTOK_URL', 'BOOKING_URL',
-      'SUPABASE_URL', 'SUPABASE_ANON_KEY',
+      'SITE_URL',
+      'GA_MEASUREMENT_ID',
+      'FORMSPREE_FORM_ID',
+      'GOOGLE_SITE_VERIFICATION',
+      'FACEBOOK_URL',
+      'INSTAGRAM_URL',
+      'LINKEDIN_URL',
+      'TIKTOK_URL',
+      'BOOKING_URL',
+      'SUPABASE_URL',
+      'SUPABASE_ANON_KEY',
     ];
     for (const key of expectedKeys) {
       assert.match(src, new RegExp(`${key}:`), `ENV should export ${key}`);
@@ -178,7 +191,6 @@ describe('lib/env - Environment variable loading', () => {
 // Contact module tests
 // ---------------------------------------------------------------------------
 describe('lib/contact - Contact utilities', () => {
-
   test('businessEmail matches expected value', () => {
     assert.equal(businessEmail, 'skysthelimitpainting1779@gmail.com');
   });
@@ -217,7 +229,11 @@ describe('lib/contact - Contact utilities', () => {
   });
 
   test('buildEstimateMailto filters empty fields', () => {
-    const result = buildEstimateMailto({ Name: 'Bob', Empty: '   ', Phone: '555' });
+    const result = buildEstimateMailto({
+      Name: 'Bob',
+      Empty: '   ',
+      Phone: '555',
+    });
     const bodyPart = result.match(/body=(.*)$/);
     const decoded = decodeURIComponent(bodyPart[1]);
     assert.ok(decoded.includes('Name: Bob'));
@@ -242,7 +258,6 @@ describe('lib/contact - Contact utilities', () => {
 // SEO module tests
 // ---------------------------------------------------------------------------
 describe('lib/seo - Schema.org JSON-LD generation', () => {
-
   test('businessSchema has correct @context and @type', () => {
     const src = read('src/lib/seo.ts');
     assert.match(src, /'https:\/\/schema\.org'/);
@@ -279,22 +294,46 @@ describe('lib/seo - Schema.org JSON-LD generation', () => {
 
   test('businessSchema lists all expected cities in areaServed', () => {
     const src = read('src/lib/seo.ts');
-    const cities = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
+    const cities = [
+      'Inver Grove Heights',
+      'South St. Paul',
+      'St. Paul',
+      'Eagan',
+      'Woodbury',
+      'Minneapolis',
+    ];
     for (const city of cities) {
-      assert.match(src, new RegExp(city), `businessSchema should serve ${city}`);
+      assert.match(
+        src,
+        new RegExp(city),
+        `businessSchema should serve ${city}`
+      );
     }
   });
 
   test('businessSchema includes knowsAbout topics', () => {
     const src = read('src/lib/seo.ts');
-    const topics = ['Residential painting', 'Commercial painting', 'Pavement marking', 'Parking-lot striping'];
+    const topics = [
+      'Residential painting',
+      'Commercial painting',
+      'Pavement marking',
+      'Parking-lot striping',
+    ];
     for (const topic of topics) {
-      assert.match(src, new RegExp(topic), `knowsAbout should include ${topic}`);
+      assert.match(
+        src,
+        new RegExp(topic),
+        `knowsAbout should include ${topic}`
+      );
     }
   });
 
   test('serviceSchema returns valid Service schema', () => {
-    const result = serviceSchema('Interior Painting', 'Professional interior painting', '/painting-services/interior-painting');
+    const result = serviceSchema(
+      'Interior Painting',
+      'Professional interior painting',
+      '/painting-services/interior-painting'
+    );
     assert.equal(result['@context'], 'https://schema.org');
     assert.equal(result['@type'], 'Service');
     assert.equal(result.name, 'Interior Painting');
@@ -382,7 +421,13 @@ describe('lib/seo - Schema.org JSON-LD generation', () => {
     const hours = result.openingHoursSpecification[0];
     assert.equal(hours.opens, '07:00');
     assert.equal(hours.closes, '17:00');
-    assert.deepEqual(hours.dayOfWeek, ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+    assert.deepEqual(hours.dayOfWeek, [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+    ]);
   });
 });
 
@@ -390,7 +435,6 @@ describe('lib/seo - Schema.org JSON-LD generation', () => {
 // Analytics module tests
 // ---------------------------------------------------------------------------
 describe('lib/analytics - Event tracking and UTM parsing', () => {
-
   test('trackEvent guards against server-side execution', () => {
     const src = read('src/lib/analytics.ts');
     assert.match(src, /typeof window === 'undefined'/);
@@ -435,15 +479,26 @@ describe('lib/analytics - Event tracking and UTM parsing', () => {
 // Settings module tests
 // ---------------------------------------------------------------------------
 describe('lib/settings - Company settings and defaults', () => {
-
   test('CompanySettings interface has all required fields', () => {
     const src = read('src/lib/settings.ts');
     const fields = [
-      'company_name', 'phone', 'email', 'logo_url', 'primary_color',
-      'tagline', 'service_areas', 'services', 'meta_title_default', 'meta_desc_default',
+      'company_name',
+      'phone',
+      'email',
+      'logo_url',
+      'primary_color',
+      'tagline',
+      'service_areas',
+      'services',
+      'meta_title_default',
+      'meta_desc_default',
     ];
     for (const field of fields) {
-      assert.match(src, new RegExp(field), `CompanySettings should include ${field}`);
+      assert.match(
+        src,
+        new RegExp(field),
+        `CompanySettings should include ${field}`
+      );
     }
   });
 
@@ -469,20 +524,39 @@ describe('lib/settings - Company settings and defaults', () => {
 
   test('DEFAULT_SETTINGS tagline matches approved positioning', () => {
     const src = read('src/lib/settings.ts');
-    assert.match(src, /Residential detail\. Commercial discipline\. Public-sector ready\./);
+    assert.match(
+      src,
+      /Residential detail\. Commercial discipline\. Public-sector ready\./
+    );
   });
 
   test('DEFAULT_SETTINGS service_areas includes all six service areas', () => {
     const src = read('src/lib/settings.ts');
-    const areas = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
+    const areas = [
+      'Inver Grove Heights',
+      'South St. Paul',
+      'St. Paul',
+      'Eagan',
+      'Woodbury',
+      'Minneapolis',
+    ];
     for (const area of areas) {
-      assert.match(src, new RegExp(area.replace(/\./g, '\\.')), `service_areas should include ${area}`);
+      assert.match(
+        src,
+        new RegExp(area.replace(/\./g, '\\.')),
+        `service_areas should include ${area}`
+      );
     }
   });
 
   test('DEFAULT_SETTINGS services includes core service types', () => {
     const src = read('src/lib/settings.ts');
-    const services = ['Residential Painting', 'Commercial Painting', 'Pavement Marking', 'Parking-Lot Striping'];
+    const services = [
+      'Residential Painting',
+      'Commercial Painting',
+      'Pavement Marking',
+      'Parking-Lot Striping',
+    ];
     for (const svc of services) {
       assert.match(src, new RegExp(svc), `services should include ${svc}`);
     }

@@ -2,13 +2,13 @@
 id: next-fetch-revalidate-floor
 title: Next.js fetch revalidation floor
 status: active
-candidateKinds: ["uncached_route", "isr_overrevalidation"]
-frameworks: ["next@>=13.0.0"]
+candidateKinds: ['uncached_route', 'isr_overrevalidation']
+frameworks: ['next@>=13.0.0']
 priority: 88
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/functions/fetch",
-    "https://nextjs.org/docs/app/building-your-application/caching",
+    'https://nextjs.org/docs/app/api-reference/functions/fetch',
+    'https://nextjs.org/docs/app/building-your-application/caching',
   ]
 maxBriefChars: 850
 ---

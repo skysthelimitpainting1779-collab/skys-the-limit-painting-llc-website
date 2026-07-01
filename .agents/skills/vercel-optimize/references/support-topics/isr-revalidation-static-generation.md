@@ -2,14 +2,14 @@
 id: isr-revalidation-static-generation
 title: ISR revalidation and static generation
 status: active
-candidateKinds: ["isr_overrevalidation"]
-frameworks: ["next@>=13.4.0"]
+candidateKinds: ['isr_overrevalidation']
+frameworks: ['next@>=13.4.0']
 priority: 95
 citations:
   [
-    "https://vercel.com/docs/incremental-static-regeneration",
-    "https://nextjs.org/docs/app/api-reference/functions/revalidateTag",
-    "https://nextjs.org/docs/app/api-reference/functions/revalidatePath",
+    'https://vercel.com/docs/incremental-static-regeneration',
+    'https://nextjs.org/docs/app/api-reference/functions/revalidateTag',
+    'https://nextjs.org/docs/app/api-reference/functions/revalidatePath',
   ]
 maxBriefChars: 1000
 ---

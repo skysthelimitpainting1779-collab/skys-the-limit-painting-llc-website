@@ -2,11 +2,17 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { test } from 'node:test';
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) =>
+  readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('Vite config is deleted and package.json does not expose Gemini sdk', () => {
-  const viteConfigExists = existsSync(new URL('../vite.config.ts', import.meta.url));
-  assert.ok(!viteConfigExists, 'vite.config.ts should be deleted to prevent client exposure of configs');
+  const viteConfigExists = existsSync(
+    new URL('../vite.config.ts', import.meta.url)
+  );
+  assert.ok(
+    !viteConfigExists,
+    'vite.config.ts should be deleted to prevent client exposure of configs'
+  );
 
   const packageJson = read('package.json');
   assert.doesNotMatch(packageJson, /@google\/genai/);
@@ -23,7 +29,8 @@ test('lead email HTML escapes submitted keys and values', () => {
 
 test('Vercel config has security headers and no blanket SPA rewrite', () => {
   const vercelConfig = JSON.parse(read('vercel.json'));
-  const headerKeys = vercelConfig.headers?.[0]?.headers?.map((header) => header.key) || [];
+  const headerKeys =
+    vercelConfig.headers?.[0]?.headers?.map((header) => header.key) || [];
 
   for (const key of [
     'X-Content-Type-Options',
@@ -48,9 +55,21 @@ test('build pipeline prerenders public routes and static 404 metadata', () => {
   assert.match(layout, /canonical/);
 
   // Assert that App Router directories exist for core pages
-  for (const route of ['residential', 'commercial', 'public-sector', 'projects', 'about', 'contact', 'capabilities', 'service-area']) {
+  for (const route of [
+    'residential',
+    'commercial',
+    'public-sector',
+    'projects',
+    'about',
+    'contact',
+    'capabilities',
+    'service-area',
+  ]) {
     const pagePath = `src/app/${route}/page.tsx`;
-    assert.ok(existsSync(new URL(`../${pagePath}`, import.meta.url)), `${pagePath} should exist for the route ${route}`);
+    assert.ok(
+      existsSync(new URL(`../${pagePath}`, import.meta.url)),
+      `${pagePath} should exist for the route ${route}`
+    );
   }
 });
 
@@ -66,7 +85,10 @@ test('before and after slider remains pointer-enabled and is keyboard accessible
 
 test('service area map is fast, routable, and accessible', () => {
   const appExists = existsSync(new URL('../src/App.tsx', import.meta.url));
-  assert.ok(!appExists, 'src/App.tsx should be deleted to clean up Vite router remnants');
+  assert.ok(
+    !appExists,
+    'src/App.tsx should be deleted to clean up Vite router remnants'
+  );
 
   const page = read('src/app/service-area/page.tsx');
   const header = read('src/components/ConversionHeader.tsx');
@@ -86,11 +108,30 @@ test('lead form controls have accessible names and normalized funnel events', ()
   const leadForm = read('src/components/LeadForm.tsx');
   const leadsApi = read('src/app/api/leads/route.ts');
 
-  for (const label of ['Full name', 'Phone', 'Email', 'City', 'Project address or cross streets', 'Market', 'Project type', 'Property type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project photo link', 'Project details']) {
+  for (const label of [
+    'Full name',
+    'Phone',
+    'Email',
+    'City',
+    'Project address or cross streets',
+    'Market',
+    'Project type',
+    'Property type',
+    'Timeline',
+    'Budget range',
+    'Preferred contact method',
+    'Project photo link',
+    'Project details',
+  ]) {
     assert.match(leadForm, new RegExp(`aria-label="${label}"`));
   }
 
-  for (const eventName of ['lead_form_start', 'lead_form_submit_success', 'lead_form_submit_error', 'lead_mailto_fallback_opened']) {
+  for (const eventName of [
+    'lead_form_start',
+    'lead_form_submit_success',
+    'lead_form_submit_error',
+    'lead_mailto_fallback_opened',
+  ]) {
     assert.match(leadForm, new RegExp(`'${eventName}'`));
   }
 

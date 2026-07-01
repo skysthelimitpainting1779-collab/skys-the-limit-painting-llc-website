@@ -12,7 +12,7 @@ Use `React.cache()` for server-side request deduplication. Authentication and da
 **Usage:**
 
 ```typescript
-import { cache } from "react";
+import { cache } from 'react';
 
 export const getCurrentUser = cache(async () => {
   const session = await auth();

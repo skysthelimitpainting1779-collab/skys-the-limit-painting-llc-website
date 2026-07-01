@@ -1,7 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https:' + '/' + '/www.skysthelimitpaintingllc.com').replace(/\/$/, '');
+const siteUrl = (
+  process.env.SITE_URL ||
+  process.env.VITE_SITE_URL ||
+  'https:' + '/' + '/www.skysthelimitpaintingllc.com'
+).replace(/\/$/, '');
 const defaultImage = '/brand/generated/sky-local-authority.webp';
 
 const businessSchema = {
@@ -85,21 +89,96 @@ function serviceSchema(name, description, pagePath) {
 }
 
 const landingRoutes = [
-  ['/service-areas/inver-grove-heights', 'Inver Grove Heights Painting Contractor | Sky’s the Limit', 'Owner-operated painting contractor based in Inver Grove Heights, MN for residential painting, commercial repainting, and qualified facility opportunities.', 'Inver Grove Heights Painting Contractor'],
-  ['/service-areas/south-st-paul', 'South St. Paul Painting Contractor | Sky’s the Limit', 'Painting contractor near South St. Paul for residential interiors, exterior refreshes, commercial repainting, and facility painting inquiries.', 'South St. Paul Painting Contractor'],
-  ['/service-areas/st-paul', 'St. Paul Painting Contractor | Sky’s the Limit', 'St. Paul painting contractor for interior painting, commercial refreshes, exterior painting conversations, and prep-first project scopes.', 'St. Paul Painting Contractor'],
-  ['/service-areas/eagan', 'Eagan Painting Contractor | Sky’s the Limit', 'Eagan painting contractor for residential painting, commercial interiors, exterior refreshes, and owner-operated project communication.', 'Eagan Painting Contractor'],
-  ['/service-areas/woodbury', 'Woodbury Painting Contractor | Sky’s the Limit', 'Woodbury painting contractor for residential painting, commercial refreshes, trim work, exterior painting conversations, and project scoping.', 'Woodbury Painting Contractor'],
-  ['/service-areas/minneapolis', 'Minneapolis Painting Contractor | Sky’s the Limit', 'Minneapolis painting contractor for commercial painting, residential interiors, facility refreshes, and prep-first repainting conversations.', 'Minneapolis Painting Contractor'],
-  ['/service-areas/twin-cities', 'Twin Cities Painting Contractor | Sky’s the Limit', 'Twin Cities painting contractor for residential painting, commercial repainting, facility work, pavement marking, and project scoping.', 'Twin Cities Painting Contractor'],
-  ['/painting-services/interior-painting', 'Interior Painting in the Twin Cities | Sky’s the Limit', 'Interior painting for Twin Cities homes and properties with clean prep, careful masking, trim detail, owner communication, and final walkthroughs.', 'Interior Painting'],
-  ['/painting-services/exterior-painting', 'Exterior Painting in the Twin Cities | Sky’s the Limit', 'Exterior painting contractor for Twin Cities homes and properties with prep-first scoping, weather-aware scheduling, and owner communication.', 'Exterior Painting'],
-  ['/painting-services/commercial-painting', 'Commercial Painting in the Twin Cities | Sky’s the Limit', 'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized scope, clean execution, and owner-led follow-through.', 'Commercial Painting'],
-  ['/painting-services/cabinet-painting', 'Cabinet Painting in the Twin Cities | Sky’s the Limit', 'Cabinet painting inquiry path for Twin Cities homeowners, with prep-first scoping around adhesion, masking, finish expectations, and durability.', 'Cabinet Painting'],
-  ['/painting-services/drywall-repair', 'Paint-Ready Drywall Repair | Sky’s the Limit', 'Paint-ready drywall repair for Twin Cities repainting projects, including patching, sanding, stain-blocking primer, and finish preparation.', 'Paint-Ready Drywall Repair'],
-  ['/painting-services/deck-fence-staining', 'Deck and Fence Staining | Sky’s the Limit Painting', 'Deck and fence staining inquiry path for Twin Cities homeowners, with condition review, prep planning, weather timing, and finish expectations.', 'Deck and Fence Staining'],
-  ['/painting-services/parking-lot-striping', 'Parking Lot Striping in Minnesota | Sky’s the Limit', 'Parking lot striping inquiries for Twin Cities properties, small lots, facilities, and public-facing spaces needing clearer markings and presentation.', 'Parking Lot Striping'],
-  ['/painting-services/pavement-marking', 'Pavement Marking in Minnesota | Sky’s the Limit', 'Pavement marking inquiries for Minnesota commercial properties, facilities, parking areas, and qualified public-sector opportunities.', 'Pavement Marking'],
+  [
+    '/service-areas/inver-grove-heights',
+    'Inver Grove Heights Painting Contractor | Sky’s the Limit',
+    'Owner-operated painting contractor based in Inver Grove Heights, MN for residential painting, commercial repainting, and qualified facility opportunities.',
+    'Inver Grove Heights Painting Contractor',
+  ],
+  [
+    '/service-areas/south-st-paul',
+    'South St. Paul Painting Contractor | Sky’s the Limit',
+    'Painting contractor near South St. Paul for residential interiors, exterior refreshes, commercial repainting, and facility painting inquiries.',
+    'South St. Paul Painting Contractor',
+  ],
+  [
+    '/service-areas/st-paul',
+    'St. Paul Painting Contractor | Sky’s the Limit',
+    'St. Paul painting contractor for interior painting, commercial refreshes, exterior painting conversations, and prep-first project scopes.',
+    'St. Paul Painting Contractor',
+  ],
+  [
+    '/service-areas/eagan',
+    'Eagan Painting Contractor | Sky’s the Limit',
+    'Eagan painting contractor for residential painting, commercial interiors, exterior refreshes, and owner-operated project communication.',
+    'Eagan Painting Contractor',
+  ],
+  [
+    '/service-areas/woodbury',
+    'Woodbury Painting Contractor | Sky’s the Limit',
+    'Woodbury painting contractor for residential painting, commercial refreshes, trim work, exterior painting conversations, and project scoping.',
+    'Woodbury Painting Contractor',
+  ],
+  [
+    '/service-areas/minneapolis',
+    'Minneapolis Painting Contractor | Sky’s the Limit',
+    'Minneapolis painting contractor for commercial painting, residential interiors, facility refreshes, and prep-first repainting conversations.',
+    'Minneapolis Painting Contractor',
+  ],
+  [
+    '/service-areas/twin-cities',
+    'Twin Cities Painting Contractor | Sky’s the Limit',
+    'Twin Cities painting contractor for residential painting, commercial repainting, facility work, pavement marking, and project scoping.',
+    'Twin Cities Painting Contractor',
+  ],
+  [
+    '/painting-services/interior-painting',
+    'Interior Painting in the Twin Cities | Sky’s the Limit',
+    'Interior painting for Twin Cities homes and properties with clean prep, careful masking, trim detail, owner communication, and final walkthroughs.',
+    'Interior Painting',
+  ],
+  [
+    '/painting-services/exterior-painting',
+    'Exterior Painting in the Twin Cities | Sky’s the Limit',
+    'Exterior painting contractor for Twin Cities homes and properties with prep-first scoping, weather-aware scheduling, and owner communication.',
+    'Exterior Painting',
+  ],
+  [
+    '/painting-services/commercial-painting',
+    'Commercial Painting in the Twin Cities | Sky’s the Limit',
+    'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized scope, clean execution, and owner-led follow-through.',
+    'Commercial Painting',
+  ],
+  [
+    '/painting-services/cabinet-painting',
+    'Cabinet Painting in the Twin Cities | Sky’s the Limit',
+    'Cabinet painting inquiry path for Twin Cities homeowners, with prep-first scoping around adhesion, masking, finish expectations, and durability.',
+    'Cabinet Painting',
+  ],
+  [
+    '/painting-services/drywall-repair',
+    'Paint-Ready Drywall Repair | Sky’s the Limit',
+    'Paint-ready drywall repair for Twin Cities repainting projects, including patching, sanding, stain-blocking primer, and finish preparation.',
+    'Paint-Ready Drywall Repair',
+  ],
+  [
+    '/painting-services/deck-fence-staining',
+    'Deck and Fence Staining | Sky’s the Limit Painting',
+    'Deck and fence staining inquiry path for Twin Cities homeowners, with condition review, prep planning, weather timing, and finish expectations.',
+    'Deck and Fence Staining',
+  ],
+  [
+    '/painting-services/parking-lot-striping',
+    'Parking Lot Striping in Minnesota | Sky’s the Limit',
+    'Parking lot striping inquiries for Twin Cities properties, small lots, facilities, and public-facing spaces needing clearer markings and presentation.',
+    'Parking Lot Striping',
+  ],
+  [
+    '/painting-services/pavement-marking',
+    'Pavement Marking in Minnesota | Sky’s the Limit',
+    'Pavement marking inquiries for Minnesota commercial properties, facilities, parking areas, and qualified public-sector opportunities.',
+    'Pavement Marking',
+  ],
 ].map(([path, title, description, serviceName]) => ({
   path,
   title,
@@ -108,7 +187,14 @@ const landingRoutes = [
     serviceSchema(serviceName, description, path),
     breadcrumbSchema([
       { name: 'Home', path: '/' },
-      { name: path.startsWith('/service-areas') ? 'Service Areas' : 'Painting Services', path: path.startsWith('/service-areas') ? '/service-areas/twin-cities' : '/painting-services/interior-painting' },
+      {
+        name: path.startsWith('/service-areas')
+          ? 'Service Areas'
+          : 'Painting Services',
+        path: path.startsWith('/service-areas')
+          ? '/service-areas/twin-cities'
+          : '/painting-services/interior-painting',
+      },
       { name: serviceName, path },
     ]),
   ],
@@ -128,8 +214,15 @@ const routes = [
     description:
       'Residential painting in Inver Grove Heights and the Twin Cities Metro with clean prep, careful protection, owner accountability, and sharp finish work.',
     schema: [
-      serviceSchema('Residential Painting', 'Residential painting in Inver Grove Heights and the Twin Cities Metro with clean prep, careful protection, owner accountability, and sharp finish work.', '/residential'),
-      breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Residential', path: '/residential' }]),
+      serviceSchema(
+        'Residential Painting',
+        'Residential painting in Inver Grove Heights and the Twin Cities Metro with clean prep, careful protection, owner accountability, and sharp finish work.',
+        '/residential'
+      ),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Residential', path: '/residential' },
+      ]),
     ],
   },
   {
@@ -138,18 +231,33 @@ const routes = [
     description:
       'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized communication, clean execution, and durable finishes.',
     schema: [
-      serviceSchema('Commercial Painting', 'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized communication, clean execution, and durable finishes.', '/commercial'),
-      breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Commercial', path: '/commercial' }]),
+      serviceSchema(
+        'Commercial Painting',
+        'Commercial painting for Twin Cities shops, offices, facilities, and properties with organized communication, clean execution, and durable finishes.',
+        '/commercial'
+      ),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Commercial', path: '/commercial' },
+      ]),
     ],
   },
   {
     path: '/public-sector',
-    title: 'Public Sector Painting Opportunities | Sky’s the Limit Painting LLC',
+    title:
+      'Public Sector Painting Opportunities | Sky’s the Limit Painting LLC',
     description:
       'Sky’s the Limit Painting is preparing to compete for Minnesota city, county, and state painting, facility, striping, and pavement-marking opportunities.',
     schema: [
-      serviceSchema('Public Sector Opportunities', 'Sky’s the Limit Painting is preparing to compete for Minnesota city, county, and state painting, facility, striping, and pavement-marking opportunities.', '/public-sector'),
-      breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Public Sector', path: '/public-sector' }]),
+      serviceSchema(
+        'Public Sector Opportunities',
+        'Sky’s the Limit Painting is preparing to compete for Minnesota city, county, and state painting, facility, striping, and pavement-marking opportunities.',
+        '/public-sector'
+      ),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Public Sector', path: '/public-sector' },
+      ]),
     ],
   },
   {
@@ -157,56 +265,80 @@ const routes = [
     title: "Painting Projects in the Twin Cities | Sky's the Limit",
     description:
       'Real project proof from Sky’s the Limit Painting LLC, including residential painting, commercial repainting, and striping references in the Twin Cities area.',
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Projects', path: '/projects' }]),
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Projects', path: '/projects' },
+    ]),
   },
   {
     path: '/about',
     title: "About Anthony | Sky's the Limit Painting LLC",
     description:
       'Meet Anthony Briseno, the owner behind Sky’s the Limit Painting LLC and its trade-built approach to Minnesota residential, commercial, and public-sector painting opportunities.',
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }]),
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'About', path: '/about' },
+    ]),
   },
   {
     path: '/contact',
     title: "Contact Sky's the Limit Painting LLC | Get an Estimate",
     description:
       'Request an estimate from Sky’s the Limit Painting LLC for residential painting, commercial repainting, facility work, or public-sector opportunities in Minnesota.',
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }]),
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Contact', path: '/contact' },
+    ]),
   },
   {
     path: '/capabilities',
     title: "Capabilities Statement | Sky's the Limit Painting LLC",
     description:
       'Capabilities statement, verified corporate credentials, NAICS codes, SWIFT details, and public-sector readiness notes for Sky’s the Limit Painting LLC.',
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Capabilities', path: '/capabilities' }]),
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Capabilities', path: '/capabilities' },
+    ]),
   },
   {
     path: '/service-area',
     title: "Service Area Map | Sky's the Limit Painting LLC",
     description:
       "Fast service-area map for Sky's the Limit Painting LLC, serving Inver Grove Heights and the Twin Cities metro.",
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Service Area Map', path: '/service-area' }]),
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Service Area Map', path: '/service-area' },
+    ]),
   },
   {
     path: '/estimate',
     title: "Smart Estimate Calculator | Sky's the Limit Painting LLC",
     description:
-      "Calculate an instant painting, cabinet refinishing, or exterior cost range for your home in the Twin Cities using our smart estimator.",
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Estimate', path: '/estimate' }]),
+      'Calculate an instant painting, cabinet refinishing, or exterior cost range for your home in the Twin Cities using our smart estimator.',
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Estimate', path: '/estimate' },
+    ]),
   },
   {
     path: '/review',
     title: "Submit a Project Review | Sky's the Limit Painting LLC",
     description:
       "Provide feedback on your residential painting or commercial coating project completed by Anthony Briseno and Sky's the Limit.",
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Review', path: '/review' }]),
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Review', path: '/review' },
+    ]),
   },
   {
     path: '/refer',
     title: "Painting Referral Program | Sky's the Limit Painting LLC",
     description:
-      "Earn $100 cash and give your friend $100 off their next interior or exterior painting project in the Twin Cities with our referral program.",
-    schema: breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Referral Program', path: '/refer' }]),
+      'Earn $100 cash and give your friend $100 off their next interior or exterior painting project in the Twin Cities with our referral program.',
+    schema: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Referral Program', path: '/refer' },
+    ]),
   },
   ...landingRoutes,
   {
@@ -233,23 +365,64 @@ function injectHead(template, route) {
   const canonical = canonicalFor(route.path);
   const image = siteUrl + defaultImage;
   const schema = route.schema
-    ? '\n    <script type="application/ld+json" id="page-schema">' + JSON.stringify(route.schema) + '</script>'
+    ? '\n    <script type="application/ld+json" id="page-schema">' +
+      JSON.stringify(route.schema) +
+      '</script>'
     : '';
 
-  const fallbackContent = '<main><h1>' + escapeHtml(route.title) + '</h1><p>' + escapeHtml(route.description) + '</p></main>';
+  const fallbackContent =
+    '<main><h1>' +
+    escapeHtml(route.title) +
+    '</h1><p>' +
+    escapeHtml(route.description) +
+    '</p></main>';
 
   return template
-    .replace(/<title>.*?<\/title>/s, '<title>' + escapeHtml(route.title) + '</title>')
-    .replace(/<meta name="description" content=".*?" \/>/s, '<meta name="description" content="' + escapeHtml(route.description) + '" />')
-    .replace(/<link rel="canonical" href=".*?" \/>/s, '<link rel="canonical" href="' + canonical + '" />')
-    .replace(/<meta property="og:title" content=".*?" \/>/s, '<meta property="og:title" content="' + escapeHtml(route.title) + '" />')
-    .replace(/<meta property="og:description" content=".*?" \/>/s, '<meta property="og:description" content="' + escapeHtml(route.description) + '" />')
-    .replace(/<meta property="og:image" content=".*?" \/>/s, '<meta property="og:image" content="' + image + '" />')
+    .replace(
+      /<title>.*?<\/title>/s,
+      '<title>' + escapeHtml(route.title) + '</title>'
+    )
+    .replace(
+      /<meta name="description" content=".*?" \/>/s,
+      '<meta name="description" content="' +
+        escapeHtml(route.description) +
+        '" />'
+    )
+    .replace(
+      /<link rel="canonical" href=".*?" \/>/s,
+      '<link rel="canonical" href="' + canonical + '" />'
+    )
+    .replace(
+      /<meta property="og:title" content=".*?" \/>/s,
+      '<meta property="og:title" content="' + escapeHtml(route.title) + '" />'
+    )
+    .replace(
+      /<meta property="og:description" content=".*?" \/>/s,
+      '<meta property="og:description" content="' +
+        escapeHtml(route.description) +
+        '" />'
+    )
+    .replace(
+      /<meta property="og:image" content=".*?" \/>/s,
+      '<meta property="og:image" content="' + image + '" />'
+    )
     .replace(
       '<meta name="twitter:card" content="summary_large_image" />',
-      '<meta property="og:type" content="website" />\n    <meta property="og:url" content="' + canonical + '" />\n    <meta name="twitter:card" content="summary_large_image" />\n    <meta name="twitter:title" content="' + escapeHtml(route.title) + '" />\n    <meta name="twitter:description" content="' + escapeHtml(route.description) + '" />\n    <meta name="twitter:image" content="' + image + '" />' + schema,
+      '<meta property="og:type" content="website" />\n    <meta property="og:url" content="' +
+        canonical +
+        '" />\n    <meta name="twitter:card" content="summary_large_image" />\n    <meta name="twitter:title" content="' +
+        escapeHtml(route.title) +
+        '" />\n    <meta name="twitter:description" content="' +
+        escapeHtml(route.description) +
+        '" />\n    <meta name="twitter:image" content="' +
+        image +
+        '" />' +
+        schema
     )
-    .replace('<div id="root"></div>', '<div id="root">' + fallbackContent + '</div>');
+    .replace(
+      '<div id="root"></div>',
+      '<div id="root">' + fallbackContent + '</div>'
+    );
 }
 
 const distDir = path.resolve('dist');

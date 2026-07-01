@@ -2,16 +2,16 @@
 id: route-error-durable-offload
 title: Durable offload for timeout-heavy routes
 status: active
-candidateKinds: ["route_errors"]
-frameworks: ["*"]
+candidateKinds: ['route_errors']
+frameworks: ['*']
 priority: 84
 citations:
   [
-    "https://vercel.com/docs/workflow",
-    "https://workflow-sdk.dev/docs/foundations/starting-workflows",
-    "https://workflow-sdk.dev/docs/foundations/workflows-and-steps",
-    "https://vercel.com/docs/queues",
-    "https://vercel.com/docs/functions/limitations",
+    'https://vercel.com/docs/workflow',
+    'https://workflow-sdk.dev/docs/foundations/starting-workflows',
+    'https://workflow-sdk.dev/docs/foundations/workflows-and-steps',
+    'https://vercel.com/docs/queues',
+    'https://vercel.com/docs/functions/limitations',
   ]
 maxBriefChars: 850
 ---

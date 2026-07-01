@@ -1,0 +1,18 @@
+{
+  "name": "agentic-backend",
+  "version": "1.0.0",
+  "description": "Standalone backend for Agentic CI/CD Self-Healing on Vercel Fluid",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

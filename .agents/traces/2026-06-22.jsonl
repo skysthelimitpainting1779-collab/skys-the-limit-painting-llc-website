@@ -1,0 +1,40 @@
+{"timestamp":"2026-06-22T19:27:05.068Z","type":"bootstrap","status":"completed","artifacts":["operating-summary","implementation-contract","runtime-capability-matrix"]}
+{"timestamp":"2026-06-22T19:27:07.289Z","type":"eval","eval_id":"EVAL-M1-CLOSED-LOOP","status":"passed","failures":[]}
+{"timestamp":"2026-06-22T19:30:29.881Z","type":"route","task_id":"GOAL-5-T1","harness":"General dynamic work harness","status":"selected"}
+{"timestamp":"2026-06-22T19:30:29.897Z","type":"claim","task_id":"GOAL-5-T1","session_id":"SESS-1782156629897","attempt":1}
+{"timestamp":"2026-06-22T19:30:29.899Z","type":"tool_call","task_id":"GOAL-5-T1","session_id":"SESS-1782156629897","command":"node scripts/agent-os.js eval"}
+{"timestamp":"2026-06-22T19:30:30.078Z","type":"eval","eval_id":"EVAL-M1-CLOSED-LOOP","status":"passed","failures":[]}
+{"timestamp":"2026-06-22T19:30:30.098Z","type":"verification","task_id":"GOAL-5-T1","session_id":"SESS-1782156629897","status":"passed","plan":"Harness eval passes and foundational artifacts exist."}
+{"timestamp":"2026-06-22T19:30:30.108Z","type":"complete","task_id":"GOAL-5-T1","session_id":"SESS-1782156629897","status":"verified","duration_ms":201,"cost_usd":0.002}
+{"timestamp":"2026-06-22T19:38:47.118Z","type":"bootstrap","status":"completed","artifacts":["operating-summary","implementation-contract","runtime-capability-matrix"]}
+{"timestamp":"2026-06-22T20:13:38.962Z","type":"eval","eval_id":"EVAL-M1-CLOSED-LOOP","status":"passed","failures":[]}
+{"timestamp":"2026-06-22T20:16:44.546Z","type":"route","task_id":"GOAL-6-T1","harness":"Coding and delivery harness","status":"selected"}
+{"timestamp":"2026-06-22T20:16:44.566Z","type":"claim","task_id":"GOAL-6-T1","session_id":"SESS-1782159404566","attempt":1}
+{"timestamp":"2026-06-22T20:16:44.577Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159404566","phase":"PLAN"}
+{"timestamp":"2026-06-22T20:16:44.578Z","type":"phase_exit","task_id":"GOAL-6-T1","session_id":"SESS-1782159404566","phase":"PLAN","status":"success"}
+{"timestamp":"2026-06-22T20:16:44.591Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159404566","phase":"RESEARCH"}
+{"timestamp":"2026-06-22T20:16:44.592Z","type":"verification","task_id":"GOAL-6-T1","session_id":"SESS-1782159404566","status":"failed","error":"Entry criteria failed for phase RESEARCH: No active checkpoints found for task GOAL-6-T1"}
+{"timestamp":"2026-06-22T20:16:51.901Z","type":"complete","task_id":"GOAL-6-T1","session_id":"SESS-1782159404566","status":"failed","duration_ms":7323,"cost_usd":0.0732}
+{"timestamp":"2026-06-22T20:24:01.728Z","type":"route","task_id":"GOAL-6-T1","harness":"Coding and delivery harness","status":"selected"}
+{"timestamp":"2026-06-22T20:24:01.744Z","type":"claim","task_id":"GOAL-6-T1","session_id":"SESS-1782159841743","attempt":2}
+{"timestamp":"2026-06-22T20:24:01.755Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159841743","phase":"EXECUTE"}
+{"timestamp":"2026-06-22T20:24:01.756Z","type":"verification","task_id":"GOAL-6-T1","session_id":"SESS-1782159841743","status":"failed","error":"Entry criteria failed for phase EXECUTE: No active checkpoints found for task GOAL-6-T1"}
+{"timestamp":"2026-06-22T20:24:07.656Z","type":"complete","task_id":"GOAL-6-T1","session_id":"SESS-1782159841743","status":"blocked","duration_ms":5900,"cost_usd":0.059}
+{"timestamp":"2026-06-22T20:26:24.905Z","type":"route","task_id":"GOAL-6-T1","harness":"Coding and delivery harness","status":"selected"}
+{"timestamp":"2026-06-22T20:26:24.927Z","type":"claim","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","attempt":1}
+{"timestamp":"2026-06-22T20:26:24.940Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"PLAN"}
+{"timestamp":"2026-06-22T20:26:24.943Z","type":"phase_exit","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"PLAN","status":"success"}
+{"timestamp":"2026-06-22T20:26:24.957Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"RESEARCH"}
+{"timestamp":"2026-06-22T20:26:24.960Z","type":"phase_exit","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"RESEARCH","status":"success"}
+{"timestamp":"2026-06-22T20:26:24.970Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"EXECUTE"}
+{"timestamp":"2026-06-22T20:26:31.546Z","type":"phase_exit","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"EXECUTE","status":"success"}
+{"timestamp":"2026-06-22T20:26:31.557Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"VALIDATE"}
+{"timestamp":"2026-06-22T20:26:38.739Z","type":"phase_exit","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"VALIDATE","status":"success"}
+{"timestamp":"2026-06-22T20:26:38.750Z","type":"phase_enter","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"COMMIT"}
+{"timestamp":"2026-06-22T20:26:38.751Z","type":"phase_exit","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","phase":"COMMIT","status":"success"}
+{"timestamp":"2026-06-22T20:26:38.752Z","type":"verification","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","status":"passed","plan":"Check that tsc compilation passes and there are no violations of MN Statute 176.041."}
+{"timestamp":"2026-06-22T20:26:38.765Z","type":"complete","task_id":"GOAL-6-T1","session_id":"SESS-1782159984926","status":"verified","duration_ms":13826,"cost_usd":0.1383}
+{"timestamp":"2026-06-22T21:06:34.370Z","type":"bootstrap","status":"completed","artifacts":["operating-summary","implementation-contract","runtime-capability-matrix"]}
+{"timestamp":"2026-06-22T21:06:45.678Z","type":"eval","eval_id":"EVAL-M1-CLOSED-LOOP","status":"passed","failures":[]}
+{"timestamp":"2026-06-22T21:08:39.536Z","type":"bootstrap","status":"completed","artifacts":["operating-summary","implementation-contract","runtime-capability-matrix"]}
+{"timestamp":"2026-06-22T21:09:07.798Z","type":"bootstrap","status":"completed","artifacts":["operating-summary","implementation-contract","runtime-capability-matrix"]}

@@ -2,16 +2,16 @@
 id: workflow-resumable-stream-routes
 title: Workflow resumable stream routes
 status: active
-candidateKinds: ["slow_route"]
-frameworks: ["*"]
+candidateKinds: ['slow_route']
+frameworks: ['*']
 routePatterns:
-  ["(^|/)api/.*/stream/?$", "(^|/)chat/.*/stream/?$", "\\[id\\].*/stream"]
+  ['(^|/)api/.*/stream/?$', '(^|/)chat/.*/stream/?$', "\\[id\\].*/stream"]
 priority: 98
 citations:
   [
-    "https://workflow-sdk.dev/docs/ai/resumable-streams",
-    "https://workflow-sdk.dev/docs/foundations/streaming",
-    "https://vercel.com/docs/workflow",
+    'https://workflow-sdk.dev/docs/ai/resumable-streams',
+    'https://workflow-sdk.dev/docs/foundations/streaming',
+    'https://vercel.com/docs/workflow',
   ]
 maxBriefChars: 850
 ---

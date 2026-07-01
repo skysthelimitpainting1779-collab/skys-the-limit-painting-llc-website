@@ -21,8 +21,8 @@ interface Recommendation {
   what: string; // 1 line, lead with impact. Max 80 chars when feasible.
   why: string; // 1-2 sentences. Root cause. Cites codebase findings + counts.
   fix: string; // Step-by-step. Includes before/after code fences. Specific enough to implement.
-  bucket: "cost" | "performance" | "reliability";
-  effort: "low" | "medium" | "high";
+  bucket: 'cost' | 'performance' | 'reliability';
+  effort: 'low' | 'medium' | 'high';
   affectedFiles: string[]; // Verified file paths, from candidate.files
   currentBehavior: string; // What the code does now (with snippet)
   desiredBehavior: string; // Target state (with snippet)
@@ -32,21 +32,21 @@ interface Recommendation {
   // Impact (computed from impact-magnitude.mjs in Step 4)
   impactLabel: {
     performance?: string; // PRECISE: "Reduce /api/products p95 from 850ms toward ~250-400ms"
-    costMagnitude?: "negligible" | "small" | "medium" | "large" | "very-large";
+    costMagnitude?: 'negligible' | 'small' | 'medium' | 'large' | 'very-large';
     costPhrase?: string; // "hundreds of dollars per month at current traffic"
     billingDimension?: string;
     fractionReduced?: number;
   };
-  impactTier: "high" | "medium" | "low";
+  impactTier: 'high' | 'medium' | 'low';
   billingDimension?:
-    | "edge-requests"
-    | "function-duration"
-    | "image-optimization"
-    | "isr-reads"
-    | "isr-writes"
-    | "bandwidth"
-    | "data-cache-reads"
-    | "cron-invocations"
+    | 'edge-requests'
+    | 'function-duration'
+    | 'image-optimization'
+    | 'isr-reads'
+    | 'isr-writes'
+    | 'bandwidth'
+    | 'data-cache-reads'
+    | 'cron-invocations'
     | string;
 
   // Grounding
@@ -79,7 +79,7 @@ interface Recommendation {
     grounding: number;
     evidence: number;
     overall: number;
-    grade: "Excellent" | "Good" | "Fair" | "Poor";
+    grade: 'Excellent' | 'Good' | 'Fair' | 'Poor';
   };
 }
 ```

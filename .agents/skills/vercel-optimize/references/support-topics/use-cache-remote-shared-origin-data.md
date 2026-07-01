@@ -2,13 +2,13 @@
 id: use-cache-remote-shared-origin-data
 title: Remote cache for shared origin data
 status: active
-candidateKinds: ["external_api_slow", "slow_route", "uncached_route"]
-frameworks: ["next@>=16.0.0"]
+candidateKinds: ['external_api_slow', 'slow_route', 'uncached_route']
+frameworks: ['next@>=16.0.0']
 priority: 87
 citations:
   [
-    "https://vercel.com/docs/caching/runtime-cache",
-    "https://nextjs.org/docs/app/api-reference/directives/use-cache-remote",
+    'https://vercel.com/docs/caching/runtime-cache',
+    'https://nextjs.org/docs/app/api-reference/directives/use-cache-remote',
   ]
 maxBriefChars: 950
 ---

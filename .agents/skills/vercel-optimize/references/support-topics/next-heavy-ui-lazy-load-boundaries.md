@@ -2,14 +2,14 @@
 id: next-heavy-ui-lazy-load-boundaries
 title: Next.js heavy UI lazy-load boundaries
 status: active
-candidateKinds: ["cwv_poor"]
-frameworks: ["next@*"]
-metrics: ["LCP", "INP"]
+candidateKinds: ['cwv_poor']
+frameworks: ['next@*']
+metrics: ['LCP', 'INP']
 priority: 82
 citations:
   [
-    "https://nextjs.org/docs/app/guides/lazy-loading",
-    "https://web.dev/articles/optimize-inp",
+    'https://nextjs.org/docs/app/guides/lazy-loading',
+    'https://web.dev/articles/optimize-inp',
   ]
 maxBriefChars: 850
 ---

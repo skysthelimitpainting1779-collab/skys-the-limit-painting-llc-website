@@ -5,12 +5,12 @@
 `useDeferredValue` makes filter updates a transition, activating `<ViewTransition>`:
 
 ```tsx
-"use client";
+'use client';
 
-import { useDeferredValue, useState, ViewTransition, Suspense } from "react";
+import { useDeferredValue, useState, ViewTransition, Suspense } from 'react';
 
 export default function SearchableGrid({ itemsPromise }) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const deferredSearch = useDeferredValue(search);
 
   return (
@@ -51,9 +51,9 @@ Per-item `<ViewTransition name={...}>` inside a deferred list triggers cross-fad
 Toggle between grid and detail view with shared element morph:
 
 ```tsx
-"use client";
+'use client';
 
-import { useState, useRef, startTransition, ViewTransition } from "react";
+import { useState, useRef, startTransition, ViewTransition } from 'react';
 
 export default function ItemGrid({ items }) {
   const [expandedId, setExpandedId] = useState(null);
@@ -68,8 +68,8 @@ export default function ItemGrid({ items }) {
             setExpandedId(null);
             setTimeout(
               () =>
-                window.scrollTo({ behavior: "smooth", top: scrollRef.current }),
-              100,
+                window.scrollTo({ behavior: 'smooth', top: scrollRef.current }),
+              100
             );
           });
         }}
@@ -99,21 +99,21 @@ Use `as const` arrays and derived types to prevent ID clashes:
 
 ```tsx
 const transitionTypes = [
-  "default",
-  "transition-to-detail",
-  "transition-to-list",
+  'default',
+  'transition-to-detail',
+  'transition-to-list',
 ] as const;
 const animationTypes = [
-  "auto",
-  "none",
-  "animate-slide-from-left",
-  "animate-slide-from-right",
+  'auto',
+  'none',
+  'animate-slide-from-left',
+  'animate-slide-from-right',
 ] as const;
 
 type TransitionType = (typeof transitionTypes)[number];
 type AnimationType = (typeof animationTypes)[number];
 type TransitionMap = { default: AnimationType } & Partial<
-  Record<Exclude<TransitionType, "default">, AnimationType>
+  Record<Exclude<TransitionType, 'default'>, AnimationType>
 >;
 
 export function HorizontalTransition({
@@ -152,7 +152,7 @@ Use `key` when content identity changes (state resets). Omit for cross-fades (ta
 Persistent elements (headers, navbars, sidebars) get captured in the page's transition snapshot. Fix with `viewTransitionName`:
 
 ```jsx
-<nav style={{ viewTransitionName: "persistent-nav" }}>{/* ... */}</nav>
+<nav style={{ viewTransitionName: 'persistent-nav' }}>{/* ... */}</nav>
 ```
 
 Then add the persistent element isolation CSS from `css-recipes.md`. For `backdrop-blur`/`backdrop-filter`, use the backdrop-blur workaround from `css-recipes.md`.
@@ -162,7 +162,7 @@ Then add the persistent element isolation CSS from `css-recipes.md`. For `backdr
 Give popovers/tooltips their own `viewTransitionName`:
 
 ```jsx
-<SelectPopover style={{ viewTransitionName: "popover" }}>
+<SelectPopover style={{ viewTransitionName: 'popover' }}>
   {options}
 </SelectPopover>
 ```
@@ -202,7 +202,7 @@ function AnimatedCollapse({ open, children }) {
 ## Preserve State with Activity
 
 ```jsx
-<Activity mode={isVisible ? "visible" : "hidden"}>
+<Activity mode={isVisible ? 'visible' : 'hidden'}>
   <ViewTransition enter="slide-in" exit="slide-out">
     <Sidebar />
   </ViewTransition>
@@ -214,7 +214,7 @@ function AnimatedCollapse({ open, children }) {
 `useOptimistic` values update before the transition snapshot, excluding them from animation. Use for controls (labels); use committed state for animated content:
 
 ```tsx
-const [sort, setSort] = useState("newest");
+const [sort, setSort] = useState('newest');
 const [optimisticSort, setOptimisticSort] = useOptimistic(sort);
 
 function cycleSort() {
@@ -246,10 +246,10 @@ Imperative control via `onEnter`, `onExit`, `onUpdate`, `onShare`. Always return
   onEnter={(instance, types) => {
     const anim = instance.new.animate(
       [
-        { transform: "scale(0.8)", opacity: 0 },
-        { transform: "scale(1)", opacity: 1 },
+        { transform: 'scale(0.8)', opacity: 0 },
+        { transform: 'scale(1)', opacity: 1 },
       ],
-      { duration: 300, easing: "ease-out" },
+      { duration: 300, easing: 'ease-out' }
     );
     return () => anim.cancel();
   }}

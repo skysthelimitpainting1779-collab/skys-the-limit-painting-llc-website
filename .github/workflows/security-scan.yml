@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main, staging]
   schedule:
-    - cron: "0 3 * * 0"
+    - cron: '0 3 * * 0'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ permissions:
   pull-requests: read
 
 env:
-  NODE_VERSION: "24.x"
+  NODE_VERSION: '24.x'
 
 jobs:
   npm-audit:

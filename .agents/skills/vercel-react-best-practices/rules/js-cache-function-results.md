@@ -65,7 +65,7 @@ function isLoggedIn(): boolean {
     return isLoggedInCache;
   }
 
-  isLoggedInCache = document.cookie.includes("auth=");
+  isLoggedInCache = document.cookie.includes('auth=');
   return isLoggedInCache;
 }
 

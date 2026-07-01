@@ -45,7 +45,7 @@ A bare `<ViewTransition>` in layout works only if pages have **no** VTs of their
 No wrapper component needed, works in Server Components:
 
 ```tsx
-<Link href="/products/1" transitionTypes={["transition-to-detail"]}>
+<Link href="/products/1" transitionTypes={['transition-to-detail']}>
   View Product
 </Link>
 ```
@@ -59,15 +59,15 @@ Replaces the manual pattern of `onNavigate` + `startTransition` + `addTransition
 ## Programmatic Navigation
 
 ```tsx
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { startTransition, addTransitionType } from "react";
+import { useRouter } from 'next/navigation';
+import { startTransition, addTransitionType } from 'react';
 
 function handleNavigate(href: string) {
   const router = useRouter();
   startTransition(() => {
-    addTransitionType("nav-forward");
+    addTransitionType('nav-forward');
     router.push(href);
   });
 }
@@ -80,10 +80,10 @@ function handleNavigate(href: string) {
 For search/sort/filter that re-renders on the server (via URL params), use `startTransition` + `router.replace`. VTs activate because the state update is inside `startTransition`:
 
 ```tsx
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { startTransition } from "react";
+import { useRouter } from 'next/navigation';
+import { startTransition } from 'react';
 
 function handleSort(sort: string) {
   const router = useRouter();
@@ -103,8 +103,8 @@ Directional slides + Suspense reveals coexist because they fire at different mom
 
 ```tsx
 <ViewTransition
-  enter={{ "nav-forward": "slide-from-right", default: "none" }}
-  exit={{ "nav-forward": "slide-to-left", default: "none" }}
+  enter={{ 'nav-forward': 'slide-from-right', default: 'none' }}
+  exit={{ 'nav-forward': 'slide-to-left', default: 'none' }}
   default="none"
 >
   <div>
@@ -150,7 +150,7 @@ Same rules as explicit `<Suspense>`: use simple string props (not type maps) sin
     <Link
       key={product.id}
       href={`/products/${product.id}`}
-      transitionTypes={["nav-forward"]}
+      transitionTypes={['nav-forward']}
     >
       <ViewTransition name={`product-${product.id}`}>
         <Image

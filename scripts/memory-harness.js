@@ -21,11 +21,27 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const GRAPH_FILE = path.join(ROOT, 'memory', 'shared-graph.json');
-const DELTA_LOG  = path.join(ROOT, 'memory', 'delta-log.md');
+const DELTA_LOG = path.join(ROOT, 'memory', 'delta-log.md');
 
 // ─── OKF Node Schema ─────────────────────────────────────────────────────────
-const VALID_TYPES  = ['entity', 'concept', 'playbook', 'integration', 'route', 'component', 'policy'];
-const REQUIRED_NODE_FIELDS = ['id', 'type', 'title', 'tags', 'properties', 'last_sync', 'edges'];
+const VALID_TYPES = [
+  'entity',
+  'concept',
+  'playbook',
+  'integration',
+  'route',
+  'component',
+  'policy',
+];
+const REQUIRED_NODE_FIELDS = [
+  'id',
+  'type',
+  'title',
+  'tags',
+  'properties',
+  'last_sync',
+  'edges',
+];
 
 function validateNodeSchema(node) {
   const errors = [];
@@ -33,10 +49,14 @@ function validateNodeSchema(node) {
     if (!(field in node)) errors.push(`Missing required field: "${field}"`);
   }
   if (node.type && !VALID_TYPES.includes(node.type)) {
-    errors.push(`Invalid type "${node.type}". Must be one of: ${VALID_TYPES.join(', ')}`);
+    errors.push(
+      `Invalid type "${node.type}". Must be one of: ${VALID_TYPES.join(', ')}`
+    );
   }
   if (node.id && !/^[a-z0-9_.]+$/.test(node.id)) {
-    errors.push(`Invalid id "${node.id}". Must be lowercase alphanumeric with dots/underscores only.`);
+    errors.push(
+      `Invalid id "${node.id}". Must be lowercase alphanumeric with dots/underscores only.`
+    );
   }
   if (node.tags && !Array.isArray(node.tags)) {
     errors.push(`"tags" must be an array`);
@@ -60,9 +80,11 @@ function saveGraph(graph) {
   graph.stats.total_nodes = graph.nodes.length;
   graph.stats.total_edges = graph.edges.length;
   // Recalculate isolated nodes (zero incoming edges)
-  const allTargets = new Set(graph.edges.map(e => e.to));
-  const hasIncoming = new Set(graph.edges.map(e => e.from));
-  const isolated = graph.nodes.filter(n => !allTargets.has(n.id) && !hasIncoming.has(n.id));
+  const allTargets = new Set(graph.edges.map((e) => e.to));
+  const hasIncoming = new Set(graph.edges.map((e) => e.from));
+  const isolated = graph.nodes.filter(
+    (n) => !allTargets.has(n.id) && !hasIncoming.has(n.id)
+  );
   graph.stats.isolated_nodes = isolated.length;
   fs.writeFileSync(GRAPH_FILE, JSON.stringify(graph, null, 2), 'utf8');
 }
@@ -96,29 +118,34 @@ export function QueryMemory(query) {
 
   // 2. Text + filter search
   const textLower = text ? text.toLowerCase() : null;
-  const matchingNodes = graph.nodes.filter(node => {
+  const matchingNodes = graph.nodes.filter((node) => {
     // Type filter
     if (type && node.type !== type) return false;
     // Tag filter
     if (tags?.length) {
       const nodeTags = node.tags || [];
-      if (!tags.some(t => nodeTags.includes(t))) return false;
+      if (!tags.some((t) => nodeTags.includes(t))) return false;
     }
     // Text match across id, title, tags, property values
     if (textLower) {
       const searchable = [
-        node.id, node.title,
+        node.id,
+        node.title,
         ...(node.tags || []),
         ...Object.values(node.properties || {}).map(String),
-      ].join(' ').toLowerCase();
+      ]
+        .join(' ')
+        .toLowerCase();
       if (!searchable.includes(textLower)) return false;
     }
     return true;
   });
 
   // Collect edges between matched nodes
-  const matchedIds = new Set(matchingNodes.map(n => n.id));
-  const matchingEdges = graph.edges.filter(e => matchedIds.has(e.from) && matchedIds.has(e.to));
+  const matchedIds = new Set(matchingNodes.map((n) => n.id));
+  const matchingEdges = graph.edges.filter(
+    (e) => matchedIds.has(e.from) && matchedIds.has(e.to)
+  );
 
   return {
     query: q,
@@ -136,10 +163,10 @@ function traverseFrom(graph, startId, depth, filterRelation) {
   function visit(nodeId, currentDepth) {
     if (visited.has(nodeId) || currentDepth > depth) return;
     visited.add(nodeId);
-    const node = graph.nodes.find(n => n.id === nodeId);
+    const node = graph.nodes.find((n) => n.id === nodeId);
     if (node) resultNodes.push(node);
 
-    const outEdges = graph.edges.filter(e => e.from === nodeId);
+    const outEdges = graph.edges.filter((e) => e.from === nodeId);
     for (const edge of outEdges) {
       if (filterRelation && edge.relation !== filterRelation) continue;
       resultEdges.push(edge);
@@ -154,12 +181,15 @@ function traverseFrom(graph, startId, depth, filterRelation) {
 // ─── GetNode ─────────────────────────────────────────────────────────────────
 export function GetNode(id) {
   const graph = loadGraph();
-  const node = graph.nodes.find(n => n.id === id);
+  const node = graph.nodes.find((n) => n.id === id);
   if (!node) return null;
   // Enrich with incoming edge count
-  const incoming = graph.edges.filter(e => e.to === id);
-  const outgoing = graph.edges.filter(e => e.from === id);
-  return { ...node, _meta: { incoming: incoming.length, outgoing: outgoing.length } };
+  const incoming = graph.edges.filter((e) => e.to === id);
+  const outgoing = graph.edges.filter((e) => e.from === id);
+  return {
+    ...node,
+    _meta: { incoming: incoming.length, outgoing: outgoing.length },
+  };
 }
 
 // ─── GetNeighbors ────────────────────────────────────────────────────────────
@@ -171,17 +201,19 @@ export function GetNeighbors(id, depth = 1) {
 // ─── GetGraphStats ────────────────────────────────────────────────────────────
 export function GetGraphStats() {
   const graph = loadGraph();
-  const allTargets = new Set(graph.edges.map(e => e.to));
-  const allSources = new Set(graph.edges.map(e => e.from));
-  const isolated = graph.nodes.filter(n => !allTargets.has(n.id) && !allSources.has(n.id));
+  const allTargets = new Set(graph.edges.map((e) => e.to));
+  const allSources = new Set(graph.edges.map((e) => e.from));
+  const isolated = graph.nodes.filter(
+    (n) => !allTargets.has(n.id) && !allSources.has(n.id)
+  );
   return {
     version: graph.version,
     last_updated: graph.last_updated,
     total_nodes: graph.nodes.length,
     total_edges: graph.edges.length,
     isolated_nodes: isolated.length,
-    isolated_ids: isolated.map(n => n.id),
-    node_types: [...new Set(graph.nodes.map(n => n.type))],
+    isolated_ids: isolated.map((n) => n.id),
+    node_types: [...new Set(graph.nodes.map((n) => n.type))],
     communities: graph.stats,
   };
 }
@@ -195,10 +227,14 @@ export function GetGraphStats() {
  * @param {string} agentId - Identifier of the calling agent (for delta log)
  * @returns {{ success: boolean, errors?: string[], node: Node }}
  */
-export function UpdateMemory(conceptId, partialUpdate, agentId = 'unknown-agent') {
+export function UpdateMemory(
+  conceptId,
+  partialUpdate,
+  agentId = 'unknown-agent'
+) {
   const graph = loadGraph();
 
-  const existingIdx = graph.nodes.findIndex(n => n.id === conceptId);
+  const existingIdx = graph.nodes.findIndex((n) => n.id === conceptId);
   let node;
   let operation;
 
@@ -237,9 +273,15 @@ export function UpdateMemory(conceptId, partialUpdate, agentId = 'unknown-agent'
   // Add any new edges declared in the update
   if (partialUpdate.edges) {
     for (const targetId of partialUpdate.edges) {
-      const edgeExists = graph.edges.some(e => e.from === conceptId && e.to === targetId);
+      const edgeExists = graph.edges.some(
+        (e) => e.from === conceptId && e.to === targetId
+      );
       if (!edgeExists) {
-        graph.edges.push({ from: conceptId, to: targetId, relation: 'related_to' });
+        graph.edges.push({
+          from: conceptId,
+          to: targetId,
+          relation: 'related_to',
+        });
       }
     }
   }
@@ -254,7 +296,7 @@ export function UpdateMemory(conceptId, partialUpdate, agentId = 'unknown-agent'
 }
 
 // ─── CLI interface ────────────────────────────────────────────────────────────
-const [,, command, ...cliArgs] = process.argv;
+const [, , command, ...cliArgs] = process.argv;
 
 if (command === 'query') {
   const q = cliArgs.join(' ');
@@ -280,7 +322,9 @@ if (command === 'query') {
 } else if (command === 'neighbors') {
   const [id, depthStr] = cliArgs;
   const result = GetNeighbors(id, parseInt(depthStr || '1', 10));
-  console.log(`\n🌐 Neighbors of "${id}" (depth ${depthStr || 1}): ${result.total} node(s)`);
+  console.log(
+    `\n🌐 Neighbors of "${id}" (depth ${depthStr || 1}): ${result.total} node(s)`
+  );
   for (const n of result.nodes) {
     console.log(`  [${n.type}] ${n.id}: ${n.title}`);
   }

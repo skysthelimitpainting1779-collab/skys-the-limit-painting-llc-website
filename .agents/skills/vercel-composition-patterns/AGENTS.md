@@ -612,7 +612,7 @@ function ForwardMessageDialog() {
 
 ```tsx
 function ForwardMessageDialog() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   return (
     <Dialog>
       <ForwardMessageComposer onInputChange={setInput} />
@@ -667,11 +667,11 @@ function ForwardMessageDialog() {
     <ForwardMessageProvider>
       <Dialog>
         <ForwardMessageComposer />
-        <MessagePreview />{" "}
+        <MessagePreview />{' '}
         {/* Custom components can access state and actions */}
         <DialogActions>
           <CancelButton />
-          <ForwardButton />{" "}
+          <ForwardButton />{' '}
           {/* Custom components can access state and actions */}
         </DialogActions>
       </Dialog>

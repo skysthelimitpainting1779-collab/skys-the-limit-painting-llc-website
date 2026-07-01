@@ -2,13 +2,13 @@
 id: fast-data-transfer-payloads
 title: Fast Data Transfer payloads
 status: active
-candidateKinds: ["uncached_route"]
-frameworks: ["*"]
+candidateKinds: ['uncached_route']
+frameworks: ['*']
 priority: 65
 citations:
   [
-    "https://vercel.com/docs/manage-cdn-usage",
-    "https://vercel.com/docs/caching/cdn-cache",
+    'https://vercel.com/docs/manage-cdn-usage',
+    'https://vercel.com/docs/caching/cdn-cache',
   ]
 maxBriefChars: 900
 ---

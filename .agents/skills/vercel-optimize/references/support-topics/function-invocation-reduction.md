@@ -2,14 +2,14 @@
 id: function-invocation-reduction
 title: Function invocation reduction
 status: active
-candidateKinds: ["slow_route"]
-frameworks: ["next@>=13.0.0"]
+candidateKinds: ['slow_route']
+frameworks: ['next@>=13.0.0']
 priority: 70
 citations:
   [
-    "https://react.dev/reference/react/cache",
-    "vercel-react-best-practices:server-parallel-fetching",
-    "vercel-react-best-practices:server-cache-react",
+    'https://react.dev/reference/react/cache',
+    'vercel-react-best-practices:server-parallel-fetching',
+    'vercel-react-best-practices:server-cache-react',
   ]
 maxBriefChars: 850
 ---

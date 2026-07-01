@@ -24,8 +24,8 @@ When analysis becomes too broad, the cost is real:
 
 ```ts
 const PAGE_MODULES = {
-  home: "./pages/home",
-  settings: "./pages/settings",
+  home: './pages/home',
+  settings: './pages/settings',
 } as const;
 
 const Page = await import(PAGE_MODULES[pageName]);
@@ -35,8 +35,8 @@ const Page = await import(PAGE_MODULES[pageName]);
 
 ```ts
 const PAGE_MODULES = {
-  home: () => import("./pages/home"),
-  settings: () => import("./pages/settings"),
+  home: () => import('./pages/home'),
+  settings: () => import('./pages/settings'),
 } as const;
 
 const Page = await PAGE_MODULES[pageName]();
@@ -47,7 +47,7 @@ const Page = await PAGE_MODULES[pageName]();
 **Incorrect (a 2-value enum still hides the final path from static analysis):**
 
 ```ts
-const baseDir = path.join(process.cwd(), "content/" + contentKind);
+const baseDir = path.join(process.cwd(), 'content/' + contentKind);
 ```
 
 **Correct (make each final path literal at the callsite):**
@@ -55,8 +55,8 @@ const baseDir = path.join(process.cwd(), "content/" + contentKind);
 ```ts
 const baseDir =
   kind === ContentKind.Blog
-    ? path.join(process.cwd(), "content/blog")
-    : path.join(process.cwd(), "content/docs");
+    ? path.join(process.cwd(), 'content/blog')
+    : path.join(process.cwd(), 'content/docs');
 ```
 
 In Next.js server code, this matters for output file tracing too. `path.join(process.cwd(), someVar)` can widen the traced file set because Next.js statically analyze `import`, `require`, and `fs` usage.

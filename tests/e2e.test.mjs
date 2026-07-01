@@ -2,27 +2,37 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { test, describe } from 'node:test';
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) =>
+  readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const exists = (path) => existsSync(new URL(`../${path}`, import.meta.url));
 
 // Calculator Cost Simulation Formula matching src/views/Estimate.tsx exactly
-function calculateSimulatedCosts(width, length, height, prepLevel, doors, windows, trimLength, cabDoors, cabDrawers) {
+function calculateSimulatedCosts(
+  width,
+  length,
+  height,
+  prepLevel,
+  doors,
+  windows,
+  trimLength,
+  cabDoors,
+  cabDrawers
+) {
   const wallArea = 2 * (width + length) * height;
-  const wallBase = wallArea * 3.50;
+  const wallBase = wallArea * 3.5;
   const wallPrepValue = prepLevel === 'premium' ? wallBase * 0.35 : 0;
   const wallCost = wallBase + wallPrepValue;
   const openingsCost = doors * 150 + windows * 100;
-  const trimCost = trimLength * 4.00;
+  const trimCost = trimLength * 4.0;
   const cabinetCost = (cabDoors + cabDrawers) * 125;
   const total = wallCost + openingsCost + trimCost + cabinetCost;
   return {
-    low: Math.round(total * 0.90),
-    high: Math.round(total * 1.15)
+    low: Math.round(total * 0.9),
+    high: Math.round(total * 1.15),
   };
 }
 
 describe('Tier 1: Feature Coverage', () => {
-
   test('T1.1 Routing & Navigation - Core layout components render successfully', () => {
     const layout = read('src/app/layout.tsx');
     assert.match(layout, /import ConversionHeader/);
@@ -42,14 +52,19 @@ describe('Tier 1: Feature Coverage', () => {
   test('T1.3 Routing & Navigation - Micro-utility header bar displays warning/intake message', () => {
     const header = read('src/components/ConversionHeader.tsx');
     assert.match(header, /Prep-first painting across the Twin Cities/);
-    assert.match(header, /Price range, scope review, and schedule conversation in one path/);
+    assert.match(
+      header,
+      /Price range, scope review, and schedule conversation in one path/
+    );
   });
 
   test('T1.4 Routing & Navigation - Redirects for legacy routes redirect to new pages', () => {
     const vercelConfig = JSON.parse(read('vercel.json'));
     const redirects = vercelConfig.redirects || [];
-    const residentialRedirect = redirects.find(r => r.source === '/services');
-    const interiorRedirect = redirects.find(r => r.source === '/services/interior');
+    const residentialRedirect = redirects.find((r) => r.source === '/services');
+    const interiorRedirect = redirects.find(
+      (r) => r.source === '/services/interior'
+    );
     assert.ok(residentialRedirect);
     assert.equal(residentialRedirect.destination, '/residential');
     assert.ok(interiorRedirect);
@@ -64,7 +79,10 @@ describe('Tier 1: Feature Coverage', () => {
 
   test('T1.6 Three-Market Content - Home page renders the approved positioning statement', () => {
     const home = read('src/app/HomeClient.tsx');
-    assert.match(home, /Residential detail\. Commercial discipline\. Public-sector ready\./);
+    assert.match(
+      home,
+      /Residential detail\. Commercial discipline\. Public-sector ready\./
+    );
   });
 
   test('T1.7 Three-Market Content - Residential page loads specific data fields', () => {
@@ -160,10 +178,23 @@ describe('Tier 1: Feature Coverage', () => {
 
   test('T1.22 Room Calculator - Room dimensions width/length changes update wall surface area calculations', () => {
     const est = read('src/views/Estimate.tsx');
-    assert.match(est, /2 \* \(dimensions\.width \+ dimensions\.length\) \* dimensions\.ceilingHeight/);
-    
+    assert.match(
+      est,
+      /2 \* \(dimensions\.width \+ dimensions\.length\) \* dimensions\.ceilingHeight/
+    );
+
     // Simulate Bedroom Preset (12 x 14 x 8)
-    const result1 = calculateSimulatedCosts(12, 14, 8, 'standard', 1, 1, 50, 0, 0);
+    const result1 = calculateSimulatedCosts(
+      12,
+      14,
+      8,
+      'standard',
+      1,
+      1,
+      50,
+      0,
+      0
+    );
     // Area = 2 * (12 + 14) * 8 = 416
     // Cost = 416 * 3.5 = 1456. Openings = 150 + 100 = 250. Trim = 50 * 4 = 200. Total = 1906.
     // Low = Math.round(1906 * 0.90) = 1715. High = Math.round(1906 * 1.15) = 2192.
@@ -171,7 +202,17 @@ describe('Tier 1: Feature Coverage', () => {
     assert.equal(result1.high, 2192);
 
     // Simulate Width increase from 12 to 15
-    const result2 = calculateSimulatedCosts(15, 14, 8, 'standard', 1, 1, 50, 0, 0);
+    const result2 = calculateSimulatedCosts(
+      15,
+      14,
+      8,
+      'standard',
+      1,
+      1,
+      50,
+      0,
+      0
+    );
     // Area = 2 * (15 + 14) * 8 = 464
     // Cost = 464 * 3.5 = 1624. Openings = 250. Trim = 200. Total = 2074.
     // Low = Math.round(2074 * 0.90) = 1867. High = Math.round(2074 * 1.15) = 2385.
@@ -182,9 +223,19 @@ describe('Tier 1: Feature Coverage', () => {
   test('T1.23 Room Calculator - Adjusting doors and windows counts updates openings cost', () => {
     const est = read('src/views/Estimate.tsx');
     assert.match(est, /doorsCount \* 150 \+ .*windowsCount \* 100/);
-    
+
     // Width 12, Length 14, Height 8, Doors 2, Windows 3
-    const result = calculateSimulatedCosts(12, 14, 8, 'standard', 2, 3, 50, 0, 0);
+    const result = calculateSimulatedCosts(
+      12,
+      14,
+      8,
+      'standard',
+      2,
+      3,
+      50,
+      0,
+      0
+    );
     // Area = 416. WallCost = 1456. Openings = 2 * 150 + 3 * 100 = 600. Trim = 200. Total = 2256.
     // Low = Math.round(2256 * 0.90) = 2030. High = Math.round(2256 * 1.15) = 2594.
     assert.equal(result.low, 2030);
@@ -194,9 +245,19 @@ describe('Tier 1: Feature Coverage', () => {
   test('T1.24 Room Calculator - Selecting cabinet doors/drawers increments high-margin cabinet paint costs', () => {
     const est = read('src/views/Estimate.tsx');
     assert.match(est, /cabinetDoors \+ .*cabinetDrawers.* \* 125/);
-    
+
     // Width 12, Length 14, Height 8, Doors 1, Windows 1, Cabinet Doors 10, Drawers 5
-    const result = calculateSimulatedCosts(12, 14, 8, 'standard', 1, 1, 50, 10, 5);
+    const result = calculateSimulatedCosts(
+      12,
+      14,
+      8,
+      'standard',
+      1,
+      1,
+      50,
+      10,
+      5
+    );
     // Area = 416. WallCost = 1456. Openings = 250. Trim = 200. Cabinets = 15 * 125 = 1875. Total = 3781.
     // Low = Math.round(3781 * 0.90) = 3403. High = Math.round(3781 * 1.15) = 4348.
     assert.equal(result.low, 3403);
@@ -204,7 +265,17 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.25 Room Calculator - Base estimate calculation returns output range between 90% (low) and 115% (high)', () => {
-    const result = calculateSimulatedCosts(20, 20, 10, 'premium', 2, 4, 100, 20, 10);
+    const result = calculateSimulatedCosts(
+      20,
+      20,
+      10,
+      'premium',
+      2,
+      4,
+      100,
+      20,
+      10
+    );
     // Area = 2 * (40) * 10 = 800
     // WallBase = 800 * 3.50 = 2800. Premium = 2800 * 0.35 = 980. WallCost = 3780.
     // Openings = 2 * 150 + 4 * 100 = 700. Trim = 100 * 4 = 400. Cabinets = 30 * 125 = 3750. Total = 8630.
@@ -259,7 +330,10 @@ describe('Tier 1: Feature Coverage', () => {
 
   test('T1.33 Lead Capture & API - Regaining online status triggers immediate flushing of lead queue', () => {
     const form = read('src/components/LeadForm.tsx');
-    assert.match(form, /window\.addEventListener\('online', syncOfflineLeads\)/);
+    assert.match(
+      form,
+      /window\.addEventListener\('online', syncOfflineLeads\)/
+    );
   });
 
   test('T1.34 Lead Capture & API - /api/leads validates email structures and throws bad request', () => {
@@ -273,11 +347,9 @@ describe('Tier 1: Feature Coverage', () => {
     assert.match(mc, /budget/);
     assert.match(mc, /timeline/);
   });
-
 });
 
 describe('Tier 2: Boundary/Corner Cases', () => {
-
   test('T2.1 Routing & Navigation - Mobile menu toggle handles accessibility attributes', () => {
     const header = read('src/components/ConversionHeader.tsx');
     assert.match(header, /aria-label=\{mobileMenuOpen \?/);
@@ -291,7 +363,9 @@ describe('Tier 2: Boundary/Corner Cases', () => {
 
   test('T2.3 Routing & Navigation - CSP and HTTP security headers are configured in vercel.json', () => {
     const vercelConfig = JSON.parse(read('vercel.json'));
-    const csp = vercelConfig.headers[0].headers.find(h => h.key === 'Content-Security-Policy').value;
+    const csp = vercelConfig.headers[0].headers.find(
+      (h) => h.key === 'Content-Security-Policy'
+    ).value;
     assert.match(csp, /default-src 'self'/);
     assert.match(csp, /object-src 'none'/);
     assert.match(csp, /frame-ancestors 'none'/);
@@ -320,7 +394,7 @@ describe('Tier 2: Boundary/Corner Cases', () => {
       'src/views/Estimate.tsx',
       'src/views/Review.tsx',
       'src/app/api/leads/route.ts',
-      'src/app/api/manychat/route.ts'
+      'src/app/api/manychat/route.ts',
     ];
     for (const f of files) {
       const content = read(f);
@@ -447,7 +521,10 @@ describe('Tier 2: Boundary/Corner Cases', () => {
 
   test('T2.27 Reputation Funnel - Formspree connection failures show a clear fallback contact message', () => {
     const rev = read('src/views/Review.tsx');
-    assert.match(rev, /The private feedback form did not send\. Please call or text/);
+    assert.match(
+      rev,
+      /The private feedback form did not send\. Please call or text/
+    );
   });
 
   test('T2.28 Reputation Funnel - Selected review rating events are logged to the analytics engine', () => {
@@ -494,11 +571,9 @@ describe('Tier 2: Boundary/Corner Cases', () => {
     const api = read('src/app/api/leads/route.ts');
     assert.match(api, /res\.status\(500\)\.json\(\{.*fallback: 'email'/);
   });
-
 });
 
 describe('Tier 3: Cross-Feature Combinations', () => {
-
   test('T3.1 Offline + Calculator - Submitting estimate lead while offline queues it locally', () => {
     const form = read('src/components/LeadForm.tsx');
     assert.match(form, /localStorage\.setItem\('pending_leads'/);
@@ -508,7 +583,10 @@ describe('Tier 3: Cross-Feature Combinations', () => {
   test('T3.2 Offline + Review Funnel - Submitting negative reviews offline triggers fallback message', () => {
     const rev = read('src/views/Review.tsx');
     assert.match(rev, /catch \(err\)/);
-    assert.match(rev, /The private feedback form did not respond\. Please call or text/);
+    assert.match(
+      rev,
+      /The private feedback form did not respond\. Please call or text/
+    );
   });
 
   test('T3.3 SEO Landing + Lead Form - Lead submissions from local SEO routes capture page paths', () => {
@@ -539,17 +617,15 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     const rev = read('src/views/Review.tsx');
     assert.match(rev, /trackEvent\('google_review_redirect_click'/);
   });
-
 });
 
 describe('Tier 4: Real-World Scenarios', () => {
-
   test('T4.1 Customer Acquisition - Referral, slider comparison, room calculation, and lead submission flow', () => {
     const header = read('src/components/ConversionHeader.tsx');
     const slider = read('src/components/BeforeAfterSlider.tsx');
     const est = read('src/views/Estimate.tsx');
     const form = read('src/components/LeadForm.tsx');
-    
+
     assert.match(header, /localStorage\.setItem\('referrer_email'/);
     assert.match(slider, /BeforeAfterSlider/);
     assert.match(est, /EstimatePage/);
@@ -582,5 +658,4 @@ describe('Tier 4: Real-World Scenarios', () => {
     assert.match(prerender, /application\/ld\+json/);
     assert.match(sitemap, /generateSitemap/);
   });
-
 });

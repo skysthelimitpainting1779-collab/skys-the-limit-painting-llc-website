@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) =>
+  readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const exists = (path) => existsSync(new URL(`../${path}`, import.meta.url));
 
 test('agent OS exposes prompt-aligned bootstrap, eval, and durable control-plane artifacts', () => {
@@ -50,6 +51,9 @@ test('agent OS generated ledgers exist after bootstrap', () => {
   }
 
   const contract = read('.agents/implementation-contract.md');
-  assert.match(contract, /goal -> task graph -> claim -> execute -> verify -> evidence -> memory -> eval\/improvement/);
+  assert.match(
+    contract,
+    /goal -> task graph -> claim -> execute -> verify -> evidence -> memory -> eval\/improvement/
+  );
   assert.match(contract, /does not automatically revert source files/);
 });

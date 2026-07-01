@@ -2,14 +2,14 @@
 id: route-error-runtime-limits
 title: Route errors and runtime limits
 status: active
-candidateKinds: ["route_errors"]
-frameworks: ["*"]
+candidateKinds: ['route_errors']
+frameworks: ['*']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/functions",
-    "https://vercel.com/docs/functions/limitations",
-    "https://vercel.com/docs/cli/inspect",
+    'https://vercel.com/docs/functions',
+    'https://vercel.com/docs/functions/limitations',
+    'https://vercel.com/docs/cli/inspect',
   ]
 maxBriefChars: 850
 ---

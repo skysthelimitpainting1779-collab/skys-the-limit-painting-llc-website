@@ -2,13 +2,17 @@ import { Client } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
-const connectionString = (process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || 'postgres://postgres.ouykfhoxlrkjgscdjjqg:g8980kbnFTwODn5f@aws-1-us-east-1.pooler.supabase.com:5432/postgres').split('?')[0];
+const connectionString = (
+  process.env.POSTGRES_URL_NON_POOLING ||
+  process.env.POSTGRES_URL ||
+  'postgres://postgres.ouykfhoxlrkjgscdjjqg:g8980kbnFTwODn5f@aws-1-us-east-1.pooler.supabase.com:5432/postgres'
+).split('?')[0];
 
 async function runMigrations() {
   console.log('Connecting to database...');
   const client = new Client({
     connectionString,
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false },
   });
 
   await client.connect();
@@ -29,9 +33,13 @@ async function runMigrations() {
     `);
 
     // 2. Fetch already applied migration versions
-    const res = await client.query('SELECT version FROM supabase_migrations.schema_migrations');
-    const appliedVersions = new Set(res.rows.map(row => row.version));
-    console.log(`Found ${appliedVersions.size} already applied migrations in the database.`);
+    const res = await client.query(
+      'SELECT version FROM supabase_migrations.schema_migrations'
+    );
+    const appliedVersions = new Set(res.rows.map((row) => row.version));
+    console.log(
+      `Found ${appliedVersions.size} already applied migrations in the database.`
+    );
 
     // 3. Read migration files from the migrations folder
     const migrationsDir = path.resolve('supabase/migrations');
@@ -40,8 +48,9 @@ async function runMigrations() {
       return;
     }
 
-    const files = fs.readdirSync(migrationsDir)
-      .filter(file => file.endsWith('.sql'))
+    const files = fs
+      .readdirSync(migrationsDir)
+      .filter((file) => file.endsWith('.sql'))
       .sort(); // Sort chronologically by name prefix
 
     console.log(`Found ${files.length} migration files locally.`);
@@ -85,16 +94,19 @@ async function runMigrations() {
         );
 
         await client.query('COMMIT');
-        console.log(`[PASS] Migration ${version}_${name} applied successfully!`);
+        console.log(
+          `[PASS] Migration ${version}_${name} applied successfully!`
+        );
       } catch (migrationError) {
         await client.query('ROLLBACK');
-        console.error(`[FAIL] Migration ${version}_${name} failed! Rolling back.`);
+        console.error(
+          `[FAIL] Migration ${version}_${name} failed! Rolling back.`
+        );
         throw migrationError;
       }
     }
 
     console.log('\nAll migrations are up-to-date!');
-
   } catch (error) {
     console.error('Migration runner failed:', error);
     process.exit(1);

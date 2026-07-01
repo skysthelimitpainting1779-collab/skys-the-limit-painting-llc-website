@@ -2,15 +2,15 @@
 id: cache-components-suspense-dedupe-pitfall
 title: Cache Components Suspense dedupe pitfall
 status: active
-candidateKinds: ["cache_components_suspense_dedupe"]
-frameworks: ["next@>=16.0.0"]
-scannerPatterns: ["cache-components-suspense-dedupe"]
+candidateKinds: ['cache_components_suspense_dedupe']
+frameworks: ['next@>=16.0.0']
+scannerPatterns: ['cache-components-suspense-dedupe']
 priority: 87
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/directives/use-cache",
-    "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents",
-    "https://nextjs.org/docs/app/guides/migrating-to-cache-components",
+    'https://nextjs.org/docs/app/api-reference/directives/use-cache',
+    'https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents',
+    'https://nextjs.org/docs/app/guides/migrating-to-cache-components',
   ]
 maxBriefChars: 900
 ---

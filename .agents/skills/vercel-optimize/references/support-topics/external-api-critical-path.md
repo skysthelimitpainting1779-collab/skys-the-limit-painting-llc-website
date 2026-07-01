@@ -2,14 +2,14 @@
 id: external-api-critical-path
 title: External API critical path
 status: active
-candidateKinds: ["external_api_slow"]
-frameworks: ["next@>=13.0.0"]
+candidateKinds: ['external_api_slow']
+frameworks: ['next@>=13.0.0']
 priority: 90
 citations:
   [
-    "vercel-react-best-practices:async-parallel",
-    "vercel-react-best-practices:server-parallel-fetching",
-    "vercel-react-best-practices:server-cache-react",
+    'vercel-react-best-practices:async-parallel',
+    'vercel-react-best-practices:server-parallel-fetching',
+    'vercel-react-best-practices:server-cache-react',
   ]
 maxBriefChars: 850
 ---

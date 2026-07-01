@@ -4,14 +4,16 @@ import { createClient } from '@supabase/supabase-js';
 import { getEnv } from '../../../lib/env';
 
 const supabaseUrl = getEnv('SUPABASE_URL');
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
-const supabase = supabaseUrl && supabaseServiceKey 
-  ? createClient(supabaseUrl, supabaseServiceKey) 
-  : null;
+const supabase =
+  supabaseUrl && supabaseServiceKey
+    ? createClient(supabaseUrl, supabaseServiceKey)
+    : null;
 
-
-const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
+const leadToEmail =
+  process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
 // Simple in-memory IP rate limiter
 const ipCache = new Map<string, { count: number; lastReset: number }>();
@@ -71,7 +73,9 @@ interface LeadPayload extends Record<string, unknown> {
 
 async function saveLeadToDb(lead: LeadPayload) {
   if (!supabase) {
-    console.warn("Supabase client not initialized. Skipping database insertion.");
+    console.warn(
+      'Supabase client not initialized. Skipping database insertion.'
+    );
     return;
   }
   const { error } = await supabase.from('leads').insert({
@@ -94,19 +98,27 @@ async function saveLeadToDb(lead: LeadPayload) {
     utm_campaign: asText(lead.utm_campaign || lead.utmCampaign),
     page: asText(lead.page),
     status: 'new',
-    photos_url: asText(lead.photosUrl || lead.photos_url)
+    photos_url: asText(lead.photosUrl || lead.photos_url),
   });
 
   if (error) {
-    console.error("Failed to store lead in Supabase:", error);
+    console.error('Failed to store lead in Supabase:', error);
   } else {
     console.log(`Lead stored in Supabase: ${lead.leadId}`);
   }
 }
 
-async function saveLeadEventToDb(leadId: string, eventType: string, provider: string, status: string, message?: string) {
+async function saveLeadEventToDb(
+  leadId: string,
+  eventType: string,
+  provider: string,
+  status: string,
+  message?: string
+) {
   if (!supabase) {
-    console.warn("Supabase client not initialized. Skipping lead event insertion.");
+    console.warn(
+      'Supabase client not initialized. Skipping lead event insertion.'
+    );
     return;
   }
   const { error } = await supabase.from('lead_events').insert({
@@ -114,15 +126,28 @@ async function saveLeadEventToDb(leadId: string, eventType: string, provider: st
     event_type: eventType,
     provider: provider,
     status: status,
-    message: message || null
+    message: message || null,
   });
 
   if (error) {
-    console.error(`Failed to store lead event in Supabase for lead ${leadId}:`, error);
+    console.error(
+      `Failed to store lead event in Supabase for lead ${leadId}:`,
+      error
+    );
   }
 }
 
-const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'projectType', 'timeline', 'contactMethod', 'notes'];
+const requiredFields = [
+  'name',
+  'phone',
+  'email',
+  'city',
+  'market',
+  'projectType',
+  'timeline',
+  'contactMethod',
+  'notes',
+];
 
 function asText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
@@ -150,7 +175,9 @@ function getSafeValue(obj: Record<string, unknown>, key: string): unknown {
 }
 
 function validate(payload: Record<string, unknown>) {
-  const missing = requiredFields.filter((field) => !asText(getSafeValue(payload, field)));
+  const missing = requiredFields.filter(
+    (field) => !asText(getSafeValue(payload, field))
+  );
   if (missing.length > 0) {
     return `Missing required fields: ${missing.join(', ')}`;
   }
@@ -167,7 +194,10 @@ function validate(payload: Record<string, unknown>) {
   if (photosUrl) {
     try {
       const url = new URL(photosUrl);
-      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname.includes('.')) {
+      if (
+        !['http:', 'https:'].includes(url.protocol) ||
+        !url.hostname.includes('.')
+      ) {
         return 'Enter a valid project photo link.';
       }
     } catch {
@@ -179,7 +209,10 @@ function validate(payload: Record<string, unknown>) {
 }
 
 function buildLeadId() {
-  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
+  const stamp = new Date()
+    .toISOString()
+    .replace(/[-:.TZ]/g, '')
+    .slice(0, 14);
   const random = Math.random().toString(36).slice(2, 8).toUpperCase();
   return `SKY-${stamp}-${random}`;
 }
@@ -187,18 +220,32 @@ function buildLeadId() {
 function buildLeadHtml(payload: Record<string, unknown>) {
   const rows = Object.entries(payload)
     .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(([key, value]) => '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' + escapeHtml(key) + '</td><td style="padding:6px 10px;border:1px solid #ddd;">' + escapeHtml(value) + '</td></tr>')
+    .map(
+      ([key, value]) =>
+        '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' +
+        escapeHtml(key) +
+        '</td><td style="padding:6px 10px;border:1px solid #ddd;">' +
+        escapeHtml(value) +
+        '</td></tr>'
+    )
     .join('');
 
-  return '<h1>New Sky\'s the Limit Painting lead</h1><table style="border-collapse:collapse;">' + rows + '</table>';
+  return (
+    '<h1>New Sky\'s the Limit Painting lead</h1><table style="border-collapse:collapse;">' +
+    rows +
+    '</table>'
+  );
 }
 
 async function sendWithResend(payload: Record<string, unknown>) {
   const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
+  const fromEmail =
+    process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
 
   if (!apiKey) {
-    console.warn("WARNING: RESEND_API_KEY is not set in the environment variables. Lead emails will not be sent!");
+    console.warn(
+      'WARNING: RESEND_API_KEY is not set in the environment variables. Lead emails will not be sent!'
+    );
     return { configured: false };
   }
 
@@ -221,8 +268,11 @@ async function sendWithResend(payload: Record<string, unknown>) {
 
 function buildAutoReplyHtml(payload: Record<string, unknown>) {
   const name = escapeHtml(asText(payload.name));
-  return 'Hi ' + name + ',<br><br>' +
-    'Thank you for reaching out to Sky\'s the Limit Painting LLC! We are excited to help you transform your space.<br><br>' +
+  return (
+    'Hi ' +
+    name +
+    ',<br><br>' +
+    "Thank you for reaching out to Sky's the Limit Painting LLC! We are excited to help you transform your space.<br><br>" +
     'As a premier specialty contractor serving the entire Twin Cities metro area, we specialize in high-detail residential painting, commercial repaints, and pavement marking.<br><br>' +
     'To help our owner, Anthony, prepare a fast and accurate estimate for your project, could you please reply to this email with a few details:<br><br>' +
     '1. <strong>Project Location</strong>: What is the address or city of the property?<br>' +
@@ -233,15 +283,17 @@ function buildAutoReplyHtml(payload: Record<string, unknown>) {
     'Once we receive these details, Anthony will review your scope and follow up to schedule a consultation or send your estimate.<br><br>' +
     'Thank you for choosing local,<br><br>' +
     'The Team<br>' +
-    '<strong>Sky\'s the Limit Painting LLC</strong><br>' +
+    "<strong>Sky's the Limit Painting LLC</strong><br>" +
     'Phone: 651-410-4196<br>' +
     'Email: skysthelimitpainting1779@gmail.com<br>' +
-    'Positioning: Residential detail. Commercial discipline. Public-sector ready.';
+    'Positioning: Residential detail. Commercial discipline. Public-sector ready.'
+  );
 }
 
 async function sendAutoReplyToLead(payload: Record<string, unknown>) {
   const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
+  const fromEmail =
+    process.env.LEAD_FROM_EMAIL || 'Sky Leads <onboarding@resend.dev>';
 
   if (!apiKey) {
     return { configured: false };
@@ -256,7 +308,7 @@ async function sendAutoReplyToLead(payload: Record<string, unknown>) {
     body: JSON.stringify({
       from: fromEmail,
       to: [asText(payload.email)],
-      subject: 'We received your estimate request! — Sky\'s the Limit Painting',
+      subject: "We received your estimate request! — Sky's the Limit Painting",
       html: buildAutoReplyHtml(payload),
       reply_to: leadToEmail,
     }),
@@ -264,7 +316,9 @@ async function sendAutoReplyToLead(payload: Record<string, unknown>) {
 
   if (!response.ok) {
     const body = await response.text();
-    throw new Error('Resend lead auto-reply failed: ' + response.status + ' ' + body);
+    throw new Error(
+      'Resend lead auto-reply failed: ' + response.status + ' ' + body
+    );
   }
 
   return { configured: true };
@@ -281,7 +335,9 @@ async function sendLeadWebhook(payload: Record<string, unknown>) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...(process.env.LEAD_WEBHOOK_SECRET ? { 'X-Sky-Lead-Secret': process.env.LEAD_WEBHOOK_SECRET } : {}),
+      ...(process.env.LEAD_WEBHOOK_SECRET
+        ? { 'X-Sky-Lead-Secret': process.env.LEAD_WEBHOOK_SECRET }
+        : {}),
     },
     body: JSON.stringify({
       event: 'sky.lead.created',
@@ -315,10 +371,14 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     `Timeline: ${asText(payload.timeline)}`,
     `Budget Range: ${asText(payload.budget)}`,
     `Preferred Contact: ${asText(payload.contactMethod)}`,
-    payload.projectAddress ? `Project Address: ${asText(payload.projectAddress)}` : '',
+    payload.projectAddress
+      ? `Project Address: ${asText(payload.projectAddress)}`
+      : '',
     payload.photosUrl ? `Photos: ${asText(payload.photosUrl)}` : '',
     payload.notes ? `Notes:\n${asText(payload.notes)}` : '',
-  ].filter(Boolean).join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   if (accessToken) {
     const email = asText(payload.email);
@@ -327,25 +387,34 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     // Search for existing contact by email to prevent duplicates
     if (email) {
       try {
-        const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            filterGroups: [{
-              filters: [{
-                propertyName: 'email',
-                operator: 'EQ',
-                value: email,
-              }],
-            }],
-          }),
-        });
+        const searchRes = await fetch(
+          'https://api.hubapi.com/crm/v3/objects/contacts/search',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              filterGroups: [
+                {
+                  filters: [
+                    {
+                      propertyName: 'email',
+                      operator: 'EQ',
+                      value: email,
+                    },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
 
         if (searchRes.ok) {
-          const searchData = (await searchRes.json()) as { results?: { id: string }[] };
+          const searchData = (await searchRes.json()) as {
+            results?: { id: string }[];
+          };
           if (searchData.results && searchData.results.length > 0) {
             contactId = searchData.results[0].id;
           }
@@ -371,14 +440,17 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     let response;
     if (contactId) {
       // Update existing contact
-      response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ properties }),
-      });
+      response = await fetch(
+        `https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ properties }),
+        }
+      );
     } else {
       // Create new contact
       response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
@@ -415,19 +487,22 @@ async function sendToHubspot(payload: Record<string, unknown>) {
     const context = {
       hutk: asText(payload.hubspotutk) || undefined,
       pageUri: asText(payload.page) || undefined,
-      pageName: 'Request an Estimate - Sky\'s the Limit Painting',
+      pageName: "Request an Estimate - Sky's the Limit Painting",
     };
 
-    const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        fields,
-        context,
-      }),
-    });
+    const response = await fetch(
+      `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fields,
+          context,
+        }),
+      }
+    );
 
     if (!response.ok) {
       const body = await response.text();
@@ -439,10 +514,19 @@ async function sendToHubspot(payload: Record<string, unknown>) {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown').split(',')[0].trim();
+  const ip = (
+    req.headers.get('x-forwarded-for') ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  )
+    .split(',')[0]
+    .trim();
   if (!rateLimit(ip)) {
     console.warn(`Rate limit exceeded for IP: ${ip}`);
-    return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
   }
 
   let payload: Record<string, unknown>;
@@ -453,7 +537,10 @@ export async function POST(req: NextRequest) {
   }
 
   if (!isPayload(payload)) {
-    return NextResponse.json({ error: 'Invalid lead payload.' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Invalid lead payload.' },
+      { status: 400 }
+    );
   }
 
   const validationError = validate(payload);
@@ -477,46 +564,94 @@ export async function POST(req: NextRequest) {
       (async () => {
         try {
           const res = await sendWithResend(lead);
-          await saveLeadEventToDb(lead.leadId, 'email_notify', 'resend', res.configured ? 'success' : 'skipped');
+          await saveLeadEventToDb(
+            lead.leadId,
+            'email_notify',
+            'resend',
+            res.configured ? 'success' : 'skipped'
+          );
           return res;
         } catch (err) {
-          await saveLeadEventToDb(lead.leadId, 'email_notify', 'resend', 'failed', err instanceof Error ? err.message : String(err));
+          await saveLeadEventToDb(
+            lead.leadId,
+            'email_notify',
+            'resend',
+            'failed',
+            err instanceof Error ? err.message : String(err)
+          );
           throw err;
         }
       })(),
       (async () => {
         try {
           const res = await sendAutoReplyToLead(lead);
-          await saveLeadEventToDb(lead.leadId, 'email_autoreply', 'resend', res.configured ? 'success' : 'skipped');
+          await saveLeadEventToDb(
+            lead.leadId,
+            'email_autoreply',
+            'resend',
+            res.configured ? 'success' : 'skipped'
+          );
           return res;
         } catch (err) {
-          await saveLeadEventToDb(lead.leadId, 'email_autoreply', 'resend', 'failed', err instanceof Error ? err.message : String(err));
+          await saveLeadEventToDb(
+            lead.leadId,
+            'email_autoreply',
+            'resend',
+            'failed',
+            err instanceof Error ? err.message : String(err)
+          );
           throw err;
         }
       })(),
       (async () => {
         try {
           const res = await sendLeadWebhook(lead);
-          await saveLeadEventToDb(lead.leadId, 'webhook', 'custom', res.configured ? 'success' : 'skipped');
+          await saveLeadEventToDb(
+            lead.leadId,
+            'webhook',
+            'custom',
+            res.configured ? 'success' : 'skipped'
+          );
           return res;
         } catch (err) {
-          await saveLeadEventToDb(lead.leadId, 'webhook', 'custom', 'failed', err instanceof Error ? err.message : String(err));
+          await saveLeadEventToDb(
+            lead.leadId,
+            'webhook',
+            'custom',
+            'failed',
+            err instanceof Error ? err.message : String(err)
+          );
           throw err;
         }
       })(),
       (async () => {
         try {
           const res = await sendToHubspot(lead);
-          await saveLeadEventToDb(lead.leadId, 'crm', 'hubspot', res.configured ? 'success' : 'skipped');
+          await saveLeadEventToDb(
+            lead.leadId,
+            'crm',
+            'hubspot',
+            res.configured ? 'success' : 'skipped'
+          );
           return res;
         } catch (err) {
-          await saveLeadEventToDb(lead.leadId, 'crm', 'hubspot', 'failed', err instanceof Error ? err.message : String(err));
+          await saveLeadEventToDb(
+            lead.leadId,
+            'crm',
+            'hubspot',
+            'failed',
+            err instanceof Error ? err.message : String(err)
+          );
           throw err;
         }
-      })()
+      })(),
     ]);
 
-    const configured = results.some((result) => result.status === 'fulfilled' && (result.value as { configured: boolean }).configured);
+    const configured = results.some(
+      (result) =>
+        result.status === 'fulfilled' &&
+        (result.value as { configured: boolean }).configured
+    );
     const failed = results.find((result) => result.status === 'rejected');
 
     if (failed) {
@@ -528,14 +663,26 @@ export async function POST(req: NextRequest) {
     }
 
     if (!configured) {
-      console.error('Lead delivery error: Lead delivery is not configured yet.');
+      console.error(
+        'Lead delivery error: Lead delivery is not configured yet.'
+      );
       // res.status(500).json({ error: 'Lead delivery is not configured yet.', fallback: 'email' })
-      return NextResponse.json({ error: 'Lead delivery is not configured yet.', fallback: 'email' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Lead delivery is not configured yet.', fallback: 'email' },
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error('Lead delivery failed with error:', error);
     // res.status(500).json({ error: 'Lead delivery failed.', fallback: 'email' })
-    return NextResponse.json({ error: 'Lead delivery failed. Please email us directly at skysthelimitpainting1779@gmail.com', fallback: 'email' }, { status: 500 });
+    return NextResponse.json(
+      {
+        error:
+          'Lead delivery failed. Please email us directly at skysthelimitpainting1779@gmail.com',
+        fallback: 'email',
+      },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ ok: true, leadId: lead.leadId }, { status: 201 });

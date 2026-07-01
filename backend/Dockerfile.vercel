@@ -1,0 +1,20 @@
+# Use the official Node.js 20 Alpine image for a small footprint
+FROM node:20-alpine
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy package.json and package-lock.json from the current directory
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm install --omit=dev
+
+# Copy the rest of the backend source code
+COPY . .
+
+# Expose the default port (Vercel overrides this with the PORT env var)
+EXPOSE 80
+
+# Start the Express server
+CMD ["npm", "start"]

@@ -1,8 +1,8 @@
 ---
 id: mandatory_error_learning
-name: "Governance Policy: Mandatory Error Learning Protocol"
+name: 'Governance Policy: Mandatory Error Learning Protocol'
 type: policy
-description: "Non-negotiable self-healing protocol requiring instant postmortem logs on any command or tool failure."
+description: 'Non-negotiable self-healing protocol requiring instant postmortem logs on any command or tool failure.'
 tags: [governance, debugging, self-healing]
 references: [architectural_decisions]
 ---

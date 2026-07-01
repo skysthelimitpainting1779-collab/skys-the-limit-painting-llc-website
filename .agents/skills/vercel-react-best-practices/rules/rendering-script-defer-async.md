@@ -53,7 +53,7 @@ export default function Document() {
 **Note:** In Next.js, prefer the `next/script` component with `strategy` prop instead of raw script tags:
 
 ```tsx
-import Script from "next/script";
+import Script from 'next/script';
 
 export default function Page() {
   return (

@@ -2,14 +2,14 @@
 id: cache-components-static-shell-boundaries
 title: Cache Components static shell boundaries
 status: active
-candidateKinds: ["rendering_candidate"]
-frameworks: ["next@>=16.0.0"]
+candidateKinds: ['rendering_candidate']
+frameworks: ['next@>=16.0.0']
 priority: 94
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents",
-    "https://nextjs.org/docs/app/getting-started/caching",
-    "https://nextjs.org/docs/app/guides/migrating-to-cache-components",
+    'https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents',
+    'https://nextjs.org/docs/app/getting-started/caching',
+    'https://nextjs.org/docs/app/guides/migrating-to-cache-components',
   ]
 maxBriefChars: 900
 ---

@@ -1,0 +1,34 @@
+name: Git Standards
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+permissions:
+  contents: read
+
+jobs:
+  git-standards:
+    name: 'Git Standards (branch name + conventional commits)'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+
+      - name: Run Git Guard (enforce prefixes + commit format)
+        run: node scripts/enforce-git.js
+
+      - name: Report (policy)
+        if: failure()
+        run: |
+          echo "::error::Branch or commit does not comply with @agents.md policy (feat/ fix/ chore/ docs/ infra/). Fix and push again."
+          echo "Protected: main, staging require PR + status checks."

@@ -15,7 +15,7 @@ for low-level primitives.
 **Incorrect (JS-based bottom sheet):**
 
 ```tsx
-import BottomSheet from "custom-js-bottom-sheet";
+import BottomSheet from 'custom-js-bottom-sheet';
 
 function MyScreen() {
   const sheetRef = useRef<BottomSheet>(null);
@@ -23,7 +23,7 @@ function MyScreen() {
   return (
     <View style={{ flex: 1 }}>
       <Button onPress={() => sheetRef.current?.expand()} title="Open" />
-      <BottomSheet ref={sheetRef} snapPoints={["50%", "90%"]}>
+      <BottomSheet ref={sheetRef} snapPoints={['50%', '90%']}>
         <View>
           <Text>Sheet content</Text>
         </View>
@@ -36,7 +36,7 @@ function MyScreen() {
 **Correct (native Modal with formSheet):**
 
 ```tsx
-import { Modal, View, Text, Button } from "react-native";
+import { Modal, View, Text, Button } from 'react-native';
 
 function MyScreen() {
   const [visible, setVisible] = useState(false);
@@ -67,8 +67,8 @@ function MyScreen() {
   name="Details"
   component={DetailsScreen}
   options={{
-    presentation: "formSheet",
-    sheetAllowedDetents: "fitToContents",
+    presentation: 'formSheet',
+    sheetAllowedDetents: 'fitToContents',
   }}
 />
 ```

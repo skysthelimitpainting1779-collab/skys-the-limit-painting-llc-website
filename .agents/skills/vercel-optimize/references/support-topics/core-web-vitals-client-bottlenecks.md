@@ -2,16 +2,16 @@
 id: core-web-vitals-client-bottlenecks
 title: Core Web Vitals client bottlenecks
 status: active
-candidateKinds: ["cwv_poor"]
-frameworks: ["*"]
+candidateKinds: ['cwv_poor']
+frameworks: ['*']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/speed-insights",
-    "https://web.dev/articles/vitals",
-    "https://web.dev/articles/optimize-lcp",
-    "https://web.dev/articles/optimize-inp",
-    "https://web.dev/articles/optimize-cls",
+    'https://vercel.com/docs/speed-insights',
+    'https://web.dev/articles/vitals',
+    'https://web.dev/articles/optimize-lcp',
+    'https://web.dev/articles/optimize-inp',
+    'https://web.dev/articles/optimize-cls',
   ]
 maxBriefChars: 850
 ---

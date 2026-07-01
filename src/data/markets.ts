@@ -1,4 +1,13 @@
-import { Building2, ClipboardCheck, Home, Landmark, LucideIcon, PaintRoller, Ruler, ShieldCheck } from 'lucide-react';
+import {
+  Building2,
+  ClipboardCheck,
+  Home,
+  Landmark,
+  LucideIcon,
+  PaintRoller,
+  Ruler,
+  ShieldCheck,
+} from 'lucide-react';
 
 export type MarketSlug = 'residential' | 'commercial' | 'public-sector';
 
@@ -33,15 +42,21 @@ export const markets: Market[] = [
     navLabel: 'Residential',
     number: '01',
     title: 'Residential Painting',
-    headline: 'Careful painting for homes that deserve clean prep and a better finish.',
-    summary: 'Whole-home interiors, kitchens, baths, accent walls, cabinet refinishing, trim, ceilings, decks, and fences. One room or the entire house — we bring the same meticulous prep, clean execution, and respect for your living space every time.',
+    headline:
+      'Careful painting for homes that deserve clean prep and a better finish.',
+    summary:
+      'Whole-home interiors, kitchens, baths, accent walls, cabinet refinishing, trim, ceilings, decks, and fences. One room or the entire house — we bring the same meticulous prep, clean execution, and respect for your living space every time.',
     description:
       'Residential work is where trust matters most. Sky’s the Limit Painting brings owner-led accountability, clean communication, surface prep, careful protection, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
     image: '/images/site/iphone-interior-painting-progress.webp',
     heroImage: '/images/site/marketing-hero-exterior-painting.webp',
     icon: Home,
     accent: 'Warm detail',
-    proof: ['Interior and exterior repainting', 'Trim, doors, walls, ceilings, and prep', 'Clean protection and final walkthrough'],
+    proof: [
+      'Interior and exterior repainting',
+      'Trim, doors, walls, ceilings, and prep',
+      'Clean protection and final walkthrough',
+    ],
     capabilities: [
       {
         title: 'Interior Finish Work',
@@ -57,10 +72,22 @@ export const markets: Market[] = [
       },
     ],
     process: [
-      { title: 'Walk The Space', body: 'Confirm rooms, surfaces, access, protection needs, finish expectations, and timeline.' },
-      { title: 'Protect And Prep', body: 'Cover surfaces, patch problem areas, sand, caulk, mask, and prime where needed.' },
-      { title: 'Paint With Control', body: 'Apply clean coats with attention to lines, coverage, sheen, and the feel of the finished room.' },
-      { title: 'Review And Clean', body: 'Walk the work, clean the area, and confirm the details before wrapping the job.' },
+      {
+        title: 'Walk The Space',
+        body: 'Confirm rooms, surfaces, access, protection needs, finish expectations, and timeline.',
+      },
+      {
+        title: 'Protect And Prep',
+        body: 'Cover surfaces, patch problem areas, sand, caulk, mask, and prime where needed.',
+      },
+      {
+        title: 'Paint With Control',
+        body: 'Apply clean coats with attention to lines, coverage, sheen, and the feel of the finished room.',
+      },
+      {
+        title: 'Review And Clean',
+        body: 'Walk the work, clean the area, and confirm the details before wrapping the job.',
+      },
     ],
     cta: 'Plan A Residential Project',
     metaTitle: 'Residential Painting | Sky’s the Limit Painting LLC',
@@ -72,7 +99,8 @@ export const markets: Market[] = [
     navLabel: 'Commercial',
     number: '02',
     title: 'Commercial Painting',
-    headline: 'Reliable commercial painting for properties where presentation and schedule matter.',
+    headline:
+      'Reliable commercial painting for properties where presentation and schedule matter.',
     summary:
       'Retail stores, offices, multi-family common areas, warehouses, and more. Professional finishes delivered on your timeline with minimal disruption to your customers, employees, or daily operations.',
     description:
@@ -81,7 +109,11 @@ export const markets: Market[] = [
     heroImage: '/images/site/iphone-commercial-door-frame.webp',
     icon: Building2,
     accent: 'Commercial discipline',
-    proof: ['Commercial interiors and exteriors', 'NAICS Code 238320 Registered', 'Schedule-aware communication'],
+    proof: [
+      'Commercial interiors and exteriors',
+      'NAICS Code 238320 Registered',
+      'Schedule-aware communication',
+    ],
     capabilities: [
       {
         title: 'Business Interiors',
@@ -97,10 +129,22 @@ export const markets: Market[] = [
       },
     ],
     process: [
-      { title: 'Define The Scope', body: 'Clarify surfaces, access, schedule windows, disruption risks, materials, and finish expectations.' },
-      { title: 'Prep The Property', body: 'Protect floors, fixtures, merchandise, office areas, and surrounding surfaces before coating starts.' },
-      { title: 'Execute Cleanly', body: 'Work with steady communication, organized staging, and a finish that improves the property.' },
-      { title: 'Close The Loop', body: 'Review completion items, cleanup, touchups, and any documentation needed for the job record.' },
+      {
+        title: 'Define The Scope',
+        body: 'Clarify surfaces, access, schedule windows, disruption risks, materials, and finish expectations.',
+      },
+      {
+        title: 'Prep The Property',
+        body: 'Protect floors, fixtures, merchandise, office areas, and surrounding surfaces before coating starts.',
+      },
+      {
+        title: 'Execute Cleanly',
+        body: 'Work with steady communication, organized staging, and a finish that improves the property.',
+      },
+      {
+        title: 'Close The Loop',
+        body: 'Review completion items, cleanup, touchups, and any documentation needed for the job record.',
+      },
     ],
     cta: 'Discuss A Commercial Job',
     metaTitle: 'Commercial Painting | Sky’s the Limit Painting LLC',
@@ -112,7 +156,8 @@ export const markets: Market[] = [
     navLabel: 'Public Sector',
     number: '03',
     title: 'Public Sector Opportunities',
-    headline: 'Documentation-minded painting, facility, and striping readiness for qualified public opportunities.',
+    headline:
+      'Documentation-minded painting, facility, and striping readiness for qualified public opportunities.',
     summary:
       'Schools, municipal buildings, government facilities, and public infrastructure. Fully bonded, insured, and experienced with public procurement standards, documentation, and compliance requirements.',
     description:
@@ -121,7 +166,11 @@ export const markets: Market[] = [
     heroImage: '/brand/generated/sky-public-authority.webp',
     icon: Landmark,
     accent: 'Public-sector ready',
-    proof: ['NAICS Code 238320 readiness', 'General liability & auto coverage', 'Registered MN Specialty Contractor IR816596'],
+    proof: [
+      'NAICS Code 238320 readiness',
+      'General liability & auto coverage',
+      'Registered MN Specialty Contractor IR816596',
+    ],
     capabilities: [
       {
         title: 'Facilities And Public Spaces',
@@ -137,33 +186,66 @@ export const markets: Market[] = [
       },
     ],
     process: [
-      { title: 'Document The Scope', body: 'Clarify surfaces, quantities, access, requirements, schedule, safety notes, and submission expectations.' },
-      { title: 'Prepare The Work', body: 'Plan prep, protection, materials, equipment, traffic or access considerations, and communication checkpoints.' },
-      { title: 'Execute To Spec', body: 'Work toward clear scope requirements, clean staging, surface prep, coating quality, and jobsite follow-through.' },
-      { title: 'Verify Completion', body: 'Confirm visible finish, cleanup, punch items, photos, and documentation requested for qualified opportunities.' },
+      {
+        title: 'Document The Scope',
+        body: 'Clarify surfaces, quantities, access, requirements, schedule, safety notes, and submission expectations.',
+      },
+      {
+        title: 'Prepare The Work',
+        body: 'Plan prep, protection, materials, equipment, traffic or access considerations, and communication checkpoints.',
+      },
+      {
+        title: 'Execute To Spec',
+        body: 'Work toward clear scope requirements, clean staging, surface prep, coating quality, and jobsite follow-through.',
+      },
+      {
+        title: 'Verify Completion',
+        body: 'Confirm visible finish, cleanup, punch items, photos, and documentation requested for qualified opportunities.',
+      },
     ],
     cta: 'Discuss Public-Sector Readiness',
-    metaTitle: 'Public Sector Painting Opportunities | Sky’s the Limit Painting LLC',
+    metaTitle:
+      'Public Sector Painting Opportunities | Sky’s the Limit Painting LLC',
     metaDescription:
       'Sky’s the Limit Painting is preparing to compete for Minnesota city, county, and state painting, facility, striping, and pavement-marking opportunities.',
   },
 ];
 
-export const marketBySlug = markets.reduce<Record<MarketSlug, Market>>((acc, market) => {
-  acc[market.slug] = market;
-  return acc;
-}, {} as Record<MarketSlug, Market>);
+export const marketBySlug = markets.reduce<Record<MarketSlug, Market>>(
+  (acc, market) => {
+    acc[market.slug] = market;
+    return acc;
+  },
+  {} as Record<MarketSlug, Market>
+);
 
 export const trustPillars = [
-  { title: 'Registered MN Specialty Contractor', body: 'Registered Minnesota Specialty Contractor (Painting) with general liability coverage in place.', icon: ShieldCheck },
-  { title: 'Owner-Operated And Trade-Built', body: 'Led by Anthony Briseno with Journeyworker Painter & Decorator apprenticeship background.', icon: PaintRoller },
-  { title: 'Commercial Auto And Tools Coverage', body: 'Coverage in place for serious residential, commercial, and qualified public-sector opportunities.', icon: ClipboardCheck },
-  { title: 'Scope Clarity And Follow-Through', body: 'Built around clear communication, prepared surfaces, clean execution, and a finished record.', icon: Ruler },
+  {
+    title: 'Registered MN Specialty Contractor',
+    body: 'Registered Minnesota Specialty Contractor (Painting) with general liability coverage in place.',
+    icon: ShieldCheck,
+  },
+  {
+    title: 'Owner-Operated And Trade-Built',
+    body: 'Led by Anthony Briseno with Journeyworker Painter & Decorator apprenticeship background.',
+    icon: PaintRoller,
+  },
+  {
+    title: 'Commercial Auto And Tools Coverage',
+    body: 'Coverage in place for serious residential, commercial, and qualified public-sector opportunities.',
+    icon: ClipboardCheck,
+  },
+  {
+    title: 'Scope Clarity And Follow-Through',
+    body: 'Built around clear communication, prepared surfaces, clean execution, and a finished record.',
+    icon: Ruler,
+  },
 ];
 
 export const supportingImages = {
   exterior: '/images/site/iphone-exterior-prep-front-entry.webp',
   prep: '/images/site/iphone-interior-painting-progress.webp',
   commercialReal: '/images/site/iphone-commercial-door-frame.webp',
-  interiorBeforeAfter: '/images/services/interior/sky-work-real-04-before-after-bedroom.webp',
+  interiorBeforeAfter:
+    '/images/services/interior/sky-work-real-04-before-after-bedroom.webp',
 };

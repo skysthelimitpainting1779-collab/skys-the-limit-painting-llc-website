@@ -2,13 +2,13 @@
 id: auth-preserving-parallelization
 title: Authorization-preserving parallelization
 status: active
-candidateKinds: ["slow_route"]
-frameworks: ["*"]
+candidateKinds: ['slow_route']
+frameworks: ['*']
 priority: 90
 citations:
   [
-    "vercel-react-best-practices:async-parallel",
-    "vercel-react-best-practices:server-parallel-fetching",
+    'vercel-react-best-practices:async-parallel',
+    'vercel-react-best-practices:server-parallel-fetching',
   ]
 maxBriefChars: 900
 ---

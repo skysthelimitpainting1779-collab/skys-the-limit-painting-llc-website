@@ -35,8 +35,8 @@ function ImageGallery({ urls }: { urls: string[] }) {
 **Correct (Galeria with expo-image):**
 
 ```tsx
-import { Galeria } from "@nandorojo/galeria";
-import { Image } from "expo-image";
+import { Galeria } from '@nandorojo/galeria';
+import { Image } from 'expo-image';
 
 function ImageGallery({ urls }: { urls: string[] }) {
   return (
@@ -54,8 +54,8 @@ function ImageGallery({ urls }: { urls: string[] }) {
 **Single image:**
 
 ```tsx
-import { Galeria } from "@nandorojo/galeria";
-import { Image } from "expo-image";
+import { Galeria } from '@nandorojo/galeria';
+import { Image } from 'expo-image';
 
 function Avatar({ url }: { url: string }) {
   return (

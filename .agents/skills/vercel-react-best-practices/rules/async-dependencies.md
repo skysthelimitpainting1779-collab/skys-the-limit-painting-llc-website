@@ -19,7 +19,7 @@ const profile = await fetchProfile(user.id);
 **Correct (config and profile run in parallel):**
 
 ```typescript
-import { all } from "better-all";
+import { all } from 'better-all';
 
 const { user, config, profile } = await all({
   async user() {

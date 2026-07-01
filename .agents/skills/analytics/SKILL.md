@@ -151,9 +151,9 @@ checkout_payment_completed
 ### Custom Event Example
 
 ```javascript
-gtag("event", "signup_completed", {
-  method: "email",
-  plan: "free",
+gtag('event', 'signup_completed', {
+  method: 'email',
+  plan: 'free',
 });
 ```
 
@@ -175,9 +175,9 @@ gtag("event", "signup_completed", {
 
 ```javascript
 dataLayer.push({
-  event: "form_submitted",
-  form_name: "contact",
-  form_location: "footer",
+  event: 'form_submitted',
+  form_name: 'contact',
+  form_location: 'footer',
 });
 ```
 

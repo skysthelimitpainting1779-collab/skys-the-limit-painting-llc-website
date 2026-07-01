@@ -18,11 +18,13 @@ Use [.agents/AGENTS.md](.agents/AGENTS.md) as the source of truth for agent work
 This project uses React, Vite, Tailwind CSS (v4), TypeScript, and React Router.
 
 1. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 2. **Run the development server**:
+
    ```bash
    npm run dev
    ```
@@ -42,7 +44,7 @@ This project is Vercel-ready and Netlify-ready.
 3. Use the default build settings (`npm run build` with the `dist` output directory).
 4. Deploy the application.
 
-*For Vercel:* This repo includes `vercel.json` with a Single Page App rewrite so deep links such as `/services/exterior` resolve to the React app.
+_For Vercel:_ This repo includes `vercel.json` with a Single Page App rewrite so deep links such as `/services/exterior` resolve to the React app.
 
 ## Delivered Pages
 
@@ -109,7 +111,8 @@ Structured data work must follow [docs/google-open-knowledge.md](docs/google-ope
 ## 🧬 Elite Branching & CI/CD Posture
 
 This repository is secured under an elite security configuration and branching posture:
-1. **Branching Model:** 
+
+1. **Branching Model:**
    - `main`: Serves as the stable production branch.
    - `develop`: Serves as the active preview/staging integration branch.
 2. **CI/CD Security:** All GitHub Action step dependencies are pinned to unique 40-character commit SHAs to protect against supply-chain and tag-hijacking attacks.

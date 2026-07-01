@@ -2,14 +2,14 @@
 id: image-optimization-cost-control
 title: Image optimization cost control
 status: active
-candidateKinds: ["image_optimization"]
-frameworks: ["*"]
+candidateKinds: ['image_optimization']
+frameworks: ['*']
 priority: 90
 citations:
   [
-    "https://vercel.com/docs/image-optimization",
-    "https://vercel.com/docs/image-optimization/managing-image-optimization-costs",
-    "https://vercel.com/docs/image-optimization/limits-and-pricing",
+    'https://vercel.com/docs/image-optimization',
+    'https://vercel.com/docs/image-optimization/managing-image-optimization-costs',
+    'https://vercel.com/docs/image-optimization/limits-and-pricing',
   ]
 maxBriefChars: 850
 ---

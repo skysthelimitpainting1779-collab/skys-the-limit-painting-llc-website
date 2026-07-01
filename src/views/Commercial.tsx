@@ -6,5 +6,4 @@ export default function CommercialPage() {
   return <MarketPage slug="commercial" />;
 }
 
-
 // Static production check: market="Commercial" PageMeta

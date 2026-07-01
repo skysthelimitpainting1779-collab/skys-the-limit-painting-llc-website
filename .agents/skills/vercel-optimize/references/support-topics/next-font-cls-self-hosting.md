@@ -2,14 +2,14 @@
 id: next-font-cls-self-hosting
 title: Next.js font CLS guardrail
 status: active
-candidateKinds: ["cwv_poor"]
-frameworks: ["next@>=13.2.0"]
-metrics: ["CLS"]
+candidateKinds: ['cwv_poor']
+frameworks: ['next@>=13.2.0']
+metrics: ['CLS']
 priority: 86
 citations:
   [
-    "https://nextjs.org/docs/app/api-reference/components/font",
-    "https://web.dev/articles/optimize-cls",
+    'https://nextjs.org/docs/app/api-reference/components/font',
+    'https://web.dev/articles/optimize-cls',
   ]
 maxBriefChars: 800
 ---

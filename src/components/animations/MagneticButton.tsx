@@ -9,10 +9,14 @@ interface MagneticButtonProps {
   pullFactor?: number;
 }
 
-export default function MagneticButton({ children, className = '', pullFactor = 0.5 }: MagneticButtonProps) {
+export default function MagneticButton({
+  children,
+  className = '',
+  pullFactor = 0.5,
+}: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [{ isHovered }, setHovered] = useState({ isHovered: false });
-  
+
   const springConfig = { stiffness: 150, damping: 15, mass: 0.1 };
   const x = useSpring(0, springConfig);
   const y = useSpring(0, springConfig);
@@ -28,7 +32,7 @@ export default function MagneticButton({ children, className = '', pullFactor = 
   };
 
   const handleMouseEnter = () => setHovered({ isHovered: true });
-  
+
   const handleMouseLeave = () => {
     setHovered({ isHovered: false });
     x.set(0);

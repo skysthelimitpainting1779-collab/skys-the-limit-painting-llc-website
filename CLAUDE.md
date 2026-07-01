@@ -12,11 +12,13 @@ tags: [documentation, agent, reference, guidelines]
 Refer to the master @agents.md operating manual for guidelines, commands, and design standards.
 
 ## Domain Taxonomy
+
 All components, concepts, and files MUST be semantically linked to one of the following root nodes in the graph:
+
 - **Market**: (e.g., SEO, AI Crawlability, Target Audience)
 - **Service**: (e.g., Commercial Painting, Residential, Specialized Coatings)
 - **Business-Objective**: (e.g., Lead Capture, Revenue Generation, Conversion Optimization)
-Isolated technical nodes must be bridged to the nearest relevant business domain.
+  Isolated technical nodes must be bridged to the nearest relevant business domain.
 
 ## Commands
 

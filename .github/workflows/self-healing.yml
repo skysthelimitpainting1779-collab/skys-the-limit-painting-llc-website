@@ -1,0 +1,54 @@
+name: Self-Healing Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+jobs:
+  self-heal:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Download Build Logs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{ github.event.workflow_run.id }},
+            });
+            // Mock logic: Send logs to Agentic LLM for remediation analysis
+
+      - name: Agentic Analysis & Remediation (Mock)
+        run: |
+          echo "Agentic DevOps loop initiated."
+          echo "Analyzing failure logs..."
+          echo "Generating patch for resolution..."
+          # In 2026, this calls your custom Vercel AI SDK Edge Function
+          # curl -X POST https://api.skysthelimitpaintingllc.com/api/agent/remediate
+
+      - name: Commit Remediation
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # git commit -am "fix(agent): auto-remediate pipeline failure"
+          # git push origin HEAD:agent-fix-${{ github.event.workflow_run.id }}
+          echo "Remediation patch prepared."
+
+      - name: Open Remediation PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log("In production, this opens a PR for the agent-fix branch with Policy-Gated Coexistence.");

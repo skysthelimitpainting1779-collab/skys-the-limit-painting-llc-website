@@ -12,27 +12,28 @@ const runCommand = (command, stepName) => {
   } catch (error) {
     console.error(`\n[!] Error executing step: ${stepName}`);
     console.error(`Command failed: ${command}`);
-    
+
     const stdout = error.stdout ? error.stdout.toString() : '';
     const stderr = error.stderr ? error.stderr.toString() : error.message;
     console.log(stdout);
     console.error(stderr);
-    
+
     const timestamp = new Date().toISOString();
     const errorEntry = `\n## [ERR-${timestamp}]\n**Step Failed**: ${stepName}\n**Command**: \`${command}\`\n**Error Trace**:\n\`\`\`\n${stderr}\n${stdout}\n\`\`\`\n`;
-    
+
     const errorsFile = path.join(process.cwd(), '.learnings', 'ERRORS.md');
     // Ensure dir exists
-    if (!fs.existsSync(path.dirname(errorsFile))) fs.mkdirSync(path.dirname(errorsFile), { recursive: true });
-    
+    if (!fs.existsSync(path.dirname(errorsFile)))
+      fs.mkdirSync(path.dirname(errorsFile), { recursive: true });
+
     fs.appendFileSync(errorsFile, errorEntry, 'utf8');
-    
+
     try {
       execSync('node scripts/auto-learn.js', { stdio: 'inherit' });
     } catch (e) {
       console.error('Failed to run auto-learn.js', e.message);
     }
-    
+
     process.exit(1); // Explicitly fail
   }
 };

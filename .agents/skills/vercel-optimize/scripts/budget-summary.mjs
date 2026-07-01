@@ -4,12 +4,17 @@
 
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { buildBudgetSummary, renderBudgetSummaryMarkdown } from '../lib/budget-summary.mjs';
+import {
+  buildBudgetSummary,
+  renderBudgetSummaryMarkdown,
+} from '../lib/budget-summary.mjs';
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (!args.gatePath) {
-    console.error('usage: node scripts/budget-summary.mjs <gate.json> [--format json|markdown] [--no-prompt]');
+    console.error(
+      'usage: node scripts/budget-summary.mjs <gate.json> [--format json|markdown] [--no-prompt]'
+    );
     process.exit(1);
   }
   const gate = JSON.parse(await readFile(args.gatePath, 'utf-8'));
@@ -42,7 +47,8 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--format') out.format = argv[++i];
-    else if (a.startsWith('--format=')) out.format = a.slice('--format='.length);
+    else if (a.startsWith('--format='))
+      out.format = a.slice('--format='.length);
     else if (a === '--no-prompt') out.noPrompt = true;
     else out.positional.push(a);
   }

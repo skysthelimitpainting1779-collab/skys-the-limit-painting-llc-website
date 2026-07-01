@@ -18,7 +18,13 @@ import {
 import FadeIn from '../components/animations/FadeIn';
 import MagneticButton from '../components/animations/MagneticButton';
 import LeadForm from '../components/LeadForm';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '../components/ui/card';
 import Balancer from 'react-wrap-balancer';
 import ResponsiveImage from '../components/ResponsiveImage';
 import ServiceAreaMap from '../components/ServiceAreaMap';
@@ -29,7 +35,12 @@ import ReviewCarousel from '../components/ReviewCarousel';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import SpecInspector from '../components/SpecInspector';
 import IconFeatureCard from '../components/IconFeatureCard';
-import { markets, supportingImages, trustPillars, type MarketSlug } from '../data/markets';
+import {
+  markets,
+  supportingImages,
+  trustPillars,
+  type MarketSlug,
+} from '../data/markets';
 import { trackEvent } from '../lib/analytics';
 
 const corePositioningLine = 'No shortcuts. No mess. No surprise costs.';
@@ -76,12 +87,24 @@ const conversionSteps = [
 ];
 
 const coverageItems = [
-  ['General liability coverage in place', 'General liability coverage in place'],
-  ['Commercial auto + tools coverage', 'Commercial auto + tools/equipment coverage'],
-  ['COI available for qualified opportunities', 'COI available for qualified commercial/public-sector opportunities'],
+  [
+    'General liability coverage in place',
+    'General liability coverage in place',
+  ],
+  [
+    'Commercial auto + tools coverage',
+    'Commercial auto + tools/equipment coverage',
+  ],
+  [
+    'COI available for qualified opportunities',
+    'COI available for qualified commercial/public-sector opportunities',
+  ],
 ];
 
-const marketMedia: Record<MarketSlug, { image: string; label: string; accent: string }> = {
+const marketMedia: Record<
+  MarketSlug,
+  { image: string; label: string; accent: string }
+> = {
   residential: {
     image: '/images/site/iphone-interior-painting-progress.webp',
     label: 'Real home work',
@@ -119,7 +142,14 @@ const marketItemVariants = {
   },
 };
 
-const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index: number; key?: Key }) => {
+const MarketLane = ({
+  market,
+  index,
+}: {
+  market: (typeof markets)[number];
+  index: number;
+  key?: Key;
+}) => {
   const media = marketMedia[market.slug];
   const Icon = market.icon;
 
@@ -145,28 +175,58 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
               {media.label}
             </span>
           </div>
-          
+
           <CardHeader>
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={{
-                visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } }
+                visible: {
+                  transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+                },
               }}
             >
-              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="mb-4 flex items-center justify-between gap-5">
-                <span className="font-display text-5xl font-black leading-none text-white/12">{market.number}</span>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                className="mb-4 flex items-center justify-between gap-5"
+              >
+                <span className="font-display text-5xl font-black leading-none text-white/12">
+                  {market.number}
+                </span>
                 <span className="grid h-10 w-10 place-items-center border border-white/15 bg-white/5 text-white">
                   <Icon size={24} strokeWidth={1.6} />
                 </span>
               </motion.div>
-              <motion.p variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="text-base font-semibold text-zinc-400">{media.accent}</motion.p>
-              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
-                <CardTitle className="text-3xl tracking-tight text-white">{market.navLabel}</CardTitle>
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                className="text-base font-semibold text-zinc-400"
+              >
+                {media.accent}
+              </motion.p>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+              >
+                <CardTitle className="text-3xl tracking-tight text-white">
+                  {market.navLabel}
+                </CardTitle>
               </motion.div>
-              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
-                <CardDescription className="text-zinc-400">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+              >
+                <CardDescription className="text-zinc-400 max-w-[65ch]">
                   <Balancer>{market.summary}</Balancer>
                 </CardDescription>
               </motion.div>
@@ -179,19 +239,41 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
               whileInView="visible"
               viewport={{ once: true }}
               variants={{
-                visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } }
+                visible: {
+                  transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+                },
               }}
             >
               <div className="grid gap-4 text-base sm:grid-cols-2">
                 {market.proof.slice(0, 2).map((item) => (
-                  <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} key={item} className="flex gap-2 border-t border-zinc-800 pt-3">
-                    <CheckCircle2 className="mt-0.5 shrink-0 text-zinc-400" size={16} />
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    key={item}
+                    className="flex gap-2 border-t border-zinc-800 pt-3"
+                  >
+                    <CheckCircle2
+                      className="mt-0.5 shrink-0 text-zinc-400"
+                      size={16}
+                    />
                     <span>{item}</span>
                   </motion.div>
                 ))}
               </div>
-              <motion.span variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="mt-6 inline-flex items-center gap-3 text-base font-semibold text-white group-hover:text-zinc-300">
-                View {market.navLabel} <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                className="mt-6 inline-flex items-center gap-3 text-base font-semibold text-white group-hover:text-zinc-300"
+              >
+                View {market.navLabel}{' '}
+                <ArrowRight
+                  size={14}
+                  className="transition-transform group-hover:translate-x-1"
+                />
               </motion.span>
             </motion.div>
           </CardContent>
@@ -201,21 +283,45 @@ const MarketLane = ({ market, index }: { market: (typeof markets)[number]; index
   );
 };
 
-const TrustPillar = ({ pillar, index }: { pillar: (typeof trustPillars)[number]; index: number; key?: Key }) => {
+const TrustPillar = ({
+  pillar,
+  index,
+}: {
+  pillar: (typeof trustPillars)[number];
+  index: number;
+  key?: Key;
+}) => {
   const Icon = pillar.icon;
 
   return (
     <FadeIn delay={0.06 * index}>
-      <div className="flex h-full flex-col justify-start border-t border-zinc-800 pt-10 transition-colors hover:border-zinc-500" onMouseEnter={() => trackEvent('proof_block_view', { title: pillar.title })}>
+      <div
+        className="flex h-full flex-col justify-start border-t border-zinc-800 pt-10 transition-colors hover:border-zinc-500"
+        onMouseEnter={() =>
+          trackEvent('proof_block_view', { title: pillar.title })
+        }
+      >
         <Icon className="mb-8 text-white" size={32} strokeWidth={1.5} />
-        <h3 className="text-xl font-black leading-tight text-white">{pillar.title}</h3>
-        <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-zinc-400">{pillar.body}</p>
+        <h3 className="text-xl font-black leading-tight text-white">
+          {pillar.title}
+        </h3>
+        <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-zinc-400">
+          {pillar.body}
+        </p>
       </div>
     </FadeIn>
   );
 };
 
-const ProcessStep = ({ step, title, body }: { step: string; title: string; body: string }) => (
+const ProcessStep = ({
+  step,
+  title,
+  body,
+}: {
+  step: string;
+  title: string;
+  body: string;
+}) => (
   <div className="relative py-12 pl-16 border-t border-zinc-800/60">
     <span
       aria-hidden="true"
@@ -223,9 +329,13 @@ const ProcessStep = ({ step, title, body }: { step: string; title: string; body:
     >
       {step}
     </span>
-    <span className="absolute left-0 top-12 text-sm font-semibold text-zinc-600">{step}</span>
+    <span className="absolute left-0 top-12 text-sm font-semibold text-zinc-600">
+      {step}
+    </span>
     <h3 className="text-2xl font-black leading-tight text-white">{title}</h3>
-    <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-400">{body}</p>
+    <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-400">
+      {body}
+    </p>
   </div>
 );
 
@@ -248,7 +358,8 @@ export default function HomeClient() {
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-116px)] max-w-7xl flex-col justify-between px-6 py-12 sm:px-8 lg:px-12 lg:py-16">
           <FadeIn className="w-full pt-8 md:pt-16">
             <p className="font-display mb-8 text-sm font-semibold text-zinc-500">
-              Twin Cities Metro — MN ID: IR816596 | Residential detail. Commercial discipline. Public-sector ready.
+              Twin Cities Metro — MN ID: IR816596 | Residential detail.
+              Commercial discipline. Public-sector ready.
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] text-white">
               <span className="block">The Twin Cities Painter</span>
@@ -257,17 +368,26 @@ export default function HomeClient() {
             </h1>
             <p className="mt-8 max-w-[65ch] text-base leading-relaxed text-[#e7dfd2] sm:text-lg">
               <span className="sm:hidden">
-                No shortcuts. No mess. No surprise costs. Owner-operated craftsmanship from a Minnesota Journeyworker.
+                No shortcuts. No mess. No surprise costs. Owner-operated
+                craftsmanship from a Minnesota Journeyworker.
               </span>
               <span className="hidden sm:inline">
-                Projects completed across Minneapolis, St. Paul, and the greater Twin Cities metro — residential, commercial, and public-sector work executed with owner-led discipline and uncompromising preparation.
+                Projects completed across Minneapolis, St. Paul, and the greater
+                Twin Cities metro — residential, commercial, and public-sector
+                work executed with owner-led discipline and uncompromising
+                preparation.
               </span>
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
               <MagneticButton pullFactor={0.35}>
                 <Link
                   href="/estimate"
-                  onClick={() => trackEvent('hero_cta_click', { label: 'Get My Price Range', source: 'home_hero' })}
+                  onClick={() =>
+                    trackEvent('hero_cta_click', {
+                      label: 'Get My Price Range',
+                      source: 'home_hero',
+                    })
+                  }
                   className="group inline-flex items-center gap-3 bg-white pl-8 pr-3 py-3 text-base font-bold text-[#15110a] transition-colors duration-300 hover:bg-gray-100"
                 >
                   Get Your Free Estimate
@@ -276,10 +396,25 @@ export default function HomeClient() {
                   </span>
                 </Link>
               </MagneticButton>
-              <Link href="/contact" onClick={() => trackEvent('hero_cta_click', { label: 'Book Walkthrough', source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#111] px-8 py-4 text-base font-bold text-white transition-colors hover:text-gray-300">
+              <Link
+                href="/contact"
+                onClick={() =>
+                  trackEvent('hero_cta_click', {
+                    label: 'Book Walkthrough',
+                    source: 'home_hero',
+                  })
+                }
+                className="inline-flex items-center justify-center gap-2 bg-[#111] px-8 py-4 text-base font-bold text-white transition-colors hover:text-gray-300"
+              >
                 Book Your Free Walkthrough
               </Link>
-              <a href="tel:+16514104196" onClick={() => trackEvent('call_click', { source: 'home_hero' })} className="inline-flex items-center justify-center gap-2 bg-[#111] px-8 py-4 text-base font-bold text-white transition-colors hover:text-gray-300">
+              <a
+                href="tel:+16514104196"
+                onClick={() =>
+                  trackEvent('call_click', { source: 'home_hero' })
+                }
+                className="inline-flex items-center justify-center gap-2 bg-[#111] px-8 py-4 text-base font-bold text-white transition-colors hover:text-gray-300"
+              >
                 <Phone size={18} /> (651) 410-4196
               </a>
             </div>
@@ -298,9 +433,15 @@ export default function HomeClient() {
             <div className="grid gap-10 border-t border-[#d8c7aa]/20 pt-12 md:grid-cols-3">
               {conversionSteps.map((item) => (
                 <div key={item.step} className="flex flex-col">
-                  <p className="font-display text-sm font-semibold text-zinc-500">{item.step} / Customer path</p>
-                  <h2 className="mt-4 text-xl font-black leading-tight text-white">{item.title}</h2>
-                  <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-300">{item.body}</p>
+                  <p className="font-display text-sm font-semibold text-zinc-500">
+                    {item.step} / Customer path
+                  </p>
+                  <h2 className="mt-4 text-xl font-black leading-tight text-white">
+                    {item.title}
+                  </h2>
+                  <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-300">
+                    {item.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -316,14 +457,21 @@ export default function HomeClient() {
       <section className="border-t border-white/[0.05] bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-end">
           <FadeIn className="lg:col-span-7">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The standard</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+              The standard
+            </p>
             <h2 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl text-white">
-              Most homeowners don&apos;t end up with a bad paint job because of the color.
+              Most homeowners don&apos;t end up with a bad paint job because of
+              the color.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-5">
             <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4]">
-              They end up with one because the prep was skipped — and it shows up months later. Some painters rush the sanding, prime with a roller in one hand and their phone in the other. The result? Peeling trim, bubbling walls, and a crew that&apos;s long gone before the problems appear. We work the opposite way.
+              They end up with one because the prep was skipped — and it shows
+              up months later. Some painters rush the sanding, prime with a
+              roller in one hand and their phone in the other. The result?
+              Peeling trim, bubbling walls, and a crew that&apos;s long gone
+              before the problems appear. We work the opposite way.
             </p>
           </FadeIn>
         </div>
@@ -333,36 +481,76 @@ export default function HomeClient() {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-5">
             <div className="relative min-h-[500px] overflow-hidden">
-              <ResponsiveImage src="/images/site/marketing-hero-exterior-painting.webp" alt="Polished exterior painting project proof" width={1600} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+              <ResponsiveImage
+                src="/images/site/marketing-hero-exterior-painting.webp"
+                alt="Polished exterior painting project proof"
+                width={1600}
+                height={900}
+                className="absolute inset-0 h-full w-full object-cover opacity-90"
+              />
               <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,7,0.86),rgba(8,8,7,0.1))]"></div>
               <div className="absolute bottom-0 left-0 right-0 p-8">
-                <h2 className="mt-5 text-4xl font-black leading-tight">Premium finishes built on absolute preparation.</h2>
+                <h2 className="mt-5 text-4xl font-black leading-tight">
+                  Premium finishes built on absolute preparation.
+                </h2>
               </div>
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The difference</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+              The difference
+            </p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Prep is 90% of a finish that actually lasts.
             </h2>
             <p className="mt-8 max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4]">
-              We clean, scrape, sand, caulk, mask, and prime every surface until it&apos;s truly ready — then we paint. Not because we&apos;re slow. Because the only way to deliver results that hold up for years is to build them on a solid foundation.
+              We clean, scrape, sand, caulk, mask, and prime every surface until
+              it&apos;s truly ready — then we paint. Not because we&apos;re
+              slow. Because the only way to deliver results that hold up for
+              years is to build them on a solid foundation.
             </p>
             <div className="mt-12 grid gap-10 md:grid-cols-3">
               {[
-                [Camera, 'Real interior prep', '/images/site/iphone-interior-painting-progress.webp'],
-                [UserCheck, 'Real exterior prep', '/images/site/iphone-exterior-prep-front-entry.webp'],
-                [ClipboardCheck, 'Real commercial work', '/images/site/iphone-commercial-door-frame.webp'],
+                [
+                  Camera,
+                  'Real interior prep',
+                  '/images/site/iphone-interior-painting-progress.webp',
+                ],
+                [
+                  UserCheck,
+                  'Real exterior prep',
+                  '/images/site/iphone-exterior-prep-front-entry.webp',
+                ],
+                [
+                  ClipboardCheck,
+                  'Real commercial work',
+                  '/images/site/iphone-commercial-door-frame.webp',
+                ],
               ].map(([Icon, title, body]) => {
                 const ProofIcon = Icon as typeof UserCheck;
                 return (
-                  <div key={title as string} className="flex flex-col border-t border-zinc-800 pt-8">
+                  <div
+                    key={title as string}
+                    className="flex flex-col border-t border-zinc-800 pt-8"
+                  >
                     <div className="relative aspect-[4/3] w-full mb-6 overflow-hidden">
-                      <ResponsiveImage src={body as string} alt={`${title as string} project photo`} width={1200} height={900} className="absolute inset-0 h-full w-full object-cover" />
+                      <ResponsiveImage
+                        src={body as string}
+                        alt={`${title as string} project photo`}
+                        width={1200}
+                        height={900}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
                     </div>
                     <div>
-                      <ProofIcon className="mb-5 text-white" size={24} strokeWidth={1.5} />
-                      <h3 className="text-lg font-black leading-tight">{title as string}</h3>
+                      <ProofIcon
+                        className="mb-5 text-white"
+                        size={24}
+                        strokeWidth={1.5}
+                      />
+                      <h3 className="text-lg font-black leading-tight">
+                        {title as string}
+                      </h3>
                     </div>
                   </div>
                 );
@@ -377,13 +565,16 @@ export default function HomeClient() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Before &amp; after</p>
+                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+                  Before &amp; after
+                </p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   Prep work is the entire secret.
                 </h2>
               </div>
               <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
-                Drag the slider to compare meticulous masking and prep with the finished result. This is what prep-first looks like in practice.
+                Drag the slider to compare meticulous masking and prep with the
+                finished result. This is what prep-first looks like in practice.
               </p>
             </div>
           </FadeIn>
@@ -401,18 +592,25 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <section id="markets" className="relative overflow-hidden bg-[#080807] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
+      <section
+        id="markets"
+        className="relative overflow-hidden bg-[#080807] px-6 py-28 sm:px-8 lg:px-12 lg:py-36"
+      >
         <div className="relative mx-auto max-w-7xl">
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Who we serve</p>
+                <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+                  Who we serve
+                </p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                   Three markets. One standard.
                 </h2>
               </div>
               <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
-                Whether it is a home repaint, a commercial property refresh, or a documented municipal facility job, we bring the same prep discipline, owner oversight, and clean execution to every site.
+                Whether it is a home repaint, a commercial property refresh, or
+                a documented municipal facility job, we bring the same prep
+                discipline, owner oversight, and clean execution to every site.
               </p>
             </div>
           </FadeIn>
@@ -425,7 +623,11 @@ export default function HomeClient() {
             viewport={{ once: true, amount: 0.1 }}
           >
             {markets.map((market, index) => (
-              <motion.div key={market.slug} variants={marketItemVariants} className="h-full">
+              <motion.div
+                key={market.slug}
+                variants={marketItemVariants}
+                className="h-full"
+              >
                 <MarketLane market={market} index={index} />
               </motion.div>
             ))}
@@ -438,10 +640,17 @@ export default function HomeClient() {
       <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-28 sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Credentials</p>
-            <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">Owner-operated. Journeyworker-trained. Prep-first by design.</h2>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+              Credentials
+            </p>
+            <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
+              Owner-operated. Journeyworker-trained. Prep-first by design.
+            </h2>
             <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-[#b9b2a6]">
-              No sales team, no subcontractors, no handoffs. Anthony handles every estimate, every walkthrough, and every final inspection personally — backed by general liability, commercial auto, and tools coverage.
+              No sales team, no subcontractors, no handoffs. Anthony handles
+              every estimate, every walkthrough, and every final inspection
+              personally — backed by general liability, commercial auto, and
+              tools coverage.
             </p>
           </FadeIn>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:col-span-8">
@@ -460,17 +669,35 @@ export default function HomeClient() {
       <section className="bg-[#080807] px-6 py-28 sm:px-8 lg:px-12 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-start">
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
-            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">The process</p>
+            <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+              The process
+            </p>
             <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
               Prep. Paint. Verify. That&apos;s the whole job.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
             <div className="flex flex-col gap-6">
-              <ProcessStep step="01" title="Scope" body="We walk every space together. You point out what matters most. We measure, document, and agree on the exact scope before any work begins. No surprises later." />
-              <ProcessStep step="02" title="Prep" body="This is where most jobs fail and ours succeed. We clean, scrape, sand, caulk, mask, and prime every surface thoroughly. We fix what needs fixing so the paint adheres properly and looks flawless for years." />
-              <ProcessStep step="03" title="Execute" body="Two coats minimum (more where the surface demands it). Crisp, straight lines. Clean edges. Consistent coverage. We protect your floors, furniture, and belongings as if they were our own." />
-              <ProcessStep step="04" title="Verify" body="We walk through the finished space together. You inspect every detail. If anything isn't right, we fix it before the drop cloths come up. Your approval is the real finish line." />
+              <ProcessStep
+                step="01"
+                title="Scope"
+                body="We walk every space together. You point out what matters most. We measure, document, and agree on the exact scope before any work begins. No surprises later."
+              />
+              <ProcessStep
+                step="02"
+                title="Prep"
+                body="This is where most jobs fail and ours succeed. We clean, scrape, sand, caulk, mask, and prime every surface thoroughly. We fix what needs fixing so the paint adheres properly and looks flawless for years."
+              />
+              <ProcessStep
+                step="03"
+                title="Execute"
+                body="Two coats minimum (more where the surface demands it). Crisp, straight lines. Clean edges. Consistent coverage. We protect your floors, furniture, and belongings as if they were our own."
+              />
+              <ProcessStep
+                step="04"
+                title="Verify"
+                body="We walk through the finished space together. You inspect every detail. If anything isn't right, we fix it before the drop cloths come up. Your approval is the real finish line."
+              />
             </div>
           </FadeIn>
         </div>
@@ -481,13 +708,17 @@ export default function HomeClient() {
           <FadeIn>
             <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">
-                <p className="mb-6 text-sm font-semibold text-zinc-500">What to expect</p>
+                <p className="mb-6 text-sm font-semibold text-zinc-500">
+                  What to expect
+                </p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-                  You shouldn&apos;t have to wonder what&apos;s happening on your job. You&apos;ll know.
+                  You shouldn&apos;t have to wonder what&apos;s happening on
+                  your job. You&apos;ll know.
                 </h2>
               </div>
               <p className="max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4] lg:col-span-5">
-                Here&apos;s exactly what to expect when you hire Sky&apos;s the Limit Painting.
+                Here&apos;s exactly what to expect when you hire Sky&apos;s the
+                Limit Painting.
               </p>
             </div>
           </FadeIn>
@@ -500,9 +731,17 @@ export default function HomeClient() {
                 'One owner-operator on every job. Not a project manager. Not a crew you never meet. Anthony.',
                 'The scope and price we agree on at the estimate stays the scope and price. If we discover something unexpected, we call you first.',
               ].map((item) => (
-                <div key={item} className="flex gap-3 border-t border-zinc-800 pt-6">
-                  <CheckCircle2 className="mt-1 shrink-0 text-white" size={18} />
-                  <p className="text-base leading-relaxed text-zinc-300">{item}</p>
+                <div
+                  key={item}
+                  className="flex gap-3 border-t border-zinc-800 pt-6"
+                >
+                  <CheckCircle2
+                    className="mt-1 shrink-0 text-white"
+                    size={18}
+                  />
+                  <p className="text-base leading-relaxed text-zinc-300">
+                    {item}
+                  </p>
                 </div>
               ))}
             </div>
@@ -515,17 +754,28 @@ export default function HomeClient() {
           <FadeIn>
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-7">
-                <p className="mb-6 text-sm font-semibold text-zinc-500">The guarantee</p>
+                <p className="mb-6 text-sm font-semibold text-zinc-500">
+                  The guarantee
+                </p>
                 <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-                  If we agree on a finish date, we hit it — or that day&apos;s labor is on us.
+                  If we agree on a finish date, we hit it — or that day&apos;s
+                  labor is on us.
                 </h2>
                 <p className="mt-8 max-w-[65ch] text-lg leading-relaxed text-[#c9c1b4]">
-                  We keep schedules realistic because we don&apos;t overbook and we don&apos;t disappear. If we&apos;re late finishing on a day we committed to, we discount that day&apos;s labor. And if something isn&apos;t right after we leave? One call brings us back — no fine print, no arguments.
+                  We keep schedules realistic because we don&apos;t overbook and
+                  we don&apos;t disappear. If we&apos;re late finishing on a day
+                  we committed to, we discount that day&apos;s labor. And if
+                  something isn&apos;t right after we leave? One call brings us
+                  back — no fine print, no arguments.
                 </p>
                 <div className="mt-10">
                   <Link
                     href="/contact"
-                    onClick={() => trackEvent('guarantee_cta_click', { source: 'home_guarantee' })}
+                    onClick={() =>
+                      trackEvent('guarantee_cta_click', {
+                        source: 'home_guarantee',
+                      })
+                    }
                     className="inline-flex items-center gap-3 bg-white px-8 py-4 text-base font-bold text-[#15110a] transition-colors duration-300 hover:bg-gray-100"
                   >
                     Book Your Free Walkthrough
@@ -536,7 +786,11 @@ export default function HomeClient() {
               <div className="lg:col-span-5">
                 <blockquote className="border-l-2 border-white/20 pl-8">
                   <p className="text-xl leading-relaxed text-[#e7dfd2] italic">
-                    &ldquo;They painted nearly every room inside my house — ceilings, walls, and trim throughout — and I barely felt like I had contractors in my home. They were prompt, professional, and the finish is flawless. I would absolutely hire them again.&rdquo;
+                    &ldquo;They painted nearly every room inside my house —
+                    ceilings, walls, and trim throughout — and I barely felt
+                    like I had contractors in my home. They were prompt,
+                    professional, and the finish is flawless. I would absolutely
+                    hire them again.&rdquo;
                   </p>
                   <footer className="mt-6 text-sm font-semibold text-zinc-400">
                     — Sarah M., Twin Cities homeowner
@@ -551,22 +805,39 @@ export default function HomeClient() {
       <section className="relative overflow-hidden bg-[#182023] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-6">
-            <p className="font-display mb-6 text-sm font-semibold text-[#dce5e4]/50">Public sector</p>
+            <p className="font-display mb-6 text-sm font-semibold text-[#dce5e4]/50">
+              Public sector
+            </p>
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Already documented. Ready to bid.
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-6">
             <p className="max-w-[65ch] text-lg leading-relaxed text-[#dce5e4]">
-              General liability coverage, commercial auto, COI on request, and NAICS 238320 readiness. We build every job around the documentation and compliance standards that city, county, and state facilities require.
+              General liability coverage, commercial auto, COI on request, and
+              NAICS 238320 readiness. We build every job around the
+              documentation and compliance standards that city, county, and
+              state facilities require.
             </p>
           </FadeIn>
         </div>
         <div className="relative mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-3">
           {[
-            { icon: FileCheck2, title: 'Detailed Documentation', body: 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.' },
-            { icon: ShieldCheck, title: 'Comprehensive Coverage', body: 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.' },
-            { icon: Ruler, title: 'Infrastructure Services', body: 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.' },
+            {
+              icon: FileCheck2,
+              title: 'Detailed Documentation',
+              body: 'We treat scope clarity, photos, COI requests, schedules, and closeout records with utmost professional seriousness.',
+            },
+            {
+              icon: ShieldCheck,
+              title: 'Comprehensive Coverage',
+              body: 'We maintain robust general liability, commercial auto, and specialty tool coverages for your complete peace of mind.',
+            },
+            {
+              icon: Ruler,
+              title: 'Infrastructure Services',
+              body: 'Providing facility painting, pavement markings, safety striping, and protective coatings for civic and public assets.',
+            },
           ].map((card) => (
             <FadeIn key={card.title}>
               <IconFeatureCard
@@ -587,26 +858,42 @@ export default function HomeClient() {
 
       {/* Social proof marquee above lead form */}
       <div className="border-y border-[#d8c7aa]/10 bg-[#0b0b0a] py-4">
-        <MarqueeTicker items={marqueeItems.map(item => item.text)} speed="normal" />
+        <MarqueeTicker
+          items={marqueeItems.map((item) => item.text)}
+          speed="normal"
+        />
       </div>
 
       <section className="border-t border-white/10 bg-[#050505] px-6 py-28 text-white sm:px-8 lg:px-12 lg:py-36">
         <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden bg-[#0B0B0D] lg:grid-cols-12">
           <div className="relative min-h-[480px] lg:col-span-5">
-            <ResponsiveImage src={supportingImages.commercialReal} alt="Owner-led commercial painting work" width={1200} height={900} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+            <ResponsiveImage
+              src={supportingImages.commercialReal}
+              alt="Owner-led commercial painting work"
+              width={1200}
+              height={900}
+              className="absolute inset-0 h-full w-full object-cover opacity-90"
+            />
             <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(5,5,5,0.72),rgba(5,5,5,0.05))]"></div>
           </div>
           <div className="p-12 lg:col-span-7 lg:p-16 bg-[#0B0B0D]">
             <FadeIn>
-              <p className="font-display mb-6 text-sm font-semibold text-zinc-500">Get started</p>
+              <p className="font-display mb-6 text-sm font-semibold text-zinc-500">
+                Get started
+              </p>
               <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
                 Request Your Free Scope Walkthrough
               </h2>
               <p className="mt-4 text-base leading-relaxed text-zinc-400">
-                Tell us about your project and preferred timeline. Anthony or the team will follow up within one business day to schedule a no-obligation walkthrough.
+                Tell us about your project and preferred timeline. Anthony or
+                the team will follow up within one business day to schedule a
+                no-obligation walkthrough.
               </p>
               <div className="mt-12">
-                <LeadForm source="Homepage three-market estimate form" compact />
+                <LeadForm
+                  source="Homepage three-market estimate form"
+                  compact
+                />
               </div>
             </FadeIn>
           </div>

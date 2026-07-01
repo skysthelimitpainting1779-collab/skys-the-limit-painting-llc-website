@@ -2,14 +2,14 @@
 id: cdn-cache-auth-safety
 title: CDN cache auth safety
 status: active
-candidateKinds: ["uncached_route", "cache_header_gap"]
-frameworks: ["*"]
+candidateKinds: ['uncached_route', 'cache_header_gap']
+frameworks: ['*']
 priority: 100
 citations:
   [
-    "https://vercel.com/docs/caching/cdn-cache",
-    "https://vercel.com/docs/caching/cache-control-headers",
-    "https://vercel.com/docs/project-configuration",
+    'https://vercel.com/docs/caching/cdn-cache',
+    'https://vercel.com/docs/caching/cache-control-headers',
+    'https://vercel.com/docs/project-configuration',
   ]
 maxBriefChars: 900
 ---

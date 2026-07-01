@@ -1,6 +1,6 @@
 ---
 type: ops-control
-title: "Recurring Operations Schedule"
+title: 'Recurring Operations Schedule'
 tags: [recurring, cron, operations, automation, company-os]
 last_sync: 2026-06-24
 ---

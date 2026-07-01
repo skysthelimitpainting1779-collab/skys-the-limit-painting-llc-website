@@ -1,12 +1,17 @@
 'use client';
 
 import { useEffect } from 'react';
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from 'motion/react';
 
 export default function CustomCursor() {
   const prefersReducedMotion = useReducedMotion();
 
-  // Use MotionValues instead of React state to completely bypass React's render cycle 
+  // Use MotionValues instead of React state to completely bypass React's render cycle
   // on every mouse movement. This keeps pointer animation smooth.
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -25,15 +30,17 @@ export default function CustomCursor() {
 
     const updatePosition = (e: MouseEvent) => {
       // Calculate offset based on current size
-      const offset = isHovering ? 24 : 8; 
+      const offset = isHovering ? 24 : 8;
       cursorX.set(e.clientX - offset);
       cursorY.set(e.clientY - offset);
     };
 
     const updateHoverState = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      
-      const isInteractive = !!target.closest('a, button, select, input, textarea, [role="button"]');
+
+      const isInteractive = !!target.closest(
+        'a, button, select, input, textarea, [role="button"]'
+      );
 
       if (isInteractive !== isHovering) {
         isHovering = isInteractive;

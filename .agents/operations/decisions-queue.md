@@ -1,6 +1,6 @@
 ---
 type: ops-control
-title: "Decisions Queue"
+title: 'Decisions Queue'
 tags: [decisions, approvals, human-in-the-loop, company-os]
 last_sync: 2026-06-24
 ---

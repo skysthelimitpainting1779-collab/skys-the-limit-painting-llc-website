@@ -38,8 +38,8 @@ description: Test the Sky's the Limit Painting website end-to-end. Use when veri
 - The `IconFeatureCard` component has a `headingLevel` prop that controls h2/h3
 - **How to verify:** Use browser console:
   ```js
-  Array.from(document.querySelectorAll("article h2")).map((h) =>
-    h.textContent.trim(),
+  Array.from(document.querySelectorAll('article h2')).map((h) =>
+    h.textContent.trim()
   );
   ```
 
@@ -51,10 +51,10 @@ description: Test the Sky's the Limit Painting website end-to-end. Use when veri
   ```js
   document
     .querySelector('section img[src*="marketing-hero"]')
-    .getAttribute("loading"); // "eager"
+    .getAttribute('loading'); // "eager"
   document
     .querySelector('section img[src*="marketing-hero"]')
-    .getAttribute("fetchpriority"); // "high"
+    .getAttribute('fetchpriority'); // "high"
   ```
 
 ### Hero Gradient Overlays

@@ -25,7 +25,10 @@ export default function HeatmapOverlay() {
       try {
         setClicks(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to parse heatmap clicks, resetting stored data:', e);
+        console.error(
+          'Failed to parse heatmap clicks, resetting stored data:',
+          e
+        );
         localStorage.removeItem('sky_heatmap_clicks');
       }
     }
@@ -84,7 +87,9 @@ export default function HeatmapOverlay() {
           type="button"
           onClick={() => setHeatmapActive(!heatmapActive)}
           className={`flex items-center gap-2 px-3 py-1.5 font-black   transition-colors cursor-pointer ${
-            heatmapActive ? 'bg-white text-[#050505]' : 'bg-white/5 text-white hover:bg-white/10'
+            heatmapActive
+              ? 'bg-white text-[#050505]'
+              : 'bg-white/5 text-white hover:bg-white/10'
           }`}
         >
           <Flame size={14} className={heatmapActive ? 'animate-pulse' : ''} />
@@ -118,7 +123,7 @@ export default function HeatmapOverlay() {
 
       {/* Visual Heatmap Overlay */}
       {heatmapActive && (
-        <div 
+        <div
           className="absolute inset-0 z-40 pointer-events-none w-full h-full overflow-hidden"
           style={{ mixBlendMode: 'screen' }}
         >
@@ -132,7 +137,8 @@ export default function HeatmapOverlay() {
                 width: '32px',
                 height: '32px',
                 transform: 'translate(-50%, -50%)',
-                background: 'radial-gradient(circle, rgba(240,192,103,0.9) 0%, rgba(240,192,103,0.3) 50%, rgba(240,192,103,0) 80%)',
+                background:
+                  'radial-gradient(circle, rgba(240,192,103,0.9) 0%, rgba(240,192,103,0.3) 50%, rgba(240,192,103,0) 80%)',
                 boxShadow: '0 0 12px rgba(240,192,103,0.15)',
               }}
             />

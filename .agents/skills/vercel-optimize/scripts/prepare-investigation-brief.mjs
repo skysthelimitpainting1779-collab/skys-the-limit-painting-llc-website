@@ -26,8 +26,12 @@ const log = (...a) => console.error('[prepare-brief]', ...a);
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (!args.mergedPath || !args.investigationPath) {
-    console.error('usage: node scripts/prepare-investigation-brief.mjs <merged.json> <investigation.json> [--index N] [--group toLaunch|platform] [--out FILE]');
-    console.error('   or: node scripts/prepare-investigation-brief.mjs <merged.json> <investigation.json> --list');
+    console.error(
+      'usage: node scripts/prepare-investigation-brief.mjs <merged.json> <investigation.json> [--index N] [--group toLaunch|platform] [--out FILE]'
+    );
+    console.error(
+      '   or: node scripts/prepare-investigation-brief.mjs <merged.json> <investigation.json> --list'
+    );
     process.exit(1);
   }
 
@@ -46,7 +50,9 @@ async function main() {
   const index = args.index ?? 0;
   const pool = Array.isArray(investigation[group]) ? investigation[group] : [];
   if (index < 0 || index >= pool.length) {
-    console.error(`[prepare-brief] FATAL: ${group}[${index}] out of range (${group} has ${pool.length} entries)`);
+    console.error(
+      `[prepare-brief] FATAL: ${group}[${index}] out of range (${group} has ${pool.length} entries)`
+    );
     process.exit(2);
   }
   let candidate = pool[index];
@@ -66,7 +72,9 @@ async function main() {
   const playbookId = inferPlaybook(signals);
   const playbookBody = playbookId ? await tryReadPlaybook(playbookId) : null;
   const frameworkPlaybookId = inferFrameworkPlaybook(signals);
-  const frameworkPlaybookBody = frameworkPlaybookId ? await tryReadPlaybook(frameworkPlaybookId) : null;
+  const frameworkPlaybookBody = frameworkPlaybookId
+    ? await tryReadPlaybook(frameworkPlaybookId)
+    : null;
 
   const stack = signals.stack ?? signals.codebase?.stack ?? {};
   const framework = stack.framework ?? 'unknown';
@@ -109,9 +117,14 @@ function buildManifest(merged, investigation) {
   const out = [];
   const groups = ['toLaunch', 'platform'];
   for (const group of groups) {
-    const pool = Array.isArray(investigation[group]) ? investigation[group] : [];
+    const pool = Array.isArray(investigation[group])
+      ? investigation[group]
+      : [];
     pool.forEach((c, i) => {
-      const files = resolveFiles(c, { ...merged, codebase: pickCodebase(merged) });
+      const files = resolveFiles(c, {
+        ...merged,
+        codebase: pickCodebase(merged),
+      });
       const candidateRef = c.candidateRef ?? candidateRefFor(c, files);
       out.push({
         group,
@@ -149,11 +162,19 @@ function buildFanoutPlan(briefs) {
       familyKey: key,
       label: brief.label,
       kind: brief.kind,
-      primaryBrief: { group: brief.group, index: brief.index, candidateRef: brief.candidateRef },
+      primaryBrief: {
+        group: brief.group,
+        index: brief.index,
+        candidateRef: brief.candidateRef,
+      },
       relatedBriefs: [],
     };
     if (existing.primaryBrief.candidateRef !== brief.candidateRef) {
-      existing.relatedBriefs.push({ group: brief.group, index: brief.index, candidateRef: brief.candidateRef });
+      existing.relatedBriefs.push({
+        group: brief.group,
+        index: brief.index,
+        candidateRef: brief.candidateRef,
+      });
     }
     groups.set(key, existing);
   }
@@ -167,7 +188,10 @@ function buildFanoutPlan(briefs) {
 }
 
 function candidateFamilyKey(brief) {
-  const file = Array.isArray(brief.files) && brief.files.length > 0 ? brief.files[0] : null;
+  const file =
+    Array.isArray(brief.files) && brief.files.length > 0
+      ? brief.files[0]
+      : null;
   const target = file ?? brief.route ?? brief.scope ?? '<account>';
   return `${brief.kind ?? 'unknown'}:${target}`;
 }
@@ -176,7 +200,11 @@ function candidateFamilyKey(brief) {
 // Also accepts a fully-shaped scan doc directly (used in tests).
 function pickCodebase(merged) {
   if (!merged || typeof merged !== 'object') return {};
-  if (merged.codebase && typeof merged.codebase === 'object' && (merged.codebase.routes || merged.codebase.findings)) {
+  if (
+    merged.codebase &&
+    typeof merged.codebase === 'object' &&
+    (merged.codebase.routes || merged.codebase.findings)
+  ) {
     return merged.codebase;
   }
   if (merged.signals?.codebase && typeof merged.signals.codebase === 'object') {
@@ -198,11 +226,13 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--index') out.index = Number(argv[++i]);
-    else if (a.startsWith('--index=')) out.index = Number(a.slice('--index='.length));
+    else if (a.startsWith('--index='))
+      out.index = Number(a.slice('--index='.length));
     else if (a === '--group') out.group = argv[++i];
     else if (a.startsWith('--group=')) out.group = a.slice('--group='.length);
     else if (a === '--out') out.outPath = resolve(argv[++i]);
-    else if (a.startsWith('--out=')) out.outPath = resolve(a.slice('--out='.length));
+    else if (a.startsWith('--out='))
+      out.outPath = resolve(a.slice('--out='.length));
     else if (a === '--list') out.list = true;
     else if (a === '--deterministic') out.deterministic = true;
     else if (a === '--force') out.force = true;
@@ -215,10 +245,15 @@ function parseArgs(argv) {
 
 async function writeBriefFile(outPath, brief, { force = false } = {}) {
   try {
-    await writeFile(outPath, brief + '\n', { encoding: 'utf-8', flag: force ? 'w' : 'wx' });
+    await writeFile(outPath, brief + '\n', {
+      encoding: 'utf-8',
+      flag: force ? 'w' : 'wx',
+    });
   } catch (err) {
     if (err?.code === 'EEXIST') {
-      throw new Error(`output file already exists: ${outPath}. Use a fresh run directory or pass --force to overwrite.`);
+      throw new Error(
+        `output file already exists: ${outPath}. Use a fresh run directory or pass --force to overwrite.`
+      );
     }
     throw err;
   }

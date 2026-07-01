@@ -2,14 +2,14 @@
 id: external-api-critical-path-platform
 title: Cross-framework external API critical path
 status: active
-candidateKinds: ["external_api_slow"]
-frameworks: ["*"]
+candidateKinds: ['external_api_slow']
+frameworks: ['*']
 priority: 86
 citations:
   [
-    "https://vercel.com/docs/functions/debug-slow-functions",
-    "https://vercel.com/docs/caching/runtime-cache",
-    "https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package",
+    'https://vercel.com/docs/functions/debug-slow-functions',
+    'https://vercel.com/docs/caching/runtime-cache',
+    'https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package',
   ]
 maxBriefChars: 850
 ---

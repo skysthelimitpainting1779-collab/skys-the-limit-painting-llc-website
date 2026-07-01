@@ -1,4 +1,9 @@
-import { enqueueTask, claimNextTask, resolveTask, getAllTasks } from './queue.js';
+import {
+  enqueueTask,
+  claimNextTask,
+  resolveTask,
+  getAllTasks,
+} from './queue.js';
 import db from './db.js';
 
 console.log('[TEST] Enqueueing 3 test tasks...');
@@ -24,6 +29,13 @@ resolveTask(task3.id, 'completed');
 
 console.log('[TEST] Current WAL Queue State:');
 const tasks = getAllTasks();
-console.table(tasks.map(t => ({ id: t.id, desc: t.description, status: t.status, priority: t.priority })));
+console.table(
+  tasks.map((t) => ({
+    id: t.id,
+    desc: t.description,
+    status: t.status,
+    priority: t.priority,
+  }))
+);
 
 console.log('[TEST] Execution complete.');

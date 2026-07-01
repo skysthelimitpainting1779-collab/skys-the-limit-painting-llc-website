@@ -14,7 +14,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const page = serviceLandingPages.find((p) => p.slug === slug);
   if (!page) {
@@ -50,14 +52,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function PaintingServiceLandingPage({ params }: PageProps) {
+export default async function PaintingServiceLandingPage({
+  params,
+}: PageProps) {
   const { slug } = await params;
   const page = serviceLandingPages.find((p) => p.slug === slug);
   if (!page) {
     notFound();
   }
 
-  const serviceJson = serviceSchema(page.title, page.metaDescription, `/painting-services/${page.slug}`);
+  const serviceJson = serviceSchema(
+    page.title,
+    page.metaDescription,
+    `/painting-services/${page.slug}`
+  );
   const breadcrumbJson = breadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Capabilities', path: '/capabilities' },

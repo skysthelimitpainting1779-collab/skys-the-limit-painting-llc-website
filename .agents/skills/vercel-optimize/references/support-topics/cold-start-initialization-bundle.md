@@ -2,14 +2,14 @@
 id: cold-start-initialization-bundle
 title: Cold-start initialization and bundle weight
 status: active
-candidateKinds: ["cold_start"]
-frameworks: ["*"]
+candidateKinds: ['cold_start']
+frameworks: ['*']
 priority: 92
 citations:
   [
-    "https://vercel.com/docs/functions/debug-slow-functions",
-    "https://vercel.com/docs/functions/limitations",
-    "https://vercel.com/docs/functions/runtimes",
+    'https://vercel.com/docs/functions/debug-slow-functions',
+    'https://vercel.com/docs/functions/limitations',
+    'https://vercel.com/docs/functions/runtimes',
   ]
 maxBriefChars: 850
 ---

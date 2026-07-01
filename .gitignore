@@ -12,38 +12,22 @@ tmp/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
 graphify-out/
-/components/
-/lib/
-/wiki/
-*.cjs
 
-# Ignore Agent OS operational state, but track configuration/knowledge files
-.agents/*
-!.agents/rules.md
-!.agents/decisions.md
-!.agents/knowledge.md
-!.agents/governance/
-!.agents/operations/
-!.agents/playbooks/
-!.agents/skills/
-# Ignore generated skill outputs (e.g. .agents/skills/vercel-optimize/lib/)
+# Claude Code runtime state only (NOT agent definitions — those are tracked)
+.claude/*
+!.claude/agents/
+!.claude/agents/*.md
+
+# Ignore generated skill script outputs only
 .agents/skills/*/lib/
 .agents/skills/*/*/lib/
-# Ignore specific databases, traces, caches, and staging inside .agents
+
+# Ignore runtime/operational databases and caches (not knowledge files)
 .agents/hub_db.json
 .agents/coordination.db
 .agents/coordination.db-journal
 .agents/dashboard.html
-.agents/checkpoints/
-.agents/dead-letter/
-.agents/effects/
-.agents/evals/
-.agents/evidence/
-.agents/queues/
-.agents/traces/
-.agents/waits/
-.agents/staging/
 
-# Ignore transient Agent OS plan and task mirrors
+# Ignore transient agent plan/task mirrors (these are IDE scratch, not repo artifacts)
 plan.md
 task.md
