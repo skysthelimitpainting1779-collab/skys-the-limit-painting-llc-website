@@ -1193,7 +1193,7 @@ function triggerSelfHealing(task, failedCommand, errorOutput) {
   okfErrorContent += `id: ${errorId.toLowerCase().replace(/-/g, '_')}\n`;
   okfErrorContent += `name: "Incident Postmortem: ${task.title}"\n`;
   okfErrorContent += `type: concept\n`;
-  okfErrorContent += `description: "Automated failure analysis and diagnostics for command ${failedCommand.replace(/"/g, '\\"')}"\n`;
+  okfErrorContent += `description: "Automated failure analysis and diagnostics for command ${failedCommand.replaceAll('"', '\\"')}"\n`;
   okfErrorContent += `tags: [failure, postmortem, ${task.id.toLowerCase()}]\n`;
   okfErrorContent += `references: [workspace_knowledge, mandatory_error_learning]\n`;
   okfErrorContent += `---\n\n`;
@@ -1309,7 +1309,7 @@ function runCommand(cmd) {
     } else if (cmd.includes('npm run build')) {
       executable = 'powershell -ExecutionPolicy Bypass -Command "npm run build"';
     } else if (!cmd.startsWith('cmd.exe') && !cmd.startsWith('powershell')) {
-      executable = `cmd.exe /c "${cmd.replace(/"/g, '\\"')}"`;
+      executable = `cmd.exe /c "${cmd.replaceAll('"', '\\"')}"`;
     }
   }
   console.log(`[Agent OS] Executing shell command: ${executable}`);

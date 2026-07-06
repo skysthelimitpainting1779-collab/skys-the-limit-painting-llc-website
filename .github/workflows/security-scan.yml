@@ -15,7 +15,7 @@ permissions:
   pull-requests: read
 
 env:
-  NODE_VERSION: '24.x'
+  # NODE_VERSION will be read from .nvmrc
 
 jobs:
   npm-audit:
@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: npm
 
       - name: Install dependencies
@@ -64,7 +64,7 @@ jobs:
           languages: javascript-typescript
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@51f77329afa6477de8c49fc9c7046c15b9a4e79d # v3.29.5
+        uses: github/codeql-action/autobuild@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
 
       - name: Analyze
         uses: github/codeql-action/analyze@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3

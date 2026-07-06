@@ -44,7 +44,7 @@ async function verifyDNS() {
       console.log('[WARNING] No A-records found for Apex domain. Verify Hostinger/Vercel settings.');
     }
 
-    const hasVercelCNAME = Array.isArray(wwwRecords) && wwwRecords.some(r => r.includes('cname.vercel-dns.com') || r.includes('vercel'));
+    const hasVercelCNAME = Array.isArray(wwwRecords) && wwwRecords.some(r => r.endsWith('.vercel-dns.com') || r.endsWith('.vercel.app') || r === 'vercel');
     if (hasVercelCNAME || (Array.isArray(wwwRecords) && wwwRecords.length > 0)) {
       console.log('[SUCCESS] WWW subdomain is correctly configured and pointing to Vercel/Hostinger mapping.');
     } else {

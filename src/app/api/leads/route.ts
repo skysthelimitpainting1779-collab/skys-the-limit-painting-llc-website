@@ -117,7 +117,7 @@ async function saveLeadEventToDb(leadId: string, eventType: string, provider: st
   });
 
   if (error) {
-    console.error(`Failed to store lead event in Supabase for lead ${leadId}:`, error);
+    console.error("Failed to store lead event in Supabase for lead %s:", leadId, error);
   }
 }
 
@@ -154,7 +154,7 @@ function validate(payload: Record<string, unknown>) {
     return `Missing required fields: ${missing.join(', ')}`;
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(asText(payload.email))) {
+  if (!/^[^\s@]{1,254}@[^\s@]{1,254}\.[^\s@]{2,63}$/.test(asText(payload.email))) {
     return 'Enter a valid email address.';
   }
 

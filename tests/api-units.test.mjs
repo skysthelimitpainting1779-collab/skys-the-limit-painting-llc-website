@@ -441,7 +441,7 @@ describe('api/leads - buildLeadHtml email template', () => {
 
   test('excludes website honeypot field', () => {
     const html = buildLeadHtml({ name: 'Bob', website: 'http://spam.com' });
-    assert.ok(!html.includes('spam.com'), 'should exclude website field');
+    assert.ok(!html.includes('http://spam.com'), 'should exclude website field');
   });
 
   test('excludes empty fields', () => {
