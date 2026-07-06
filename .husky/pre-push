@@ -1,6 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 echo "Running CI Health Check before push..."
 bash .github/scripts/ci-health-check.sh
 if [ $? -ne 0 ]; then
