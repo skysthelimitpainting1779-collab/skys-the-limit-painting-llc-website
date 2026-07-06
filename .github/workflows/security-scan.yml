@@ -14,8 +14,7 @@ permissions:
   security-events: write
   pull-requests: read
 
-env:
-  # NODE_VERSION will be read from .nvmrc
+
 
 jobs:
   npm-audit:

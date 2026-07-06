@@ -379,7 +379,7 @@ describe('api/leads - validate lead payload', () => {
   });
 
   test('returns spam error when website honeypot is filled', () => {
-    const result = validate({ ...validPayload, website: 'http://spam.com' });
+    const result = validate({ ...validPayload, website: 'spam-website-honeypot' });
     assert.equal(result, 'Spam check failed.');
   });
 
@@ -440,8 +440,8 @@ describe('api/leads - buildLeadHtml email template', () => {
   });
 
   test('excludes website honeypot field', () => {
-    const html = buildLeadHtml({ name: 'Bob', website: 'http://spam.com' });
-    assert.ok(!html.includes('http://spam.com'), 'should exclude website field');
+    const html = buildLeadHtml({ name: 'Bob', website: 'spam-website-honeypot' });
+    assert.ok(!html.includes('spam-website-honeypot'), 'should exclude website field');
   });
 
   test('excludes empty fields', () => {
