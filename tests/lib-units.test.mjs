@@ -498,7 +498,7 @@ describe('lib/settings - Company settings and defaults', () => {
     const src = read('src/lib/settings.ts');
     const areas = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
     for (const area of areas) {
-      assert.match(src, new RegExp(area.replace(/\./g, '\\.')), `service_areas should include ${area}`);
+      assert.match(src, new RegExp(area.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')), `service_areas should include ${area}`);
     }
   });
 

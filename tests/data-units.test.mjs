@@ -331,7 +331,7 @@ describe('Cross-module data consistency', () => {
     const seoSrc = read('src/lib/seo.ts');
     const areaCities = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
     for (const city of areaCities) {
-      assert.match(seoSrc, new RegExp(city.replace(/\./g, '\\.')), `seo.ts should reference ${city}`);
+      assert.match(seoSrc, new RegExp(city.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')), `seo.ts should reference ${city}`);
     }
   });
 
@@ -340,8 +340,8 @@ describe('Cross-module data consistency', () => {
     const seoSrc = read('src/lib/seo.ts');
     const settingsAreas = ['Inver Grove Heights', 'South St. Paul', 'St. Paul', 'Eagan', 'Woodbury', 'Minneapolis'];
     for (const area of settingsAreas) {
-      assert.match(settingsSrc, new RegExp(area.replace(/\./g, '\\.')), `settings should include ${area}`);
-      assert.match(seoSrc, new RegExp(area.replace(/\./g, '\\.')), `seo should include ${area}`);
+      assert.match(settingsSrc, new RegExp(area.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')), `settings should include ${area}`);
+      assert.match(seoSrc, new RegExp(area.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')), `seo should include ${area}`);
     }
   });
 

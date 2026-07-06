@@ -17,7 +17,6 @@ permissions:
   pull-requests: write
 
 env:
-  NODE_VERSION: '24.x'
   SITE_URL: https://skysthelimitpaintingllc.com
   VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
@@ -35,7 +34,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: npm
 
       - name: Restore node_modules cache
@@ -72,7 +71,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: npm
 
       - name: Restore node_modules cache
@@ -109,7 +108,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: npm
 
       - name: Restore node_modules cache
