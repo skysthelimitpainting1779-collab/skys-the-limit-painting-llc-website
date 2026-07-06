@@ -47,7 +47,7 @@
     "express": "5.2.1",
     "leaflet": "1.9.4",
     "lucide-react": "^1.23.0",
-    "motion": "12.42.0",
+    "motion": "12.42.2",
     "next": "16.2.10",
     "react": "19.2.7",
     "react-dom": "19.2.7",
