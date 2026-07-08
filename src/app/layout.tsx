@@ -64,6 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <head>
+        <link rel="llms" href="https://www.skysthelimitpaintingllc.com/llms.txt" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -276,7 +277,7 @@ export default function RootLayout({
               </div>
             </div>
 
-            <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-400">
               <p>&copy; {currentYear} Sky&apos;s the Limit Painting LLC. All rights reserved.</p>
               <p>
                 Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers&apos; comp under MN Statute

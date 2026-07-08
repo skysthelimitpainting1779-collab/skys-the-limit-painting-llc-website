@@ -60,4 +60,4 @@ Allow: /
 
 # Sitemaps and AI Fact Manifests
 Sitemap: https://www.skysthelimitpaintingllc.com/sitemap.xml
-Link: https://www.skysthelimitpaintingllc.com/llms.txt
+# Link: https://www.skysthelimitpaintingllc.com/llms.txt
