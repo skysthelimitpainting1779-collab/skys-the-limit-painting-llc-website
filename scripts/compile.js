@@ -39,5 +39,5 @@ const runCommand = (command, stepName) => {
 
 runCommand('node scripts/validate-okf.js', 'A: OKF Validator');
 runCommand('npm run lint:md', 'B: Markdown Linter');
-runCommand('npx graphify update .', 'C: Graphifyy Update');
+runCommand('graphify update .', 'C: Graphifyy Update');
 console.log('Compilation pipeline completed successfully.');

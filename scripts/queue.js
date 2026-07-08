@@ -28,5 +28,35 @@ export function resolveTask(taskId, status) {
   if (!task) return;
   task.status = status;
   task.resolved_at = new Date().toISOString();
+  
+  if (status === 'verified') {
+    db.metrics = db.metrics || {};
+    db.metrics.tasks_verified = (db.metrics.tasks_verified || 0) + 1;
+    db.metrics.tasks_completed = (db.metrics.tasks_completed || 0) + 1;
+  }
+  
   saveDb(db);
 }
+
+export function enqueueTask(refId, title, priority) {
+  const db = loadDb();
+  db.tasks = db.tasks || [];
+  
+  const exists = db.tasks.some(t => t.title === title && (t.status === 'pending' || t.status === 'running'));
+  if (exists) return;
+
+  const newTask = {
+    id: `TASK-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
+    goal_id: 'GOAL-1',
+    title,
+    priority,
+    status: 'pending',
+    created_at: new Date().toISOString(),
+    ref_id: refId,
+    dependencies: [],
+    attempts: 0
+  };
+  db.tasks.push(newTask);
+  saveDb(db);
+}
+

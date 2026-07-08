@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Code Directory Context: Library Utilities
 
 **Directory Path:** `src/lib/`  

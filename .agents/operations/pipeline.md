@@ -33,8 +33,9 @@ INTAKE → CRM_RECONCILIATION → ESTIMATE_DRAFTING → APPROVAL_WAITPOINT → C
 
 | Lead ID | Name | Market | Stage | Submitted At | Updated At | HubSpot Synced | Notes |
 |---|---|---|---|---|---|---|---|
-| SKY-MOCK-1782332669088 | Jane Homeowner | Residential | `approval_waitpoint` | 2026-06-24T20:24:29.089Z | 2026-06-24T20:24:29.137Z | ❌ | Awaiting approval: ESTIMATE-SKY-MOCK-1782332669088.md |
+| SKY-MOCK-1782332669088 | Jane Homeowner | Residential | `approval_waitpoint` | 2026-06-24T20:24:29.089Z | 2026-07-08T03:35:05.865Z | ✅ | Awaiting approval: ESTIMATE-SKY-MOCK-1782332669088.md |
 
+| SKY-MOCK-1782916325471 | Jane Homeowner | Residential | `approval_waitpoint` | 2026-07-01T14:32:05.471Z | 2026-07-08T03:35:05.882Z | ✅ | Awaiting approval: ESTIMATE-SKY-MOCK-1782916325471.md |
 ---
 
 ## Stale Lead Alert Rules (read by cron-ops.js)

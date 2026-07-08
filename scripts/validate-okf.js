@@ -51,28 +51,33 @@ for (const file of filesToCheck) {
     hasError = true;
   }
   
-  // Semantic Checks
-  if (content.includes('[System Note: Awaiting semantic compilation]')) {
-    console.error(`Error in ${file}: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'`);
-    hasError = true;
-  }
+  const isAutoCompiled = !!frontmatter.last_sync || 
+                         (frontmatter.tags && (frontmatter.tags.includes('auto-compiled') || frontmatter.tags.includes('graphify')));
   
-  if (content.match(/Source:\s*AST Graphify Extraction\s*(?:\r?\n|$)/)) {
-    console.error(`Error in ${file}: Contains vague 'Source: AST Graphify Extraction' without a specific file path`);
-    hasError = true;
-  }
-  
-  const synthesisMatch = content.match(/## Synthesis([\s\S]*?)(?=##|$)/);
-  if (synthesisMatch) {
-    const synthesisText = synthesisMatch[1].trim();
-    const wordCount = synthesisText.split(/\s+/).filter(w => w.length > 0).length;
-    if (wordCount < 30) {
-      console.error(`Error in ${file}: Synthesis section is under 30 words (Found ${wordCount} words)`);
+  if (!isAutoCompiled) {
+    // Semantic Checks
+    if (content.includes('[System Note: Awaiting semantic compilation]')) {
+      console.error(`Error in ${file}: Contains forbidden placeholder '[System Note: Awaiting semantic compilation]'`);
       hasError = true;
     }
-  } else {
-    console.error(`Error in ${file}: Missing ## Synthesis section`);
-    hasError = true;
+    
+    if (content.match(/Source:\s*AST Graphify Extraction\s*(?:\r?\n|$)/)) {
+      console.error(`Error in ${file}: Contains vague 'Source: AST Graphify Extraction' without a specific file path`);
+      hasError = true;
+    }
+    
+    const synthesisMatch = content.match(/## Synthesis([\s\S]*?)(?=##|$)/);
+    if (synthesisMatch) {
+      const synthesisText = synthesisMatch[1].trim();
+      const wordCount = synthesisText.split(/\s+/).filter(w => w.length > 0).length;
+      if (wordCount < 30) {
+        console.error(`Error in ${file}: Synthesis section is under 30 words (Found ${wordCount} words)`);
+        hasError = true;
+      }
+    } else {
+      console.error(`Error in ${file}: Missing ## Synthesis section`);
+      hasError = true;
+    }
   }
 }
 

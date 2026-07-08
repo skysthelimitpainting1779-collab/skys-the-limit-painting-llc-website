@@ -263,7 +263,7 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.34 Lead Capture & API - /api/leads validates email structures and throws bad request', () => {
-    const api = read('src/app/api/leads/route.ts');
+    const api = read('src/lib/api/utils.ts');
     assert.match(api, /Enter a valid email address\./);
   });
 
@@ -475,12 +475,12 @@ describe('Tier 2: Boundary/Corner Cases', () => {
 
   test('T2.32 Lead Capture & API - API rate limiting blocks requests exceeding 5 per minute', () => {
     const api = read('src/app/api/leads/route.ts');
-    assert.match(api, /MAX_REQUESTS = 5/);
+    assert.match(api, /createRateLimiter\(5,/);
     assert.match(api, /rateLimit/);
   });
 
   test('T2.33 Lead Capture & API - Upload photo URLs are validated and rejected if protocol is missing', () => {
-    const api = read('src/app/api/leads/route.ts');
+    const api = read('src/lib/api/utils.ts');
     assert.match(api, /\['http:', 'https:'\].includes\(url\.protocol\)/);
   });
 

@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
+import {
+  asText,
+  isPayload,
+  validate,
+  buildLeadId,
+  buildLeadHtml,
+  createRateLimiter
+} from '@/lib/api/utils';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,27 +21,7 @@ const supabase = supabaseUrl && supabaseServiceKey
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
 // Simple in-memory IP rate limiter
-const ipCache = new Map<string, { count: number; lastReset: number }>();
-const LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 5; // max 5 requests per minute per IP
-
-function rateLimit(ip: string): boolean {
-  const now = Date.now();
-  const state = ipCache.get(ip);
-  if (!state) {
-    ipCache.set(ip, { count: 1, lastReset: now });
-    return true;
-  }
-  if (now - state.lastReset > LIMIT_WINDOW_MS) {
-    ipCache.set(ip, { count: 1, lastReset: now });
-    return true;
-  }
-  if (state.count >= MAX_REQUESTS) {
-    return false;
-  }
-  state.count += 1;
-  return true;
-}
+const rateLimit = createRateLimiter(5, 60 * 1000);
 
 // Database Ingestion and Event Logging Helpers
 // (Refactored to use high-performance pooled HTTP connections via supabase-js client)
@@ -121,76 +109,6 @@ async function saveLeadEventToDb(leadId: string, eventType: string, provider: st
   }
 }
 
-const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'projectType', 'timeline', 'contactMethod', 'notes'];
-
-function asText(value: unknown) {
-  return typeof value === 'string' ? value.trim() : '';
-}
-
-function isPayload(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
-}
-
-function escapeHtml(value: unknown) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function getSafeValue(obj: Record<string, unknown>, key: string): unknown {
-  if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
-    return undefined;
-  }
-  const descriptor = Object.getOwnPropertyDescriptor(obj, key);
-  return descriptor ? descriptor.value : undefined;
-}
-
-function validate(payload: Record<string, unknown>) {
-  const missing = requiredFields.filter((field) => !asText(getSafeValue(payload, field)));
-  if (missing.length > 0) {
-    return `Missing required fields: ${missing.join(', ')}`;
-  }
-
-  if (!/^[^\s@]{1,254}@[^\s@]{1,254}\.[^\s@]{2,63}$/.test(asText(payload.email))) {
-    return 'Enter a valid email address.';
-  }
-
-  if (asText(payload.website)) {
-    return 'Spam check failed.';
-  }
-
-  const photosUrl = asText(payload.photosUrl);
-  if (photosUrl) {
-    try {
-      const url = new URL(photosUrl);
-      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname.includes('.')) {
-        return 'Enter a valid project photo link.';
-      }
-    } catch {
-      return 'Enter a valid project photo link.';
-    }
-  }
-
-  return '';
-}
-
-function buildLeadId() {
-  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
-  const random = Math.random().toString(36).slice(2, 8).toUpperCase();
-  return `SKY-${stamp}-${random}`;
-}
-
-function buildLeadHtml(payload: Record<string, unknown>) {
-  const rows = Object.entries(payload)
-    .filter(([key, value]) => key !== 'website' && asText(value).length > 0)
-    .map(([key, value]) => '<tr><td style="padding:6px 10px;border:1px solid #ddd;font-weight:700;">' + escapeHtml(key) + '</td><td style="padding:6px 10px;border:1px solid #ddd;">' + escapeHtml(value) + '</td></tr>')
-    .join('');
-
-  return '<h1>New Sky\'s the Limit Painting lead</h1><table style="border-collapse:collapse;">' + rows + '</table>';
-}
 
 async function sendWithResend(payload: Record<string, unknown>) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -219,7 +137,7 @@ async function sendWithResend(payload: Record<string, unknown>) {
 }
 
 function buildAutoReplyHtml(payload: Record<string, unknown>) {
-  const name = escapeHtml(asText(payload.name));
+  const name = asText(payload.name).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
   return 'Hi ' + name + ',<br><br>' +
     'Thank you for reaching out to Sky\'s the Limit Painting LLC! We are excited to help you transform your space.<br><br>' +
     'As a premier specialty contractor serving the entire Twin Cities metro area, we specialize in high-detail residential painting, commercial repaints, and pavement marking.<br><br>' +

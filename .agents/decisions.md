@@ -18,3 +18,4 @@ Unified policies and safety rules enforced across the workspace.
 - **[rollback]** POL-005: The harness may quarantine and recommend recovery, but it must not automatically revert user files.
 - **[proactive-health]** POL-006: Proactively audit and heal at session start (Node version consistency to 24.x, stale CI-INCIDENT cleanup, .gitignore for generated .agents/skills/*/lib/). Append POL entries after each healing task.
 - **[automated-prs]** POL-007: Dependabot & Automated PR Policy: Detect Dependabot PRs automatically. For lockfile conflicts, recommend `@dependabot rebase` or close + wait. For workflow changes, advise manual Web UI merge due to OAuth scope. Never force-merge failing PRs; treat this as self-healing maintenance.
+

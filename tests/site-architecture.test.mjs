@@ -49,10 +49,10 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
   const slider = read('src/components/BeforeAfterSlider.tsx');
   const leadForm = read('src/components/LeadForm.tsx');
   const serviceAreaMap = read('src/components/ServiceAreaMap.tsx');
-  const leadsApi = read('src/app/api/leads/route.ts');
+  const leadsApi = read('src/lib/api/utils.ts');
 
   assert.doesNotMatch(packageJson, /@google\/genai/);
-  assert.match(leadsApi, /function escapeHtml/);
+  assert.match(leadsApi, /export function escapeHtml/);
   assert.match(leadsApi, /escapeHtml\(key\)/);
   assert.match(leadsApi, /escapeHtml\(value\)/);
 

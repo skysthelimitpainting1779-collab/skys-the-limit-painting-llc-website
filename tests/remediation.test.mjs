@@ -13,9 +13,9 @@ test('Vite config is deleted and package.json does not expose Gemini sdk', () =>
 });
 
 test('lead email HTML escapes submitted keys and values', () => {
-  const leadsApi = read('src/app/api/leads/route.ts');
+  const leadsApi = read('src/lib/api/utils.ts');
 
-  assert.match(leadsApi, /function escapeHtml/);
+  assert.match(leadsApi, /export function escapeHtml/);
   assert.match(leadsApi, /replaceAll\('&', '&amp;'\)/);
   assert.match(leadsApi, /escapeHtml\(key\)/);
   assert.match(leadsApi, /escapeHtml\(value\)/);
@@ -85,6 +85,7 @@ test('service area map is fast, routable, and accessible', () => {
 test('lead form controls have accessible names and normalized funnel events', () => {
   const leadForm = read('src/components/LeadForm.tsx');
   const leadsApi = read('src/app/api/leads/route.ts');
+  const apiUtils = read('src/lib/api/utils.ts');
 
   for (const label of ['Full name', 'Phone', 'Email', 'City', 'Project address or cross streets', 'Market', 'Project type', 'Property type', 'Timeline', 'Budget range', 'Preferred contact method', 'Project photo link', 'Project details']) {
     assert.match(leadForm, new RegExp(`aria-label="${label}"`));
@@ -98,6 +99,7 @@ test('lead form controls have accessible names and normalized funnel events', ()
   assert.match(leadForm, /response\.status === 502/);
   assert.match(leadsApi, /LEAD_WEBHOOK_URL/);
   assert.match(leadsApi, /leadId/);
-  assert.match(leadsApi, /new URL\(photosUrl\)/);
+  assert.match(apiUtils, /new URL\(photosUrl\)/);
   assert.match(leadsApi, /fallback: 'email'/);
 });
+

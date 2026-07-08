@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Code Directory Context: Dynamic Operations Data
 
 **Directory Path:** `src/data/`  
