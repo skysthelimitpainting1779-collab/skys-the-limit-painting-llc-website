@@ -1,0 +1,3 @@
+#!/bin/sh
+# Entire CLI
+if [ -f 'C:\Users\Johnny Cage\.local\bin\entire.exe' ]; then 'C:\Users\Johnny Cage\.local\bin\entire.exe' hooks git commit-msg "$1" || true; else :; fi

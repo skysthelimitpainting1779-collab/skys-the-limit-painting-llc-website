@@ -1,7 +1,7 @@
-#!/usr/bin/env sh
-# Keep the Graphify knowledge base in sync after each commit, but never block,
-# slow down, or fail a commit: only run when graphify is already installed
-# locally (avoids npx fetching it from the network on every commit).
+#!/bin/sh
+# Entire CLI
+if [ -f 'C:\Users\Johnny Cage\.local\bin\entire.exe' ]; then 'C:\Users\Johnny Cage\.local\bin\entire.exe' hooks git post-commit 2>/dev/null || true; else :; fi
+# Graphify knowledge graph (non-blocking)
 if command -v graphify >/dev/null 2>&1; then
   echo "Agentic OS: synchronizing structural memory graph..."
   graphify update . || true
