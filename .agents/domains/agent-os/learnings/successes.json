@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-10T08:45:33.659Z",
+  "events": {
+    "032af593a3031cc5": {
+      "id": "DOM-agent-os-OK-032af593",
+      "fingerprint": "032af593a3031cc5",
+      "kind": "success",
+      "title": "Orchestrator protocol + domain health in agentos:health",
+      "detail": "ORCHESTRATOR.md; domainAgentsHealth state errors successes prompts; domain sync in learn-pipeline",
+      "command": "npm run agentos:health",
+      "count": 1,
+      "first_seen": "2026-07-09T20:47:34.206Z",
+      "last_seen": "2026-07-09T20:47:34.206Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "82cc9bd4acedd82b": {
+      "id": "DOM-agent-os-OK-82cc9bd4",
+      "fingerprint": "82cc9bd4acedd82b",
+      "kind": "success",
+      "title": "architecture-loop skill+workflow",
+      "detail": "RVPLP+ frame research validate draft pressure lock codify prompt close; npm run arch:loop; CMS instance approved-for-implement",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T04:09:02.832Z",
+      "last_seen": "2026-07-10T04:09:02.832Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "9f44fa76d26b16b3": {
+      "id": "DOM-agent-os-OK-9f44fa76",
+      "fingerprint": "9f44fa76d26b16b3",
+      "kind": "success",
+      "title": "Windows bash PATH root fix",
+      "detail": "Machine PATH now lists Git\\bin before System32 so bare bash is GNU bash 5.3.15. Codified ROOT_CAUSE.md iron law 12. Verify: where bash + agentos:health bash.ok",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:20:52.148Z",
+      "last_seen": "2026-07-10T08:20:52.148Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "cb020118581636e5": {
+      "id": "DOM-agent-os-OK-cb020118",
+      "fingerprint": "cb020118581636e5",
+      "kind": "success",
+      "title": "ROOT_CAUSE governance iron law 12",
+      "detail": "Codified .agents/governance/ROOT_CAUSE.md; never soft-skip hooks or || true as sole fix; protocol reproduce-name-fix-verify-codify; bash.ok in agentos:health",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:37:55.279Z",
+      "last_seen": "2026-07-10T08:37:55.279Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "a9f12d9e00bd8c6b": {
+      "id": "DOM-agent-os-OK-a9f12d9e",
+      "fingerprint": "a9f12d9e00bd8c6b",
+      "kind": "success",
+      "title": "Linear hub + naming + Agent OS docs",
+      "detail": "docs/NAMING.md skysthelimit slug; Linear projects Platform/Reliability; docs/AGENT_OS.md three layers Linear/AgentOS/Git; docs/linear-templates for UI paste; Turso confirmed remote agent memory only",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:37:56.228Z",
+      "last_seen": "2026-07-10T08:37:56.228Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "65f4dc2f8f9f3efc": {
+      "id": "DOM-agent-os-OK-65f4dc2f",
+      "fingerprint": "65f4dc2f8f9f3efc",
+      "kind": "success",
+      "title": "Project hooks Node-only no bare sh",
+      "detail": "Replaced .claude/settings.json sh -c entire and python3 one-liners with scripts/hooks/entire-if-present.mjs and graphify-pre-bash.mjs so Windows hooks work without sh on PATH",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:37:57.133Z",
+      "last_seen": "2026-07-10T08:37:57.133Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "2fbf36ee1681a0ea": {
+      "id": "DOM-agent-os-OK-2fbf36ee",
+      "fingerprint": "2fbf36ee1681a0ea",
+      "kind": "success",
+      "title": "Session learn automation implemented",
+      "detail": "scripts/session-learn.mjs + learn:session:close; resolve CLI; classify shell-windows-bash; hooks optional SESSION_LEARN_AUTO=1",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:45:33.287Z",
+      "last_seen": "2026-07-10T08:45:33.287Z",
+      "domain": "agent-os",
+      "metadata": null
+    },
+    "033661dfed09a453": {
+      "id": "DOM-agent-os-OK-033661df",
+      "fingerprint": "033661dfed09a453",
+      "kind": "success",
+      "title": "ROOT_CAUSE iron law 12",
+      "detail": ".agents/governance/ROOT_CAUSE.md mandatory; never symptom-only fixes",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:45:33.659Z",
+      "last_seen": "2026-07-10T08:45:33.659Z",
+      "domain": "agent-os",
+      "metadata": null
+    }
+  },
+  "stats": {
+    "total": 8,
+    "unique": 8
+  }
+}

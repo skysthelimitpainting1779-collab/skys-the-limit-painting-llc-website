@@ -1,0 +1,156 @@
+<!--
+  AUTO-GENERATED FILE — DO NOT EDIT DIRECTLY.
+  This file is compiled from root AGENTS.md by scripts/sync-agent-rules.js.
+  All edits must be made in the supreme constitution: AGENTS.md
+-->
+
+# Operating Manual (Claude Code Rules)
+
+This AI agent instructions file is a redirect and complies with the root AGENTS.md constitution.
+
+---
+
+# AGENTS.md — Sky's the Limit Painting LLC
+
+> **Supreme Repository Constitution & Central Orchestrator**  
+> This document is the absolute single source of truth (SSOT). All agent logic, decisions, and execution flows must comply with this file. Sub-files inside `.agents/` are modular extensions only and possess no independent authority.
+
+---
+
+## 1. Core Principles (Non-Negotiable)
+
+1. **Single Source of Truth (SSOT)**: Every action, tool call, or script execution must first confirm the routing rules in this file. Never synthesize guidelines across modular sub-files unless authorized here.
+2. **AI Decision-Making Weakness**: Agents excel at execution but are weak at unaided decision-making. Improvisation is forbidden. You MUST follow the Mandatory Decision Protocol.
+3. **Agnostic Autonomy**: These rules apply identically across all AI clients (Devin, Claude Code, Copilot, Antigravity) and all execution environments (local shells, CI/CD pipelines, Docker containers, cloud environments).
+4. **Domain Expert Isolation**: Agents must operate strictly within their scoped roles (Frontend, Backend, SEO). Cross-contamination of files or tasks across boundaries is prohibited.
+
+---
+
+## 2. Domain Scopes & Actor Isolation
+
+To prevent cross-contamination, the orchestrator harness enforces directory and tool-level write restrictions based on the agent's role:
+
+| Agent Role | Directory Scope (Write Access) | Permitted Adapters / Skills | Forbidden Actions |
+| :--- | :--- | :--- | :--- |
+| **Frontend / UI Expert** | `src/app/` (no `/api/`), `src/components/`, `src/views/` | `minimalist-ui`, `design-taste-frontend`, browser automation | Editing `backend/`, writing database schemas, or API routes. |
+| **Backend / CMS Expert** | `backend/`, `src/app/api/`, `supabase/` | `database.md`, `supabase`, server process exec | Modifying frontend `.css` or UI components. |
+| **SEO Expert** | `scripts/seo/`, `public/llms.txt`, `public/sitemap.xml` | `seo-audit`, metadata schema validators | Modifying UI components or backend servers. |
+
+### Handoff Protocol
+
+If an agent requires a change in a folder outside its directory scope:
+
+1. **Do not attempt to modify the file.** Doing so will violate boundaries and fail the validation check.
+2. **Enqueue Handoff Task**: Write a new task item under `queues.next` in `state.json` with the target role (e.g. `#backend`) and details of the required change.
+3. **Pause**: The orchestrator will run the appropriate domain expert to complete the task.
+
+---
+
+## 3. Mandatory Decision Protocol
+
+On **every** task, agents must execute these steps in order and log the output:
+
+1. **Classify**: Classify the task using the concern-based routing table below.
+2. **Gather Evidence**: Collect baseline logs, files, and context using only permitted adapters.
+3. **Route**: Open the specific playbook or workflow file mapped to the task type.
+4. **Log Decision Trace**: Produce a visible trace using this schema:
+   - **Classification**: [Task Type]
+   - **Evidence**: [Listed files read and command outputs]
+   - **Route**: [Path to playbook/workflow]
+   - **Next Action**: [Immediate execution command or edit]
+5. **Approval Gates**: For high-risk actions (modifying code files, database schema, Vercel configs), obtain human or secondary approval before execution.
+
+---
+
+## 4. Boundaries & Governance Tiers
+
+### Tier 1: Always Do (Safe, Autonomous)
+
+- Run code validation commands (`npm run lint`, `npm test`, `npm run build`).
+- Update the relational knowledge graph (`graphify update .`).
+- Read files and query the codebase graph via codebase-memory-mcp.
+- Create and execute temporary scratch scripts under `scratch/`.
+
+### Tier 2: Ask First (Requires Explicit Confirmation/Gate)
+
+- Modify or delete existing source code within your designated Directory Scope.
+- Modify local database tables, Supabase configurations, or CMS schemas (Backend only).
+- Trigger external API calls or deployment tasks.
+
+### Tier 3: Never Do (Hard Stop — Prohibited Actions)
+
+- Commit directly to protected branches (`main`, `staging`).
+- Bypass the Git Loop (`node scripts/git-loop.mjs`) or Vercel Law.
+- Delete, overwrite, or rename files in `.agents/` without human consent.
+- Render white text on Safety Orange (`#FF5A00`) backgrounds.
+- Introduce rounded border-radius properties (must be `0px` or `rounded-none`).
+- Use graphical emojis inside source code or client-facing UI (DNA marker `🧬` allowed in markdown files only).
+
+### 4.1 Code Discovery Protocol (Graph-First)
+
+To optimize context efficiency and prevent token bloat, agents MUST prioritize graph-based discovery tools over grep/glob/file-search:
+
+- **Codebase Memory MCP**: Use MCP tools (`search_graph`, `trace_path`, `get_code_snippet`, `query_graph`) for type-aware LSP call and usage resolution inside the agent session.
+- **Graphify MCP & CLI**: Use Graphify MCP tools (`query_graph`, `get_node`, `get_neighbors`, `shortest_path`) or navigate Graphify wiki files via CLI commands (`graphify query "<question>"`, `graphify path "<A>" "<B>"` for relationships, and `graphify explain "<concept>"` for focused concepts).
+- **Priority Order**:
+  1. `search_graph` (Codebase Memory) or `graphify query` (Graphify CLI/MCP) — find functions, classes, routes, variables
+  2. `trace_path` or `shortest_path` / `graphify path` — trace call chains and relationships
+  3. `get_code_snippet` or `get_node` — read specific code segments directly
+  4. `query_graph` — run Cypher queries for complex patterns
+- **Fallback**: Fall back to grep/glob ONLY for non-code files, string literals, configuration values, or when graph queries return insufficient results.
+
+---
+
+## 5. Routing & Orchestration Table
+
+| Task Type | Allowed Adapters | Playbook / Workflow Path | Approval Gate |
+| :--- | :--- | :--- | :--- |
+| **Architecture Custody** | Codebase Memory | [.agents/playbooks/ARCHITECTURE_CUSTODIAN.md](file:///.agents/playbooks/ARCHITECTURE_CUSTODIAN.md) | High-risk (Ask First) |
+| **Error Learning & Codification** | Codebase Memory | [.agents/playbooks/ERROR_CODIFICATION.md](file:///.agents/playbooks/ERROR_CODIFICATION.md) | High-risk (Ask First) |
+| **Codebase Graph Sync** | Node CLI | [.agents/workflows/graphify.md](file:///.agents/workflows/graphify.md) | Autonomous (Always Do) |
+| **Database & CMS Operations** | Database Adapter | [.agents/adapters/database.md](file:///.agents/adapters/database.md) | High-risk (Ask First) |
+| **Web Research / Citations** | Browser Adapter | [.agents/workflows/research.md](file:///.agents/workflows/research.md) | Autonomous (Always Do) |
+| **Vercel Infrastructure** | Cloud CLI / MCP | (Refer to Vercel Law Section below) | High-risk (Ask First) |
+
+---
+
+## 6. Sky's the Limit Strict Rules
+
+### 🎨 Visual & Design System
+
+- **Brutalist UI**: Set `border-radius: 0px` or `rounded-none` globally. Rounded visual primitives are banned.
+- **Charcoal on Safety Orange**: Background elements using Safety Orange (`#FF5A00`) must strictly use Dark Charcoal (`#050505`) for text and icons.
+
+### ⚖️ Legal & Compliance
+
+- **Contractor ID**: The registration ID `IR816596` must appear near any contractor reference.
+- **Workers' Comp Exemption**: Under MN Statute 176.041, the owner-operator has zero payroll and is exempt. Preserve this in capabilities and pricing references.
+
+---
+
+## 7. Vercel AI SDK Alignment (Harness Specifications)
+
+- **Adapters**: Map agent actions to structured tools with clear input JSON schemas.
+- **Governance**: Embed manual approval prompts or gatekeepers (`verify` scripts) before mutating state.
+- **Workflows**: Sequence actions in multi-step loops with explicit `stopWhen` rules and step limits (max 5 delegation depth).
+- **Traces**: Output observability spans mapping execution trajectories to `.learnings/ERRORS.md`.
+
+---
+
+## 8. Shell Constraints (PowerShell Host)
+
+- **NEVER** use `&&` or `||` in terminal commands. Use `;` to chain, or make separate runner calls.
+- Run linting: `powershell -ExecutionPolicy Bypass -Command "npm run lint"`
+- Run tests: `powershell -ExecutionPolicy Bypass -Command "npm test"`
+- Run builds: `powershell -ExecutionPolicy Bypass -Command "npm run build"`
+- Sync graph: `graphify update .`
+
+---
+
+## 🔒 VERCEL LAW — Mandatory Pre-Gate for All Vercel Work
+
+STOP. Before doing any Vercel-related work (modifying `vercel.json`, env vars, edge config, API routes, or triggering deployments):
+
+1. **Pull Env**: `vercel env pull .env.local --yes`
+2. **Link Project**: `vercel link --project skysthelimitpainting1779-4125s-projects/website`
+3. **Verify State**: Confirm settings using MCP vercel tools or CLI fallback (`vercel inspect`).

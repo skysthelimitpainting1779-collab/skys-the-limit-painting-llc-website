@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "log_level": "info",
+  "absolute_git_hook_path": true,
+  "telemetry": false,
+  "external_agents": true
+}

@@ -245,11 +245,10 @@ const ProcessStep = ({ step, title, body }: { step: string; title: string; body:
   <div className="relative py-12 pl-16 border-t border-zinc-800/60">
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute -left-2 top-4 select-none text-[6rem] font-black leading-none text-white/[0.04]"
-    >
-      {step}
-    </span>
-    <span className="absolute left-0 top-12 text-sm font-semibold text-zinc-600">{step}</span>
+      data-step={step}
+      className="pointer-events-none absolute -left-2 top-4 select-none text-[6rem] font-black leading-none text-white/[0.04] before:content-[attr(data-step)]"
+    />
+    <span className="absolute left-0 top-12 text-sm font-semibold text-zinc-400">{step}</span>
     <h3 className="text-2xl font-black leading-tight text-white">{title}</h3>
     <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-zinc-400">{body}</p>
   </div>

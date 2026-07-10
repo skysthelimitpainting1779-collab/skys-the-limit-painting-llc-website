@@ -24,6 +24,8 @@ graphify-out/
 
 # Ignore runtime/operational databases and caches (not knowledge files)
 .agents/hub_db.json
+.agents/agent-os.db
+.agents/agent-os.db-*
 .agents/coordination.db
 .agents/coordination.db-journal
 .agents/dashboard.html

@@ -1,0 +1,241 @@
+{
+  "hooks": {
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "name": "entire-after-agent",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then \"$ENTIRE\" hooks gemini after-agent || true; fi; if command -v entire >/dev/null 2>&1; then entire hooks gemini after-agent || true; fi; node scripts/hooks/run.mjs session-end 2>/dev/null || true'"
+          },
+          {
+            "name": "entire-after-agent",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini after-agent'"
+          }
+        ]
+      }
+    ],
+    "AfterModel": [
+      {
+        "hooks": [
+          {
+            "name": "entire-after-model",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then exec \"$ENTIRE\" hooks gemini after-model; fi; if command -v entire >/dev/null 2>&1; then exec entire hooks gemini after-model; fi; exit 0'"
+          },
+          {
+            "name": "entire-after-model",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini after-model'"
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "entire-after-tool",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then \"$ENTIRE\" hooks gemini after-tool || true; fi; if command -v entire >/dev/null 2>&1; then entire hooks gemini after-tool || true; fi; exit 0'"
+          },
+          {
+            "name": "entire-after-tool",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini after-tool'"
+          }
+        ]
+      },
+      {
+        "matcher": "write_file|replace_file_content|run_shell_command|execute_command",
+        "hooks": [
+          {
+            "name": "agentos-post-edit-graphify",
+            "type": "command",
+            "command": "sh -c 'export HOOK_IS_WRITE=1 HOOK_TOOL_NAME=write_file; node scripts/hooks/run.mjs post-edit 2>/dev/null || true'"
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "name": "agentos-ontology-session",
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs session-start 2>/dev/null || true"
+          },
+          {
+            "name": "entire-before-agent",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then exec \"$ENTIRE\" hooks gemini before-agent; fi; if command -v entire >/dev/null 2>&1; then exec entire hooks gemini before-agent; fi; exit 0'"
+          },
+          {
+            "name": "entire-before-agent",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini before-agent'"
+          }
+        ]
+      }
+    ],
+    "BeforeModel": [
+      {
+        "hooks": [
+          {
+            "name": "entire-before-model",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then exec \"$ENTIRE\" hooks gemini before-model; fi; if command -v entire >/dev/null 2>&1; then exec entire hooks gemini before-model; fi; exit 0'"
+          },
+          {
+            "name": "entire-before-model",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini before-model'"
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "entire-before-tool",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then \"$ENTIRE\" hooks gemini before-tool || true; fi; if command -v entire >/dev/null 2>&1; then entire hooks gemini before-tool || true; fi; exit 0'"
+          },
+          {
+            "name": "agentos-pre-explore",
+            "type": "command",
+            "command": "sh -c 'node scripts/hooks/run.mjs gemini-before-tool 2>/dev/null || true'"
+          },
+          {
+            "name": "entire-before-tool",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini before-tool'"
+          }
+        ]
+      },
+      {
+        "matcher": "google_search|grep_search|search_file_content|list_directory|read_file|run_shell_command",
+        "hooks": [
+          {
+            "name": "agentos-prefer-graphify",
+            "type": "command",
+            "command": "sh -c 'node scripts/hooks/run.mjs pre-explore 2>/dev/null || true; echo \"Prefer graphify query / codebase-memory-mcp over raw grep when graphify-out exists.\" >&2'"
+          }
+        ]
+      }
+    ],
+    "BeforeToolSelection": [
+      {
+        "hooks": [
+          {
+            "name": "entire-before-tool-selection",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then exec \"$ENTIRE\" hooks gemini before-tool-selection; fi; if command -v entire >/dev/null 2>&1; then exec entire hooks gemini before-tool-selection; fi; exit 0'"
+          },
+          {
+            "name": "entire-before-tool-selection",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini before-tool-selection'"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "name": "entire-notification",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then exec \"$ENTIRE\" hooks gemini notification; fi; if command -v entire >/dev/null 2>&1; then exec entire hooks gemini notification; fi; exit 0'"
+          },
+          {
+            "name": "entire-notification",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini notification'"
+          }
+        ]
+      }
+    ],
+    "PreCompress": [
+      {
+        "hooks": [
+          {
+            "name": "entire-pre-compress",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then exec \"$ENTIRE\" hooks gemini pre-compress; fi; if command -v entire >/dev/null 2>&1; then exec entire hooks gemini pre-compress; fi; exit 0'"
+          },
+          {
+            "name": "entire-pre-compress",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini pre-compress'"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "exit|logout|clear",
+        "hooks": [
+          {
+            "name": "entire-session-end",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then \"$ENTIRE\" hooks gemini session-end || true; elif command -v entire >/dev/null 2>&1; then entire hooks gemini session-end || true; fi; node scripts/hooks/run.mjs session-end 2>/dev/null || true'"
+          }
+        ]
+      },
+      {
+        "matcher": "exit",
+        "hooks": [
+          {
+            "name": "entire-session-end-exit",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini session-end'"
+          }
+        ]
+      },
+      {
+        "matcher": "logout",
+        "hooks": [
+          {
+            "name": "entire-session-end-logout",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks gemini session-end'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "name": "entire-session-start",
+            "type": "command",
+            "command": "sh -c 'ENTIRE=\"C:/Users/Johnny Cage/.local/bin/entire.exe\"; if [ -f \"$ENTIRE\" ]; then \"$ENTIRE\" hooks gemini session-start || true; elif command -v entire >/dev/null 2>&1; then entire hooks gemini session-start || true; fi; node scripts/hooks/run.mjs session-start 2>/dev/null || true'"
+          },
+          {
+            "name": "entire-session-start",
+            "type": "command",
+            "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then printf \"%s\\n\" \"{\\\"systemMessage\\\":\\\"Entire CLI is enabled but not installed or not on PATH. Installation guide: https://docs.entire.io/cli/installation#installation-methods\\\"}\"; exit 0; fi; exec entire hooks gemini session-start'"
+          }
+        ]
+      },
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "name": "agentos-session-start-hint",
+            "type": "command",
+            "command": "sh -c 'node scripts/hooks/run.mjs session-start 2>/dev/null || true'"
+          }
+        ]
+      }
+    ]
+  },
+  "hooksConfig": {
+    "enabled": true
+  }
+}

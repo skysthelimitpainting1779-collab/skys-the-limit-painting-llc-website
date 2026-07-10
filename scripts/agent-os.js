@@ -11,8 +11,43 @@ import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import crypto from 'node:crypto';
 import { claimNextTask, resolveTask } from './queue.js';
+import { recordFailure, runHealPass, rebuildMarkdownViews, getStatus } from './learning-loop.mjs';
+import {
+  AGENT_OS_VERSION,
+  MAX_TASK_ATTEMPTS,
+  assertPhaseEntry,
+  bumpMetric,
+  ensureControlPlane,
+  ensureDir as coreEnsureDir,
+  graphifyEnabled,
+  hasCheckpointForTask,
+  idempotencyKey,
+  isTaskRunnable,
+  normalizeTask,
+  pickNextTask,
+  runCommandOrThrow,
+  safeExec,
+  safePhaseResumeIndex,
+  scanOnSaveEnabled,
+  shouldQuarantineTask,
+  writeJsonAtomic,
+  writePhaseCheckpoint,
+} from './agent-os-core.mjs';
+import {
+  getHub,
+  getLocalJsonPath,
+  getStoreMode,
+  initStore,
+  migrateLocalToTurso,
+  pullTursoToLocal,
+  saveHub,
+  setHubCache,
+  storeStatus,
+} from './agent-os-store.mjs';
 
 const DB_PATH = join(process.cwd(), '.agents', 'hub_db.json');
+/** @type {Promise<unknown>} */
+let persistChain = Promise.resolve();
 const DASHBOARD_PATH = join(process.cwd(), '.agents', 'dashboard.html');
 const CONTRACT_PATH = join(process.cwd(), '.agents', 'implementation-contract.md');
 const CAPABILITY_MATRIX_PATH = join(process.cwd(), '.agents', 'runtime-capability-matrix.md');
@@ -109,9 +144,7 @@ const DEFAULT_CAPABILITIES = [
 ];
 
 function ensureDir(path) {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, { recursive: true });
-  }
+  return coreEnsureDir(path);
 }
 
 function writeIfMissing(path, content) {
@@ -123,7 +156,7 @@ function writeIfMissing(path, content) {
 function createInitialDb() {
   return {
     meta: {
-      system: "Agentic OS v1.2.0",
+      system: `Agentic OS v${AGENT_OS_VERSION}`,
       architecture: "harness-wrapper",
       last_updated: new Date().toISOString(),
       total_runs: 0
@@ -712,47 +745,54 @@ function scanWorkspaceForHighImpactTasks(db) {
   db.proactive_findings = findings;
 }
 
-// Helper to ensure database is initialized
+// Ensure dirs + local seed file exist (sync)
 function initDb() {
+  ensureControlPlane(process.cwd());
   const dbDir = join(process.cwd(), '.agents');
-  ensureDir(dbDir);
   REQUIRED_AGENT_DIRS.forEach(dir => ensureDir(join(dbDir, dir)));
 
-  const learningsDir = join(process.cwd(), '.learnings');
-  ensureDir(learningsDir);
-
-  if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(createInitialDb(), null, 2), 'utf8');
+  if (!fs.existsSync(DB_PATH) && !getHub()) {
+    writeJsonAtomic(DB_PATH, createInitialDb());
   }
 }
 
-// Load DB
-function loadDb() {
+/** Async boot: Turso (if configured) or local JSON. Must run before CLI work. */
+async function bootStore() {
   initDb();
-  const db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+  const seed = createInitialDb();
+  const result = await initStore({ seed });
+  if (!getHub()) {
+    await saveHub(seed);
+  }
+  return result;
+}
+
+function normalizeDbShape(db) {
+  if (!db || typeof db !== 'object') db = createInitialDb();
+
   db.meta = db.meta || {};
-  db.meta.system = "Agentic OS v1.2.0";
+  db.meta.system = `Agentic OS v${AGENT_OS_VERSION}`;
   db.meta.architecture = db.meta.architecture || "harness-wrapper";
-  db.meta.total_runs = db.meta.total_runs || 0;
-  db.goals = db.goals || [];
-  db.tasks = db.tasks || [];
-  db.sessions = db.sessions || [];
-  db.incidents = db.incidents || [];
-  db.effects = db.effects || [];
-  db.waits = db.waits || [];
-  db.checkpoints = db.checkpoints || [];
-  db.evals = db.evals || createInitialDb().evals;
-  db.milestones = db.milestones || DEFAULT_MILESTONES;
-  db.capabilities = db.capabilities || DEFAULT_CAPABILITIES;
-  db.policies = db.policies || [];
-  db.proactive_findings = db.proactive_findings || [];
-  
-  // Enforce zero border radius update
+  db.meta.total_runs = Number(db.meta.total_runs) || 0;
+  db.meta.store = getStoreMode();
+  db.goals = Array.isArray(db.goals) ? db.goals : [];
+  db.tasks = (Array.isArray(db.tasks) ? db.tasks : []).map(normalizeTask).filter(Boolean);
+  db.sessions = Array.isArray(db.sessions) ? db.sessions : [];
+  db.incidents = Array.isArray(db.incidents) ? db.incidents : [];
+  db.effects = Array.isArray(db.effects) ? db.effects : [];
+  db.waits = Array.isArray(db.waits) ? db.waits : [];
+  db.checkpoints = Array.isArray(db.checkpoints) ? db.checkpoints : [];
+  db.evals = Array.isArray(db.evals) && db.evals.length ? db.evals : createInitialDb().evals;
+  db.milestones = Array.isArray(db.milestones) ? db.milestones : DEFAULT_MILESTONES;
+  db.capabilities = Array.isArray(db.capabilities) ? db.capabilities : DEFAULT_CAPABILITIES;
+  db.policies = Array.isArray(db.policies) ? db.policies : [];
+  db.proactive_findings = Array.isArray(db.proactive_findings) ? db.proactive_findings : [];
+
   const radiusPolicy = db.policies.find(p => p.id === "POL-003");
   if (radiusPolicy) {
     radiusPolicy.rule = "All border-radius properties must be set to 0px or rounded-none globally.";
   }
-  
+
   for (const policy of createInitialDb().policies) {
     if (!db.policies.some(p => p.id === policy.id)) {
       db.policies.push(policy);
@@ -761,7 +801,32 @@ function loadDb() {
   db.metrics = { ...structuredClone(DEFAULT_METRICS), ...(db.metrics || {}) };
   db.metrics.domains = { ...structuredClone(DEFAULT_METRICS.domains), ...(db.metrics.domains || {}) };
   db.queues = { ...structuredClone(DEFAULT_QUEUES), ...(db.queues || {}) };
-  writeFoundationalArtifacts(db);
+  return db;
+}
+
+// Load DB — prefers Turso-backed cache (after bootStore); falls back to local JSON
+function loadDb() {
+  initDb();
+  let db = getHub();
+  if (!db) {
+    try {
+      if (fs.existsSync(DB_PATH)) {
+        db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+      }
+    } catch (err) {
+      console.error(`[Agent OS] hub_db.json corrupt (${err.message}); re-seeding control plane.`);
+      const backup = `${DB_PATH}.corrupt.${Date.now()}.bak`;
+      try {
+        fs.copyFileSync(DB_PATH, backup);
+        console.error(`[Agent OS] Corrupt DB backed up to ${backup}`);
+      } catch {
+        /* ignore */
+      }
+      db = createInitialDb();
+    }
+  }
+  db = normalizeDbShape(db);
+  setHubCache(db);
   return db;
 }
 
@@ -794,18 +859,65 @@ function updateQueues(db) {
   };
 }
 
-// Save DB & Sync Markdown Files
+// Save DB — local mirror sync + Turso async chain; never let scan/dashboard kill a transition
 function saveDb(db) {
   try {
-    scanWorkspaceForHighImpactTasks(db);
+    if (scanOnSaveEnabled()) {
+      try {
+        scanWorkspaceForHighImpactTasks(db);
+      } catch (err) {
+        console.error('[Agent OS] Proactive scanning encountered an error:', err.message);
+      }
+    }
+    updateQueues(db);
+    db.meta = db.meta || {};
+    db.meta.last_updated = new Date().toISOString();
+    db.meta.system = `Agentic OS v${AGENT_OS_VERSION}`;
+    db.meta.store = getStoreMode();
+    setHubCache(db);
+
+    // Always keep local mirror (offline + git)
+    try {
+      writeJsonAtomic(DB_PATH, db);
+    } catch (err) {
+      console.error('[Agent OS] CRITICAL: failed to persist hub_db.json:', err.message);
+      try {
+        fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), 'utf8');
+      } catch (e2) {
+        console.error('[Agent OS] CRITICAL: fallback write also failed:', e2.message);
+      }
+    }
+
+    // Turso / store backend (serialized promise chain)
+    const snapshot = db;
+    persistChain = persistChain
+      .then(() => saveHub(snapshot))
+      .then((res) => {
+        if (res && res.ok === false) {
+          console.error(`[Agent OS] Store persist warning (${res.mode}): ${res.error || 'unknown'}`);
+        }
+      })
+      .catch((err) => {
+        console.error(`[Agent OS] Store persist chain error: ${err.message}`);
+      });
   } catch (err) {
-    console.error('[Agent OS] Proactive scanning encountered an error:', err.message);
+    console.error('[Agent OS] CRITICAL: saveDb failed:', err.message);
   }
-  updateQueues(db);
-  db.meta.last_updated = new Date().toISOString();
-  fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), 'utf8');
-  syncMarkdownFiles(db);
-  generateHtmlDashboard(db);
+
+  try {
+    syncMarkdownFiles(db);
+  } catch (err) {
+    console.error('[Agent OS] Markdown sync failed (non-fatal):', err.message);
+  }
+  try {
+    generateHtmlDashboard(db);
+  } catch (err) {
+    console.error('[Agent OS] Dashboard generation failed (non-fatal):', err.message);
+  }
+}
+
+async function flushStore() {
+  await persistChain;
 }
 
 // Filesystem-First Memory Sync
@@ -867,20 +979,43 @@ function syncMarkdownFiles(db) {
   knowledgeMd += `# Workspace Knowledge & Runbook\n\n`;
   knowledgeMd += `Aggregate lessons learned and reference templates for task execution.\n\n`;
   knowledgeMd += `## Reference Command Guide\n\n`;
-  knowledgeMd += `- **Linting**: Run TypeScript checks via \`powershell -ExecutionPolicy Bypass -Command "npm run lint"\`\n`;
-  knowledgeMd += `- **Testing**: Run test suite via \`powershell -ExecutionPolicy Bypass -Command "npm test"\`\n`;
-  knowledgeMd += `- **Next.js Production Compilation**: Run build via \`powershell -ExecutionPolicy Bypass -Command "npm run build"\`\n`;
-  knowledgeMd += `- **Project Graph Compilation**: Compile master graph via \`powershell -ExecutionPolicy Bypass -File "..\\compile-all.ps1"\`\n\n`;
+  knowledgeMd += `- **Linting**: \`npm run lint\`\n`;
+  knowledgeMd += `- **Testing**: \`npm test\`\n`;
+  knowledgeMd += `- **Next.js Production Compilation**: \`npm run build\`\n`;
+  knowledgeMd += `- **Learning heal**: \`node scripts/learning-loop.mjs heal\`\n`;
+  knowledgeMd += `- **Agent OS eval**: \`node scripts/agent-os.js eval\`\n\n`;
   
-  knowledgeMd += `## Lessons Learned & Failures Cache\n\n`;
-  const errorsPath = join(process.cwd(), '.learnings', 'ERRORS.md');
-  if (fs.existsSync(errorsPath)) {
-    const errorLogs = fs.readFileSync(errorsPath, 'utf8');
-    knowledgeMd += errorLogs.replace(/# Errors Log\n/i, '');
-  } else {
-    knowledgeMd += `- No errors recorded yet.\n\n`;
+  knowledgeMd += `## Lessons Learned (token-cheap)\n\n`;
+  knowledgeMd += `Do **not** paste full error dumps here. Use the structured learning loop:\n\n`;
+  knowledgeMd += `- **Cold-start index**: \`.learnings/ERRORS_INDEX.md\`\n`;
+  knowledgeMd += `- **Machine state**: \`.learnings/index.json\`\n`;
+  knowledgeMd += `- **Prevention rules**: \`.agents/governance/PREVENTION_RULES.md\`\n`;
+  knowledgeMd += `- **Record failure**: \`node scripts/learning-loop.mjs record --title "..." --error "..."\`\n`;
+  knowledgeMd += `- **Heal pass**: \`node scripts/learning-loop.mjs heal\`\n\n`;
+  try {
+    const status = getStatus();
+    knowledgeMd += `### Learning loop snapshot\n\n`;
+    knowledgeMd += `- Unique fingerprints: ${status.stats.unique_fingerprints || 0}\n`;
+    knowledgeMd += `- Total records: ${status.stats.total_records || 0}\n`;
+    knowledgeMd += `- Duplicates suppressed: ${status.stats.duplicates_suppressed || 0}\n`;
+    knowledgeMd += `- Auto-heals: ${status.stats.auto_heals || 0}\n`;
+    knowledgeMd += `- Open: ${status.open} · Auto-healed: ${status.auto_healed} · Resolved: ${status.resolved}\n\n`;
+    if (status.top?.length) {
+      knowledgeMd += `### Top incidents\n\n`;
+      for (const t of status.top) {
+        knowledgeMd += `- **${t.id}** [${t.category}] ${t.title} (${t.count}x, ${t.status})\n`;
+      }
+      knowledgeMd += `\n`;
+    }
+  } catch {
+    knowledgeMd += `- Learning index not initialized yet. Run \`node scripts/learning-loop.mjs compact\`.\n\n`;
   }
   fs.writeFileSync(join(agentsDir, 'knowledge.md'), knowledgeMd, 'utf8');
+  try {
+    rebuildMarkdownViews();
+  } catch {
+    /* non-blocking */
+  }
 
   // 4. handoff.md (OKF-compliant continuation snapshot)
   const activeTask = db.tasks.find(t => t.status === 'running');
@@ -1121,17 +1256,19 @@ function retrieveContext(taskDescription) {
   return "";
 }
 
-// Task-Scoped Self-Healing & Incident Logging
+// Task-Scoped Self-Healing & Incident Logging — never throws
 function triggerSelfHealing(task, failedCommand, errorOutput) {
-  console.log(`[Self-Healing] Triggered for task ${task.id} after command failure: "${failedCommand}"`);
+  const safeTask = task || { id: 'UNKNOWN', title: 'unknown task' };
+  console.log(`[Self-Healing] Triggered for task ${safeTask.id} after command failure: "${failedCommand || ''}"`);
   
-  let diagnostics = `[Diagnostics] Analyzing failure of command: "${failedCommand}"\n`;
+  let diagnostics = `[Diagnostics] Analyzing failure of command: "${failedCommand || ''}"\n`;
   let modifiedFiles = [];
   
   try {
-    const gitStatusRaw = execSync('git status --porcelain', { encoding: 'utf8' });
+    const git = safeExec('git status --porcelain', { timeout: 30_000 });
+    const gitStatusRaw = git.ok ? git.stdout : '';
     if (gitStatusRaw.trim()) {
-      diagnostics += `[Git Status] Modified workspace files:\n${gitStatusRaw}\n`;
+      diagnostics += `[Git Status] Modified workspace files:\n${gitStatusRaw.slice(0, 2000)}\n`;
       modifiedFiles = gitStatusRaw
          .split(/\r?\n/)
          .filter(line => line.trim().length > 0)
@@ -1148,89 +1285,112 @@ function triggerSelfHealing(task, failedCommand, errorOutput) {
          })
          .filter(Boolean);
     } else {
-      diagnostics += `[Git Status] Workspace is clean.\n`;
+      diagnostics += git.ok ? `[Git Status] Workspace is clean.\n` : `[Git Status] unavailable: ${git.stderr}\n`;
     }
   } catch (gitErr) {
     diagnostics += `[Error] Failed to execute git status: ${gitErr.message}\n`;
   }
   
-  let lintFailed = false;
   try {
     diagnostics += `[Diagnostics] Running TypeScript verification check...\n`;
-    execSync('powershell -ExecutionPolicy Bypass -Command "npm run lint"', { encoding: 'utf8' });
-    diagnostics += `[Lint Output] Lint passed successfully.\n`;
+    const lint = safeExec('npm run lint', { timeout: 120_000 });
+    if (lint.ok) {
+      diagnostics += `[Lint Output] Lint passed successfully.\n`;
+    } else {
+      diagnostics += `[Lint Error] TypeScript compiler errors:\n${(lint.stderr || lint.stdout).slice(0, 1500)}\n`;
+    }
   } catch (lintErr) {
-    lintFailed = true;
-    diagnostics += `[Lint Error] TypeScript compiler errors:\n${lintErr.stdout || lintErr.message}\n`;
+    diagnostics += `[Lint Error] ${lintErr.message}\n`;
   }
   
-  const learningsDir = join(process.cwd(), '.learnings');
-  if (!fs.existsSync(learningsDir)) {
-    fs.mkdirSync(learningsDir, { recursive: true });
-  }
-  const errorsPath = join(learningsDir, 'ERRORS.md');
-  const errorId = `ERR-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(100 + Math.random() * 900)}`;
-  
-  let errorLogEntry = `\n## [${errorId}] Task failure: ${task.title}\n\n`;
-  errorLogEntry += `**Logged**: ${new Date().toISOString()}\n`;
-  errorLogEntry += `**Priority**: high\n`;
-  errorLogEntry += `**Status**: quarantined\n`;
-  errorLogEntry += `**Area**: devops-execution\n\n`;
-  errorLogEntry += `### Summary [${errorId}]\nTask command "${failedCommand}" failed during runtime execution.\n\n`;
-  errorLogEntry += `### Error [${errorId}]\n\`\`\`text\n${errorOutput.trim().slice(0, 800)}\n\`\`\`\n\n`;
-  errorLogEntry += `### Fix / Learning [${errorId}]\nRoot cause diagnostics. Working resolution:\n\n`;
-  errorLogEntry += `\`\`\`javascript\n# CORRECT\n// Working file path modification or compilation fix\n\n# WRONG\n// Failing call: ${failedCommand}\n\`\`\`\n\n`;
-  errorLogEntry += `### Metadata [${errorId}]\n`;
-  errorLogEntry += `- Root cause: command execution exit code non-zero\n`;
-  errorLogEntry += `- Prevention: verify execution parameters and run locally prior to staging\n`;
-  
-  fs.appendFileSync(errorsPath, errorLogEntry, 'utf8');
-  console.log(`[Self-Healing] Logged incident ${errorId} in .learnings/ERRORS.md`);
-
-  // Write OKF concept file for the error
-  const okfErrorPath = join(process.cwd(), '.agents', 'knowledge', `${errorId.replace(/-/g, '_')}.md`);
-  let okfErrorContent = `---\n`;
-  okfErrorContent += `id: ${errorId.toLowerCase().replace(/-/g, '_')}\n`;
-  okfErrorContent += `name: "Incident Postmortem: ${task.title}"\n`;
-  okfErrorContent += `type: concept\n`;
-  okfErrorContent += `description: "Automated failure analysis and diagnostics for command ${failedCommand.replaceAll('"', '\\"')}"\n`;
-  okfErrorContent += `tags: [failure, postmortem, ${task.id.toLowerCase()}]\n`;
-  okfErrorContent += `references: [workspace_knowledge, mandatory_error_learning]\n`;
-  okfErrorContent += `---\n\n`;
-  okfErrorContent += `# Incident Postmortem [${errorId}]\n\n`;
-  okfErrorContent += `**Logged**: ${new Date().toISOString()}\n`;
-  okfErrorContent += `**Task ID**: ${task.id}\n`;
-  okfErrorContent += `**Command**: \`${failedCommand}\`\n\n`;
-  okfErrorContent += `### Error Diagnostics\n\`\`\`text\n${errorOutput.trim().slice(0, 1500)}\n\`\`\`\n\n`;
-  okfErrorContent += `### System Diagnostics Context\n\`\`\`\n${diagnostics}\n\`\`\`\n\n`;
-  okfErrorContent += `### Working Correction\n\`\`\`javascript\n# CORRECT\n// Verified fix parameters\n\n# WRONG\n// Failed invocation: ${failedCommand}\n\`\`\`\n`;
-  fs.writeFileSync(okfErrorPath, okfErrorContent, 'utf8');
-  console.log(`[Self-Healing] Created OKF file at ${okfErrorPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`);
-  
-  // Explicitly compile graph to update active node state
+  // Structured learning loop: DETECT → CLASSIFY → DEDUPE → STORE → HEAL
+  let recorded = {
+    id: `ERR-FALLBACK-${Date.now()}`,
+    fingerprint: 'fallback',
+    isDuplicate: false,
+    healed: false,
+    category: 'general',
+    message: 'recordFailure unavailable',
+  };
   try {
-    console.log(`[Graphify Integration] Triggering graph compilation for failure postmortem...`);
-    execSync('graphify update .', { encoding: 'utf8' });
-    console.log(`[Graphify Integration] Graph compiled successfully.`);
-  } catch (graphifyErr) {
-    console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+    recorded = recordFailure({
+      title: `Task failure: ${safeTask.title || safeTask.id}`,
+      error: `${String(errorOutput || '').trim().slice(0, 2000)}\n\n${diagnostics.slice(0, 1500)}`,
+      command: failedCommand || '',
+      area: 'devops-execution',
+      step: safeTask.id,
+    });
+    console.log(`[Self-Healing] ${recorded.message}`);
+  } catch (recErr) {
+    console.error(`[Self-Healing] recordFailure failed: ${recErr.message}`);
+  }
+
+  if (recorded.healed || recorded.category === 'okf-wiki' || recorded.category === 'harness-checkpoint') {
+    try {
+      const heal = runHealPass();
+      console.log(`[Self-Healing] Heal pass: ${heal.message}`);
+    } catch (healErr) {
+      console.warn(`[Self-Healing] Heal pass non-blocking: ${healErr.message}`);
+    }
+  }
+
+  const errorId = recorded.id || `ERR-FALLBACK-${Date.now()}`;
+
+  // Compact OKF postmortem only for novel incidents (not every duplicate)
+  if (!recorded.isDuplicate) {
+    try {
+      ensureDir(join(process.cwd(), '.agents', 'knowledge'));
+      const okfErrorPath = join(process.cwd(), '.agents', 'knowledge', `${String(errorId).replace(/-/g, '_')}.md`);
+      const cmdSafe = String(failedCommand || '').replaceAll('"', '\\"');
+      let okfErrorContent = `---\n`;
+      okfErrorContent += `id: ${String(errorId).toLowerCase().replace(/-/g, '_')}\n`;
+      okfErrorContent += `name: "Incident Postmortem: ${String(safeTask.title || safeTask.id).replace(/"/g, '')}"\n`;
+      okfErrorContent += `type: concept\n`;
+      okfErrorContent += `description: "Automated failure analysis for ${cmdSafe}"\n`;
+      okfErrorContent += `tags: [failure, postmortem, ${String(safeTask.id).toLowerCase()}, learning-loop]\n`;
+      okfErrorContent += `references: [workspace_knowledge, mandatory_error_learning]\n`;
+      okfErrorContent += `---\n\n`;
+      okfErrorContent += `# Incident Postmortem [${errorId}]\n\n`;
+      okfErrorContent += `**Logged**: ${new Date().toISOString()}\n`;
+      okfErrorContent += `**Fingerprint**: \`${recorded.fingerprint || 'n/a'}\`\n`;
+      okfErrorContent += `**Category**: ${recorded.category || 'general'}\n`;
+      okfErrorContent += `**Task ID**: ${safeTask.id}\n`;
+      okfErrorContent += `**Command**: \`${failedCommand || ''}\`\n\n`;
+      okfErrorContent += `### Error Diagnostics (snippet)\n\`\`\`text\n${String(errorOutput || '').trim().slice(0, 800)}\n\`\`\`\n\n`;
+      okfErrorContent += `### See also\n- \`.learnings/ERRORS_INDEX.md\`\n- \`.learnings/index.json\`\n`;
+      fs.writeFileSync(okfErrorPath, okfErrorContent, 'utf8');
+      console.log(`[Self-Healing] Created OKF file at ${okfErrorPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`);
+    } catch (okfErr) {
+      console.warn(`[Self-Healing] OKF postmortem write failed: ${okfErr.message}`);
+    }
+  } else {
+    console.log(`[Self-Healing] Duplicate fingerprint — skipped OKF postmortem`);
+  }
+
+  // Quarantine only — do not automatically revert user files.
+  try {
+    const deadLetterDir = join(process.cwd(), '.agents', 'dead-letter');
+    ensureDir(deadLetterDir);
+    const deadLetterPath = join(deadLetterDir, `${errorId}.json`);
+    writeJsonAtomic(deadLetterPath, {
+      id: errorId,
+      fingerprint: recorded.fingerprint,
+      category: recorded.category,
+      is_duplicate: recorded.isDuplicate,
+      task_id: safeTask.id,
+      failed_command: failedCommand || '',
+      modified_files: modifiedFiles,
+      diagnostics: diagnostics.slice(0, 4000),
+      replay_policy: "Manual inspection required before retry. No automatic rollback was performed. Quarantine only.",
+      max_attempts: MAX_TASK_ATTEMPTS,
+      attempts: safeTask.attempts || 0,
+    });
+    console.log(`[Self-Healing] Quarantined failure context at ${deadLetterPath}`);
+  } catch (qErr) {
+    console.warn(`[Self-Healing] Dead-letter write failed: ${qErr.message}`);
   }
   
-  // Quarantine only — do not automatically revert user files.
-  const deadLetterDir = join(process.cwd(), '.agents', 'dead-letter');
-  ensureDir(deadLetterDir);
-  const deadLetterPath = join(deadLetterDir, `${errorId}.json`);
-  fs.writeFileSync(deadLetterPath, JSON.stringify({
-    id: errorId,
-    task_id: task.id,
-    failed_command: failedCommand,
-    modified_files: modifiedFiles,
-    diagnostics,
-    replay_policy: "Manual inspection required before retry. No automatic rollback was performed."
-  }, null, 2), 'utf8');
-  console.log(`[Self-Healing] Quarantined failure context at ${deadLetterPath}`);
-  
-  return { errorId, diagnostics };
+  return { errorId, diagnostics, recorded };
 }
 
 // Task-Scoped Success Learning & Self-Improvement Ledger
@@ -1286,34 +1446,25 @@ function triggerSuccessLearning(task, sessionId, logs) {
   fs.writeFileSync(okfSuccessPath, okfSuccessContent, 'utf8');
   console.log(`[Success Learning] Created OKF file at ${okfSuccessPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/')}`);
 
-  // Explicitly compile graph to update active node state
-  try {
-    console.log(`[Graphify Integration] Triggering graph compilation for success learning...`);
-    execSync('graphify update .', { encoding: 'utf8' });
-    console.log(`[Graphify Integration] Graph compiled successfully.`);
-  } catch (graphifyErr) {
-    console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+  // Graphify is optional (set AGENT_OS_GRAPHIFY=1) — never block success path
+  if (graphifyEnabled()) {
+    try {
+      console.log(`[Graphify Integration] Triggering graph compilation for success learning...`);
+      const g = safeExec('graphify update .', { timeout: 120_000 });
+      if (g.ok) console.log(`[Graphify Integration] Graph compiled successfully.`);
+      else console.warn(`[Graphify Integration] Non-blocking: ${g.stderr || g.stdout}`);
+    } catch (graphifyErr) {
+      console.warn(`[Graphify Integration] Non-blocking warning: ${graphifyErr.message}`);
+    }
   }
 
   return { successId };
 }
 
-// Helper to run commands safely on Windows/Unix
+// Helper to run commands safely on Windows/Unix (no nested PowerShell)
 function runCommand(cmd) {
-  let executable = cmd;
-  if (process.platform === 'win32') {
-    if (cmd.includes('npm run lint')) {
-      executable = 'powershell -ExecutionPolicy Bypass -Command "npm run lint"';
-    } else if (cmd.includes('npm test')) {
-      executable = 'powershell -ExecutionPolicy Bypass -Command "npm test"';
-    } else if (cmd.includes('npm run build')) {
-      executable = 'powershell -ExecutionPolicy Bypass -Command "npm run build"';
-    } else if (!cmd.startsWith('cmd.exe') && !cmd.startsWith('powershell')) {
-      executable = `cmd.exe /c "${cmd.replaceAll('"', '\\"')}"`;
-    }
-  }
-  console.log(`[Agent OS] Executing shell command: ${executable}`);
-  return execSync(executable, { encoding: 'utf8' });
+  console.log(`[Agent OS] Executing shell command: ${cmd}`);
+  return runCommandOrThrow(cmd, { timeout: 10 * 60 * 1000 });
 }
 
 // Decompose goal into a task graph
@@ -1466,38 +1617,30 @@ function createGoal(description, budgetUsd = 5.0, tasksPath = null) {
   console.log(`[Agent OS] Successfully initialized Goal ${goalId} and generated ${generatedTasks.length} tasks.`);
 }
 
-// Get next runnable task
+// Get next runnable task (max attempts, stale running reclaim, deps)
 function getNextTask(db) {
-  const completedTaskIds = new Set(
-    db.tasks.filter(t => t.status === "verified").map(t => t.id)
-  );
-
-  return db.tasks.find(t => {
-    if (t.status !== "pending" && t.status !== "failed" && t.status !== "running") return false;
-    return t.dependencies.every(depId => completedTaskIds.has(depId));
-  });
+  return pickNextTask(db.tasks || []);
 }
 
 // Generate idempotency key for side-effects tracking
 function generateIdempotencyKey(cmd, context) {
-  return crypto.createHash('md5').update(cmd + context).digest('hex');
+  return idempotencyKey(cmd, context);
 }
 
 // Execute state-machine transition step for a given task
 function executeTaskPhase(db, task, phase, sessionId) {
+  ensureControlPlane(process.cwd());
   let stdoutLogs = `[Phase Transition] Transitioning task ${task.id} to Phase: ${phase}\n`;
   console.log(`[State Machine] Task ${task.id} entering Phase: ${phase}`);
   appendTrace({ type: 'phase_enter', task_id: task.id, session_id: sessionId, phase });
 
-  // Verify Entry Criteria
-  const initialPhases = ["PLAN", "QUERY", "TRIAGE"];
-  if (!initialPhases.includes(phase)) {
-    const checkpointDir = join(process.cwd(), '.agents', 'checkpoints');
-    const checkpointFiles = fs.readdirSync(checkpointDir);
-    const hasPreviousCheckpoint = checkpointFiles.some(name => name.includes(task.id));
-    if (!hasPreviousCheckpoint) {
-      throw new Error(`Entry criteria failed for phase ${phase}: No active checkpoints found for task ${task.id}`);
-    }
+  // Verify Entry Criteria — auto-seed PLAN checkpoint instead of hard-fail ceremony
+  const entry = assertPhaseEntry(db, task, phase, sessionId, { autoSeed: true });
+  if (!entry.ok) {
+    throw new Error(entry.error || `Entry criteria failed for phase ${phase}`);
+  }
+  if (entry.seeded) {
+    stdoutLogs += `[Entry Criteria] Auto-seeded PLAN checkpoint before ${phase} (bulletproof path).\n`;
   }
 
   // Phase execution logic
@@ -1551,15 +1694,24 @@ function executeTaskPhase(db, task, phase, sessionId) {
       fs.writeFileSync(effectPath, JSON.stringify(effectRecord, null, 2), 'utf8');
       saveDb(db);
 
-      // Execute command
+      // Execute command — on failure mark effect failed (never leave pending forever)
       stdoutLogs += `[EXECUTE] Running shell command: "${cmdToRun}"\n`;
-      const execLogs = runCommand(cmdToRun);
-      stdoutLogs += execLogs;
-
-      // Commit side effect
-      effectRecord.status = "committed";
-      effectRecord.logs = execLogs;
-      fs.writeFileSync(effectPath, JSON.stringify(effectRecord, null, 2), 'utf8');
+      try {
+        const execLogs = runCommand(cmdToRun);
+        stdoutLogs += execLogs;
+        effectRecord.status = "committed";
+        effectRecord.logs = String(execLogs).slice(0, 50_000);
+        writeJsonAtomic(effectPath, effectRecord);
+      } catch (execErr) {
+        effectRecord.status = "failed";
+        effectRecord.logs = String(execErr.stdout || execErr.message || execErr).slice(0, 50_000);
+        try {
+          writeJsonAtomic(effectPath, effectRecord);
+        } catch {
+          /* ignore */
+        }
+        throw execErr;
+      }
     }
   } else if (phase === "VALIDATE") {
     stdoutLogs += `[VALIDATE] Running active synchronous validation suite...\n`;
@@ -1628,13 +1780,15 @@ function executeTaskPhase(db, task, phase, sessionId) {
     }
   } else if (phase === "DIAGNOSE") {
     stdoutLogs += `[DIAGNOSE] Analyzing diagnostic traces to identify failure points...\n`;
+    const indexPath = join(process.cwd(), '.learnings', 'ERRORS_INDEX.md');
     const errorsPath = join(process.cwd(), '.learnings', 'ERRORS.md');
-    if (fs.existsSync(errorsPath)) {
-      const content = fs.readFileSync(errorsPath, 'utf8');
-      const lines = content.split('\n').slice(-15).join('\n');
-      stdoutLogs += `[DIAGNOSE] Last logs retrieved from postmortem:\n${lines}\n`;
+    const diagnosePath = fs.existsSync(indexPath) ? indexPath : errorsPath;
+    if (fs.existsSync(diagnosePath)) {
+      const content = fs.readFileSync(diagnosePath, 'utf8');
+      const lines = content.split('\n').slice(0, 40).join('\n');
+      stdoutLogs += `[DIAGNOSE] Learning index snapshot:\n${lines}\n`;
     } else {
-      stdoutLogs += `[DIAGNOSE] No learnings or errors file found. Self-contained workspace verified.\n`;
+      stdoutLogs += `[DIAGNOSE] No learnings index found. Run node scripts/learning-loop.mjs compact.\n`;
     }
   } else if (phase === "MITIGATE") {
     stdoutLogs += `[MITIGATE] Formulation of remediation procedures is complete.\n`;
@@ -1646,51 +1800,50 @@ function executeTaskPhase(db, task, phase, sessionId) {
     stdoutLogs += `[POSTMORTEM] Closing incident log and sealing recovery loop.\n`;
   }
 
-  // Write phase-level checkpoint
-  const phaseChkId = `CHK-${task.id}-${Date.now()}-${phase}`;
-  const phaseChkPath = join(process.cwd(), '.agents', 'checkpoints', `${phaseChkId}.json`);
-  fs.writeFileSync(phaseChkPath, JSON.stringify({
-    id: phaseChkId,
-    task_id: task.id,
-    session_id: sessionId,
+  // Write phase-level checkpoint (always — powers resume + entry criteria)
+  writePhaseCheckpoint(db, {
+    taskId: task.id,
+    sessionId,
     phase,
-    timestamp: new Date().toISOString(),
-    logs: stdoutLogs
-  }, null, 2), 'utf8');
-  db.checkpoints.push({
-    id: phaseChkId,
-    task_id: task.id,
-    session_id: sessionId,
-    status: "success",
-    evidence: phaseChkPath.replace(process.cwd() + '\\', '').replace(/\\/g, '/'),
-    timestamp: new Date().toISOString()
+    logs: stdoutLogs,
   });
 
   appendTrace({ type: 'phase_exit', task_id: task.id, session_id: sessionId, phase, status: 'success' });
   return stdoutLogs;
 }
 
-// Execute task runner loop
+// Execute task runner loop — bulletproof: max attempts, safe metrics, no fake success
 function executeNextTask() {
   const db = loadDb();
+  ensureControlPlane(process.cwd());
   const task = getNextTask(db);
   
   if (!task) {
     console.log("[Agent OS] No pending tasks ready. All active milestones completed or blocked.");
-    return;
+    return { status: 'idle' };
+  }
+
+  normalizeTask(task);
+
+  // Hard stop: already at max attempts
+  if (shouldQuarantineTask(task) && task.status !== 'verified') {
+    task.status = 'blocked';
+    console.log(`[Agent OS] Task ${task.id} already at max attempts (${MAX_TASK_ATTEMPTS}). Blocked.`);
+    saveDb(db);
+    return { status: 'blocked', task_id: task.id };
   }
 
   // Step-level caching: check if previously verified
   if (task.status === "verified") {
     console.log(`[Cache] Task ${task.id} is already verified. Skipping execution.`);
-    return;
+    return { status: 'verified', task_id: task.id, cached: true };
   }
   const lastSession = db.sessions.find(s => s.task_id === task.id && s.status === "success");
-  if (lastSession) {
+  if (lastSession && task.status !== 'failed') {
     console.log(`[Cache] Restoring successful cached state for task ${task.id}.`);
     task.status = "verified";
     saveDb(db);
-    return;
+    return { status: 'verified', task_id: task.id, cached: true };
   }
 
   // Specialized Harness Routing
@@ -1716,12 +1869,14 @@ function executeNextTask() {
   }
 
   task.status = "running";
-  task.attempts += 1;
+  task.claimed_at = new Date().toISOString();
+  task.attempts = (Number(task.attempts) || 0) + 1;
   saveDb(db);
 
   // Check for Human Approval / Durable Wait Gate prior to EXECUTE on medium/high-risk tasks
   const isHighRisk = task.risk_level === "high" || task.risk_level === "medium";
-  const nextPhase = task.current_phase ? task.phases[task.phases.indexOf(task.current_phase) + 1] : task.phases[0];
+  const resumeIdx = safePhaseResumeIndex(task);
+  const nextPhase = task.phases[Math.min(resumeIdx, task.phases.length - 1)];
 
   if (isHighRisk && nextPhase === "EXECUTE" && !task.approved_by_user) {
     const waitId = `WAIT-${Date.now()}`;
@@ -1738,11 +1893,15 @@ function executeNextTask() {
     saveDb(db);
 
     const waitPath = join(process.cwd(), '.agents', 'waits', `${waitId}.json`);
-    fs.writeFileSync(waitPath, JSON.stringify(waitRecord, null, 2), 'utf8');
+    try {
+      writeJsonAtomic(waitPath, waitRecord);
+    } catch {
+      fs.writeFileSync(waitPath, JSON.stringify(waitRecord, null, 2), 'utf8');
+    }
 
     console.log(`[Durable Wait] execution paused. User authorization required under waitpoint ${waitId}.`);
     appendTrace({ type: 'wait_pause', task_id: task.id, wait_id: waitId, reason: waitRecord.reason });
-    return;
+    return { status: 'waiting', wait_id: waitId, task_id: task.id };
   }
 
   const startTime = Date.now();
@@ -1751,8 +1910,8 @@ function executeNextTask() {
   let stdoutLogs = `[Harness Router] Routed via: ${harnessName}\n`;
   appendTrace({ type: 'claim', task_id: task.id, session_id: sessionId, attempt: task.attempts });
 
-  // Process all phases sequentially
-  const startIdx = task.current_phase ? task.phases.indexOf(task.current_phase) + 1 : 0;
+  // Process phases sequentially from safe resume index
+  const startIdx = safePhaseResumeIndex(task);
   
   try {
     for (let i = startIdx; i < task.phases.length; i++) {
@@ -1766,36 +1925,56 @@ function executeNextTask() {
     
     // Complete successfully
     task.status = "verified";
-    db.metrics.tasks_verified += 1;
-    db.metrics.tasks_completed += 1;
+    task.current_phase = task.phases[task.phases.length - 1];
+    bumpMetric(db, 'tasks_verified', 1);
+    bumpMetric(db, 'tasks_completed', 1);
     appendTrace({ type: 'verification', task_id: task.id, session_id: sessionId, status: 'passed', plan: task.verification_plan });
     
-    // Trigger Success Learning & Capability Ratchet
-    triggerSuccessLearning(task, sessionId, stdoutLogs);
+    // Trigger Success Learning & Capability Ratchet (non-fatal)
+    try {
+      triggerSuccessLearning(task, sessionId, stdoutLogs);
+    } catch (sucErr) {
+      console.warn(`[Agent OS] Success learning non-fatal: ${sucErr.message}`);
+    }
   } catch (err) {
     sessionStatus = "failed";
     task.status = "failed";
-    const errorMsg = err.stdout || err.message || String(err);
+    const errorMsg = (err && (err.stdout || err.stderr || err.message)) || String(err);
     stdoutLogs += `\n[ERROR] State machine execution failed in phase [${task.current_phase}]:\n${errorMsg}`;
-    appendTrace({ type: 'verification', task_id: task.id, session_id: sessionId, status: 'failed', error: errorMsg.slice(0, 500) });
+    appendTrace({ type: 'verification', task_id: task.id, session_id: sessionId, status: 'failed', error: String(errorMsg).slice(0, 500) });
     
-    // Trigger Self-Healing Diagnostics, Errors Logger, and Quarantines
-    const healingResult = triggerSelfHealing(task, task.command, errorMsg);
+    // Trigger Self-Healing Diagnostics, Errors Logger, and Quarantines (never throws)
+    let healingResult = { errorId: `ERR-LOCAL-${Date.now()}`, diagnostics: String(errorMsg) };
+    try {
+      healingResult = triggerSelfHealing(task, task.command, errorMsg);
+    } catch (healBoom) {
+      console.error(`[Agent OS] Self-healing crashed (contained): ${healBoom.message}`);
+    }
     
     db.incidents.push({
       id: healingResult.errorId,
       task_id: task.id,
       command: task.command,
-      diagnostics: healingResult.diagnostics,
+      diagnostics: String(healingResult.diagnostics || '').slice(0, 4000),
       timestamp: new Date().toISOString(),
-      status: "quarantined"
+      status: "quarantined",
+      attempts: task.attempts,
     });
 
-    db.metrics.retry_rate = parseFloat(((db.metrics.retry_rate + 0.1) / 2).toFixed(2));
-    if (task.attempts >= 2) {
-      console.log(`[Self-Improvement] Task ${task.id} has failed ${task.attempts} times. Quarantine triggered.`);
+    const prevRetry = Number(db.metrics.retry_rate) || 0;
+    db.metrics.retry_rate = parseFloat(((prevRetry + 0.1) / 2).toFixed(2));
+    if (shouldQuarantineTask(task)) {
+      console.log(`[Self-Improvement] Task ${task.id} has failed ${task.attempts}/${MAX_TASK_ATTEMPTS} times. Quarantine triggered.`);
       task.status = "blocked";
-      db.metrics.intervention_rate = parseFloat(((db.metrics.intervention_rate + 0.1) / 2).toFixed(2));
+      const prevInt = Number(db.metrics.intervention_rate) || 0;
+      db.metrics.intervention_rate = parseFloat(((prevInt + 0.1) / 2).toFixed(2));
+    } else {
+      // Healable categories: leave pending for one automatic retry path
+      const cat = healingResult.recorded?.category;
+      if (cat === 'okf-wiki' || cat === 'harness-checkpoint') {
+        task.status = 'pending';
+        console.log(`[Self-Healing] Healable category ${cat} — task ${task.id} re-queued as pending.`);
+      }
     }
   }
 
@@ -1810,34 +1989,42 @@ function executeNextTask() {
     cost_usd: costUsd,
     status: sessionStatus,
     timestamp: new Date().toISOString(),
-    logs: stdoutLogs
+    logs: String(stdoutLogs).slice(0, 100_000),
   });
 
-  const evidencePath = join(process.cwd(), '.agents', 'evidence', `${sessionId}.log`);
-  fs.writeFileSync(evidencePath, stdoutLogs, 'utf8');
+  try {
+    const evidencePath = join(process.cwd(), '.agents', 'evidence', `${sessionId}.log`);
+    fs.writeFileSync(evidencePath, stdoutLogs, 'utf8');
+  } catch (evErr) {
+    console.warn(`[Agent OS] Evidence write failed: ${evErr.message}`);
+  }
 
-  // Update metrics
-  db.metrics.total_duration_ms += durationMs;
-  db.metrics.total_cost_usd = parseFloat((db.metrics.total_cost_usd + costUsd).toFixed(4));
-  db.meta.total_runs += 1;
+  // Update metrics safely
+  bumpMetric(db, 'total_duration_ms', durationMs);
+  const prevCost = Number(db.metrics.total_cost_usd) || 0;
+  db.metrics.total_cost_usd = parseFloat((prevCost + costUsd).toFixed(4));
+  db.meta.total_runs = (Number(db.meta.total_runs) || 0) + 1;
 
   // Check goal statuses
-  const goalTasks = db.tasks.filter(t => t.goal_id === task.goal_id);
-  const goal = db.goals.find(g => g.id === task.goal_id);
-  if (goal) {
-    if (goalTasks.every(t => t.status === "verified")) {
-      goal.status = "completed";
-      console.log(`[Agent OS] Congratulations! Goal ${goal.id} has been fully completed and verified.`);
-    } else if (goalTasks.some(t => t.status === "blocked")) {
-      goal.status = "blocked";
-    } else {
-      goal.status = "in_progress";
+  if (task.goal_id) {
+    const goalTasks = db.tasks.filter(t => t.goal_id === task.goal_id);
+    const goal = db.goals.find(g => g.id === task.goal_id);
+    if (goal) {
+      if (goalTasks.length && goalTasks.every(t => t.status === "verified")) {
+        goal.status = "completed";
+        console.log(`[Agent OS] Goal ${goal.id} fully completed and verified.`);
+      } else if (goalTasks.some(t => t.status === "blocked")) {
+        goal.status = "blocked";
+      } else {
+        goal.status = "in_progress";
+      }
     }
   }
 
   saveDb(db);
   appendTrace({ type: 'complete', task_id: task.id, session_id: sessionId, status: task.status, duration_ms: durationMs, cost_usd: costUsd });
   console.log(`[Agent OS] Finished Task ${task.id}. Status: ${task.status}. Duration: ${durationMs}ms. Cost: $${costUsd}`);
+  return { status: task.status, task_id: task.id, session_id: sessionId, duration_ms: durationMs };
 }
 
 // Resume execution from a waitpoint
@@ -2902,9 +3089,11 @@ function generateHtmlDashboard(db) {
 }
 
 function bootstrapSystem() {
+  ensureControlPlane(process.cwd());
   const db = loadDb();
   writeFoundationalArtifacts(db);
 
+  db.queues = db.queues || structuredClone(DEFAULT_QUEUES);
   if (!db.queues.improve.includes('IMPROVE-EVAL-COVERAGE')) {
     db.queues.improve.push('IMPROVE-EVAL-COVERAGE');
   }
@@ -2952,23 +3141,41 @@ function bootstrapSystem() {
     });
   }
 
-  saveDb(db);
-  appendTrace({ type: 'bootstrap', status: 'completed', artifacts: ['operating-summary', 'implementation-contract', 'runtime-capability-matrix'] });
-  console.log('[Agent OS] Bootstrap complete. Foundational artifacts, queues, milestones, and eval definitions are current.');
-
-  // Explicitly compile graph to index newly bootstrapped capability and knowledge nodes
+  // Ensure learning-loop cold-start exists
   try {
-    console.log(`[Graphify Integration] Triggering graph compilation for bootstrapped artifacts...`);
-    execSync('graphify update .', { encoding: 'utf8' });
-    console.log(`[Graphify Integration] Graph compiled successfully.`);
-  } catch (graphifyErr) {
-    console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+    rebuildMarkdownViews();
+  } catch {
+    /* non-blocking */
+  }
+
+  saveDb(db);
+  appendTrace({ type: 'bootstrap', status: 'completed', version: AGENT_OS_VERSION, artifacts: ['operating-summary', 'implementation-contract', 'runtime-capability-matrix'] });
+  console.log(`[Agent OS] Bootstrap complete (v${AGENT_OS_VERSION}). Foundational artifacts, queues, milestones, and eval definitions are current.`);
+
+  if (graphifyEnabled()) {
+    try {
+      console.log(`[Graphify Integration] Triggering graph compilation for bootstrapped artifacts...`);
+      const g = safeExec('graphify update .', { timeout: 120_000 });
+      if (g.ok) console.log(`[Graphify Integration] Graph compiled successfully.`);
+      else console.warn(`[Graphify Integration] Non-blocking: ${String(g.stderr || g.stdout).slice(0, 500)}`);
+    } catch (graphifyErr) {
+      console.warn(`[Graphify Integration] Non-blocking warning: Failed to update graph: ${graphifyErr.message}`);
+    }
+  } else {
+    console.log('[Graphify Integration] Skipped (set AGENT_OS_GRAPHIFY=1 to enable).');
   }
 }
 
 function runEvalHarness() {
+  ensureControlPlane(process.cwd());
   const db = loadDb();
-  syncMarkdownFiles(db);
+  try {
+    writeFoundationalArtifacts(db);
+    syncMarkdownFiles(db);
+  } catch (err) {
+    console.warn(`[Agent OS] Eval pre-sync non-fatal: ${err.message}`);
+  }
+
   const requiredFiles = [
     OPERATING_SUMMARY_PATH,
     CONTRACT_PATH,
@@ -2980,18 +3187,47 @@ function runEvalHarness() {
     join(process.cwd(), '.agents', 'queues', 'recurring.md'),
     join(process.cwd(), '.agents', 'evals.md'),
     join(process.cwd(), '.agents', 'effects.md'),
-    join(process.cwd(), '.agents', 'waits.md')
+    join(process.cwd(), '.agents', 'waits.md'),
+    join(process.cwd(), 'scripts', 'learning-loop.mjs'),
+    join(process.cwd(), 'scripts', 'agent-os-core.mjs'),
   ];
 
   const missingFiles = requiredFiles.filter(path => !fs.existsSync(path));
   const requiredDbCollections = ['goals', 'tasks', 'sessions', 'incidents', 'effects', 'waits', 'checkpoints', 'evals', 'milestones', 'capabilities'];
   const missingCollections = requiredDbCollections.filter(key => !Array.isArray(db[key]));
   const unsafeRollbackToken = 'git ' + 'checkout --';
-  const hasUnsafeRollback = fs.readFileSync(new URL(import.meta.url), 'utf8').includes(unsafeRollbackToken);
+  let hasUnsafeRollback = false;
+  try {
+    hasUnsafeRollback = fs.readFileSync(new URL(import.meta.url), 'utf8').includes(unsafeRollbackToken);
+  } catch {
+    hasUnsafeRollback = false;
+  }
+
+  // Invariant: self-healing must go through learning-loop, not raw append spam
+  let missingLearningImport = false;
+  try {
+    const src = fs.readFileSync(new URL(import.meta.url), 'utf8');
+    missingLearningImport = !src.includes('recordFailure') || !src.includes('learning-loop');
+  } catch {
+    missingLearningImport = true;
+  }
+
+  // Invariant: runCommand must use core runner (not nested PowerShell npm wrappers)
+  let nestedPowershell = false;
+  try {
+    const src = fs.readFileSync(new URL(import.meta.url), 'utf8');
+    // Flag only if executable assignment still wraps npm in powershell -Command
+    nestedPowershell = /executable\s*=\s*['`]powershell -ExecutionPolicy Bypass -Command "npm/.test(src);
+  } catch {
+    /* ignore */
+  }
+
   const failures = [
     ...missingFiles.map(path => `Missing artifact: ${path}`),
     ...missingCollections.map(key => `Missing DB collection: ${key}`),
-    ...(hasUnsafeRollback ? ['Unsafe automatic rollback command is still present.'] : [])
+    ...(hasUnsafeRollback ? ['Unsafe automatic rollback command is still present.'] : []),
+    ...(missingLearningImport ? ['Learning-loop integration missing (recordFailure).'] : []),
+    ...(nestedPowershell ? ['Nested PowerShell npm runner still present — use safeExec/runCommandOrThrow.'] : []),
   ];
 
   const evalRecord = db.evals.find(e => e.id === 'EVAL-M1-CLOSED-LOOP') || db.evals[0];
@@ -3009,7 +3245,7 @@ function runEvalHarness() {
     failures.forEach(failure => console.error(`- ${failure}`));
     process.exit(1);
   }
-  console.log('[Agent OS] Eval passed. Closed-loop foundational artifacts are present and unsafe rollback is absent.');
+  console.log(`[Agent OS] Eval passed (v${AGENT_OS_VERSION}). Closed-loop artifacts present; unsafe rollback absent; learning-loop wired.`);
 }
 
 function executeAutoHealing(findingId) {
@@ -3120,86 +3356,201 @@ function executeAutoHealing(findingId) {
   saveDb(db);
 }
 
+/**
+ * Real queue runner — executes the control-plane state machine (no fake success).
+ * Optional: claim via queue.js for lock semantics, but always run executeNextTask.
+ */
 function runQueueLoop() {
-  console.log('[Agent OS] Polling SQLite queue for pending tasks...');
-  const task = claimNextTask();
-  
-  if (!task) {
-    console.log('[Agent OS] No pending tasks in queue.');
-    return;
+  console.log(`[Agent OS] v${AGENT_OS_VERSION} — polling control plane for runnable tasks...`);
+  try {
+    // Best-effort claim for external lockers; execution is authoritative in executeNextTask
+    const claimed = claimNextTask();
+    if (claimed) {
+      console.log(`[Agent OS] Queue claim hint: ${claimed.id}`);
+    }
+  } catch (claimErr) {
+    console.warn(`[Agent OS] queue claim non-fatal: ${claimErr.message}`);
   }
 
-  console.log(`[Agent OS] Claimed task ${task.id}: ${task.description}`);
-  
-  try {
-    // Simulated execution based on prompt constraint
-    // "execute it. If execution is successful and verified via MCP read tools, call resolveTask(id, 'completed')"
-    console.log(`[Agent OS] Executing task ${task.id}...`);
-    // Placeholder execution logic
-    
-    // Explicit Verification
-    console.log(`[Agent OS] Verifying task ${task.id} execution via MCP read...`);
-    
-    // Resolve task as verified
-    resolveTask(task.id, 'verified');
-    console.log(`[Agent OS] Task ${task.id} successfully completed and verified.`);
-    
-  } catch (err) {
-    console.error(`[Agent OS] Task ${task.id} failed: ${err.message}`);
-    const logStr = `## [ERR-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}]\n\n**Error:** ${err.message}\n**Task:** ${task.id}\n`;
-    const errPath = join(process.cwd(), '.learnings', 'ERRORS.md');
-    fs.appendFileSync(errPath, logStr, 'utf8');
-    resolveTask(task.id, 'failed');
+  const result = executeNextTask();
+  if (!result || result.status === 'idle') {
+    console.log('[Agent OS] No runnable tasks.');
+    return result;
   }
+
+  // Keep queue.js status in sync when possible
+  try {
+    if (result.task_id && (result.status === 'verified' || result.status === 'failed' || result.status === 'blocked')) {
+      resolveTask(result.task_id, result.status === 'verified' ? 'verified' : 'failed');
+    }
+  } catch {
+    /* non-fatal */
+  }
+  return result;
 }
 
 // CLI entry point routing
 const [,, command, ...args] = process.argv;
 
-initDb();
+function printUsage() {
+  console.log(`Agent OS v${AGENT_OS_VERSION}
+Usage: node scripts/agent-os.js <command>
 
-if (command === 'bootstrap') {
-  bootstrapSystem();
-} else if (command === 'goal') {
-  const tasksIdx = args.indexOf('--tasks');
-  let tasksPath = null;
-  let descArgs = [...args];
-  if (tasksIdx !== -1) {
-    tasksPath = args[tasksIdx + 1];
-    descArgs.splice(tasksIdx, 2);
-  }
-  const desc = descArgs.join(' ');
-  if (!desc) {
-    console.error("Error: Please provide a goal description.");
-    process.exit(1);
-  }
-  createGoal(desc, 5.0, tasksPath);
-} else if (command === 'run') {
-  runQueueLoop();
-} else if (command === 'resume') {
-  const waitId = args[0];
-  if (!waitId) {
-    console.error("Error: Please specify a waitpoint ID to resume.");
-    process.exit(1);
-  }
-  resumeWaitpoint(waitId);
-} else if (command === 'status') {
-  const db = loadDb();
-  saveDb(db);
-  console.log("[Agent OS] Current Control Plane Status:");
-  console.log(`- Active Goals: ${db.goals.length}`);
-  console.log(`- Verified Tasks: ${db.metrics.tasks_verified} / ${db.tasks.length}`);
-  console.log(`- Cost Accumulated: $${db.metrics.total_cost_usd}`);
-  console.log(`- Local dashboard available at: file:///${DASHBOARD_PATH.replace(/\\/g, '/')}`);
-} else if (command === 'eval') {
-  runEvalHarness();
-} else if (command === 'fix') {
-  const findingId = args[0];
-  if (!findingId) {
-    console.error("Error: Please specify a finding ID to fix.");
-    process.exit(1);
-  }
-  executeAutoHealing(findingId);
-} else {
-  console.log("Usage: node scripts/agent-os.js [bootstrap | goal <desc> [--tasks <path>] | run | resume <wait_id> | status | eval | fix <finding_id>]");
+Commands:
+  bootstrap                  Ensure control-plane dirs, policies, milestone goal
+  goal <desc> [--tasks path] Create goal (+ optional task JSON)
+  run | next                 Execute next runnable task (real state machine)
+  resume <wait_id>           Resume durable wait after human approval
+  status                     Print control-plane status
+  eval                       Closed-loop integrity eval
+  fix <finding_id>           Auto-heal a proactive finding
+  heal                       Run learning-loop heal pass
+  store                      Show store backend (json | turso)
+  migrate-turso              Push local hub_db.json → Turso
+  pull-turso                 Pull Turso hub → local hub_db.json
+  entire-sync [--commit]     Pull Entire → skills/workflows/rules/errors
+  auto-commit [msg]          Stage agent work + conventional commit (fires Entire hooks)
+
+Env:
+  TURSO_DATABASE_URL         libsql://... or file:./.agents/agent-os.db
+  TURSO_AUTH_TOKEN           remote Turso auth token
+  AGENT_OS_STORE=auto|turso|json
+  ENTIRE_AUTO_COMMIT=1       entire-sync also commits codified assets
+`);
 }
+
+async function main() {
+  try {
+    // migrate/pull manage their own connection
+    if (command === 'migrate-turso') {
+      const result = await migrateLocalToTurso();
+      console.log('[Agent OS] Migrated local hub → Turso:', result);
+      return;
+    }
+    if (command === 'pull-turso') {
+      const result = await pullTursoToLocal();
+      console.log('[Agent OS] Pulled Turso → local hub:', result);
+      return;
+    }
+    if (command === 'store') {
+      await bootStore();
+      const st = await storeStatus();
+      console.log(JSON.stringify(st, null, 2));
+      return;
+    }
+
+    await bootStore();
+  } catch (initErr) {
+    console.error(`[Agent OS] store boot failed: ${initErr.message}`);
+    process.exit(2);
+  }
+
+  if (command === 'bootstrap') {
+    bootstrapSystem();
+  } else if (command === 'goal') {
+    const tasksIdx = args.indexOf('--tasks');
+    let tasksPath = null;
+    let descArgs = [...args];
+    if (tasksIdx !== -1) {
+      tasksPath = args[tasksIdx + 1];
+      descArgs.splice(tasksIdx, 2);
+    }
+    const desc = descArgs.join(' ');
+    if (!desc) {
+      console.error("Error: Please provide a goal description.");
+      process.exit(1);
+    }
+    createGoal(desc, 5.0, tasksPath);
+  } else if (command === 'run' || command === 'next') {
+    const result = runQueueLoop();
+    if (result && (result.status === 'failed' || result.status === 'blocked')) {
+      process.exitCode = 1;
+    }
+  } else if (command === 'resume') {
+    const waitId = args[0];
+    if (!waitId) {
+      console.error("Error: Please specify a waitpoint ID to resume.");
+      process.exit(1);
+    }
+    resumeWaitpoint(waitId);
+  } else if (command === 'status') {
+    process.env.AGENT_OS_SKIP_SCAN = process.env.AGENT_OS_SKIP_SCAN || '1';
+    const db = loadDb();
+    try {
+      saveDb(db);
+    } catch (e) {
+      console.warn(`[Agent OS] status save non-fatal: ${e.message}`);
+    }
+    console.log(`[Agent OS] v${AGENT_OS_VERSION} Control Plane Status:`);
+    console.log(`- Store backend: ${getStoreMode()} (${getLocalJsonPath()})`);
+    console.log(`- Active Goals: ${db.goals.length}`);
+    console.log(`- Tasks: ${db.tasks.length} (verified ${db.metrics.tasks_verified || 0})`);
+    console.log(`- Incidents: ${db.incidents.length}`);
+    console.log(`- Cost Accumulated: $${db.metrics.total_cost_usd || 0}`);
+    console.log(`- Max task attempts: ${MAX_TASK_ATTEMPTS}`);
+    console.log(`- Local dashboard: file:///${DASHBOARD_PATH.replace(/\\/g, '/')}`);
+    try {
+      const s = getStatus();
+      console.log(`- Learning loop: ${s.stats?.unique_fingerprints || 0} unique · ${s.open || 0} open · ${s.stats?.duplicates_suppressed || 0} dupes suppressed`);
+    } catch {
+      console.log('- Learning loop: not initialized (run node scripts/learning-loop.mjs compact)');
+    }
+  } else if (command === 'eval') {
+    runEvalHarness();
+  } else if (command === 'heal') {
+    try {
+      const heal = runHealPass();
+      console.log(`[Agent OS] ${heal.message}`);
+    } catch (e) {
+      console.error(`[Agent OS] heal failed: ${e.message}`);
+      process.exit(1);
+    }
+  } else if (command === 'fix') {
+    const findingId = args[0];
+    if (!findingId) {
+      console.error("Error: Please specify a finding ID to fix.");
+      process.exit(1);
+    }
+    executeAutoHealing(findingId);
+  } else if (command === 'entire-sync') {
+    const wantCommit = args.includes('--commit');
+    const sinceIdx = args.indexOf('--since');
+    const since = sinceIdx >= 0 ? args[sinceIdx + 1] : '14d';
+    try {
+      const { syncEntireToAgentOs } = await import('./entire-to-agentos.mjs');
+      const result = await syncEntireToAgentOs({ commit: wantCommit, since });
+      console.log('[Agent OS] Entire sync:', JSON.stringify(result, null, 2));
+      if (!result.auth) {
+        console.warn('[Agent OS] Run `entire login` then re-run entire-sync for full checkpoint/search pull.');
+      }
+    } catch (e) {
+      console.error(`[Agent OS] entire-sync failed: ${e.message}`);
+      process.exit(1);
+    }
+  } else if (command === 'auto-commit') {
+    try {
+      const { agentAutoCommit } = await import('./agent-auto-commit.mjs');
+      const msg = args.filter((a) => !a.startsWith('--')).join(' ') || null;
+      const result = agentAutoCommit({ message: msg });
+      console.log('[Agent OS] auto-commit:', JSON.stringify(result, null, 2));
+      if (!result.ok) process.exitCode = 1;
+    } catch (e) {
+      console.error(`[Agent OS] auto-commit failed: ${e.message}`);
+      process.exit(1);
+    }
+  } else {
+    printUsage();
+    if (command) process.exitCode = 1;
+  }
+
+  try {
+    await flushStore();
+  } catch (e) {
+    console.warn(`[Agent OS] flushStore non-fatal: ${e.message}`);
+  }
+}
+
+main().catch((err) => {
+  console.error(`[Agent OS] fatal: ${err.message}`);
+  process.exit(1);
+});

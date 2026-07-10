@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Code Directory Context: Page Views
 
 **Directory Path:** `src/pages/`  

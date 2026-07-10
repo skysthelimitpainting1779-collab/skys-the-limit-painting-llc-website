@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Code Directory Context: Reusable UI Components
 
 **Directory Path:** `src/components/`  

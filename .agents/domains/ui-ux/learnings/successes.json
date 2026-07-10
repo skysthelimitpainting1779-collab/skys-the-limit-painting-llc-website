@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-09T20:47:33.863Z",
+  "events": {
+    "1bf1c6786ecdb41a": {
+      "id": "DOM-ui-ux-OK-1bf1c678",
+      "fingerprint": "1bf1c6786ecdb41a",
+      "kind": "success",
+      "title": "Font stack industrial without remote webfonts",
+      "detail": "index.css display/body/mono use Geist variable + system stacks radius already 0",
+      "command": "tsc",
+      "count": 1,
+      "first_seen": "2026-07-09T20:47:33.863Z",
+      "last_seen": "2026-07-09T20:47:33.863Z",
+      "domain": "ui-ux",
+      "metadata": null
+    }
+  },
+  "stats": {
+    "total": 1,
+    "unique": 1
+  }
+}

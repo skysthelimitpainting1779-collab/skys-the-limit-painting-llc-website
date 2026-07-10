@@ -1,0 +1,18 @@
+---
+description: Mandate Vercel plugin skills for all platform/deploy/auth/CMS hosting decisions
+alwaysApply: true
+---
+
+# Vercel plugin (mandatory decisions)
+
+When deciding or implementing anything that touches **Vercel, Next.js deploy, Fluid, env, OAuth redirects, CMS hosting, functions, middleware/proxy, crons, Blob, or Marketplace DBs**:
+
+1. **Load Vercel plugin skills first** — at minimum `knowledge-update`, then the relevant one:
+   - `deployments-cicd` — deploy, promote, CI
+   - `env-vars` — env, OIDC, `.env`
+   - `auth` — Clerk/Auth0/Descope marketplace auth patterns (this app may use Supabase Auth; still validate redirect/hosting against Vercel docs)
+   - `vercel-cli` — CLI operations
+2. **Do not trust outdated model defaults** that conflict with the plugin (e.g. Edge-only middleware, Vercel Postgres/KV as current defaults, Directus-on-free-Fluid as viable).
+3. **Document the decision** briefly in PR/commit notes when architecture hinges on Vercel constraints.
+
+This rule overrides generic “just put it on Vercel Functions” impulses without plugin grounding.

@@ -1,0 +1,24 @@
+{
+  "domain_id": "seo",
+  "name": "SEO & Crawlability Agent",
+  "status": "success",
+  "version": "2.0.0",
+  "last_task": "App Router sitemap+robots + JSON-LD license",
+  "last_error_id": null,
+  "last_success_id": "DOM-seo-OK-9ea381be",
+  "last_error_at": null,
+  "last_success_at": "2026-07-09T20:47:32.771Z",
+  "last_synced_at": "2026-07-10T09:01:14.764Z",
+  "counters": {
+    "errors": 0,
+    "successes": 1,
+    "unique_errors": 0,
+    "unique_successes": 1
+  },
+  "current": {
+    "task": null,
+    "files": [],
+    "started_at": null
+  },
+  "updated_at": "2026-07-10T09:01:14.891Z"
+}

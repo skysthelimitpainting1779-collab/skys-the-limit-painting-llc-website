@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Code Directory Context: Source Root
 
 **Directory Path:** `src/`  

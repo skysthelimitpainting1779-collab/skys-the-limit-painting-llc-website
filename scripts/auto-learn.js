@@ -1,51 +1,57 @@
-import fs from 'fs';
-import path from 'path';
+/**
+ * Auto-learn bridge — derives prevention rules from the structured learning index.
+ * Prefer: node scripts/learning-loop.mjs heal|status|record
+ *
+ * Kept for backward compatibility with older callers.
+ */
 
-const ERRORS_FILE = path.join(process.cwd(), '.learnings', 'ERRORS.md');
-const RULES_FILE = path.join(process.cwd(), '.agents', 'governance', 'RULES.md');
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { getStatus, loadIndex, rebuildMarkdownViews, runHealPass } from './learning-loop.mjs';
 
-// Ensure governance directory exists
-const rulesDir = path.dirname(RULES_FILE);
-if (!fs.existsSync(rulesDir)) {
-  fs.mkdirSync(rulesDir, { recursive: true });
+const RULES_FILE = join(process.cwd(), '.agents', 'governance', 'RULES.md');
+const rulesDir = dirname(RULES_FILE);
+if (!existsSync(rulesDir)) {
+  mkdirSync(rulesDir, { recursive: true });
 }
 
-if (!fs.existsSync(ERRORS_FILE)) {
-  console.log('No errors file found. Exiting.');
+console.log('\n[Auto-Learn] Running structured learning-loop heal + rule sync...');
+
+const heal = runHealPass();
+console.log(`[Auto-Learn] ${heal.message}`);
+
+const index = loadIndex();
+const byRecent = Object.values(index.incidents).sort(
+  (a, b) => new Date(b.last_seen) - new Date(a.last_seen)
+);
+const latest = byRecent.find((i) => i.status === 'open') || byRecent[0];
+
+if (!latest) {
+  console.log('[Auto-Learn] No incidents in index yet. Nothing to codify.');
+  rebuildMarkdownViews(index);
   process.exit(0);
 }
 
-const errorsContent = fs.readFileSync(ERRORS_FILE, 'utf8');
-const errorBlocks = errorsContent.split('## [ERR-');
+const ruleEntry = `
+### Auto-Generated Rule based on failure at ${new Date().toISOString()}
+- **Incident**: ${latest.id} (${latest.category}, ${latest.count}x)
+- **Triggering Error Context**: ${latest.title}
+- **Rule**: ${latest.prevention}
+`;
 
-if (errorBlocks.length <= 1) {
-  console.log('No specific errors logged yet.');
-  process.exit(0);
-}
-
-// Get the latest error block
-const latestErrorRaw = errorBlocks[errorBlocks.length - 1];
-const latestError = `## [ERR-${latestErrorRaw}`;
-
-console.log('\n[Auto-Learn] Analyzing latest failure...');
-
-// Stubbed LLM Analysis
-// In a real implementation, we would pass `latestError` to an LLM.
-// Here we parse the generic trace to generate a stubbed rule.
-
-let preventativeRule = "Always read execution logs to determine the root cause of the crash.";
-if (latestError.includes('validate-okf.js') || latestError.includes('Missing frontmatter properties')) {
-  preventativeRule = "Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.";
-} else if (latestError.includes('markdownlint')) {
-  preventativeRule = "Ensure all markdown files comply with `markdownlint` standards. Fix trailing spaces and blank lines before committing.";
+const existing = existsSync(RULES_FILE) ? readFileSync(RULES_FILE, 'utf8') : '';
+if (!existing.includes(latest.id)) {
+  if (!existsSync(RULES_FILE)) {
+    writeFileSync(RULES_FILE, `# Governance Rules\n\nLiving rules derived from the learning loop.\n`, 'utf8');
+  }
+  appendFileSync(RULES_FILE, ruleEntry, 'utf8');
+  console.log(`[Auto-Learn] Appended prevention for ${latest.id} → ${RULES_FILE}`);
 } else {
-  preventativeRule = "Review the execution logs carefully before running pipeline scripts.";
+  console.log(`[Auto-Learn] Rule for ${latest.id} already present; skipped append.`);
 }
 
-const ruleEntry = `\n### Auto-Generated Rule based on failure at ${new Date().toISOString()}\n- **Triggering Error Context**: ${latestErrorRaw.split('\n')[1] || 'Unknown Step'}\n- **Rule**: ${preventativeRule}\n`;
-
-fs.appendFileSync(RULES_FILE, ruleEntry, 'utf8');
-
-console.log(`[Auto-Learn] Successfully extracted and stored preventative rule:`);
-console.log(`  -> ${preventativeRule}`);
-console.log(`[Auto-Learn] Rule appended to ${RULES_FILE}`);
+rebuildMarkdownViews(index);
+const status = getStatus();
+console.log(
+  `[Auto-Learn] Index: ${status.stats.unique_fingerprints} unique · ${status.stats.duplicates_suppressed || 0} dupes suppressed · ${status.stats.auto_heals || 0} auto-heals`
+);

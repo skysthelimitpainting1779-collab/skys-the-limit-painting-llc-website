@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-10T08:45:34.051Z",
+  "events": {
+    "32482527247e6235": {
+      "id": "DOM-ci-devops-OK-32482527",
+      "fingerprint": "32482527247e6235",
+      "kind": "success",
+      "title": "Security headers + image formats in next.config",
+      "detail": "X-Content-Type-Options Referrer-Policy X-Frame-Options Permissions-Policy; avif/webp; brand cache immutable",
+      "command": "tsc",
+      "count": 1,
+      "first_seen": "2026-07-09T20:47:33.481Z",
+      "last_seen": "2026-07-09T20:47:33.481Z",
+      "domain": "ci-devops",
+      "metadata": null
+    },
+    "d982caefa056fc1a": {
+      "id": "DOM-ci-devops-OK-d982caef",
+      "fingerprint": "d982caefa056fc1a",
+      "kind": "success",
+      "title": "Windows bash PATH Machine before System32",
+      "detail": "Admin fix: prepend C:\\Program Files\\Git\\bin to Machine PATH; scripts/fix-windows-bash-path.ps1; stale IDE process PATH still broken until restart - verify with registry PATH not only process env",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:37:58.010Z",
+      "last_seen": "2026-07-10T08:37:58.010Z",
+      "domain": "ci-devops",
+      "metadata": null
+    },
+    "ccd00529511d38ef": {
+      "id": "DOM-ci-devops-OK-ccd00529",
+      "fingerprint": "ccd00529511d38ef",
+      "kind": "success",
+      "title": "Windows bash PATH root fix script",
+      "detail": "scripts/fix-windows-bash-path.ps1 Machine PATH Git\\bin first; agentos health bash.ok",
+      "command": "",
+      "count": 1,
+      "first_seen": "2026-07-10T08:45:34.051Z",
+      "last_seen": "2026-07-10T08:45:34.051Z",
+      "domain": "ci-devops",
+      "metadata": null
+    }
+  },
+  "stats": {
+    "total": 3,
+    "unique": 3
+  }
+}

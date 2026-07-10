@@ -1,0 +1,45 @@
+{
+  "id": "agent-os",
+  "name": "Agent OS & Learning Agent",
+  "version": "2.0.0",
+  "jurisdiction": {
+    "allow_globs": [
+      ".agents/**",
+      "scripts/agent-os*",
+      "scripts/learn*",
+      "scripts/evolve*",
+      "scripts/evaluate*",
+      "scripts/learning-loop*",
+      "scripts/entire*",
+      "scripts/graph-context*",
+      "scripts/hooks/**",
+      "scripts/domain-agent*",
+      "scripts/turso*",
+      ".learnings/**",
+      "graphify-out/**",
+      ".graphifyignore",
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "deny_globs": [
+      "src/**",
+      "backend/**",
+      "public/**"
+    ]
+  },
+  "mcps": [],
+  "skills": [
+    "skill-evaluator",
+    "entire",
+    "entire-search",
+    "graphify"
+  ],
+  "learnings": ".agents/domains/agent-os/learnings",
+  "state_file": "state.json",
+  "errors_file": "learnings/errors.json",
+  "successes_file": "learnings/successes.json",
+  "turso_tables": [
+    "domain_agent_state",
+    "domain_events"
+  ]
+}

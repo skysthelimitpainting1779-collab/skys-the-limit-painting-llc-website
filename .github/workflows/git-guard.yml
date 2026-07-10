@@ -1,5 +1,6 @@
 name: Git Standards
 
+# Kept as a lightweight standalone check; CI also runs git-guard first.
 on:
   push:
     branches: [main, staging]
@@ -11,24 +12,26 @@ permissions:
 
 jobs:
   git-standards:
-    name: 'Git Standards (branch name + conventional commits)'
+    name: Branch + conventional commits
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           node-version-file: '.nvmrc'
 
-      - name: Run Git Guard (enforce prefixes + commit format)
+      - name: Run Git Guard
+        env:
+          GIT_GUARD_STRICT: '1'
         run: node scripts/enforce-git.js
 
-      - name: Report (policy)
+      - name: Policy report
         if: failure()
         run: |
-          echo "::error::Branch or commit does not comply with @agents.md policy (feat/ fix/ chore/ docs/ infra/). Fix and push again."
-          echo "Protected: main, staging require PR + status checks."
+          echo "::error::Branch or commit does not comply with policy (feat/ fix/ chore/ docs/ infra/ agent/)."
+          echo "Use Conventional Commits: type(scope): subject"

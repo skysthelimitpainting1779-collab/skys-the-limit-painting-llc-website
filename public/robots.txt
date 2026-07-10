@@ -1,63 +1,73 @@
-# ----------------------------------------------------------------------
-# Welcome AI Agents & LLM Search Crawlers!
-# Sky's the Limit Painting LLC supports full semantic agent crawlability.
-# Find high-density business facts and structured data at: /llms.txt
-# ----------------------------------------------------------------------
+# Sky's the Limit Painting LLC — crawl policy
+# AI-friendly; utility routes blocked. Facts: /llms.txt
 
 User-agent: GPTBot
-Disallow: /review
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
 User-agent: ChatGPT-User
-Disallow: /review
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
 User-agent: ClaudeBot
-Disallow: /review
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
 User-agent: Claude-Web
-Disallow: /review
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
 User-agent: Google-Extended
-Disallow: /review
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
 User-agent: Gemini-Bot
-Disallow: /review
 Allow: /
 Allow: /llms.txt
-
-User-agent: Applebot-Extended
+Disallow: /admin
+Disallow: /api/
 Disallow: /review
-Allow: /
-Allow: /llms.txt
-
-User-agent: cohere-ai
-Disallow: /review
-Allow: /
-Allow: /llms.txt
 
 User-agent: PerplexityBot
-Disallow: /review
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
-User-agent: YouBot
-Disallow: /review
+User-agent: Applebot-Extended
 Allow: /
 Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
+
+User-agent: cohere-ai
+Allow: /
+Allow: /llms.txt
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
 User-agent: *
-Disallow: /review
 Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /review
 
-# Sitemaps and AI Fact Manifests
 Sitemap: https://www.skysthelimitpaintingllc.com/sitemap.xml
-Link: https://www.skysthelimitpaintingllc.com/llms.txt

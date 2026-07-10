@@ -1,0 +1,36 @@
+{
+  "id": "api",
+  "name": "API Routes Agent",
+  "version": "2.0.0",
+  "jurisdiction": {
+    "allow_globs": [
+      "src/app/api/**",
+      "backend/**",
+      "src/lib/*supabase*",
+      "src/lib/*db*",
+      "src/lib/*lead*"
+    ],
+    "deny_globs": [
+      "src/components/**",
+      "src/views/**",
+      ".github/**"
+    ]
+  },
+  "mcps": [
+    "supabase",
+    "vercel"
+  ],
+  "skills": [
+    "supabase",
+    "supabase-postgres-best-practices",
+    "backend-express"
+  ],
+  "learnings": ".agents/domains/api/learnings",
+  "state_file": "state.json",
+  "errors_file": "learnings/errors.json",
+  "successes_file": "learnings/successes.json",
+  "turso_tables": [
+    "domain_agent_state",
+    "domain_events"
+  ]
+}

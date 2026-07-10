@@ -39,33 +39,33 @@ Sky's the Limit Painting LLC is an owner-operated, registered Minnesota Specialt
 ## Complete Sitemap & Crawl Inventory
 
 ### Static Base Pages
-- **Homepage:** https://www.skysthelimitpaintingllc.com/
-- **About Anthony Briseno:** https://www.skysthelimitpaintingllc.com/about
-- **Capabilities Statement:** https://www.skysthelimitpaintingllc.com/capabilities
-- **Commercial Painting Division:** https://www.skysthelimitpaintingllc.com/commercial
-- **Contact Page & Office:** https://www.skysthelimitpaintingllc.com/contact
-- **Interactive Estimate Calculator:** https://www.skysthelimitpaintingllc.com/estimate
-- **Projects Gallery & Showcase:** https://www.skysthelimitpaintingllc.com/projects
-- **Public Sector & Line Striping:** https://www.skysthelimitpaintingllc.com/public-sector
-- **Referral Rewards Program:** https://www.skysthelimitpaintingllc.com/refer
-- **Residential Painting Division:** https://www.skysthelimitpaintingllc.com/residential
-- **Service Area Directory:** https://www.skysthelimitpaintingllc.com/service-area
+- [Homepage](https://www.skysthelimitpaintingllc.com/)
+- [About Anthony Briseno](https://www.skysthelimitpaintingllc.com/about)
+- [Capabilities Statement](https://www.skysthelimitpaintingllc.com/capabilities)
+- [Commercial Painting Division](https://www.skysthelimitpaintingllc.com/commercial)
+- [Contact Page & Office](https://www.skysthelimitpaintingllc.com/contact)
+- [Interactive Estimate Calculator](https://www.skysthelimitpaintingllc.com/estimate)
+- [Projects Gallery & Showcase](https://www.skysthelimitpaintingllc.com/projects)
+- [Public Sector & Line Striping](https://www.skysthelimitpaintingllc.com/public-sector)
+- [Referral Rewards Program](https://www.skysthelimitpaintingllc.com/refer)
+- [Residential Painting Division](https://www.skysthelimitpaintingllc.com/residential)
+- [Service Area Directory](https://www.skysthelimitpaintingllc.com/service-area)
 
 ### Dynamic Service Area Landing Pages
-- **Inver Grove Heights Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/inver-grove-heights
-- **South St. Paul Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/south-st-paul
-- **St. Paul Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/st-paul
-- **Eagan Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/eagan
-- **Woodbury Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/woodbury
-- **Minneapolis Painting Contractor:** https://www.skysthelimitpaintingllc.com/service-areas/minneapolis
-- **Twin Cities Regional Coverage:** https://www.skysthelimitpaintingllc.com/service-areas/twin-cities
+- [Inver Grove Heights Painting Contractor](https://www.skysthelimitpaintingllc.com/service-areas/inver-grove-heights)
+- [South St. Paul Painting Contractor](https://www.skysthelimitpaintingllc.com/service-areas/south-st-paul)
+- [St. Paul Painting Contractor](https://www.skysthelimitpaintingllc.com/service-areas/st-paul)
+- [Eagan Painting Contractor](https://www.skysthelimitpaintingllc.com/service-areas/eagan)
+- [Woodbury Painting Contractor](https://www.skysthelimitpaintingllc.com/service-areas/woodbury)
+- [Minneapolis Painting Contractor](https://www.skysthelimitpaintingllc.com/service-areas/minneapolis)
+- [Twin Cities Regional Coverage](https://www.skysthelimitpaintingllc.com/service-areas/twin-cities)
 
 ### Dynamic Painting Service Landing Pages
-- **Interior Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/interior-painting
-- **Exterior Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/exterior-painting
-- **Commercial Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/commercial-painting
-- **Cabinet Painting Services:** https://www.skysthelimitpaintingllc.com/painting-services/cabinet-painting
-- **Paint-Ready Drywall Repair:** https://www.skysthelimitpaintingllc.com/painting-services/drywall-repair
-- **Deck & Fence Staining:** https://www.skysthelimitpaintingllc.com/painting-services/deck-fence-staining
-- **Parking Lot Striping:** https://www.skysthelimitpaintingllc.com/painting-services/parking-lot-striping
-- **Pavement Marking Services:** https://www.skysthelimitpaintingllc.com/painting-services/pavement-marking
+- [Interior Painting Services](https://www.skysthelimitpaintingllc.com/painting-services/interior-painting)
+- [Exterior Painting Services](https://www.skysthelimitpaintingllc.com/painting-services/exterior-painting)
+- [Commercial Painting Services](https://www.skysthelimitpaintingllc.com/painting-services/commercial-painting)
+- [Cabinet Painting Services](https://www.skysthelimitpaintingllc.com/painting-services/cabinet-painting)
+- [Paint-Ready Drywall Repair](https://www.skysthelimitpaintingllc.com/painting-services/drywall-repair)
+- [Deck & Fence Staining](https://www.skysthelimitpaintingllc.com/painting-services/deck-fence-staining)
+- [Parking Lot Striping](https://www.skysthelimitpaintingllc.com/painting-services/parking-lot-striping)
+- [Pavement Marking Services](https://www.skysthelimitpaintingllc.com/painting-services/pavement-marking)

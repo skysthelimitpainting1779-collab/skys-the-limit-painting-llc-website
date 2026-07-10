@@ -1,24 +1,42 @@
-## Description
+## Summary
 
-Briefly describe what changed and why.
+What and why (1–3 bullets). Product slug: **skysthelimit**.
 
-## Type of Change
+## Linear
 
-- [ ] Feature
-- [ ] Bug fix
-- [ ] Documentation
-- [ ] Refactor
-- [ ] Performance
-- [ ] Security
-- [ ] Maintenance
+- Closes / related: **SKY-XX**
+- Project: skysthelimit · Platform | Reliability
 
-## Validation
+## Type
 
-- [ ] `npm run lint`
-- [ ] `npm run build`
-- [ ] `npm test`
-- [ ] Visual check completed when UI changed
+- [ ] `feat` · [ ] `fix` · [ ] `docs` · [ ] `infra` · [ ] `chore` · [ ] `agent`
 
-## Notes
+## Changes
 
-Add screenshots, deployment links, or rollout notes when useful.
+- 
+
+## Verify
+
+```bash
+npm run lint:ci && npm test && npm run build
+```
+
+- [ ] Preview UI checked when visuals changed  
+- [ ] No secrets / `.env` files  
+- [ ] Naming matches `docs/NAMING.md`  
+- [ ] No architecture lock reopened without architecture-loop  
+
+## Automation (runs on this PR)
+
+| Gate | What it does |
+|------|----------------|
+| **Branch normalize** | Renames `feature/`→`feat/`, etc. |
+| **PR title** | Conventional Commits |
+| **Labels** | Path areas + size + preview |
+| **Vercel verify** | READY deploy + health |
+| **Auto review** | Structured review |
+| **Sticky dashboard** | Living status comment |
+
+## Screenshots
+
+(if UI)

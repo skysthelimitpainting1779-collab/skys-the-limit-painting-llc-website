@@ -1,5 +1,13 @@
 .next
 dist
+out
 graphify-out
 node_modules
-out
+package-lock.json
+.agents/skills
+.agents/wiki
+.agents/dashboard.html
+.learnings/archive
+public/videos
+*.min.js
+coverage

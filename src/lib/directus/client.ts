@@ -1,4 +1,4 @@
-import { createDirectus, rest, readItems, readSingleton } from '@directus/sdk';
+import { createDirectus, rest, readItems, readSingleton, type RestClient } from '@directus/sdk';
 
 // ─── CMS Types ──────────────────────────────────────────────────────
 export interface CaseStudy {
@@ -59,29 +59,57 @@ export interface SiteConfig {
   announcement_active: boolean;
 }
 
-interface DirectusSchema {
+export interface DirectusSchema {
   case_studies: CaseStudy[];
   markets: CMSMarket[];
   site_config: SiteConfig;
 }
 
-// ─── Client Factory ─────────────────────────────────────────────────
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+export type DirectusClient = RestClient<DirectusSchema>;
 
-function getClient() {
-  return createDirectus<DirectusSchema>(DIRECTUS_URL).with(rest());
+// ─── Client Factory ─────────────────────────────────────────────────
+export function getDirectusUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_DIRECTUS_URL ||
+    process.env.DIRECTUS_URL ||
+    'http://localhost:8055'
+  ).replace(/\/$/, '');
+}
+
+/**
+ * Create a typed Directus REST client. Injectable URL for tests / staging.
+ */
+export function createDirectusClient(url: string = getDirectusUrl()): DirectusClient {
+  return createDirectus<DirectusSchema>(url).with(rest()) as DirectusClient;
+}
+
+function getClient(): DirectusClient {
+  return createDirectusClient();
 }
 
 // ─── Asset URL Helper ───────────────────────────────────────────────
-export function directusAssetUrl(fileId: string | null): string | null {
+export function directusAssetUrl(fileId: string | null, baseUrl: string = getDirectusUrl()): string | null {
   if (!fileId) return null;
-  return `${DIRECTUS_URL}/assets/${fileId}`;
+  if (fileId.startsWith('http://') || fileId.startsWith('https://') || fileId.startsWith('/')) {
+    return fileId;
+  }
+  return `${baseUrl}/assets/${fileId}`;
+}
+
+/** Keep only published items (defensive if API filter is omitted). */
+export function filterPublishedCaseStudies(items: CaseStudy[] | null | undefined): CaseStudy[] {
+  if (!Array.isArray(items)) return [];
+  return items.filter((i) => i && i.status === 'published');
+}
+
+export function filterPublishedMarkets(items: CMSMarket[] | null | undefined): CMSMarket[] {
+  if (!Array.isArray(items)) return [];
+  return items.filter((i) => i && i.status === 'published');
 }
 
 // ─── Data Fetchers (with graceful fallback) ─────────────────────────
-export async function getCaseStudies(): Promise<CaseStudy[]> {
+export async function getCaseStudies(client: DirectusClient = getClient()): Promise<CaseStudy[]> {
   try {
-    const client = getClient();
     const data = await client.request(
       readItems('case_studies', {
         filter: { status: { _eq: 'published' } },
@@ -89,16 +117,15 @@ export async function getCaseStudies(): Promise<CaseStudy[]> {
         fields: ['*'],
       })
     );
-    return data as CaseStudy[];
+    return filterPublishedCaseStudies(data as CaseStudy[]);
   } catch (err) {
     console.warn('[CMS] case_studies fetch failed, returning empty:', (err as Error).message);
     return [];
   }
 }
 
-export async function getMarkets(): Promise<CMSMarket[]> {
+export async function getMarkets(client: DirectusClient = getClient()): Promise<CMSMarket[]> {
   try {
-    const client = getClient();
     const data = await client.request(
       readItems('markets', {
         filter: { status: { _eq: 'published' } },
@@ -106,22 +133,38 @@ export async function getMarkets(): Promise<CMSMarket[]> {
         fields: ['*'],
       })
     );
-    return data as CMSMarket[];
+    return filterPublishedMarkets(data as CMSMarket[]);
   } catch (err) {
     console.warn('[CMS] markets fetch failed, returning empty:', (err as Error).message);
     return [];
   }
 }
 
-export async function getSiteConfig(): Promise<SiteConfig | null> {
+export async function getSiteConfig(client: DirectusClient = getClient()): Promise<SiteConfig | null> {
   try {
-    const client = getClient();
-    const data = await client.request(
-      readSingleton('site_config', { fields: ['*'] })
-    );
+    const data = await client.request(readSingleton('site_config', { fields: ['*'] }));
     return data as SiteConfig;
   } catch (err) {
     console.warn('[CMS] site_config fetch failed, returning null:', (err as Error).message);
     return null;
+  }
+}
+
+/**
+ * Health probe used by scripts/tests — returns whether Directus responds at /server/health or /server/info.
+ */
+export async function probeDirectusHealth(
+  url: string = getDirectusUrl(),
+  fetchImpl: typeof fetch = fetch
+): Promise<{ ok: boolean; status?: number; body?: string }> {
+  try {
+    const res = await fetchImpl(`${url.replace(/\/$/, '')}/server/health`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    });
+    const body = await res.text();
+    return { ok: res.ok, status: res.status, body: body.slice(0, 200) };
+  } catch (err) {
+    return { ok: false, body: (err as Error).message };
   }
 }

@@ -38,3 +38,55 @@
   - **Branch Naming Standard**: Strict prefixes required: `feat/`, `fix/`, `chore/`, `docs/`, `infra/`.
   - **Commit Message Format**: Strict Conventional Commits standard (`<type>(<scope>): <subject>` e.g., `feat(seo): add meta tags`).
   - **PR Workflow**: All features, changes, and fixes must be developed on a feature branch, pass local validation checks (`npm run lint && npm test`), and be merged via Pull Request.
+
+### Auto-Generated Rule based on failure at 2026-07-07T06:52:14.051Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-07T06:52:31.071Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-07T06:54:28.872Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-07T07:03:40.460Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-07T10:02:13.467Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-08T02:35:05.990Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-08T02:38:09.810Z
+- **Triggering Error Context**: **Step Failed**: A: OKF Validator
+- **Rule**: Always ensure YAML frontmatter has a `type`, `title`, and `timestamp` in Markdown files.
+
+### Auto-Generated Rule based on failure at 2026-07-08T02:38:51.676Z
+- **Triggering Error Context**: **Step Failed**: B: Markdown Linter
+- **Rule**: Review the execution logs carefully before running pipeline scripts.
+
+### Auto-Generated Rule based on failure at 2026-07-08T02:39:44.475Z
+- **Triggering Error Context**: **Step Failed**: B: Markdown Linter
+- **Rule**: Review the execution logs carefully before running pipeline scripts.
+
+### Auto-Generated Rule based on failure at 2026-07-08T02:41:39.060Z
+- **Triggering Error Context**: **Step Failed**: B: Markdown Linter
+- **Rule**: Review the execution logs carefully before running pipeline scripts.
+
+### Auto-Generated Rule based on failure at 2026-07-08T02:42:04.435Z
+- **Triggering Error Context**: **Step Failed**: C: Graphifyy Update
+- **Rule**: Review the execution logs carefully before running pipeline scripts.
+
+### Auto-Generated Rule based on failure at 2026-07-08T03:36:55.738Z
+- **Triggering Error Context**: **Step Failed**: B: Markdown Linter
+- **Rule**: Review the execution logs carefully before running pipeline scripts.
+
+### Auto-Generated Rule based on failure at 2026-07-08T03:37:20.909Z
+- **Triggering Error Context**: **Step Failed**: C: Graphifyy Update
+- **Rule**: Review the execution logs carefully before running pipeline scripts.

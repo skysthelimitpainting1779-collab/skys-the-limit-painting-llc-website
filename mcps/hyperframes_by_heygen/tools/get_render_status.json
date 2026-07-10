@@ -1,0 +1,22 @@
+{
+  "name": "get_render_status",
+  "description": "\nCheck the render status of a HyperFrames video that was previously submitted via `render_video`,\nand — when the render is complete — retrieve the presigned MP4 download URL.\n\nNOTE: Automatic polling for progress is unnecessary — the render-progress widget that appears in\nthe chat self-polls and shows the finished video on its own. This tool is the path for an explicit\nuser (or upstream-agent) request for the download link, the MP4 URL, the file, or to\nshare/send/provide/read out the video: it returns the `video_url` to surface directly in the reply.\nThe widget is a convenience, not a substitute for the link the user asked for, so in that case the\nURL belongs in the reply itself — do not redirect the user to the widget.\n\n### WHEN TO CALL:\n- The user explicitly asks \"is my video ready?\" / \"what's the status of my render?\"\n- The user explicitly asks for the download link, the MP4 URL, or to share/send the video.\n- An upstream agent prompt instructs you to provide the user with the download link for a\n  finished render — call this tool, then surface the `video_url` in your text reply.\n- The user wants to check on a render from a previous conversation.\n\n### POLLING CADENCE:\nWhen the render is still in progress, the response includes `retry_after_seconds=30` —\nwait that long before calling again if the user asks you to keep checking. Do not poll\nfaster than `retry_after_seconds` indicates; one poll per minute is plenty.\n\n### INPUTS:\n- project_id: (Required) The project ID the render belongs to.\n- video_id: (Required) The video_id returned by `render_video`.\n\n### OUTPUT:\n- render_status: One of pending / rendering / completed / failed (terminology may vary).\n- video_url: Presigned MP4 download URL — populated once the render completes. Present\n  this to the user as a download link so they can save the video file. Use the URL\n  exactly as returned (the query params are required signing params).\n",
+  "inputSchema": {
+    "properties": {
+      "projectId": {
+        "title": "Projectid",
+        "type": "string"
+      },
+      "videoId": {
+        "title": "Videoid",
+        "type": "string"
+      }
+    },
+    "required": [
+      "projectId",
+      "videoId"
+    ],
+    "title": "GetRenderStatusInput",
+    "type": "object"
+  }
+}
