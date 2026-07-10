@@ -1,0 +1,37 @@
+{
+  "id": "ui-ux",
+  "name": "UI/UX Design System Agent",
+  "version": "2.0.0",
+  "jurisdiction": {
+    "allow_globs": [
+      "src/components/ui/**",
+      "src/components/animations/**",
+      "src/components/*Cursor*",
+      "src/components/*Transition*",
+      "src/app/globals.css",
+      "src/index.css",
+      "tailwind*"
+    ],
+    "deny_globs": [
+      "src/app/api/**",
+      ".github/**",
+      "scripts/**",
+      ".agents/domains/!(ui-ux)/**"
+    ]
+  },
+  "mcps": [],
+  "skills": [
+    "impeccable",
+    "high-end-visual-design",
+    "industrial-brutalist-ui",
+    "shadcn"
+  ],
+  "learnings": ".agents/domains/ui-ux/learnings",
+  "state_file": "state.json",
+  "errors_file": "learnings/errors.json",
+  "successes_file": "learnings/successes.json",
+  "turso_tables": [
+    "domain_agent_state",
+    "domain_events"
+  ]
+}

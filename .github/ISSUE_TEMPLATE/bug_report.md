@@ -1,35 +1,20 @@
 ---
-name: Bug report
-about: Report something that is broken or confusing
-title: "[Bug] "
-labels: bug
-assignees: ""
+name: Bug (prefer Linear)
+about: Prefer creating bugs in Linear skysthelimit · Reliability. Use this only if Linear is unavailable.
+title: "[BUG → Linear] "
+labels: []
 ---
 
-## What Happened
+**Create this as a Linear issue instead:** https://linear.app/skysthelimit
 
-Describe the issue clearly.
+Use body template: `docs/templates/ISSUE_BUG.md`
 
-## Steps to Reproduce
+---
 
-1. Go to ...
-2. Click ...
-3. See ...
+## Temporary capture (move to Linear ASAP)
 
-## Expected Result
+**Summary:**
 
-What should have happened?
+**Evidence:**
 
-## Actual Result
-
-What happened instead?
-
-## Environment
-
-- Browser:
-- Device:
-- Page or URL:
-
-## Screenshots or Notes
-
-Add anything that helps explain the issue.
+**SKY-XX (after creating in Linear):**

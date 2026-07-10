@@ -44,7 +44,9 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
   assert.ok(!viteConfigExists, 'vite.config.ts should be deleted to prevent client exposure of configs');
 
   const packageJson = read('package.json');
-  const vercelConfig = JSON.parse(read('vercel.json'));
+  assert.ok(existsSync(new URL('../vercel.ts', import.meta.url)), 'vercel.ts should exist');
+  assert.ok(!existsSync(new URL('../vercel.json', import.meta.url)), 'vercel.json must not coexist with vercel.ts');
+  const vercelTs = read('vercel.ts');
   const prerender = read('scripts/prerender.mjs');
   const slider = read('src/components/BeforeAfterSlider.tsx');
   const leadForm = read('src/components/LeadForm.tsx');
@@ -56,7 +58,6 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
   assert.match(leadsApi, /escapeHtml\(key\)/);
   assert.match(leadsApi, /escapeHtml\(value\)/);
 
-  const headerKeys = vercelConfig.headers?.[0]?.headers?.map((header) => header.key) || [];
   for (const key of [
     'X-Content-Type-Options',
     'X-Frame-Options',
@@ -65,9 +66,9 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
     'Strict-Transport-Security',
     'Content-Security-Policy',
   ]) {
-    assert.ok(headerKeys.includes(key), `${key} header is missing`);
+    assert.match(vercelTs, new RegExp(key.replace(/-/g, '\\-')), `${key} header is missing`);
   }
-  assert.equal(vercelConfig.rewrites, undefined);
+  assert.doesNotMatch(vercelTs, /rewrites\s*:/);
 
   for (const route of ['/', '/residential', '/commercial', '/public-sector', '/projects', '/about', '/contact', '/capabilities', '/service-area', '/404']) {
     assert.match(prerender, new RegExp(`path: '${route.replace('/', '\\/')}'`));

@@ -1,72 +1,68 @@
-import { execSync } from 'child_process';
-import path from 'path';
+#!/usr/bin/env node
+/**
+ * Local CI preflight — mirrors GitHub Actions quality job.
+ */
+import { execSync } from 'node:child_process';
+import path from 'node:path';
 
-function runStep(name, command, cwd) {
+const websiteDir = path.resolve('.');
+
+function runStep(name, command) {
   console.log(`\n========================================`);
-  console.log(`Running CI Step: ${name}...`);
+  console.log(`CI Step: ${name}`);
   console.log(`Command: ${command}`);
   console.log(`========================================\n`);
-
   try {
     execSync(command, {
-      cwd,
+      cwd: websiteDir,
       stdio: 'inherit',
-      env: { ...process.env, FORCE_COLOR: '1' }
+      env: {
+        ...process.env,
+        FORCE_COLOR: '1',
+        HOOKS_SKIP: '1',
+        ENTIRE_SYNC_SKIP: '1',
+        GRAPHIFY_SKIP_HOOK: '1',
+        AGENT_OS_SKIP_SCAN: '1',
+      },
     });
-    console.log(`\n[PASS] Step completed successfully: ${name}!`);
+    console.log(`\n[PASS] ${name}`);
     return true;
-  } catch (error) {
-    console.error(`\n[FAIL] Step failed: ${name}!`);
-    console.error(`Error details: ${error.message}`);
+  } catch {
+    console.error(`\n[FAIL] ${name}`);
     return false;
   }
 }
 
-function runCiCheck() {
-  console.log('STARTING AUTOMATED TS/LINT COMPILATION RUNNER (CI Pre-Flight Check)');
-  const websiteDir = path.resolve('.');
+console.log('STARTING LOCAL CI PREFLIGHT (matches .github/workflows/ci.yml quality job)');
 
-  // Step 1: Clean build artifacts to ensure a fresh test environment
-  console.log('\nCleaning previous build artifacts...');
-  try {
-    execSync('npm run clean', { cwd: websiteDir, stdio: 'ignore' });
-    console.log('Clean complete.');
-  } catch (e) {
-    // If clean fails or doesn't exist, proceed anyway
-    console.log('Clean script skipped or failed. Proceeding with fresh compile.');
+const steps = [
+  ['Clean', 'npm run clean'],
+  ['React pins', 'npm run lint:react'],
+  ['TypeScript', 'npm run lint:types'],
+  ['Markdownlint', 'npm run lint:md'],
+  ['Knip', 'npm run lint:knip'],
+  ['Agent OS bootstrap + tests', 'node scripts/agent-os.js bootstrap && npm test'],
+  ['Production build', 'npm run build'],
+];
+
+for (const [name, cmd] of steps) {
+  // clean is best-effort
+  if (name === 'Clean') {
+    try {
+      execSync(cmd, { cwd: websiteDir, stdio: 'ignore' });
+    } catch {
+      console.log('Clean skipped.');
+    }
+    continue;
   }
-
-  // Step 2: Lint / TypeScript Compilation check
-  const lintPassed = runStep(
-    'TypeScript Compilation & Linting',
-    'npm run lint',
-    websiteDir
-  );
-
-  if (!lintPassed) {
-    console.error('\nCI Pre-Flight Check failed at Lint/TS check!');
+  if (!runStep(name, cmd)) {
+    console.error('\nCI preflight failed. Fix the step above, then re-run: npm run ci');
     process.exit(1);
   }
-
-  // Step 3: Production Build Simulation
-  const buildPassed = runStep(
-    'Production Bundle & Post-Build Chains',
-    'npm run build',
-    websiteDir
-  );
-
-  if (!buildPassed) {
-    console.error('\nCI Pre-Flight Check failed at Production Build Simulation!');
-    process.exit(1);
-  }
-
-  console.log('\n========================================');
-  console.log('CI PRE-FLIGHT CHECK PASSED PERFECTLY!');
-  console.log('Your codebase has compiled with zero errors, successfully linted,');
-  console.log('and passed all post-build sitemap & schema validators.');
-  console.log('Ready for secure deployment to Vercel production.');
-  console.log('========================================\n');
-  process.exit(0);
 }
 
-runCiCheck();
+console.log('\n========================================');
+console.log('CI PREFLIGHT PASSED');
+console.log('Ready to push. Protected branches still require PR review.');
+console.log('========================================\n');
+process.exit(0);

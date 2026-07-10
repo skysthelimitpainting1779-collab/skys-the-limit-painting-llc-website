@@ -3,15 +3,18 @@ import '../index.css';
 import React from 'react';
 import ConversionHeader from '../components/ConversionHeader';
 import ConversionFooterCta from '../components/ConversionFooterCta';
-import CustomCursor from '../components/CustomCursor';
 import SocialLinks from '../components/SocialLinks';
-import HeatmapOverlay from '../components/HeatmapOverlay';
-import Script from 'next/script';
 import VercelInsights from '../components/VercelInsights';
 import Link from 'next/link';
-import { Geist } from "next/font/google";
-import { cn } from "../lib/utils";
-import { ENV } from "../lib/env";
+import dynamic from 'next/dynamic';
+import Script from 'next/script';
+import { Geist } from 'next/font/google';
+import { cn } from '../lib/utils';
+import { ENV } from '../lib/env';
+
+// Client-only chrome: do not block first paint / LCP
+const CustomCursor = dynamic(() => import('../components/CustomCursor'), { ssr: false });
+const HeatmapOverlay = dynamic(() => import('../components/HeatmapOverlay'), { ssr: false });
 
 const businessSameAs = [
   ENV.FACEBOOK_URL,
@@ -21,36 +24,60 @@ const businessSameAs = [
   ENV.GOOGLE_BUSINESS_URL,
 ].filter(Boolean);
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const siteUrl = ENV.SITE_URL.replace(/\/$/, '') || 'https://www.skysthelimitpaintingllc.com';
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.skysthelimitpaintingllc.com"),
-  title: "Twin Cities Painting Contractor | Sky's the Limit Painting LLC",
-  description: "Owner-operated painting contractor serving Twin Cities homes and businesses. Interior and exterior painting, prep-first standards, fully insured. Get a free estimate today.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Twin Cities Painting Contractor | Sky's the Limit Painting LLC",
+    template: "%s | Sky's the Limit Painting LLC",
+  },
+  description:
+    'Owner-operated painting contractor serving Twin Cities homes and businesses. Interior and exterior painting, prep-first standards, fully insured. Get a free estimate today.',
   keywords: [
-    "Twin Cities painting contractor",
-    "Minnesota painting contractor",
-    "Inver Grove Heights painting contractor",
-    "interior painting Twin Cities",
-    "exterior painting Twin Cities",
-    "residential painting Minnesota",
-    "commercial painting Minnesota",
-    "parking lot striping Minnesota",
-    "pavement marking Minnesota"
+    'Twin Cities painting contractor',
+    'Minnesota painting contractor',
+    'Inver Grove Heights painting contractor',
+    'interior painting Twin Cities',
+    'exterior painting Twin Cities',
+    'residential painting Minnesota',
+    'commercial painting Minnesota',
+    'parking lot striping Minnesota',
+    'pavement marking Minnesota',
   ],
   alternates: {
-    canonical: "https://www.skysthelimitpaintingllc.com",
+    canonical: siteUrl,
   },
   openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: siteUrl,
+    siteName: "Sky's the Limit Painting LLC",
     title: "Twin Cities Painting Contractor | Sky's the Limit Painting LLC",
-    description: "Owner-operated, prep-first painting for Twin Cities homes, businesses, and facilities. Fully insured. MN ID: IR816596.",
-    images: [{ url: "/brand/generated/sky-local-authority.webp", width: 1200, height: 630 }],
+    description:
+      'Owner-operated, prep-first painting for Twin Cities homes, businesses, and facilities. Fully insured. MN ID: IR816596.',
+    images: [{ url: '/brand/generated/sky-local-authority.webp', width: 1200, height: 630, alt: "Sky's the Limit Painting LLC" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
+    title: "Twin Cities Painting Contractor | Sky's the Limit Painting LLC",
+    description:
+      'Owner-operated painting for Twin Cities homes and businesses. Fully insured. Free estimate.',
+    images: ['/brand/generated/sky-local-authority.webp'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
   },
   verification: {
-    google: "E4yKOu61Os6v4EQNmZ6-djni1eCyuDCw6v_XyLYFo90",
+    google: ENV.GOOGLE_SITE_VERIFICATION || 'E4yKOu61Os6v4EQNmZ6-djni1eCyuDCw6v_XyLYFo90',
   },
 };
 
@@ -62,62 +89,62 @@ export default function RootLayout({
   const currentYear = new Date().getFullYear();
 
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn('font-sans', geist.variable)}>
       <head>
-        <link rel="llms" href="https://www.skysthelimitpaintingllc.com/llms.txt" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;700;900&family=Oswald:wght@400;500;700&family=Fira+Code:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-
+        <link rel="llms" href={`${siteUrl}/llms.txt`} />
+        {/* next/font (Geist) only — no blocking multi-family Google Fonts CSS */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "PaintingContractor",
-              "@id": "https://www.skysthelimitpaintingllc.com/#business",
-              "name": "Sky's the Limit Painting LLC",
-              "founder": "Anthony Briseno",
-              "telephone": "+1-651-410-4196",
-              "email": "skysthelimitpainting1779@gmail.com",
-              "url": "https://www.skysthelimitpaintingllc.com",
-              "logo": "https://www.skysthelimitpaintingllc.com/brand/SkyLLP_BrandLogo.svg",
-              "image": "https://www.skysthelimitpaintingllc.com/brand/generated/sky-local-authority.webp",
-              "priceRange": "$$",
-              "serviceType": [
-                "Interior Painting",
-                "Exterior Painting",
-                "Cabinet Refinishing",
-                "Commercial Painting",
-                "Parking Lot Striping",
-                "Pavement Marking",
-                "Deck & Fence Staining"
+              '@context': 'https://schema.org',
+              '@type': 'PaintingContractor',
+              '@id': `${siteUrl}/#business`,
+              name: "Sky's the Limit Painting LLC",
+              founder: 'Anthony Briseno',
+              telephone: '+1-651-410-4196',
+              email: 'skysthelimitpainting1779@gmail.com',
+              url: siteUrl,
+              logo: `${siteUrl}/brand/SkyLLP_BrandLogo.svg`,
+              image: `${siteUrl}/brand/generated/sky-local-authority.webp`,
+              priceRange: '$$',
+              serviceType: [
+                'Interior Painting',
+                'Exterior Painting',
+                'Cabinet Refinishing',
+                'Commercial Painting',
+                'Parking Lot Striping',
+                'Pavement Marking',
+                'Deck & Fence Staining',
               ],
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Inver Grove Heights",
-                "addressRegion": "MN",
-                "postalCode": "55076",
-                "addressCountry": "US"
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Inver Grove Heights',
+                addressRegion: 'MN',
+                postalCode: '55076',
+                addressCountry: 'US',
               },
-              "areaServed": [
-                { "@type": "City", "name": "Minneapolis" },
-                { "@type": "City", "name": "St. Paul" },
-                { "@type": "City", "name": "Inver Grove Heights" },
-                { "@type": "City", "name": "Eagan" },
-                { "@type": "City", "name": "Woodbury" },
-                { "@type": "City", "name": "South St. Paul" },
-                { "@type": "AdministrativeArea", "name": "Twin Cities Metro" }
+              areaServed: [
+                { '@type': 'City', name: 'Minneapolis' },
+                { '@type': 'City', name: 'St. Paul' },
+                { '@type': 'City', name: 'Inver Grove Heights' },
+                { '@type': 'City', name: 'Eagan' },
+                { '@type': 'City', name: 'Woodbury' },
+                { '@type': 'City', name: 'South St. Paul' },
+                { '@type': 'AdministrativeArea', name: 'Twin Cities Metro' },
               ],
-              "sameAs": businessSameAs
+              sameAs: businessSameAs,
+              hasCredential: {
+                '@type': 'EducationalOccupationalCredential',
+                credentialCategory: 'license',
+                name: 'Minnesota Specialty Contractor Registration',
+                identifier: 'IR816596',
+              },
             }),
           }}
         />
       </head>
-      <body>
+      <body className="antialiased">
         <div className="min-h-[100dvh] flex flex-col bg-page-bg text-page-text">
           <CustomCursor />
           <HeatmapOverlay />

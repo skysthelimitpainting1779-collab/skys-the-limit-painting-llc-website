@@ -30,6 +30,9 @@ test('agent OS self-healing quarantines failures instead of reverting user files
   assert.match(harness, /Manual inspection required before retry/);
   assert.doesNotMatch(harness, /execSync\(`git checkout --/);
   assert.doesNotMatch(harness, /execSync\('git checkout --/);
+  assert.match(harness, /agent-os-core\.mjs/);
+  assert.match(harness, /MAX_TASK_ATTEMPTS|shouldQuarantineTask/);
+  assert.match(harness, /assertPhaseEntry|auto-seed/);
 });
 
 test('agent OS generated ledgers exist after bootstrap', () => {

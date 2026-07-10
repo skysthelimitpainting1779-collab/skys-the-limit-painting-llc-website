@@ -1,0 +1,62 @@
+{
+  "name": "list_comments",
+  "description": "List comments on a Linear issue, project, initiative, document, project milestone, or project/initiative status update. Provide exactly one of `issueId`, `projectId`, `initiativeId`, `documentId`, `milestoneId`, or `statusUpdateId`. For issues, projects, and initiatives this returns both top-level discussion threads and inline description comments. Inline (anchored) comments carry a non-null `quotedText` set to the snippet of description text they reference.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "limit": {
+        "default": 50,
+        "description": "Max results (default 50, max 250)",
+        "type": "number",
+        "maximum": 250
+      },
+      "cursor": {
+        "description": "Next page cursor",
+        "type": "string"
+      },
+      "orderBy": {
+        "default": "updatedAt",
+        "description": "Sort: createdAt | updatedAt",
+        "type": "string",
+        "enum": [
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "issueId": {
+        "description": "Issue ID or identifier (e.g., LIN-123) (provide exactly one parent)",
+        "type": "string"
+      },
+      "projectId": {
+        "description": "Project name, ID, or slug (provide exactly one parent)",
+        "type": "string"
+      },
+      "initiativeId": {
+        "description": "Initiative name or ID (provide exactly one parent)",
+        "type": "string"
+      },
+      "documentId": {
+        "description": "Document ID or slug (provide exactly one parent)",
+        "type": "string"
+      },
+      "milestoneId": {
+        "description": "Milestone UUID (provide exactly one parent). Resolve milestone names via `list_milestones` first.",
+        "type": "string"
+      },
+      "statusUpdateId": {
+        "description": "Status update UUID (provide exactly one parent). Resolve status updates via `get_status_updates` first.",
+        "type": "string"
+      },
+      "statusUpdateType": {
+        "description": "Type of status update named by `statusUpdateId`, as returned by `get_status_updates`. Only valid together with `statusUpdateId`; omit to check both project and initiative status updates.",
+        "type": "string",
+        "enum": [
+          "project",
+          "initiative"
+        ]
+      }
+    },
+    "additionalProperties": false
+  }
+}

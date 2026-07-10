@@ -1,0 +1,146 @@
+name: Learning Pipeline
+
+# After CI quality completes (success or failure), summarize Entire + write structured
+# lessons into Turso so the system improves as it learns.
+on:
+  workflow_run:
+    workflows: ['CI/CD Pipeline']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      conclusion:
+        description: 'Forced conclusion (success|failure|unknown)'
+        required: false
+        default: 'unknown'
+  schedule:
+    # Weekly full recompute of patterns from local + Turso memory
+    - cron: '0 6 * * 1'
+
+concurrency:
+  group: learn-pipeline-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  HOOKS_SKIP: '1'
+  ENTIRE_SYNC_SKIP: '0'
+  GRAPHIFY_SKIP_HOOK: '1'
+  AGENT_OS_SKIP_SCAN: '1'
+  # Prefer secrets; fall back to local file DB on runner workspace if unset
+  TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+  TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+
+jobs:
+  learn:
+    name: Entire → codify → Turso learning schema
+    runs-on: ubuntu-latest
+    # Skip cancelled CI runs
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'cancelled')
+    steps:
+      - name: Checkout SHA from CI run (or default branch)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 40
+
+      - name: Setup Node.js
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve conclusion + context
+        id: ctx
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "conclusion=${{ github.event.workflow_run.conclusion }}" >> "$GITHUB_OUTPUT"
+            echo "pipeline=ci" >> "$GITHUB_OUTPUT"
+            echo "job=quality" >> "$GITHUB_OUTPUT"
+            echo "sha=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
+            echo "branch=${{ github.event.workflow_run.head_branch }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "conclusion=success" >> "$GITHUB_OUTPUT"
+            echo "pipeline=schedule" >> "$GITHUB_OUTPUT"
+            echo "job=weekly-recompute" >> "$GITHUB_OUTPUT"
+            echo "sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+            echo "branch=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "conclusion=${{ github.event.inputs.conclusion || 'unknown' }}" >> "$GITHUB_OUTPUT"
+            echo "pipeline=manual" >> "$GITHUB_OUTPUT"
+            echo "job=dispatch" >> "$GITHUB_OUTPUT"
+            echo "sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+            echo "branch=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prefer file Turso if secret URL missing
+        run: |
+          if [ -z "$TURSO_DATABASE_URL" ]; then
+            echo "TURSO_DATABASE_URL=file:./.agents/agent-os.db" >> "$GITHUB_ENV"
+            echo "::notice::Using workspace file DB (set TURSO_DATABASE_URL secret for shared Turso)"
+          fi
+
+      - name: Run learning pipeline
+        env:
+          GITHUB_SHA: ${{ steps.ctx.outputs.sha }}
+          GITHUB_REF_NAME: ${{ steps.ctx.outputs.branch }}
+          LEARN_CONCLUSION: ${{ steps.ctx.outputs.conclusion }}
+          LEARN_PIPELINE: ${{ steps.ctx.outputs.pipeline }}
+          LEARN_JOB: ${{ steps.ctx.outputs.job }}
+          # Entire cloud optional
+          # ENTIRE is CLI not installed on runners by default — pipeline still learns from git + learnings
+          LEARN_PIPELINE_SKIP_ENTIRE: '0'
+        run: |
+          set -e
+          # entire may be absent on runner; entire-to-agentos falls back to git
+          node scripts/learn-pipeline.mjs \
+            --conclusion "${{ steps.ctx.outputs.conclusion }}" \
+            --pipeline "${{ steps.ctx.outputs.pipeline }}" \
+            --job "${{ steps.ctx.outputs.job }}" | tee /tmp/learn.json
+
+      - name: Domain sync + session learn close (local index compact / resolve known)
+        env:
+          SESSION_LEARN_SKIP_PIPELINE: '1'
+          SESSION_LEARN_SKIP_EVALUATE: '1'
+        run: |
+          set -e
+          node scripts/domain-agent.mjs sync all || true
+          node scripts/session-learn.mjs --close --skip-pipeline --skip-evaluate --manifest .learnings/session-manifest-latest.json 2>/dev/null \
+            || node scripts/session-learn.mjs --close --skip-pipeline --skip-evaluate
+
+      - name: Publish learning snapshot artifact
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: learning-snapshot-${{ steps.ctx.outputs.sha }}
+          path: |
+            .learnings/LEARNING_SNAPSHOT.json
+            .learnings/RECOMMENDATIONS.md
+            .learnings/index.json
+            .learnings/ERRORS_INDEX.md
+            .learnings/SESSION_CLOSE.md
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f /tmp/learn.json ]; then
+            echo "## Learning pipeline" >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            head -c 8000 /tmp/learn.json >> "$GITHUB_STEP_SUMMARY"
+            echo '' >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f .learnings/RECOMMENDATIONS.md ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "### Recommendations (top)" >> "$GITHUB_STEP_SUMMARY"
+            head -n 40 .learnings/RECOMMENDATIONS.md >> "$GITHUB_STEP_SUMMARY"
+          fi

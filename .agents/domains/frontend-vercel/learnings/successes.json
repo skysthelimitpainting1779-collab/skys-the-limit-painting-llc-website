@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-09T20:47:33.120Z",
+  "events": {
+    "a03fb2121c219747": {
+      "id": "DOM-frontend-vercel-OK-a03fb212",
+      "fingerprint": "a03fb2121c219747",
+      "kind": "success",
+      "title": "Perf: drop blocking Google Fonts CSS; dynamic cursor/heatmap",
+      "detail": "layout uses next/font Geist only; CustomCursor HeatmapOverlay dynamic ssr false; metadata title template robots OG twitter",
+      "command": "tsc",
+      "count": 1,
+      "first_seen": "2026-07-09T20:47:33.120Z",
+      "last_seen": "2026-07-09T20:47:33.120Z",
+      "domain": "frontend-vercel",
+      "metadata": null
+    }
+  },
+  "stats": {
+    "total": 1,
+    "unique": 1
+  }
+}

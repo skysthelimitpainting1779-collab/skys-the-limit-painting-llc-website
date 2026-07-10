@@ -1,0 +1,35 @@
+---
+description: Agent OS ontology v2 — mandatory for all Cursor agents and subagents
+alwaysApply: true
+---
+
+# Ontology v2 (mandatory)
+
+Canonical map: `.agents/ONTOLOGY.md` · Kernel: `.agents/AGENTS.md` · Health: `npm run agentos:health`
+
+## Layers (respect load order)
+
+```text
+Runtime → Control (hub/Turso) → Policy (AGENTS.md) → Memory (query) → Skills (trigger) → Product (src/scripts)
+```
+
+## Always
+
+1. Cold start: `AGENTS.md` → `ERRORS_INDEX.md` → `npm run graph:query -- "<task>"` → 1–3 files  
+2. Graph before grep. Budgeted query only — never dump `GRAPH_REPORT.md` or bulk wiki  
+3. Skills on trigger only; never invent git-commit skills (anti-fake)  
+4. On failure: learning-loop record/heal  
+5. After code change: verify + `npm run graph:update`  
+6. Proactive: `npm run agentos:health` when starting multi-step work  
+
+## Never
+
+- Create `_archive/`, session dump folders, or parallel “memory” trees outside ontology  
+- Bulk-load `.agents/skills/*` vendor packs  
+- Fake Entire lessons without `entire login` + checkpoints  
+- Reintroduce purged bloat (dashboard dumps, m1_m5 run dirs, handoffs megadumps)
+
+## Subagents
+
+Every subagent prompt that explores code MUST include:  
+**Follow `.agents/ONTOLOGY.md` + graph:query before Read/Grep.**

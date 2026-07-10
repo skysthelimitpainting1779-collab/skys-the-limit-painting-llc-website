@@ -194,6 +194,11 @@ export default async function ProjectsPage() {
               <p className="text-xl text-gray-300 max-w-xl">
                 Take a look at some of our recent verifiable interior, exterior, and commercial painting projects across the Twin Cities.
               </p>
+              {cmsStudies.length > 0 && (
+                <p className="mt-4 text-xs font-bold uppercase tracking-widest text-gray-500">
+                  Live from CMS · {cmsStudies.length} published case studies
+                </p>
+              )}
             </div>
           </div>
         </section>

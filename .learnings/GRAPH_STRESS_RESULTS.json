@@ -1,0 +1,82 @@
+[
+  {
+    "test": "leads-api",
+    "budget": 1500,
+    "tokens": 556,
+    "nodes": 16,
+    "edges": 13,
+    "ms": 2886,
+    "truncated": false,
+    "ok": true
+  },
+  {
+    "test": "learn-pipeline",
+    "budget": 1500,
+    "tokens": 1179,
+    "nodes": 38,
+    "edges": 18,
+    "ms": 2635,
+    "truncated": true,
+    "ok": true
+  },
+  {
+    "test": "entire-anti-fake",
+    "budget": 1200,
+    "tokens": 724,
+    "nodes": 19,
+    "edges": 16,
+    "ms": 2804,
+    "truncated": false,
+    "ok": true
+  },
+  {
+    "test": "ci-hooks",
+    "budget": 1500,
+    "tokens": 565,
+    "nodes": 16,
+    "edges": 13,
+    "ms": 2632,
+    "truncated": false,
+    "ok": true
+  },
+  {
+    "test": "seo-robots",
+    "budget": 1000,
+    "tokens": 810,
+    "nodes": 30,
+    "edges": 13,
+    "ms": 2573,
+    "truncated": true,
+    "ok": true
+  },
+  {
+    "test": "next-dynamic",
+    "budget": 1200,
+    "tokens": 957,
+    "nodes": 45,
+    "edges": 14,
+    "ms": 2561,
+    "truncated": true,
+    "ok": true
+  },
+  {
+    "test": "tiny-budget",
+    "budget": 400,
+    "tokens": 312,
+    "nodes": 6,
+    "edges": 3,
+    "ms": 2855,
+    "truncated": false,
+    "ok": true
+  },
+  {
+    "test": "wide-budget",
+    "budget": 3000,
+    "tokens": 2220,
+    "nodes": 68,
+    "edges": 65,
+    "ms": 2602,
+    "truncated": false,
+    "ok": true
+  }
+]

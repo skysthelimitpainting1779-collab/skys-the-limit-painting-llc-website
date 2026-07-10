@@ -1,218 +1,143 @@
 ---
 type: policy
-title: Agents Operating Manual
-description: Canonical operating manual for AI agents with strict compliance rules, workflows, and project guidelines
-tags: [agents, compliance, workflow]
+title: Agents Operating Kernel
+description: Minimal always-on operating rules for Agent OS v2. Full map in ONTOLOGY.md.
+tags: [agents, kernel, ontology, ssot]
+version: 2.0.0
 ---
 
-# Agents Operating Manual
+# Agents operating kernel
 
-This is the canonical agents operating manual for Sky's the Limit Painting LLC. All agent-related guidelines, standards, and requirements are documented here.
+**Map:** `.agents/ONTOLOGY.md` · **Health:** `npm run agentos:health` · **Purge bloat:** `npm run agentos:purge`
 
-> [!IMPORTANT]
-> **STRICT COMPLIANCE RULES:**
-> 1. **SSOT**: The `.agents/` directory is the single source of truth for all context. Never create split context.
-> 2. **MCP Priority**: Always use `codebase-memory-mcp` tools for structural discovery before `grep`.
-> 3. **Shell**: All shell execution should follow modern Agentic Development Environment (ADE) principles. Prefer cross-platform Node.js scripts (e.g., `node -e`), `zx`, or sandboxed agent runtimes. Use the most effective tool for the task rather than forcing a specific shell.
-> 4. **Trust, but Verify**: After executing a file creation or edit command, you must independently use the read_file or list_dir MCP tool to verify the file actually exists on the disk with the correct content before reporting success to the user.
-> 5. **OKF Compliance**: All `.agents/` markdown files MUST include YAML frontmatter with at least `type`, `title`, `description`, and `tags` fields per Google Open Knowledge Format v0.1.
+## Iron laws
 
-## 1. Operating Order & Workflow
+1. **Signal over bulk** — load this kernel + query memory. Never dump wiki, `GRAPH_REPORT.md`, or skill packs.
+2. **SSOT** — machine truth: Turso / `hub_db.json`. Policy truth: this file + `governance/`. Product truth: `src/` + tests.
+3. **Graph before grep** — `npm run graph:query -- "<task>"` (budget 1500). Then open 1–3 cited files.
+4. **Verify before done** — `npm run lint` / `npm test` / targeted checks. No “looks fine.”
+5. **Learn on fail** — `node scripts/learning-loop.mjs record …` then `heal` if healable. Prefer `.learnings/ERRORS_INDEX.md`.
+6. **No fake Entire skills** — no git-subject → skill. Need auth + real checkpoints. Anti-fake is hard-coded.
+7. **Skills on trigger only** — one matching skill; evaluator rejects garbage.
+8. **Domain bridge** — durable work links to Market / Service / Business-Objective.
+9. **Trust but verify** — after writes, re-read files before claiming success.
+10. **Proactive** — run `npm run agentos:health` at session start; act on its list.
+11. **Vercel plugin + frontier stack** — platform decisions MUST use Vercel plugin skills (`knowledge-update` first). Stack SSOT: `.agents/STACK.md` and **`vercel.ts`** (`@vercel/config`). Defaults: **Fluid + Node 24**, Next 16 **`cacheComponents`**, **`src/proxy.ts`**, no free-Fluid Directus, no dual `vercel.json`.
+12. **Root cause only — never treat symptoms** — fix the mechanism that fails (PATH, auth, code, config). Soft-exit wrappers, `|| true`, disabling checks, or “use absolute path forever” are **not** done unless a tracked ROOT CAUSE PENDING issue exists. Full policy: `.agents/governance/ROOT_CAUSE.md`.
+13. **Session learn close** — after multi-step work, run `npm run learn:session:close` (or rely on Stop hook `session-learn`). Write `.learnings/session-manifest-latest.json` when you have successes/failures to record. Do not claim “learned” without `SESSION_CLOSE.md` evidence.
+14. **Active prevention — not log-only** — lessons must change behavior. SessionStart injects `.learnings/ACTIVE_CONTEXT.md`; PreToolUse **denies** known-bad patterns (`next/dynamic`+`ssr:false`, nested `powershell -Command`, System32-bash soft-skips). After recording a failure, if it is machine-detectable, add a guard in `scripts/active-prevention.mjs`. Commands: `npm run learn:prevent` · `learn:prevent:rebuild`.
 
-**Before task execution, read in order:**
-1. `.agents/AGENTS.md` (Canonical operating manual - this file)
-2. `.agents/rules.md` (Principal architect doctrine and guardrails)
-3. `.agents/state.json` (The Unified JSON State Tree containing all goals, tasks, decisions, effects, waits, and queues)
-4. `.learnings/ERRORS.md` (Error learning protocol)
+## Domain agents (specialists)
 
-**Execution Loop**:
-1. Read context -> 2. Open minimal required source files -> 3. Edit -> 4. Verify (Lint, Test, Build) -> 5. Refresh Graph.
+You are the **orchestrator** unless a domain system prompt was injected.  
+**Protocol:** `.agents/domains/ORCHESTRATOR.md`
 
-## 2. Local Development Requirements
-
-### MCP Servers
-
-The following MCP (Model Context Protocol) servers are required for local development with agents:
-
-#### devin/context7
-- **Purpose**: Retrieve up-to-date documentation and code examples for any library
-- **Tools**: Library documentation retrieval
-
-#### devin/github-mcp-server
-- **Purpose**: GitHub integration for repository management, PR operations, and code search
-- **Tools**: 44 tools for GitHub operations (issues, PRs, commits, branches, etc.)
-
-#### devin/linear-mcp-server
-- **Purpose**: Linear project management integration
-- **Tools**: 38 tools for Linear operations (issues, projects, teams, comments, etc.)
-
-#### devin/mcp-playwright
-- **Purpose**: Browser automation and testing
-- **Tools**: 23 tools for web browser interaction, testing, and automation
-
-#### devin/supabase-mcp-server
-- **Purpose**: Supabase database and backend services integration
-- **Tools**: 29 tools for Supabase operations (database, auth, storage, edge functions, etc.)
-
-#### devin/vercel
-- **Purpose**: Vercel deployment and project management
-- **Tools**: 20 tools for Vercel operations (deployments, projects, runtime logs, etc.)
-
-### Setup
-
-Ensure all MCP servers are properly configured in your MCP client configuration before starting local development with agents. Each server provides specialized tools that agents may invoke during development tasks.
-
-## 3. Codebase Memory MCP
-
-**Always use these tools first for structural discovery:**
-
-### Quick Decision Matrix
-
-| Question | Tool call |
-|----------|----------|
-| Who calls X? | `trace_path(direction="inbound")` |
-| What does X call? | `trace_path(direction="outbound")` |
-| Full call context | `trace_path(direction="both")` |
-| Find by name pattern | `search_graph(name_pattern="...")` |
-| Dead code | `search_graph(max_degree=0, exclude_entry_points=true)` |
-| Cross-service edges | `query_graph` with Cypher |
-| Impact of local changes | `detect_changes()` |
-| Risk-classified trace | `trace_path(risk_labels=true)` |
-| Text search | `search_code` or Grep |
-
-### Exploration Workflow
-1. `list_projects` — check if project is indexed
-2. `get_graph_schema` — understand node/edge types
-3. `search_graph(label="Function", name_pattern=".*Pattern.*")` — find code
-4. `get_code_snippet(qualified_name="project.path.FuncName")` — read source
-
-### Tracing Workflow
-1. `search_graph(name_pattern=".*FuncName.*")` — discover exact name
-2. `trace_path(function_name="FuncName", direction="both", depth=3)` — trace
-3. `detect_changes()` — map git diff to affected symbols
-
-### Quality Analysis
-- Dead code: `search_graph(max_degree=0, exclude_entry_points=true)`
-- High fan-out: `search_graph(min_degree=10, relationship="CALLS", direction="outbound")`
-- High fan-in: `search_graph(min_degree=10, relationship="CALLS", direction="inbound")`
-
-### 14 MCP Tools
-`index_repository`, `index_status`, `list_projects`, `delete_project`,
-`search_graph`, `search_code`, `trace_path`, `detect_changes`,
-`query_graph`, `get_graph_schema`, `get_code_snippet`, `get_architecture`,
-`manage_adr`, `ingest_traces`
-
-### Edge Types
-CALLS, HTTP_CALLS, ASYNC_CALLS, IMPORTS, DEFINES, DEFINES_METHOD,
-HANDLES, IMPLEMENTS, OVERRIDE, USAGE, FILE_CHANGES_WITH,
-CONTAINS_FILE, CONTAINS_FOLDER, CONTAINS_PACKAGE
-
-### Cypher Examples (for query_graph)
-```
-MATCH (a)-[r:HTTP_CALLS]->(b) RETURN a.name, b.name, r.url_path, r.confidence LIMIT 20
-MATCH (f:Function) WHERE f.name =~ '.*Handler.*' RETURN f.name, f.file_path
-MATCH (a)-[r:CALLS]->(b) WHERE a.name = 'main' RETURN b.name
+```bash
+npm run domain:list
+npm run domain:route -- path/to/file.tsx
+npm run domain:prompt -- seo
+npm run domain:enforce -- api --files a,b
+npm run domain:error -- api --title "…" --error "…"
+npm run domain:success -- api --title "…" --detail "…"
+npm run domain:state -- api
+npm run domain:sync -- all                  # local → Turso
+npm run domain:pull -- all                  # Turso → local
 ```
 
-### Gotchas
-1. `search_graph(relationship="HTTP_CALLS")` filters nodes by degree — use `query_graph` with Cypher to see actual edges.
-2. `query_graph` has a 200-row cap — use `search_graph` with degree filters for counting.
-3. `trace_path` needs exact names — use `search_graph(name_pattern=...)` first.
-4. `direction="outbound"` misses cross-service callers — use `direction="both"`.
-5. Results default to 10 per page — check `has_more` and use `offset`.
+Each domain has `state.json`, `learnings/errors.json`, `learnings/successes.json` — synced to Turso tables `domain_agent_state` + `domain_events`.
 
-*Fallback to `grep` ONLY for string literals, config values, or non-code files.*
+| If work is in… | Dispatch |
+|----------------|----------|
+| `src/components/ui/**` | `ui-ux` |
+| `src/app/api/**` | `api` |
+| Market/lead pages, `LeadForm` | `content-market` |
+| SEO/metadata/sitemap | `seo` |
+| `.github`, CI, vercel.json | `ci-devops` |
+| `.agents`, learn/*, hooks | `agent-os` |
+| App pages / Next lib | `frontend-vercel` |
 
-## 4. Living Memory Stack
+Each domain has **its own** `.agents/domains/<id>/learnings/`. Do not dump domain lessons only into global `.learnings` without domain tag.
 
-This project uses **Graphify** (Relational) and **Codebase Memory MCP** (Structural) for codebase understanding.
+## Cold start (token budget)
 
-**The Compilation Loop**:
-1. **Scan**: Use MCP tools to find new sources.
-2. **Map**: Read `graphify-out/GRAPH_REPORT.md` to prevent orphan nodes and augment edges.
-3. **Sync**: Run `graphify update .` to re-index.
+```text
+1. This file (once) — orchestrator kernel
+2. ACTIVE_CONTEXT / SessionStart inject (top lessons — OBEY, do not re-fail)
+3. domain:route paths → domain:prompt <id>
+4. Domain learnings ERRORS_INDEX (that domain only)
+5. npm run graph:query -- "<task>"
+6. Open 1–3 source files inside jurisdiction
+```
 
-## 5. Project Guidelines
+**Do not open:** bulk `wiki/`, `GRAPH_REPORT.md`, vendor skill packs wholesale, full `hub_db` dumps (unless harness). **No archives** — purged trees must stay gone (`npm run agentos:purge` hard-deletes violations).
 
-### Domain Taxonomy
-All components, concepts, and files MUST be semantically linked to one of the following root nodes in the graph:
-- **Market**: (e.g., SEO, AI Crawlability, Target Audience)
-- **Service**: (e.g., Commercial Painting, Residential, Specialized Coatings)
-- **Business-Objective**: (e.g., Lead Capture, Revenue Generation, Conversion Optimization)
+## Closed loops
 
-Isolated technical nodes must be bridged to the nearest relevant business domain.
+| Loop | Command spine |
+|------|----------------|
+| **Execute** | query → edit → verify → learn |
+| **Architecture** | frame → research → validate → draft → **pressure** → lock → codify → prompt → close (`npm run arch:loop`, skill `architecture-loop`) |
+| **Learn** | `learn-pipeline` → Turso → `learn:evolve` · `learn:evaluate` |
+| **Proactive** | `agentos:health` / `agentos:improve` |
+| **Graph** | `graph:query` · `graph:update` · `graph:wiki` |
+| **Entire** | `entire login` then `agentos:entire-sync` (honest empty if offline) |
 
-### Commands
+**Architecture vs execute:** topology/platform/stack decisions use **Architecture** (one pass, hard locks, handoff prompt). Implementation under `approved-for-implement` uses **Execute**. Workflow: `.agents/workflows/architecture-loop.md`.
 
-- **Build project**: `npm run build`
-- **Lint check**: `npm run lint`
-- **Run tests**: `npm test`
-- **Master compile**: Run the project's compile script using Node or the appropriate cross-platform command.
-- **Project graph update**: `graphify update .`
-- **Graphify CLI Tools**:
-  - `graphify update .` (Fast AST sync)
-  - `graphify extract . --backend gemini` (LLM semantic extraction)
-  - `graphify cluster-only .` (Regenerate report)
-  - `graphify query "..."`
+## Product constraints (non-negotiable)
 
-## 6. Engineering & Deployment
+- Next.js App Router · industrial UI: **radius 0** · safety orange `#FF5A00` on charcoal (not white-on-orange)
+- **No emojis** in product source
+- External side effects: idempotency + effects ledger + approval when sensitive
+- Public claims must be verifiable (no invented metrics)
 
-- **Verification**: Narrow to broad. `npm run lint` -> `npm test` -> `npm run build`. Never deploy broken code.
-- **Error Learning Protocol**: On non-zero exit, STOP. Append to `.learnings/ERRORS.md`: `## [ERR-YYYYMMDD-NNN]` containing Summary, Error, Fix, Metadata, `# CORRECT` / `# WRONG` code, and a prevention rule.
-- **Deployment & Environments**:
-  - **Production**: Map `main` branch to Vercel Production environment.
-  - **Staging / Preview**: Map `staging` branch to Vercel Preview (Staging) environment.
-  - **Previews**: Map feature branches (`feat/`, `fix/`, etc.) to Vercel Preview environments created dynamically on Pull Requests.
-  - Secrets and environment variables must be managed in the Vercel dashboard, not committed.
-- **Git Workflows & Standards**:
-  - **Naming Conventions**: Strict branch prefixes required: `feat/<desc>`, `fix/<desc>`, `chore/<desc>`, `docs/<desc>`, `infra/<desc>`. Direct pushes/commits to `main` and `staging` are prohibited.
-  - **Commit Format**: Conventional Commits standard (`<type>(<scope>): <subject>` e.g. `feat(seo): add meta tags`). Vague messages are banned.
-  - **PR Workflow**: All development must occur on feature branches and be merged via PRs. PRs require Goal, Files changed, Validation results, and Search impact.
-  - **CI/CD Boomerang Policy**: Auto-repair commits are disabled on protected branches (`main`, `staging`) to prevent Git history pollution. Auto-repairs are allowed on feature/PR branches only.
-  - **Compliance Check**: Validations run automatically during `npm run lint` to enforce branch names and commit formats.
+## Stack (skim)
 
-## 7. UI, Design, & Legal Guardrails
+See `.agents/STACK.md`. Runtime Node **24.x**. Deploy: Vercel. Data: Supabase + Agent memory Turso (`TURSO_*`).
 
-- **Palette**: Dark Charcoal `#050505` text on Safety Orange `#FF5A00`. Never white on orange.
-- **Emoji**: DNA 🧬 allowed in markdown ONLY. No emoji in code/UI.
-- **Legal Compliance**:
-  - **Contractor ID**: `IR816596` must appear near contractor references.
-  - **Workers' Comp**: Under MN Statute 176.041, owner-operator has zero payroll and is exempt.
-  - **Claims**: Do not claim licensed, bonded, or award-winning without strict evidence. Do not fake reviews/ratings.
+## MCP / tools (priority)
 
-## 8. Open Knowledge & LLM Crawlability
+1. **graphify** via `npm run graph:query|path|explain`
+2. **codebase-memory-mcp** for structural graph (if connected)
+3. **github / vercel / supabase** MCP when those systems are the task
+4. Grep/Read only after orientation
 
-- **Server-Side Rendering**: Routable pages MUST be Server Components. Use `"use client"` only on leaf components.
-- **Canonical URLs**: Every route needs absolute canonical via `alternates: { canonical: '...' }`.
-- **JSON-LD Schema**:
-  - Inject server-side in Next.js Server Components (`<script type="application/ld+json">`).
-  - Required: `LocalBusiness` (or specific), `BreadcrumbList`. Connect entities via `@id`.
-  - Validate with Google Rich Results Test.
-  - Update `scripts/generate-sitemap.js` and `scripts/prerender.mjs` for new routes.
-- **AI Crawlers**:
-  - `robots.txt` MUST explicitly welcome `GPTBot`, `ClaudeBot`, `Gemini-Bot`, `PerplexityBot`, etc.
-  - Provide `Link: https://www.skysthelimitpaintingllc.com/llms.txt`.
-- **llms.txt**: High-density `/public/llms.txt` manifest containing absolute links to pages and the mandatory Legal/Contractor ID compliance facts.
+## Failure protocol
 
-## 9. File Structure (Agentic Repo Layout)
+```bash
+node scripts/learning-loop.mjs record --title "…" --error "…" --command "…"
+node scripts/learning-loop.mjs heal
+node scripts/learning-loop.mjs status
+```
 
-To prevent cross-contamination between static UI and dynamic Agent logic, the following structure is strictly enforced:
-- `/src/app/` - Next.js Routing and Server Components.
-- `/src/components/ui/` - Strict Shadcn UI primitives.
-- `/src/agents/` - Autonomous agent logic, tools, orchestration, and Zod schemas.
-- `/.agents/` - System-level guardrails, operating manuals (SSOT), and learning loops.
-- `.learnings/` - Error logs and learning artifacts.
-- `graphify-out/` - Generated graph outputs (auto-generated, do not edit manually).
-- `.github/` - CI/CD workflows and templates.
+Read: `.learnings/ACTIVE_CONTEXT.md` (inject) + `.learnings/ERRORS_INDEX.md` + `.agents/governance/PREVENTION_RULES.md`.  
+Hooks enforce; do not rely on memory alone.
 
-## 10. Tech Stack & Architecture
+## Self-evolution (allowed)
 
-The project's technology stack (Vercel, Next.js, Shadcn, Framer Motion) and AI infrastructure (AI SDK 7) is codified in its own manual. 
-**Before generating complex UI or Agentic logic, you MUST read:**
-- `@.agents/STACK.md`
+| Step | When |
+|------|------|
+| Record lesson | Real error / CI fail |
+| Evolve skills | After outcomes in Turso |
+| Evaluate skills | After codify — quarantine garbage |
+| Update graph | After product code changes |
+| Purge ontology bloat | `npm run agentos:purge` |
 
-## 11. Reference Convention
+## Ontology layers (reminder)
 
-Use the `@` syntax to reference this file from other documentation:
-- `@.agents/AGENTS.md` - Points to this canonical operating manual
-- `@.agents/STACK.md` - Points to the tech stack codification
+`Runtime → Control → Policy → Memory → Capability → Product`  
+Full entities/relations: **ONTOLOGY.md**.
+
+## Commands cheat sheet
+
+```bash
+npm run agentos:health
+npm run agentos:improve
+npm run agentos:purge
+npm run agentos:ontology
+npm run graph:query -- "…"
+npm run learn:pipeline
+npm run learn:recommend
+npm run learn:evolve
+npm run learn:evaluate:apply
+```

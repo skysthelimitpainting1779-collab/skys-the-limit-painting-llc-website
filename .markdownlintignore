@@ -1,0 +1,16 @@
+node_modules/**
+.next/**
+dist/**
+out/**
+graphify-out/**
+wiki/**
+.agents/wiki/**
+.agents/skills/**
+.agents/handoffs/**
+.agents/evidence/**
+.agents/dashboard.html
+.learnings/archive/**
+repomix-output.md
+repomix-*.md
+**/*.min.md
+package-lock.json

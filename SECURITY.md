@@ -1,28 +1,30 @@
----
-type: policy
-title: Security Policy
-description: Supported versions, vulnerability reporting, and security practices for the Sky's the Limit Painting website and agent tooling.
-tags: [policy, security, vulnerabilities, compliance]
----
-
 # Security Policy
 
-## Supported Versions
+## Production site
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+**https://www.skysthelimitpaintingllc.com**
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+## Reporting a vulnerability
 
-## Reporting a Vulnerability
+Email **skysthelimitpainting1779@gmail.com** with:
 
-Use this section to tell people how to report a vulnerability.
+- Description of the issue
+- Steps to reproduce (if applicable)
+- Impact assessment if known
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Please **do not** open a public GitHub issue for security-sensitive reports.
+
+We aim to acknowledge reports within a few business days.
+
+## Scope
+
+In scope: this repository’s application code, API routes, and deployment config for the public website.
+
+Out of scope: third-party services (Vercel, Supabase, Resend, HubSpot, etc.) — report those to the vendor as well when relevant.
+
+## Practices
+
+- Secrets live in Vercel / local `.env*` only (never committed)
+- CI: npm audit, dependency review, CodeQL
+- CSP and security headers via `vercel.json`
+- Branch protection and code owners on protected branches (recommended)

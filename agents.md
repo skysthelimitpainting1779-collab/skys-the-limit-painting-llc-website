@@ -1,26 +1,32 @@
 ---
 type: policy
-title: Agents Directory Router
-description: Root entrypoint for AI Agents that routes to specific state directories
-tags: [agents, router, SSOT]
+title: Agents entrypoint (repo root)
+description: Root pointer so all IDEs/CLIs that look for AGENTS.md load the ontology kernel.
+tags: [agents, ontology, entrypoint]
 ---
 
-## Agent Routing Manifest
+# Agents
 
-Welcome to the Sky's the Limit Painting LLC workspace.
+**Product slug:** `skysthelimit` · **Task hub:** [Linear](https://linear.app/skysthelimit)  
+**Agent OS overview:** [`docs/AGENT_OS.md`](docs/AGENT_OS.md)  
+**Canonical kernel:** [`.agents/AGENTS.md`](.agents/AGENTS.md)  
+**Full ontology:** [`.agents/ONTOLOGY.md`](.agents/ONTOLOGY.md)  
+**Stack:** [`.agents/STACK.md`](.agents/STACK.md) · **Naming:** [`docs/NAMING.md`](docs/NAMING.md)  
+**Health:** `npm run agentos:health`
 
-> [!IMPORTANT]
-> **SSOT (Single Source of Truth) Routing Rule:**
-> This root `agents.md` no longer holds the operating manual. It is a router. You MUST read the specific `AGENTS.md` files located in the localized state directories for context on how to operate in this repository.
+All coding agents (Cursor, Claude Code, Gemini, Grok, Codex, CI) **must** follow the ontology:
 
-## Decentralized Operating Manuals
+1. Load kernel only — not dumps  
+2. Route work to **domain agents** (`npm run domain:route` / `domain:prompt`)  
+3. `npm run graph:query -- "<task>"` before bulk explore  
+4. Learn on failure **in that domain's** `learnings/`; never invent git→skills  
+5. Never recreate archives or edit outside jurisdiction  
+6. Prefer Linear issues (`SKY-XX`) for product work — not GitHub Issues  
+7. **Root cause only** — never treat symptoms (`.agents/governance/ROOT_CAUSE.md`, iron law 12)  
 
-Read the following files based on what you are doing:
+**Layers:** Linear manages tasks · Agent OS runs agents · Git/Vercel ship product.
 
-- **Core Operations**: [.agents/AGENTS.md](.agents/AGENTS.md) (the canonical operating manual)
-- **Checkpoints**: [.agents/checkpoints/AGENTS.md](.agents/checkpoints/AGENTS.md)
-- **Dead-Letter / Quarantine**: [.agents/dead-letter/AGENTS.md](.agents/dead-letter/AGENTS.md)
-- **Decisions & Guardrails**: [.agents/decisions/AGENTS.md](.agents/decisions/AGENTS.md)
-- **Evidence & Logs**: [.agents/evidence/AGENTS.md](.agents/evidence/AGENTS.md)
-- **Queues & Tasks**: [.agents/queues/AGENTS.md](.agents/queues/AGENTS.md)
-- **Error Learning**: [.learnings/AGENTS.md](.learnings/AGENTS.md)
+See `.agents/AGENTS.md` + `.agents/domains/README.md` + `docs/AGENT_OS.md`.
+
+**CMS (next):** Payload 3 — [`docs/PAYLOAD_CMS_PLAN.md`](docs/PAYLOAD_CMS_PLAN.md) · handoff [`docs/HANDOFF_PAYLOAD_CMS.md`](docs/HANDOFF_PAYLOAD_CMS.md).  
+**Portal:** Supabase OAuth `/portal` (unchanged by Payload).

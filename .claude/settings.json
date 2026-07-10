@@ -1,24 +1,140 @@
 {
   "hooks": {
-    "PreToolUse": [
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|MultiEdit|StrReplace|Delete",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs claude-post-tool"
+          }
+        ]
+      },
       {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "CMD=$(python3 -c \"import json,sys; d=json.load(sys.stdin); print(d.get('tool_input',d).get('command',''))\" 2>/dev/null || true); case \"$CMD\" in *grep*|*rg\\ *|*ripgrep*|*find\\ *|*fd\\ *|*ack\\ *|*ag\\ *)   [ -f graphify-out/graph.json ] &&   echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"MANDATORY: graphify-out/graph.json exists. You MUST run `graphify query \\\"<question>\\\"` before grepping raw files. Only grep after graphify has oriented you, or to modify/debug specific lines.\"}}'   || true ;; esac"
+            "command": "node scripts/hooks/run.mjs claude-post-tool"
           }
         ]
       },
       {
-        "matcher": "Read|Glob",
+        "matcher": "Task",
         "hooks": [
           {
             "type": "command",
-            "command": "HIT=$(python3 -c \"import json,sys;d=json.load(sys.stdin);t=d.get('tool_input',d);s=(str(t.get('file_path') or '')+' '+str(t.get('pattern') or '')+' '+str(t.get('path') or '')).lower().replace(chr(92),'/');exts=('.py','.js','.ts','.tsx','.jsx','.go','.rs','.java','.rb','.c','.h','.cpp','.hpp','.cc','.cs','.kt','.swift','.php','.scala','.lua','.sh','.md','.rst','.txt','.mdx');sys.stdout.write('1' if 'graphify-out/' not in s and any(e in s for e in exts) else '')\" 2>/dev/null || true); if [ \"$HIT\" = 1 ] && [ -f graphify-out/graph.json ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"MANDATORY: graphify-out/graph.json exists. You MUST run graphify before reading source files. Use: `graphify query \\\"<question>\\\"` (scoped subgraph), `graphify explain \\\"<concept>\\\"`, or `graphify path \\\"<A>\\\" \\\"<B>\\\"`. Only read raw files after graphify has oriented you, or to modify/debug specific lines. This rule applies to subagents too \u2014 include it in every subagent prompt involving code exploration.\"}}'; fi || true"
+            "command": "node scripts/hooks/entire-if-present.mjs post-task"
+          }
+        ]
+      },
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/entire-if-present.mjs post-todo"
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Shell|Read|Glob|Grep|Agent|Write|Edit|MultiEdit|StrReplace|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs claude-pre-tool"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/graphify-pre-bash.mjs"
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/entire-if-present.mjs pre-task"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs session-end"
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs post-session"
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/entire-if-present.mjs session-end"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs session-start"
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/entire-if-present.mjs session-start"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/entire-if-present.mjs stop"
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs session-learn"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/run.mjs user-prompt-submit"
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/entire-if-present.mjs user-prompt-submit"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.entire/metadata/**)"
     ]
   }
 }

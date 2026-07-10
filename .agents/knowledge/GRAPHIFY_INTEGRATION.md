@@ -1,36 +1,63 @@
 ---
 id: graphify_integration
-name: "Reference Guide: Graphify CLI Integration"
+name: "Graphify + Karpathy wiki (token-saving memory)"
 type: concept
-description: "How to run, query, and refresh the semantic knowledge graph of the project."
-tags: [runbook, graphify, knowledge-graph]
+description: "Use budgeted graphify query first; wiki only as index→page→sources navigation."
+tags: [runbook, graphify, knowledge-graph, tokens, karpathy]
 references: [workspace_knowledge]
 ---
 
-# Reference Guide: Graphify CLI Integration
+# Graphify + Karpathy wiki
 
-**Status**: Active  
-**Domain**: Project Semantics & Knowledge Engineering
+## Point
 
-## Core CLI Actions
+- **Graphify** is not a report to paste. It is a **query interface** over `graphify-out/graph.json` that returns a **budgeted subgraph** (default 1500 tokens) — often **~10–75×** cheaper than reading the corpus, `GRAPH_REPORT.md`, or the whole wiki.
+- **Wiki** is only good if used like Karpathy’s LLM wiki: **navigate and maintain**, not bulk-load auto stubs.
+- **Package:** `graphifyy` ≥ **0.9.11** (`uv tool upgrade graphifyy`). Noise controlled by **`.graphifyignore`**.
 
-Graphify parses AST, imports, definitions, and OKF markdown concepts inside this project to maintain a highly detailed semantic graph file under `graphify-out/`.
+## Noise policy (after 2026-07-09 purge)
 
-### 1. Common Graphify Commands
+| Before | After |
+|-------:|------:|
+| ~13 048 nodes | ~1 129 nodes |
+| ~half from `repomix-output.md` | **0** dump nodes |
+| vendor skill packs dominant | **src + scripts** dominant |
+| report ~273 KB | report ~14 KB |
 
-| Command | Action | Description |
-|---|---|---|
-| `graphify update .` | AST Local Update | Incremental fast scan of all modified code and documents. (AST-only, zero cost). |
-| `graphify extract . --backend gemini` | Semantic Extraction | Fully re-extract semantic relations using Gemini model endpoints. |
-| `graphify cluster-only .` | Community Clustering | Groups nodes into communities and regenerates `GRAPH_REPORT.md` and `graph.html`. |
-| `graphify query "question"` | Semantic Query | Interrogate the active knowledge base for structured answers. |
+Excluded via `.graphifyignore`: repomix dumps, vendor skills under `.agents/skills/*`, handoffs, multi-agent residue, media, husky internals, archives.
 
-### 2. Compilation Master Script
+## Commands (preferred)
 
-After completing code modifications or creating new OKF documents, compile the master project graph dev compiler:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File "C:\Users\Johnny Cage\DEV\compile-all.ps1"
+```bash
+npm run graph:status
+npm run graph:query -- "how does learn-pipeline write to Turso"
+npm run graph:query -- "lead form validation" --budget 1200
+npm run graph:path -- "learn-pipeline" "Turso"
+npm run graph:explain -- "entire-to-agentos"
+npm run graph:update          # AST-only after code changes
 ```
 
-This updates all local subprojects and merges files into the master global graph at `~/.graphify/global-graph.json` for persistent, multi-project context memory.
+Wrapper: `scripts/graph-context.mjs` → last result in `.learnings/GRAPH_CONTEXT_LAST.md`.
+
+## Anti-patterns
+
+| Bad | Why |
+|-----|-----|
+| Open `GRAPH_REPORT.md` in the agent | ~280k; kills context |
+| Read all of `.agents/wiki/` | Auto-stubs; no selection |
+| Grep first for architecture | Misses graph edges; more tokens |
+| Wiki that nobody updates | Pure bloat |
+
+## Karpathy flow
+
+1. Budgeted **query**
+2. Optional **one** wiki community page (index → page)
+3. Open **few** source files
+4. Write durable lessons to Turso / `.learnings` / curated knowledge — not more stubs
+
+## Policy sources
+
+- `.agents/rules/graphify.md`
+- `.agents/wiki/README.md`
+- `.cursor/rules/graphify.mdc`
+- `.agents/AGENTS.md` § Graphify + Karpathy wiki

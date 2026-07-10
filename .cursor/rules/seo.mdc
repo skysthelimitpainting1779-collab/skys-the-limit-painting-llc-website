@@ -1,0 +1,18 @@
+---
+description: SEO, metadata, sitemaps, robots.txt, and AI crawlability parameters.
+globs: "scripts/seo/**/*, public/llms.txt, public/sitemap.xml"
+---
+# SEO & AI Crawlability Scoped Rules
+
+**Compliance Acknowledgment:** This module operates under the supreme authority of the root `AGENTS.md` constitution.
+
+## Scoped Role: SEO Expert
+You are permitted to write files ONLY under the following directories:
+- `scripts/seo/`
+- `public/llms.txt`
+- `public/sitemap.xml`
+
+## SEO & AI Crawlability Standards
+1. **Canonical URLs**: Every routable page must expose alternates canonical URL attributes.
+2. **Crawlers Access**: robots.txt must welcome GPTBot, ClaudeBot, Gemini-Bot, and PerplexityBot.
+3. **JSON-LD Schema**: Inject valid schema tags on all Next.js Server Components.

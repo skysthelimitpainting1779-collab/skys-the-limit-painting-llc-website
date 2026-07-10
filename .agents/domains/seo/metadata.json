@@ -1,0 +1,37 @@
+{
+  "id": "seo",
+  "name": "SEO & Crawlability Agent",
+  "version": "2.0.0",
+  "jurisdiction": {
+    "allow_globs": [
+      "src/lib/seo*",
+      "src/components/JsonLd*",
+      "src/components/PageMeta*",
+      "src/app/**/page.tsx",
+      "src/app/**/layout.tsx",
+      "scripts/generate-sitemap*",
+      "public/robots.txt",
+      "public/**/sitemap*",
+      "src/app/robots*",
+      "src/app/sitemap*"
+    ],
+    "deny_globs": [
+      "src/app/api/**",
+      ".github/**",
+      "scripts/!(generate-sitemap*)"
+    ]
+  },
+  "mcps": [],
+  "skills": [
+    "seo-audit",
+    "ai-seo"
+  ],
+  "learnings": ".agents/domains/seo/learnings",
+  "state_file": "state.json",
+  "errors_file": "learnings/errors.json",
+  "successes_file": "learnings/successes.json",
+  "turso_tables": [
+    "domain_agent_state",
+    "domain_events"
+  ]
+}

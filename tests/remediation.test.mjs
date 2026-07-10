@@ -22,9 +22,11 @@ test('lead email HTML escapes submitted keys and values', () => {
 });
 
 test('Vercel config has security headers and no blanket SPA rewrite', () => {
-  const vercelConfig = JSON.parse(read('vercel.json'));
-  const headerKeys = vercelConfig.headers?.[0]?.headers?.map((header) => header.key) || [];
+  // SSOT is vercel.ts (not vercel.json) — see vercel.ts header comment.
+  assert.ok(existsSync(new URL('../vercel.ts', import.meta.url)), 'vercel.ts should exist');
+  assert.ok(!existsSync(new URL('../vercel.json', import.meta.url)), 'vercel.json must not coexist with vercel.ts');
 
+  const vercelTs = read('vercel.ts');
   for (const key of [
     'X-Content-Type-Options',
     'X-Frame-Options',
@@ -33,10 +35,12 @@ test('Vercel config has security headers and no blanket SPA rewrite', () => {
     'Strict-Transport-Security',
     'Content-Security-Policy',
   ]) {
-    assert.ok(headerKeys.includes(key), `${key} header is missing`);
+    assert.match(vercelTs, new RegExp(key.replace(/-/g, '\\-')), `${key} header is missing`);
   }
 
-  assert.equal(vercelConfig.rewrites, undefined);
+  // No blanket SPA rewrite (marketing is Next App Router, not Vite SPA).
+  assert.doesNotMatch(vercelTs, /rewrites\s*:/);
+  assert.match(vercelTs, /routes\.redirect\('\/services'/);
 });
 
 test('build pipeline prerenders public routes and static 404 metadata', () => {

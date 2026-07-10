@@ -1,23 +1,104 @@
-# Workflow Troubleshooting Guide
+# Workflow troubleshooting
 
-This guide covers common CI/CD pipeline issues and how to fix them.
+## Learning pipeline (Entire → Turso)
 
-## Node Version Deprecation
-**Issue:** `Node 20 is being deprecated` or similar setup-node warnings.
-**Fix:** Ensure the project uses `.nvmrc` with a specific pinned version (e.g., `24.0.0`) and that workflows use `node-version-file: '.nvmrc'`. Do not use `NODE_VERSION: '24.x'`.
+Workflow: `learn-pipeline.yml` runs **after** `CI/CD Pipeline` completes (and weekly).
 
-## Inconsistent CodeQL Versions
-**Issue:** Security scan fails or warns about mismatched CodeQL action versions.
-**Fix:** Ensure `init`, `autobuild`, and `analyze` steps in `security-scan.yml` all use the exact same action version (e.g., `v4.36.3`).
+```text
+CI finish → entire-to-agentos → Turso learn_* tables → RECOMMENDATIONS.md artifact
+```
 
-## Dependabot Auto-Merge Fails
-**Issue:** `$PR_URL` is undefined when Dependabot tries to auto-merge.
-**Fix:** Ensure `PR_URL` is defined at the job level in `dependabot-auto-merge.yml`, not just in the step where it's used.
+Secrets (recommended for shared memory):
 
-## Deployments Triggering Unexpectedly
-**Issue:** Production deployment runs on every push to main instead of just releases.
-**Fix:** Ensure `if: startsWith(github.ref, 'refs/tags/v')` is present on the `deploy-production` job in `release.yml`.
+- `TURSO_DATABASE_URL` = `libsql://…`
+- `TURSO_AUTH_TOKEN`
 
-## CI Health Check Hook Failure
-**Issue:** `git push` is aborted due to a CI health check failure.
-**Fix:** Run `bash .github/scripts/ci-health-check.sh` locally to see which checks failed and address them before pushing again.
+Without secrets, job uses ephemeral `file:./.agents/agent-os.db` and uploads artifacts.
+
+Local:
+
+```bash
+npm run learn:pipeline -- --conclusion success --pipeline ci --job quality
+npm run learn:query
+npm run learn:recommend -- ci
+```
+
+Schema docs: `.agents/knowledge/LEARNING_TURSO.md`
+
+## Local = CI
+
+```bash
+npm ci
+npm run lint:ci          # react + types + md + knip
+node scripts/agent-os.js bootstrap && npm test
+npm run build
+# or all-in-one:
+npm run ci
+```
+
+## PR Automation (the good stuff)
+
+Workflow: `.github/workflows/pr-automation.yml`
+
+| Job | Purpose |
+|-----|---------|
+| Branch normalize | `feature/`→`feat/`, `bugfix/`→`fix/`, auto-rename via API |
+| PR title | Conventional Commits title; tries auto-fix |
+| Labels | Path areas + size XS–XL + `preview:ready` |
+| Vercel verify | READY for PR SHA + HTTP health (`VERCEL_TOKEN`) |
+| Auto review | Structured review / request-changes |
+| Sticky dashboard | One living PR comment (marker `agent-os-dashboard`) |
+| **PR automation all green** | Single required status for branch protection |
+
+Local:
+
+```bash
+npm run branch:normalize:json
+npm run pr:title
+npm run vercel:verify
+npm run pr:review
+npm run pr:label
+npm run pr:dashboard
+```
+
+**Branch protection (recommended required checks):**
+
+1. `PR automation all green`  
+2. `1 · Quality (lint · knip · test · build)` from CI/CD Pipeline  
+
+
+## Git standards fail
+
+Branch must start with: `feat/` `fix/` `chore/` `docs/` `infra/` `agent/` `devin/` `dependabot/`
+
+Commits: Conventional Commits `type(scope): subject`  
+CI sets `GIT_GUARD_STRICT=1` (warnings become errors).
+
+## Knip fails
+
+Config: `knip.json`. Ignores `.agents/**`, skills, graphify-out.  
+Only **unused files** and **unused dependencies** fail CI (exports are off).
+
+```bash
+npm run lint:knip
+```
+
+## Markdownlint fails
+
+Config: `.markdownlint.json` + `.markdownlintignore`.
+
+```bash
+npm run lint:md
+```
+
+## Duplicate CodeQL
+
+CodeQL runs only in `codeql.yml`. `security-scan.yml` is npm audit + dependency review.
+
+## Entire / hooks noise in CI
+
+CI sets `HOOKS_SKIP`, `ENTIRE_SYNC_SKIP`, `GRAPHIFY_SKIP_HOOK` so agent hooks never run on runners.
+
+## Node version
+
+Use `.nvmrc` (`24.0.0`). Workflows use `node-version-file: '.nvmrc'`.

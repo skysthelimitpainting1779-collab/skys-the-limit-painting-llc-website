@@ -1,0 +1,34 @@
+---
+description: Agent OS + ontology + Entire + graphify (Cursor always-on)
+alwaysApply: true
+---
+
+# Agent OS + ontology (Cursor)
+
+**Mandatory:** `.agents/ONTOLOGY.md` · `.agents/AGENTS.md` · `npm run agentos:health`
+
+## Before exploring code
+
+1. Follow ontology cold start (kernel → errors index → graph query).
+2. `npm run graph:query -- "…"` / path / explain — **not** bulk wiki or GRAPH_REPORT.
+3. Prefer codebase-memory-mcp when connected.
+4. Grep/Read only after orientation.
+
+## After editing code
+
+- `npm run graph:update` or `node scripts/hooks/run.mjs post-edit`
+
+## After durable work
+
+- Conventional commit / `npm run agentos:auto-commit`
+- Entire sync only with real auth — **no git→skill fakes**
+
+## Never recreate
+
+- `.agents/_archive`
+- Session residue dirs (`*m1_m5*`, orchestrator dumps, dashboard.html dumps)
+- Parallel “memory” trees outside the ontology
+
+## Subagents
+
+Include in every explore prompt: **ONTOLOGY v2 + graph:query before Read/Grep.**

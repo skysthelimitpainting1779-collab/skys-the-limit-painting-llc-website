@@ -1,8 +1,18 @@
 #!/bin/sh
-# Entire CLI
-if [ -f 'C:\Users\Johnny Cage\.local\bin\entire.exe' ]; then 'C:\Users\Johnny Cage\.local\bin\entire.exe' hooks git post-commit 2>/dev/null || true; else :; fi
-# Graphify knowledge graph (non-blocking)
-if command -v graphify >/dev/null 2>&1; then
-  echo "Agentic OS: synchronizing structural memory graph..."
-  graphify update . || true
+# Git lifecycle: Entire checkpoint → Agent OS codify → chained hooks (graphify)
+if [ -f "C:/Users/Johnny Cage/.local/bin/entire.exe" ]; then
+  "C:/Users/Johnny Cage/.local/bin/entire.exe" hooks git post-commit 2>/dev/null || true
+elif command -v entire >/dev/null 2>&1; then
+  entire hooks git post-commit 2>/dev/null || true
+fi
+
+if [ "${ENTIRE_SYNC_SKIP:-0}" != "1" ] && [ "${HOOKS_SKIP:-0}" != "1" ]; then
+  if command -v node >/dev/null 2>&1; then
+    node scripts/hooks/run.mjs post-commit-full 2>/dev/null || node scripts/entire-to-agentos.mjs 2>/dev/null || true
+  fi
+fi
+
+_entire_hook_dir="$(dirname "$0")"
+if [ -x "$_entire_hook_dir/post-commit.pre-entire" ]; then
+  "$_entire_hook_dir/post-commit.pre-entire" "$@"
 fi

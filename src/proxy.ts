@@ -1,16 +1,78 @@
-import { type NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from './lib/supabase/middleware';
+import { gatePortalAccess, isProtectedPortalPath, portalLoginUrl } from './lib/auth/portal';
 
+/**
+ * Next.js proxy (session refresh + portal route protection).
+ * Public marketing pages are NOT matched — see config.matcher.
+ */
 export async function proxy(request: NextRequest) {
-  return await updateSession(request);
+  // Always refresh session cookies when this proxy runs
+  let response = await updateSession(request);
+
+  const pathname = request.nextUrl.pathname;
+
+  if (!isProtectedPortalPath(pathname)) {
+    return response;
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Without Supabase, portal cannot authenticate — deny protected surfaces.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/portal/login';
+    url.searchParams.set('next', pathname);
+    url.searchParams.set('error', 'auth_not_configured');
+    return NextResponse.redirect(url);
+  }
+
+  // Re-read user with the same cookie bridge as updateSession
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        response = NextResponse.next({ request });
+        cookiesToSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options)
+        );
+      },
+    },
+  });
+
+  let user: { id: string; email?: string | null } | null = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user
+      ? { id: data.user.id, email: data.user.email }
+      : null;
+  } catch {
+    user = null;
+  }
+
+  const gate = gatePortalAccess(user);
+  if (!gate.authenticated) {
+    const url = request.nextUrl.clone();
+    const login = portalLoginUrl(pathname);
+    const [pathOnly, qs] = login.split('?');
+    url.pathname = pathOnly || '/portal/login';
+    url.search = qs ? `?${qs}` : '';
+    return NextResponse.redirect(url);
+  }
+
+  return response;
 }
 
 export const config = {
-  /*
-   * Supabase session refresh is only needed where an authenticated session
-   * exists — the admin dashboard. Public marketing pages are unauthenticated,
-   * so scoping the matcher here avoids a Supabase round-trip (and an edge
-   * middleware invocation) on every visitor request.
-   */
-  matcher: ['/admin/:path*'],
+  matcher: [
+    '/admin/:path*',
+    '/portal',
+    '/portal/:path*',
+    '/auth/callback',
+  ],
 };

@@ -1,0 +1,24 @@
+{
+  "domain_id": "ui-ux",
+  "name": "UI/UX Design System Agent",
+  "status": "success",
+  "version": "2.0.0",
+  "last_task": "Font stack industrial without remote webfonts",
+  "last_error_id": null,
+  "last_success_id": "DOM-ui-ux-OK-1bf1c678",
+  "last_error_at": null,
+  "last_success_at": "2026-07-09T20:47:33.863Z",
+  "last_synced_at": "2026-07-10T09:01:10.717Z",
+  "counters": {
+    "errors": 0,
+    "successes": 1,
+    "unique_errors": 0,
+    "unique_successes": 1
+  },
+  "current": {
+    "task": null,
+    "files": [],
+    "started_at": null
+  },
+  "updated_at": "2026-07-10T09:01:10.860Z"
+}

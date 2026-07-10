@@ -1,5 +1,9 @@
 #!/bin/sh
-# Pre-commit gate: git-standards guard + TypeScript type check.
-# (Mirrors the CI "Lint" job; no formatter auto-fix so commits never silently
-# reformat unrelated files.)
-npm run lint
+# Pre-commit: match CI quality gates (types + react pins).
+# Full suite (md + knip + test + build) runs in GitHub Actions / npm run ci.
+# Skip with: SKIP_PRECOMMIT=1 git commit ...
+if [ "${SKIP_PRECOMMIT:-0}" = "1" ] || [ "${HOOKS_SKIP:-0}" = "1" ]; then
+  exit 0
+fi
+npm run lint:react
+npm run lint:types

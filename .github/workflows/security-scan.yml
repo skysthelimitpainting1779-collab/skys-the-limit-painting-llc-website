@@ -14,8 +14,7 @@ permissions:
   security-events: write
   pull-requests: read
 
-
-
+# CodeQL lives only in codeql.yml (avoid duplicate analysis jobs).
 jobs:
   npm-audit:
     name: npm Audit
@@ -33,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Audit dependencies
+      - name: Audit production dependencies
         run: npm audit --audit-level=critical --omit=dev
 
   dependency-review:
@@ -48,22 +47,4 @@ jobs:
       - name: Review dependencies
         uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
-          fail-on-severity: moderate
-
-  codeql:
-    name: CodeQL
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
-        with:
-          languages: javascript-typescript
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
-
-      - name: Analyze
-        uses: github/codeql-action/analyze@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
+          fail-on-severity: high

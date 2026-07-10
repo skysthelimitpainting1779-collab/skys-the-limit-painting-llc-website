@@ -46,14 +46,10 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.4 Routing & Navigation - Redirects for legacy routes redirect to new pages', () => {
-    const vercelConfig = JSON.parse(read('vercel.json'));
-    const redirects = vercelConfig.redirects || [];
-    const residentialRedirect = redirects.find(r => r.source === '/services');
-    const interiorRedirect = redirects.find(r => r.source === '/services/interior');
-    assert.ok(residentialRedirect);
-    assert.equal(residentialRedirect.destination, '/residential');
-    assert.ok(interiorRedirect);
-    assert.equal(interiorRedirect.destination, '/residential');
+    // SSOT is vercel.ts (typed Vercel config); assert redirect routes as source.
+    const vercelTs = read('vercel.ts');
+    assert.match(vercelTs, /routes\.redirect\('\/services',\s*'\/residential'/);
+    assert.match(vercelTs, /routes\.redirect\('\/services\/interior',\s*'\/residential'/);
   });
 
   test('T1.5 Routing & Navigation - Invalid paths serve the customized 404 page', () => {
@@ -289,12 +285,13 @@ describe('Tier 2: Boundary/Corner Cases', () => {
     assert.match(layout, /href="tel:\+16514104196"/);
   });
 
-  test('T2.3 Routing & Navigation - CSP and HTTP security headers are configured in vercel.json', () => {
-    const vercelConfig = JSON.parse(read('vercel.json'));
-    const csp = vercelConfig.headers[0].headers.find(h => h.key === 'Content-Security-Policy').value;
-    assert.match(csp, /default-src 'self'/);
-    assert.match(csp, /object-src 'none'/);
-    assert.match(csp, /frame-ancestors 'none'/);
+  test('T2.3 Routing & Navigation - CSP and HTTP security headers are configured in vercel.ts', () => {
+    const vercelTs = read('vercel.ts');
+    assert.match(vercelTs, /Content-Security-Policy/);
+    assert.match(vercelTs, /default-src 'self'/);
+    assert.match(vercelTs, /object-src 'none'/);
+    assert.match(vercelTs, /frame-ancestors 'none'/);
+    assert.match(vercelTs, /Strict-Transport-Security/);
   });
 
   test('T2.4 Routing & Navigation - Referral parameters are parsed and stored in LocalStorage', () => {

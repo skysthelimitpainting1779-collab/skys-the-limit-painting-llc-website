@@ -69,9 +69,10 @@
   --color-orange-deep: #E5E5E5;
 
   /* ── Typography ──────────────────────────────────────────────────── */
-  --font-display: "Satoshi", "Oswald", sans-serif;
-  --font-body: system-ui, -apple-system, sans-serif;
-  --font-mono: "Fira Code", monospace;
+  /* next/font Geist on --font-sans; industrial stack without blocking webfonts */
+  --font-display: var(--font-sans), "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --font-body: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
 
   /* ── Radii (machined edges — intentionally square) ───────────────── */
   --radius-xs: 0px;

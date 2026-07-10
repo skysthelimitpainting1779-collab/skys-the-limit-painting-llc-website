@@ -1,0 +1,31 @@
+{
+  "name": "logo_search",
+  "description": "\nSearch and return logos in specified format (JSX, TSX, SVG).\nSupports single and multiple logo searches with category filtering.\nCan return logos in different themes (light/dark) if available.\n\nWhen to use this tool:\n1. When user types \"/logo\" command (e.g., \"/logo GitHub\")\n2. When user asks to add a company logo that's not in the local project\n\nExample queries:\n- Single company: [\"discord\"]\n- Multiple companies: [\"discord\", \"github\", \"slack\"]\n- Specific brand: [\"microsoft office\"]\n- Command style: \"/logo GitHub\" -> [\"github\"]\n- Request style: \"Add Discord logo to the project\" -> [\"discord\"]\n\nFormat options:\n- TSX: Returns TypeScript React component\n- JSX: Returns JavaScript React component\n- SVG: Returns raw SVG markup\n\nEach result includes:\n- Component name (e.g., DiscordIcon)\n- Component code\n- Import instructions\n",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "queries": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of company names to search for logos"
+      },
+      "format": {
+        "type": "string",
+        "enum": [
+          "JSX",
+          "TSX",
+          "SVG"
+        ],
+        "description": "Output format"
+      }
+    },
+    "required": [
+      "queries",
+      "format"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}
