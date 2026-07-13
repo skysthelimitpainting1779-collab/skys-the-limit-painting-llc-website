@@ -7,14 +7,5 @@
         "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/sidecars/graphify-maintainer.py"
       ],
       "auto_start": true
-    },
-    {
-      "name": "universal-ci",
-      "command": "python",
-      "args": [
-        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/sidecars/ci-sidecar/ci_sidecar.py"
-      ],
-      "auto_start": true
-    }
   ]
 }

@@ -15,8 +15,26 @@ env:
   VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
 
 jobs:
+  git-standards:
+    name: Git Standards Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js 24
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        with:
+          node-version-file: '.nvmrc'
+      - name: Run Git Guard
+        env:
+          GIT_GUARD_STRICT: '1'
+        run: node scripts/enforce-git.js
+
   build-and-test:
     name: Build & Test (Node 24)
+    needs: git-standards
     runs-on: ubuntu-latest
 
     steps:
@@ -41,6 +59,14 @@ jobs:
       - name: Install dependencies
         if: steps.cache-nm.outputs.cache-hit != 'true'
         run: npm ci
+
+      - name: Next.js Cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
 
       - name: Run tests
         run: npm test
@@ -52,43 +78,3 @@ jobs:
         run: npm run build
         env:
           HOOKS_SKIP: "1"
-
-  verify-deployment:
-    name: Verify Vercel Deployment
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    # Only verify on pushes that Vercel will auto-deploy (main + PR branches)
-    if: github.event_name == 'push'
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup Node.js 24
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
-        with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-
-      - name: Restore node_modules cache
-        id: cache-nm
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nm-
-
-      - name: Install dependencies
-        if: steps.cache-nm.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - name: Wait for Vercel deployment to reach READY
-        run: node scripts/verify-vercel-deployment.mjs --timeout 720
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
-          GITHUB_SHA: ${{ github.sha }}

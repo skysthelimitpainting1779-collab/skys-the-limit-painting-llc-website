@@ -13,9 +13,9 @@ This workflow orchestrates a Reflexion (Produce $\rightarrow$ Critique $\rightar
 
 ## The Loop
 1. **Produce**: Write the initial implementation or fix based on the current requirements.
-2. **Execute**: Run `python run_tests_hardened.py` to evaluate the implementation.
-3. **Critique**: If the test fails (non-zero exit code), read `.agents/logs/devhealer_error.log` (or `%ANTIGRAVITY_EXECUTABLE_DATA_DIR%/devhealer_error.log`). Reflect on the exact nature of the failure. Why did it fail? What context was missed?
-4. **Repair**: Apply targeted fixes using file modification tools based on the critique.
+2. **Execute**: Run native async tests using `run_command` (via the `run_tests` skill). Use `manage_task` to read the exit code.
+3. **Critique**: If the test fails, use the `reflection-engine` skill to evaluate the exact error. You MUST pass the error stack trace to `search_web` and use the `context7` MCP on the failing library to discover exactly why the failure occurred before attempting a repair.
+4. **Repair**: Apply targeted fixes using file modification tools based on the contextual critique. Use the `heal-and-evolve` skill to track anomaly resolution.
 5. **Repeat**: Go back to Execute.
 
 **Termination Condition**: The loop ends autonomously only when the `Execute` step yields a clean, zero exit code.

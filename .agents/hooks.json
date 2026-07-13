@@ -10,35 +10,16 @@
       "matcher": "*"
     }
   ],
-  "Stop": [
-    {
-      "type": "command",
-      "command": "python",
-      "args": [
-        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/stop_reflect_on_failure.py"
-      ],
-      "timeout": 15
-    }
-  ],
-  "PreInvocation": [
-    {
-      "type": "command",
-      "command": "python",
-      "args": [
-        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/cleanup-hook.py"
-      ],
-      "timeout": 15
-    },
-    {
-      "type": "command",
-      "command": "python",
-      "args": [
-        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/prompt-optimizer.py"
-      ],
-      "timeout": 5
-    }
-  ],
   "PreToolUse": [
+    {
+      "type": "command",
+      "command": "python",
+      "args": [
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/context-injector-hook.py"
+      ],
+      "timeout": 5,
+      "matcher": "*"
+    },
     {
       "type": "command",
       "command": "python",

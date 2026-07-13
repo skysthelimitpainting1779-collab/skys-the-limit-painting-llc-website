@@ -12,15 +12,15 @@ You MUST operate as a strict DAG Architect.
 ## Step 1: The Graph Analyzer
 1. Pull all open tickets assigned to DevHealer.
 2. Construct a `dependency-graph.json` artifact mapping each ticket to a Tier.
-   - **Tier 1 (Infrastructure)**: Database schemas (Supabase RLS, tables, migrations), server configurations, and core architectural dependencies.
+   - **Tier 1 (Infrastructure)**: Database schemas (Supabase RLS, tables, migrations), server configurations, and core architectural dependencies. You MUST pass instructions to the `resolver` subagent to query `context7` for Supabase Postgres best practices.
    - **Tier 2 (Backend APIs)**: Routes, Server Actions, edge functions, or handlers that depend on the Tier 1 schema.
    - **Tier 3 (Frontend UI)**: React components, client-side fetching, and UI states that depend on Tier 2 APIs.
 
 ## Step 2: Tier 1 Execution (Concurrency Throttled)
 1. Spawn isolated background subagents for all Tier 1 tickets ONLY.
-   `invoke_subagent --workspace=worktree --role=resolver --ticket=[ID]`
+   `invoke_subagent --workspace=share --role=resolver --ticket=[ID]`
 2. **TOKEN SAFETY GUARANTEE**: The orchestrator daemon (`integration-sidecar.py`) natively enforces a strict `ThreadPoolExecutor` queue with `MAX_CONCURRENCY=4`. Only 4 agents will ever run at the exact same time. It is physically impossible to exceed this without passing an `--override-concurrency` flag.
-3. The `No-Clone` ontology policy applies. Do not clone the repo. Use worktrees.
+3. The `No-Clone` ontology policy applies. Do not clone the repo. Use native shared workspaces.
 
 ## Step 3: The Dependency Lock
 1. Place a hard lock on Tier 2 and Tier 3 execution. 
