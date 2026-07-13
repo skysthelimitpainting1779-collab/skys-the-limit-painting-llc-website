@@ -4,7 +4,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/posttool_episodic_capture.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/posttool_episodic_capture.py"
       ],
       "timeout": 10,
       "matcher": "*"
@@ -15,7 +15,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/stop_reflect_on_failure.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/stop_reflect_on_failure.py"
       ],
       "timeout": 15
     }
@@ -25,7 +25,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/cleanup-hook.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/cleanup-hook.py"
       ],
       "timeout": 15
     },
@@ -33,7 +33,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/prompt-optimizer.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/prompt-optimizer.py"
       ],
       "timeout": 5
     }
@@ -43,7 +43,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/graphify-grep-enforcer.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/graphify-grep-enforcer.py"
       ],
       "timeout": 5,
       "matcher": "default_api:grep_search"
@@ -52,7 +52,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/schema-validator.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/schema-validator.py"
       ],
       "timeout": 5,
       "matcher": "*"
@@ -61,7 +61,7 @@
       "type": "command",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/hooks/command-validator.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/command-validator.py"
       ],
       "timeout": 5,
       "matcher": "*"

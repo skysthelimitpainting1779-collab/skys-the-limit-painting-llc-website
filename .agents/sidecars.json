@@ -1,26 +1,10 @@
 {
   "sidecars": [
     {
-      "name": "integration-sidecar",
-      "command": "python",
-      "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/sidecars/integration-sidecar/integration.py"
-      ],
-      "auto_start": true
-    },
-    {
-      "name": "proactive-healer",
-      "command": "python",
-      "args": [
-        "c:/Users/Johnny Cage/ITS/sidecars/watcher/proactive-healer.py"
-      ],
-      "auto_start": true
-    },
-    {
       "name": "graphify-maintainer",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/sidecars/graphify-maintainer.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/sidecars/graphify-maintainer.py"
       ],
       "auto_start": true
     },
@@ -28,7 +12,7 @@
       "name": "universal-ci",
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/sidecars/ci-sidecar/ci_sidecar.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/sidecars/ci-sidecar/ci_sidecar.py"
       ],
       "auto_start": true
     }

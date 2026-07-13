@@ -3,7 +3,7 @@
     "devhealer": {
       "command": "python",
       "args": [
-        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/mcp/server.py"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/mcp/server.py"
       ]
     },
     "graphify": {
@@ -12,7 +12,7 @@
         "--from",
         "graphifyy",
         "graphify-mcp",
-        "c:/Users/Johnny Cage/ITS/graphify-out/graph.json"
+        "c:/Users/Johnny Cage/DEV/skysthelimit-collab/graphify-out/graph.json"
       ]
     }
   }
