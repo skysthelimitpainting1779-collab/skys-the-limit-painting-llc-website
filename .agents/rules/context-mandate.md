@@ -1,18 +1,34 @@
 ---
 trigger: always_on
-description: Mandates Context7 and Web Search for architectural planning.
+description: Mandates Context7 for every Vercel/Next.js/Supabase interaction, not just planning.
 ---
 
 # Universal Context Mandate
 
-To prevent architectural regressions, hallucinated API usage, and outdated library patterns, all agents MUST obey the following constraint:
+To prevent architectural regressions, hallucinated API usage, and outdated library patterns, all agents MUST obey the following constraint.
 
 ## The Mandate
-Whenever you are drafting an `implementation_plan.md`, making an architectural decision, choosing a dependency, or attempting to write a complex implementation from scratch, you **MUST NOT** rely solely on your pre-trained weights.
 
-Before you write any code or finalize the plan, you **MUST**:
-1.  Execute a `query-docs` tool call via the Context 7 MCP server (or use `npx ctx7 docs`).
-2.  OR execute a `search_web` tool call to find the latest library documentation, GitHub issues, or StackOverflow patterns.
+**For any interaction involving Vercel, Next.js, Supabase, or any external platform:**
+query Context7 BEFORE writing config, CLI commands, or API calls — not just during planning.
+
+**Mandatory trigger list — Context7 required before acting:**
+- Any edit to `vercel.ts`, `vercel.json`, `next.config.ts`
+- Any `vercel` CLI command or flag lookup
+- Any `routes.header()`, `routes.cacheControl()`, or `ignoreCommand` usage
+- Any Supabase Auth flow (OAuth, PKCE, callback, session cookies)
+- Any `@vercel/analytics`, `@vercel/speed-insights`, `@vercel/edge-config` API usage
+- Any implementation plan involving React, Next.js, Vercel, or Supabase
+
+**Preferred library IDs:**
+- Vercel deep search: `/llmstxt/vercel_llms_txt` (52K snippets)
+- Vercel quicklook: `/websites/vercel` (20K snippets)
+- Supabase: resolve via `resolve-library-id` with "supabase" + specific topic
+
+## Steps
+1. `resolve-library-id` with library name + specific question
+2. `query-docs` with the best matching ID and the full question
+3. Apply what the docs say — do not override with pre-trained weights
 
 ## Enforcement
-If you present an implementation plan involving a modern framework (e.g., React, Next.js, Vercel, Supabase) without having explicitly searched for its latest syntax, you have violated the Universal Context Mandate. Always fetch fresh context before acting.
+Editing `vercel.ts` or any Vercel config without a prior Context7 call violates this mandate. The `[0ms]` build error and `routes.header should be array` failure in production are examples of what training-data drift causes.
