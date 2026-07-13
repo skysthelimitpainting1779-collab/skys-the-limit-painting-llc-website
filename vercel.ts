@@ -69,7 +69,16 @@ export const config: VercelConfig = {
     },
   ],
 
-  // Skip CI builds on entire/* agent branch noise
+  // Skip builds on agent noise branches (entire/*).
+  // Canonical bash pattern per Vercel docs — exits 0 = skip, exits 1 = build.
   ignoreCommand:
-    'node -e "const r=process.env.VERCEL_GIT_COMMIT_REF||\'\'; process.exit(/^entire\\\\//.test(r)?0:1)"',
+    'if [[ "$VERCEL_GIT_COMMIT_REF" == entire/* ]]; then echo "🛑 agent branch, skipping"; exit 0; else echo "✅ proceeding with build"; exit 1; fi',
+
+  // Only auto-deploy from main (production) and infra/* (preview).
+  // Agent worktree branches (entire/*, fix/*, feat/*) are gated through PRs.
+  git: {
+    deploymentEnabled: {
+      'entire/*': false,
+    },
+  },
 };
