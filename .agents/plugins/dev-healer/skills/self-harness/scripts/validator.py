@@ -5,7 +5,7 @@ import subprocess
 
 DATA_DIR = os.environ.get('ANTIGRAVITY_EXECUTABLE_DATA_DIR', '.agents/scratch')
 RESULTS_FILE = os.path.join(DATA_DIR, 'validation-results.json')
-COST_THRESHOLD = 0.5 # Configured per persona
+COST_THRESHOLD = 0.0001 # Configured per persona
 
 def execute_validation():
     print("[Validator] Compiling candidate harness configurations in-memory...")

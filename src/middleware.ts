@@ -4,10 +4,10 @@ import { updateSession } from './lib/supabase/middleware';
 import { gatePortalAccess, isProtectedPortalPath, portalLoginUrl } from './lib/auth/portal';
 
 /**
- * Next.js proxy (session refresh + portal route protection).
- * Public marketing pages are NOT matched — see config.matcher.
+ * Next.js middleware (session refresh + portal/admin route protection).
+ * Public marketing pages are NOT matched — see config.matcher below.
  */
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Always refresh session cookies when this proxy runs
   let response = await updateSession(request);
 
