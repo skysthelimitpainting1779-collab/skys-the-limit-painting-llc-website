@@ -33,19 +33,19 @@ export const config: VercelConfig = {
   // Directus and other stateful CMS stay self-hosted — not free Fluid Docker.
 
   headers: [
-    routes.header('/(.*)', {
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-      'Content-Security-Policy': CONTENT_SECURITY_POLICY,
-    }),
-    routes.header('/api/(.*)', {
-      'Access-Control-Allow-Origin': 'https://www.skysthelimitpaintingllc.com',
-      'Access-Control-Allow-Methods': 'POST,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Accept',
-    }),
+    routes.header('/(.*)', [
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'X-Frame-Options', value: 'DENY' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+      { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+      { key: 'Content-Security-Policy', value: CONTENT_SECURITY_POLICY },
+    ]),
+    routes.header('/api/(.*)', [
+      { key: 'Access-Control-Allow-Origin', value: 'https://www.skysthelimitpaintingllc.com' },
+      { key: 'Access-Control-Allow-Methods', value: 'POST,OPTIONS' },
+      { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Accept' },
+    ]),
     routes.cacheControl('/brand/(.*)', {
       public: true,
       maxAge: '1 year',
