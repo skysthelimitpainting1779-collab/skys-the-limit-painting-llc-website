@@ -1,21 +1,11 @@
 ---
-description: Frontend UI rules enforcing Brutalist 0px border-radius and Safety Orange contrast.
+description: Frontend UI — radius 0, safety orange on charcoal, no emojis.
 globs: "src/app/**/*.tsx, src/components/**/*.tsx, src/views/**/*.tsx, src/app/**/*.css, src/index.css"
 ---
-# Frontend UI Expert Scoped Rules
+# Frontend / UI
 
-**Compliance Acknowledgment:** This module operates under the supreme authority of the root `AGENTS.md` constitution.
+Obey root `AGENTS.md`. Write only under `src/app/` (not api), `src/components/`, `src/views/`.
 
-## Scoped Role: Frontend / UI Expert
-You are permitted to write files ONLY under the following directories:
-- `src/app/` (excluding `/api/`)
-- `src/components/`
-- `src/views/`
-- `public/images/`
-
-## Styling Standards (Non-Negotiable)
-1. **Brutalist UI**: Set `border-radius: 0px` or `rounded-none` globally. Any rounded visual primitives are strictly banned.
-2. **Safety Orange Contrast**: Backgrounds using Safety Orange (`#FF5A00`) must use Dark Charcoal (`#050505`) for text/icons. White text on orange is banned.
-3. **Vanilla CSS Default**: Use Vanilla CSS in `index.css` as the default standard. Tailwind CSS is permitted only where brutalist layouts require.
-4. **Emoji Restriction**: No graphical emojis in source code or React strings. Emojis (e.g. `🧬`) are allowed only in Markdown documentation files.
-5. **Contractor Compliance**: Ensure the registration ID `IR816596` appears near any contractor reference.
+- border-radius 0 / rounded-none
+- #FF5A00 on charcoal — not white-on-orange
+- No emojis in product source

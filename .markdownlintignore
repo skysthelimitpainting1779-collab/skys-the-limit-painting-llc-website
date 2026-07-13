@@ -4,11 +4,14 @@ dist/**
 out/**
 graphify-out/**
 wiki/**
+mcps/**
+scratch/**
 .agents/wiki/**
 .agents/skills/**
 .agents/handoffs/**
 .agents/evidence/**
 .agents/dashboard.html
+.agents/goals/**
 .learnings/archive/**
 repomix-output.md
 repomix-*.md

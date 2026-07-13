@@ -29,26 +29,20 @@ export function ensureDir(dirPath) {
 }
 
 /**
- * Ontology v2 active control-plane dirs only.
- * No archive trees — bloat is hard-deleted via agentos:purge.
+ * Zero-theater control plane: only dirs that still do real work.
+ * No queues/domains/checkpoints theater trees.
  */
 export function ensureControlPlane(root = process.cwd()) {
   const agents = join(root, '.agents');
   const dirs = [
     agents,
-    join(agents, 'checkpoints'),
-    join(agents, 'dead-letter'),
-    join(agents, 'effects'),
-    join(agents, 'evidence'),
-    join(agents, 'waits'),
-    join(agents, 'queues'),
-    join(agents, 'traces'),
-    join(agents, 'knowledge'),
-    join(agents, 'governance'),
-    join(agents, 'rules'),
     join(agents, 'skills'),
-    join(agents, 'domains'),
+    join(agents, 'rules'),
+    join(agents, 'governance'),
     join(agents, 'workflows'),
+    join(agents, 'goals'),
+    join(agents, 'goals', '_eval'),
+    join(agents, 'goals', '_harness'),
     join(root, '.learnings'),
   ];
   for (const d of dirs) ensureDir(d);
@@ -237,8 +231,8 @@ export function hasCheckpointForTask(db, taskId, root = process.cwd()) {
     }
   }
 
-  // Disk fallback
-  const dir = join(root, '.agents', 'checkpoints');
+  // Disk fallback (under goals/_harness — not theater checkpoints/)
+  const dir = join(root, '.agents', 'goals', '_harness');
   if (!existsSync(dir)) return false;
   try {
     return readdirSync(dir).some((name) => name.includes(taskId));
@@ -248,9 +242,9 @@ export function hasCheckpointForTask(db, taskId, root = process.cwd()) {
 }
 
 export function writePhaseCheckpoint(db, { taskId, sessionId, phase, logs = '', root = process.cwd() }) {
-  ensureDir(join(root, '.agents', 'checkpoints'));
+  ensureDir(join(root, '.agents', 'goals', '_harness'));
   const chkId = `CHK-${taskId}-${Date.now()}-${phase}`;
-  const planPath = join(root, '.agents', 'checkpoints', `${chkId}.json`);
+  const planPath = join(root, '.agents', 'goals', '_harness', `${chkId}.json`);
   const record = {
     id: chkId,
     task_id: taskId,

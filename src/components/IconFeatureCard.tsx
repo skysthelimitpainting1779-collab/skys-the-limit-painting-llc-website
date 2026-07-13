@@ -1,4 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
+import HoverLift from './animations/HoverLift';
+import { cn } from '@/lib/utils';
 
 interface IconFeatureCardProps {
   icon: LucideIcon;
@@ -26,10 +28,12 @@ export default function IconFeatureCard({
   as: Tag = 'article',
 }: IconFeatureCardProps) {
   return (
-    <Tag className={className}>
-      <Icon className={iconClassName} size={iconSize} strokeWidth={1.5} />
-      <Heading className={titleClassName}>{title}</Heading>
-      <p className={bodyClassName}>{body}</p>
-    </Tag>
+    <HoverLift>
+      <Tag className={cn(className, "transition-colors duration-300 hover:bg-white/5 h-full")}>
+        <Icon className={iconClassName} size={iconSize} strokeWidth={1.5} />
+        <Heading className={titleClassName}>{title}</Heading>
+        <p className={bodyClassName}>{body}</p>
+      </Tag>
+    </HoverLift>
   );
 }

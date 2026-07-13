@@ -1,0 +1,1415 @@
+[
+  {
+    "id": "SKY-133",
+    "n": 100,
+    "milestone": "M8 · Scale & moat (G-096–100)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-132",
+    "n": 99,
+    "milestone": "M8 · Scale & moat (G-096–100)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-131",
+    "n": 98,
+    "milestone": "M8 · Scale & moat (G-096–100)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-130",
+    "n": 97,
+    "milestone": "M8 · Scale & moat (G-096–100)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-129",
+    "n": 96,
+    "milestone": "M8 · Scale & moat (G-096–100)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-128",
+    "n": 95,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-127",
+    "n": 94,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-126",
+    "n": 93,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-125",
+    "n": 92,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-124",
+    "n": 91,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-33",
+    "n": 0,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "In Progress",
+    "labels": [
+      "Epic",
+      "!plan",
+      "Improvement",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-123",
+    "n": 90,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-122",
+    "n": 89,
+    "milestone": "M7 · CMS & content ops (G-089–095)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:cms",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-121",
+    "n": 88,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-120",
+    "n": 87,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-119",
+    "n": 86,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-118",
+    "n": 85,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-117",
+    "n": 84,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-116",
+    "n": 83,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-115",
+    "n": 82,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-114",
+    "n": 81,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-113",
+    "n": 80,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-112",
+    "n": 79,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-111",
+    "n": 78,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-110",
+    "n": 77,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-109",
+    "n": 76,
+    "milestone": "M6 · Painter homebase (G-076–088)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-108",
+    "n": 75,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-107",
+    "n": 74,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-106",
+    "n": 73,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-105",
+    "n": 72,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-104",
+    "n": 71,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:homebase",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-103",
+    "n": 70,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-102",
+    "n": 69,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-101",
+    "n": 68,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-100",
+    "n": 67,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-99",
+    "n": 66,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-98",
+    "n": 65,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-97",
+    "n": 64,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-96",
+    "n": 63,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-95",
+    "n": 62,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-94",
+    "n": 61,
+    "milestone": "M5 · Portal & CRM (G-061–075)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:portal",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-93",
+    "n": 60,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-92",
+    "n": 59,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-91",
+    "n": 58,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-90",
+    "n": 57,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-89",
+    "n": 56,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-88",
+    "n": 55,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-87",
+    "n": 54,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-86",
+    "n": 53,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-85",
+    "n": 52,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-84",
+    "n": 51,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-83",
+    "n": 50,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-82",
+    "n": 49,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-81",
+    "n": 48,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-80",
+    "n": 47,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-79",
+    "n": 46,
+    "milestone": "M4 · Local SEO (G-046–060)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-78",
+    "n": 45,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-77",
+    "n": 44,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-76",
+    "n": 43,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-75",
+    "n": 42,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-74",
+    "n": 41,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-73",
+    "n": 40,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-72",
+    "n": 39,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-71",
+    "n": 38,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-70",
+    "n": 37,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-69",
+    "n": 36,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-68",
+    "n": 35,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-67",
+    "n": 34,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-66",
+    "n": 33,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-65",
+    "n": 32,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-64",
+    "n": 31,
+    "milestone": "M3 · Proof & brand (G-031–045)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-63",
+    "n": 30,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-62",
+    "n": 29,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-61",
+    "n": 28,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-60",
+    "n": 27,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-59",
+    "n": 26,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-58",
+    "n": 25,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-57",
+    "n": 24,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-56",
+    "n": 23,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-55",
+    "n": 22,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-54",
+    "n": 21,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-53",
+    "n": 20,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-52",
+    "n": 19,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-51",
+    "n": 18,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-50",
+    "n": 17,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-49",
+    "n": 16,
+    "milestone": "M2 · Conversion (G-016–030)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p2-medium"
+    ],
+    "assignee": null
+  },
+  {
+    "id": "SKY-48",
+    "n": 15,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:security",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-47",
+    "n": 14,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:design",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-46",
+    "n": 13,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-45",
+    "n": 12,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-44",
+    "n": 11,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Backlog",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-43",
+    "n": 10,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-42",
+    "n": 9,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:security",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-41",
+    "n": 8,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:security",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-40",
+    "n": 7,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:security",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-39",
+    "n": 6,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:security",
+      "p1-high"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-38",
+    "n": 5,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:seo",
+      "p0-critical"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-37",
+    "n": 4,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:leads",
+      "p0-critical"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-36",
+    "n": 3,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p0-critical"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-35",
+    "n": 2,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p0-critical"
+    ],
+    "assignee": "me"
+  },
+  {
+    "id": "SKY-34",
+    "n": 1,
+    "milestone": "M1 · Foundation (G-001–015)",
+    "state": "Todo",
+    "labels": [
+      "Improvement",
+      "agent-ready",
+      "!verify",
+      "area:infra",
+      "p0-critical"
+    ],
+    "assignee": "me"
+  }
+]

@@ -1,32 +1,92 @@
+# AGENTS.md
+
+Portable kernel for **any** coding agent. Host-native specialists compile from `.agents/specialists.json`.
+
+**Product:** skysthelimit · **Tasks:** Linear `SKY-XX` · **Stack:** [`.agents/STACK.md`](.agents/STACK.md)
+
 ---
-type: policy
-title: Agents entrypoint (repo root)
-description: Root pointer so all IDEs/CLIs that look for AGENTS.md load the ontology kernel.
-tags: [agents, ontology, entrypoint]
+
+## Commands
+
+```bash
+npm install && npm run dev
+npm run lint
+npm test
+npm run build
+npm run graph:query -- "<task>"
+npm run goal -- status
+npm run goal:verify
+npm run ship:eval
+npm run host:compile          # regenerate Claude/Cursor/Codex/Copilot/Gemini adapters
+```
+
 ---
 
-# Agents
+## Host layout (native)
 
-**Product slug:** `skysthelimit` · **Task hub:** [Linear](https://linear.app/skysthelimit)  
-**Agent OS overview:** [`docs/AGENT_OS.md`](docs/AGENT_OS.md)  
-**Canonical kernel:** [`.agents/AGENTS.md`](.agents/AGENTS.md)  
-**Full ontology:** [`.agents/ONTOLOGY.md`](.agents/ONTOLOGY.md)  
-**Stack:** [`.agents/STACK.md`](.agents/STACK.md) · **Naming:** [`docs/NAMING.md`](docs/NAMING.md)  
-**Health:** `npm run agentos:health`
+| Host | Always-on | Specialists | Skills |
+|------|-----------|-------------|--------|
+| **All** | this file | `.agents/specialists.json` | `.agents/skills/` |
+| **Claude** | `CLAUDE.md` → `@AGENTS.md` | `.claude/agents/*.md` | `.claude/skills/` |
+| **Cursor** | `.cursor/rules/00-agents-kernel.mdc` | `.cursor/agents/` + `specialist-*.mdc` | path via rules |
+| **Codex** | `AGENTS.md` | `.codex/agents/*.toml` | `.agents/skills/` |
+| **Antigravity** | `GEMINI.md` + `.agents/rules/` | `.agents/rules/specialists.md` | `.agents/skills/` |
+| **Copilot** | `.github/copilot-instructions.md` | path rules | `.github/skills/` |
 
-All coding agents (Cursor, Claude Code, Gemini, Grok, Codex, CI) **must** follow the ontology:
+Map: [`.agents/HOST_NATIVE.md`](.agents/HOST_NATIVE.md)  
+**Zero theater:** only host-native paths + hard hooks. No domains/queues/hub_db/ontology novels.  
+`npm run agents:zero-theater` · `npm run host:compile`
 
-1. Load kernel only — not dumps  
-2. Route work to **domain agents** (`npm run domain:route` / `domain:prompt`)  
-3. `npm run graph:query -- "<task>"` before bulk explore  
-4. Learn on failure **in that domain's** `learnings/`; never invent git→skills  
-5. Never recreate archives or edit outside jurisdiction  
-6. Prefer Linear issues (`SKY-XX`) for product work — not GitHub Issues  
-7. **Root cause only** — never treat symptoms (`.agents/governance/ROOT_CAUSE.md`, iron law 12)  
+---
 
-**Layers:** Linear manages tasks · Agent OS runs agents · Git/Vercel ship product.
+## Behavior (Karpathy)
 
-See `.agents/AGENTS.md` + `.agents/domains/README.md` + `docs/AGENT_OS.md`.
+1. **Think before coding** — state assumptions; ask if unclear; surface tradeoffs.
+2. **Simplicity first** — minimum code; no speculative abstractions.
+3. **Surgical changes** — only what the task requires.
+4. **Goal-driven** — verifiable success; loop until `npm run goal:verify` passes.
 
-**CMS (next):** Payload 3 — [`docs/PAYLOAD_CMS_PLAN.md`](docs/PAYLOAD_CMS_PLAN.md) · handoff [`docs/HANDOFF_PAYLOAD_CMS.md`](docs/HANDOFF_PAYLOAD_CMS.md).  
-**Portal:** Supabase OAuth `/portal` (unchanged by Payload).
+---
+
+## Ship loop (RPI)
+
+Non-trivial work:
+
+```bash
+npm run goal -- start "short title"
+npm run goal -- phase research   # graph:query + research.md
+npm run goal -- phase plan
+npm run goal -- phase implement
+npm run goal:verify
+npm run goal -- done
+```
+
+Skill: `ship-loop` (`.agents/skills/ship-loop/`).
+
+---
+
+## Project style
+
+- Next.js App Router · TypeScript under `src/`
+- Industrial UI: **radius 0** · `#FF5A00` on charcoal · **no emojis** in product source
+- Root cause only · public claims verifiable
+
+---
+
+## Context
+
+| Always | On demand | Never bulk-load |
+|--------|-----------|-----------------|
+| This file | One skill `SKILL.md` | `graphify-out/wiki/**`, `GRAPH_REPORT.md` |
+| | Specialist agent for the path | Full skill packs, hub dumps |
+
+Hard denials (hooks): emoji in `src/`, wiki dumps, soft-skips, next/dynamic+ssr:false, recreate purged bloat. Soft env cannot disable denials.
+
+---
+
+## Evals / improve
+
+```bash
+npm run ship:eval
+npm run ship:improve    # purge + hard purge + prevent + health + eval
+```

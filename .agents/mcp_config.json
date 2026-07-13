@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "devhealer": {
+      "command": "python",
+      "args": [
+        "c:/Users/Johnny Cage/ITS/.agents/plugins/dev-healer/mcp/server.py"
+      ]
+    },
+    "graphify": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "graphifyy",
+        "graphify-mcp",
+        "c:/Users/Johnny Cage/ITS/graphify-out/graph.json"
+      ]
+    }
+  }
+}

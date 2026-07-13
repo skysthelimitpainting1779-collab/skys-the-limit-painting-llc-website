@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -27,7 +26,7 @@
 
 @theme {
   /* ── Charcoal surface scale (dark) ───────────────────────────────── */
-  --color-surface-void: #050505;   /* page floor / deepest */
+  --color-surface-void: #0A0A0A;   /* page floor / deepest */
   --color-surface-base: #070706;   /* hero + primary dark sections */
   --color-surface-sunken: #080807; /* alternating dark band */
   --color-surface-raised: #11100d; /* cards / panels on dark */
@@ -48,8 +47,8 @@
   /* Named `brand`, NOT `accent`, on purpose: the shadcn `@theme inline`
      block below already binds `--color-accent` to a neutral gray var, so a
      token named `accent` here would be silently overridden. */
-  --color-brand: #b45c28;          /* the ONE accent (bg-brand/text-brand) */
-  --color-brand-soft: #8b4d20;     /* accent on paper (eyebrows) */
+  --color-brand: #FF5A00;          /* the ONE accent (bg-brand/text-brand) */
+  --color-brand-soft: #FF5A00;     /* accent on paper (eyebrows) */
   --color-green-trust: #2E7D32;
 
   /* ── Hairlines ───────────────────────────────────────────────────── */
@@ -65,8 +64,8 @@
   --color-text-black: #171717;
   --color-gray-muted: #9CA3AF;
   --color-gray-warm: #1F2937;
-  --color-orange-safety: #F7F7F7;
-  --color-orange-deep: #E5E5E5;
+  --color-orange-safety: #FF5A00;
+  --color-orange-deep: #D94D00;
 
   /* ── Typography ──────────────────────────────────────────────────── */
   /* next/font Geist on --font-sans; industrial stack without blocking webfonts */
@@ -123,6 +122,7 @@
   * {
     box-sizing: border-box;
     min-width: 0;
+    border-radius: 0 !important;
     @apply border-border outline-ring/50;
   }
 
@@ -455,8 +455,9 @@
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-sans);
+  --font-heading: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -521,7 +522,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);

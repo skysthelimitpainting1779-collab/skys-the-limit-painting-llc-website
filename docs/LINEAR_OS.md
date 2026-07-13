@@ -1,44 +1,51 @@
 ---
 type: documentation
 title: Linear OS — workspace operating manual
-description: How skysthelimit uses Linear as the hub for tasks and ops docs.
-tags: [linear, process, agents, project-management, naming]
+description: How skysthelimit uses Linear as the hub for GTM + operations + software.
+tags: [linear, process, gtm, marketing, sales, project-management]
 date: 2026-07-10
 ---
 
 # Linear OS — skysthelimit
 
-**Live Linear doc:** [Linear OS](https://linear.app/skysthelimit/document/linear-os-workspace-operating-manual-7a94e6db17cb)  
+**Live Linear doc:** [Linear OS](https://linear.app/skysthelimit/document/linear-os-skysthelimit-7a94e6db17cb)  
+**Team setup:** [Team Skysthelimit — setup SSOT](https://linear.app/skysthelimit/document/team-skysthelimit-setup-ssot-4c3298d215d1)  
 **Workspace:** [skysthelimit](https://linear.app/skysthelimit) · Team: **Skysthelimit** · key **SKY**  
 **Naming SSOT:** [`docs/NAMING.md`](./NAMING.md)
 
 ---
 
-## Linear is the hub (management)
+## Linear is the company hub (not just software)
 
 | Concern | System |
 |---------|--------|
+| **GTM: marketing, sales, acquisition, brand, partnerships** | **Linear** (project **GTM**) |
 | **Tasks, milestones, triage, status** | **Linear** |
+| **Owner command center (scorecard, CRM view, SOPs, weekly rhythm)** | **Notion** — [Business OS](./BUSINESS_OS.md) / [live page](https://app.notion.com/p/e8110a799a894033a6863e0702039a2e) |
 | **Process / OS docs** | Linear Documents (+ mirror in `docs/`) |
-| **Agent behavior (route, learn, verify)** | **Agent OS** — [AGENT_OS.md](./AGENT_OS.md) · `.agents/AGENTS.md` |
-| **Architecture, DESIGN.md, plans, code** | **Git** (versioned) |
+| **Software / product engineering** | Linear (Reliability · Platform · Guapo) + **Git** |
 | **Deploy / env** | **Vercel** (`skysthelimit-website`) |
-| **Auth / data** | **Supabase** |
-| **Agent memory** | **Turso** (Agent OS only — not product CMS) |
+| **Auth / product data** | **Supabase** |
+| **Agent coding behavior** | Repo `AGENTS.md` + skills |
 
-Agents and humans create work in **Linear**, not GitHub Issues. PRs live on GitHub and link `SKY-XX`.  
-Agents **execute** work under Agent OS iron laws (domains, graph-first, learn-on-fail).
+**Rule of thumb:** Linear executes work. Notion Business OS is the owner’s weekly command view (not a second full backlog).
 
-### Agent OS ↔ Linear
+**Markets covered:** residential · commercial · municipal / public sector.
 
-| Step | Linear | Agent OS |
-|------|--------|----------|
-| Pick work | Issue `agent-ready` / assigned | `agentos:health` · `domain:route` |
-| Implement | Status In Progress | `graph:query` · domain jurisdiction · skills |
-| Fail | Comment on SKY-XX | `domain:error` + learning-loop |
-| Done | In Review / Done + evidence | `domain:success` · lint/tests |
+Agents and humans create work in **Linear**, not GitHub Issues. PRs live on GitHub and link `SKY-XX` when the work is software.
 
-See full map: **[docs/AGENT_OS.md](./AGENT_OS.md)**.
+### Software vs GTM
+
+| Work type | Project | Labels |
+|-----------|---------|--------|
+| GTM / sales / marketing / CA | **skysthelimit · GTM** | `market:*` + **one** `gtm:*` |
+| Website product upgrades | **Guapo Upgrade** | `area:*` + playbooks |
+| Portal / homebase / CMS | **Platform** | `area:portal` / `homebase` / `cms` |
+| Production / security / leads pipe | **Reliability** | `area:infra` / `security` / `leads` |
+
+Cross-link: when software enables a GTM outcome, set **related** between issues.
+
+**Linear label rule:** only **one** label per group (so one `market:*` and one `gtm:*` max per issue).
 
 ---
 
@@ -47,56 +54,81 @@ See full map: **[docs/AGENT_OS.md](./AGENT_OS.md)**.
 | Layer | Name |
 |-------|------|
 | **Team** | Skysthelimit (`SKY`) |
-| **Projects** | `skysthelimit · Reliability` · `skysthelimit · Platform` |
-| **Milestones** | R0–R2 (reliability) · M1–M4 (platform) |
-| **Epics** | Parent issues (e.g. SKY-12–15) |
-| **Cycles** | Enable in UI (2-week recommended) |
-| **Initiative (UI)** | `skysthelimit · 2026` → both projects |
+| **Initiative** | `skysthelimit · 2026` (whole company) |
+| **Projects** | **GTM** · Guapo Upgrade · Platform · Reliability |
+| **GTM milestones** | GTM-0 messaging · GTM-1 residential · GTM-2 commercial · GTM-3 municipal |
+| **Statuses** | Backlog → Todo → In Progress → In Review → Done |
+| **Cycles** | Team cycles (put active GTM + eng work into current cycle) |
 
 ### Project links
 
 | Project | URL |
 |---------|-----|
-| skysthelimit · Reliability | https://linear.app/skysthelimit/project/skysthelimit-reliability-a29ad741ff6a |
-| skysthelimit · Platform | https://linear.app/skysthelimit/project/skysthelimit-platform-23e9f741cb38 |
+| **GTM** | https://linear.app/skysthelimit/project/skysthelimit-gtm-b47097455766 |
+| Guapo Upgrade | https://linear.app/skysthelimit/project/skysthelimit-guapo-upgrade-5c471cfcb989 |
+| Platform | https://linear.app/skysthelimit/project/skysthelimit-platform-23e9f741cb38 |
+| Reliability | https://linear.app/skysthelimit/project/skysthelimit-reliability-a29ad741ff6a |
+| Initiative 2026 | https://linear.app/skysthelimit/initiative/skysthelimit-2026-55d7470dad57 |
 
 ### Package / deploy names
 
 | Surface | Name |
 |---------|------|
 | npm | `skysthelimit-website` |
-| Vercel (target) | `skysthelimit-website` (currently may still show `website`) |
-| GitHub repo (target) | `skysthelimit-website` |
+| Vercel (target) | `skysthelimit-website` |
+| Domain | www.skysthelimitpaintingllc.com |
 
 ---
 
-## Status workflow
+## Labels
 
-```text
-Backlog → Todo → In Progress → In Review → Done
-```
+### Severity
+`p0-critical` · `p1-high` · `p2-medium` · `p3-low`
+
+### Market (one only)
+`market:residential` · `market:commercial` · `market:municipal`
+
+### GTM function (one only)
+`gtm:marketing` · `gtm:sales` · `gtm:acq` · `gtm:content` · `gtm:ops` · `gtm:partnerships`
+
+### Software area (one only)
+`area:cms` · `area:homebase` · `area:portal` · `area:procurement` · `area:infra` · `area:security` · `area:leads` · `area:seo` · `area:design`
+
+### Type
+Feature · Bug · Epic · Chore · Docs · Spike · Improvement · **Campaign**
+
+### Workflow
+`agent-ready` · `human-only` · `needs-decision` · `blocked-external`
+
+### Playbooks (software agents)
+`!plan` · `!implement` · `!review` · `!triage` · `!verify` · `!deploy`
 
 ---
 
-## Labels (one per group)
+## How to file work
 
-| Group | Labels |
-|-------|--------|
-| Severity | `p0-critical` · `p1-high` · `p2-medium` · `p3-low` |
-| Area | `area:cms` · `homebase` · `portal` · `procurement` · `infra` · `security` · `leads` · `seo` · `design` |
-| Type | Feature · Bug · Epic · Chore · Docs · Spike · Improvement |
-| Workflow | `agent-ready` · `human-only` · `needs-decision` · `blocked-external` |
-| Playbooks | `!plan` · `!implement` · `!review` · `!triage` · `!verify` · `!deploy` |
+### GTM / business
+1. Project = **GTM**  
+2. Parent epic under [SKY-134](https://linear.app/skysthelimit/issue/SKY-134) when relevant  
+3. Labels: **one** market + **one** gtm function  
+4. Success metric + claim-safe language  
+5. Most pure-business work is **`human-only`** until a software handoff exists  
+
+### Software
+1. Pick Reliability / Platform / Guapo  
+2. Labels: area + severity + playbook  
+3. `agent-ready` only when spec is clear  
+4. Link related GTM issue if the code exists for a campaign/sales motion  
 
 ---
 
-## Agent rules
+## Agent rules (software only)
 
 1. Prefer **`agent-ready`** issues  
 2. Coding → `!implement` + In Progress  
 3. Evidence in comments → In Review  
-4. No architecture reopen without architecture-loop  
-5. Use Linear branch name / `SKY-XX` in commits  
+4. Commits/PRs use `SKY-XX`  
+5. Do not invent GTM claims or fake municipal credentials  
 
 ---
 
@@ -104,58 +136,35 @@ Backlog → Todo → In Progress → In Review → Done
 
 | Kind | Path |
 |------|------|
-| Feature / bug issue | `docs/templates/ISSUE_*.md` |
-| Plan / handoff | `docs/templates/PLAN.md` · `HANDOFF.md` |
-| Design (Stitch) | `DESIGN.md` · `docs/templates/DESIGN.md` |
-| PR | `docs/templates/PR.md` · `.github/pull_request_template.md` |
-| Status update | `docs/templates/LINEAR_STATUS.md` |
-| Agent OS overview | `docs/AGENT_OS.md` |
-| Agent kernel | `.agents/AGENTS.md` |
-| Domain agents | `.agents/domains/README.md` |
+| Issue templates (UI install) | `docs/linear-templates/` |
+| Feature / bug / plan | `docs/templates/` |
+
+MCP **cannot** create Linear UI templates — paste from repo.
 
 ---
 
 ## Definition of Done
 
+### GTM
+- Metric defined and recorded  
+- Market + function labeled  
+- Claim-safe  
+- Next step to estimate/job clear  
+
+### Software
 - Acceptance criteria met  
 - Tests / preview evidence  
-- Linear issue updated  
-- No secret commits  
-- Naming matches `docs/NAMING.md`  
+- Linear updated  
+- No secrets in git  
 
 ---
 
-## Team templates (Linear UI)
-
-MCP **cannot** create Linear issue/project/document templates. Install from repo:
-
-**[`docs/linear-templates/README.md`](./linear-templates/README.md)**
-
-| Kind | Templates |
-|------|-----------|
-| Issue | Feature · Bug · Epic · Chore · Agent OS |
-| Project | Platform · Reliability |
-| Document | Spec · Status · Agent OS note |
-
-Path: Settings → Teams → Skysthelimit → **Templates** → + New template → paste from those files.
-
-## Turso (Agent OS memory) — confirmed role
-
-| | |
-|--|--|
-| **Used for** | Agent OS learnings, domain state, CI lessons (`learn_*` tables) |
-| **Configured** | `TURSO_DATABASE_URL` + `TURSO_AUTH_TOKEN` in `.env.local` |
-| **Health** | `npm run agentos:health` → `turso.ok` + `mode: "remote"` |
-| **Not used for** | Product leads, portal RLS, Payload CMS content (those are Supabase / Payload Postgres) |
-
-See `docs/AGENT_OS.md` and `.agents/knowledge/LEARNING_TURSO.md`.
-
 ## Human UI checklist
 
-- [ ] **Team templates** installed from `docs/linear-templates/`  
-- [ ] Cycles (2 weeks)  
-- [ ] Initiative `skysthelimit · 2026`  
+- [x] Initiative `skysthelimit · 2026`  
+- [x] Projects: GTM · Guapo · Platform · Reliability  
+- [x] Market + GTM label groups  
+- [x] GTM epics + starter backlog  
+- [ ] Views: **GTM Residential** · **GTM Commercial** · **GTM Municipal** · **Sales** · **P0 Fire** · **Agent queue**  
+- [ ] Team templates installed from `docs/linear-templates/`  
 - [ ] GitHub integration  
-- [ ] Views: P0 Fire, Agent queue, CMS, Homebase, Blocked  
-- [ ] Vercel project rename → `skysthelimit-website`  
-- [ ] GitHub repo rename → `skysthelimit-website` (optional but recommended)  

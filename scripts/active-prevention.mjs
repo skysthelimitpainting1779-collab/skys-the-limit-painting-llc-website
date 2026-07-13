@@ -257,24 +257,159 @@ export const HARD_GUARDS = [
       );
     },
   },
+  {
+    id: 'LAW-EMOJI',
+    name: 'emoji-in-product-source',
+    severity: 'deny',
+    match({ tool, text, path }) {
+      if (!/Write|Edit|MultiEdit|StrReplace|search_replace|NotebookEdit|ApplyPatch/i.test(tool)) {
+        return false;
+      }
+      if (!path || !/^src\//i.test(path.replace(/\\/g, '/'))) return false;
+      if (!/\.(tsx?|jsx?|mjs|cjs|css)$/i.test(path)) return false;
+      // Common emoji / pictograph ranges (product ban)
+      return /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(text);
+    },
+    reason() {
+      return (
+        'BLOCKED: No emojis in product source under src/. Use text or SVG icons (e.g. Phosphor). Policy: AGENTS.md'
+      );
+    },
+  },
+  {
+    id: 'LAW-WIKI-DUMP',
+    name: 'bulk-wiki-or-graph-report',
+    severity: 'deny',
+    match({ tool, text, path }) {
+      const p = (path || '').replace(/\\/g, '/');
+      const hay = `${p}\n${text}`;
+      // Direct read/write of dumps
+      if (/graphify-out\/GRAPH_REPORT\.md/i.test(hay)) return true;
+      if (/graphify-out\/wiki\//i.test(p) && /Read|Write|Edit|Glob/i.test(tool)) {
+        // allow single index only via advise — deny multi-page dumps
+        if (!/wiki\/index\.md$/i.test(p)) return true;
+      }
+      if (/\.agents\/wiki\//i.test(p) && !/\.agents\/wiki\/README\.md$/i.test(p)) return true;
+      // Bash cat/type of report
+      if (/Bash|Shell/i.test(tool) && /GRAPH_REPORT\.md|graphify-out\/wiki/i.test(text)) {
+        if (!/graph:query|graph-context/i.test(text)) return true;
+      }
+      return false;
+    },
+    reason() {
+      return (
+        'BLOCKED: Never bulk-load graphify-out/wiki or GRAPH_REPORT.md. ' +
+        'Use: npm run graph:query -- "<task>". Policy: AGENTS.md'
+      );
+    },
+  },
+  {
+    id: 'LAW-BLOAT-RECREATE',
+    name: 'recreate-purged-bloat',
+    severity: 'deny',
+    match({ tool, path }) {
+      if (!/Write|Edit|MultiEdit|StrReplace|search_replace/i.test(tool)) return false;
+      const p = (path || '').replace(/\\/g, '/');
+      const banned = [
+        /^\.agents\/operating-summary\.md$/i,
+        /^\.agents\/implementation-contract\.md$/i,
+        /^\.agents\/runtime-capability-matrix\.md$/i,
+        /^\.agents\/status\.md$/i,
+        /^\.agents\/tasks\.md$/i,
+        /^\.agents\/plan\.md$/i,
+        /^\.agents\/milestones\.md$/i,
+        /^\.agents\/FAILURE\.md$/i,
+        /^\.agents\/dashboard\.html$/i,
+        /^\.agents\/decisions\.md$/i,
+        /^\.agents\/knowledge\.md$/i,
+        /^\.agents\/evals\.md$/i,
+        /^\.agents\/effects\.md$/i,
+        /^\.agents\/waits\.md$/i,
+        /^\.agents\/traces\.md$/i,
+        /^\.agents\/_archive\//i,
+      ];
+      return banned.some((re) => re.test(p));
+    },
+    reason() {
+      return (
+        'BLOCKED: Refusing to recreate purged Agent OS bloat. ' +
+        'Use root AGENTS.md, npm run goal, and hub_db/Turso — not status/plan/dashboard mirrors. ' +
+        'npm run agentos:purge'
+      );
+    },
+  },
+  {
+    id: 'LAW-SOFT-SKIP',
+    name: 'or-true-as-fix',
+    severity: 'deny',
+    match({ tool, text, path }) {
+      if (!/Write|Edit|MultiEdit|StrReplace|search_replace/i.test(tool)) return false;
+      if (!/hooks|scripts\/hooks|run\.mjs|active-prevention/i.test(path || text)) return false;
+      // Adding || true / exit 0 catch-alls as the "fix" for failing checks
+      if (
+        /(\|\|\s*true|exit\s+0\s*;?\s*$)/m.test(text) &&
+        /(lint|test|build|verify|semgrep|bash|fail)/i.test(text) &&
+        !/ROOT_CAUSE|defense-in-depth|after PATH fix|documented/i.test(text)
+      ) {
+        return true;
+      }
+      return false;
+    },
+    reason() {
+      return (
+        'BLOCKED (iron law 12): soft-skip / || true is not a root-cause fix. ' +
+        'Fix PATH, code, or config. See .agents/governance/ROOT_CAUSE.md'
+      );
+    },
+  },
+  {
+    id: 'LAW-DISABLE-PREVENTION',
+    name: 'disable-active-prevention',
+    severity: 'deny',
+    match({ tool, text, path }) {
+      if (!/Write|Edit|MultiEdit|StrReplace|Bash|Shell/i.test(tool)) return false;
+      const hay = `${path}\n${text}`;
+      if (/ACTIVE_PREVENTION_SKIP\s*=\s*1|ACTIVE_PREVENTION_SOFT\s*=\s*1/i.test(hay)) {
+        if (!/ALLOW_PREVENTION_BYPASS=1|documented exception/i.test(hay)) return true;
+      }
+      if (
+        /hooks\/run\.mjs|active-prevention/i.test(path || '') &&
+        /permissionDecision.*allow|SKIP.*prevention/i.test(text) &&
+        /deny|HARD_GUARDS/i.test(text) === false
+      ) {
+        // weak signal — skip
+      }
+      return false;
+    },
+    reason() {
+      return (
+        'BLOCKED: Cannot disable active prevention without ALLOW_PREVENTION_BYPASS=1 ' +
+        'and a documented exception. Soft mode is ignored for deny guards.'
+      );
+    },
+  },
 ];
 
 /**
  * Evaluate a tool call against hard guards + optional lesson-derived advice.
+ * Soft mode NEVER downgrades deny → advise for HARD_GUARDS (rules must hold).
+ * SKIP only works with ALLOW_PREVENTION_BYPASS=1 (break-glass).
  * @returns {{ decision: 'deny'|null, reasons: string[], context: string|null, matched: string[] }}
  */
 export function evaluateToolUse(toolName, toolInput = {}) {
-  if (process.env.ACTIVE_PREVENTION_SKIP === '1') {
-    return { decision: null, reasons: [], context: null, matched: [] };
+  const bypass =
+    process.env.ALLOW_PREVENTION_BYPASS === '1' &&
+    (process.env.ACTIVE_PREVENTION_SKIP === '1' || process.env.ACTIVE_PREVENTION_SOFT === '1');
+  if (process.env.ACTIVE_PREVENTION_SKIP === '1' && bypass) {
+    return { decision: null, reasons: [], context: null, matched: ['bypass'] };
   }
-
+  // SKIP without break-glass: still enforce (ignore skip)
   const tool = String(toolName || '');
   const input = toolInput && typeof toolInput === 'object' ? toolInput : {};
   const text = collectText(input);
   const path = filePathFromInput(input);
   const ctx = { tool, input, text, path };
 
-  const soft = process.env.ACTIVE_PREVENTION_SOFT === '1';
   const denyReasons = [];
   const adviseReasons = [];
   const matched = [];
@@ -287,7 +422,8 @@ export function evaluateToolUse(toolName, toolInput = {}) {
     }
     matched.push(g.name);
     const r = g.reason(ctx);
-    if (g.severity === 'deny' && !soft) denyReasons.push(r);
+    // Deny is always deny — SOFT cannot override
+    if (g.severity === 'deny') denyReasons.push(r);
     else adviseReasons.push(r);
   }
 
@@ -359,17 +495,23 @@ export function buildActiveContextMarkdown() {
   }
 
   lines.push(
-    '## Hard-blocked patterns (PreToolUse)',
+    '## Hard-blocked patterns (PreToolUse — cannot soft-skip)',
     '',
-    '- `next/dynamic` + `ssr: false` in TS/JS edits → **deny**',
+    '- `next/dynamic` + `ssr: false` in TS/JS → **deny**',
     '- Nested / broken `powershell -Command` → **deny**',
-    '- System32-bash soft-skip “fixes” in hooks → **deny**',
+    '- System32-bash soft-skip “fixes” → **deny**',
+    '- Emoji in `src/**` product source → **deny**',
+    '- Read/write `GRAPH_REPORT.md` or bulk `graphify-out/wiki` → **deny**',
+    '- Recreate purged `.agents` bloat (plan/status/dashboard/…) → **deny**',
+    '- `|| true` / soft-skip as the “fix” in hooks → **deny**',
+    '- Disable prevention without break-glass → **deny**',
     '',
     '## Commands',
     '',
     '```bash',
     'npm run learn:prevent          # print inject text',
     'npm run learn:prevent:rebuild  # refresh this file',
+    'npm run ship:improve           # purge + health + eval loop',
     'node scripts/active-prevention.mjs check < payload.json',
     '```',
     ''
@@ -508,6 +650,24 @@ export function selfTest() {
       tool: 'Write',
       input: { file_path: 'src/app/page.tsx', content: 'export default function Page(){return null}' },
       expectDeny: false,
+    },
+    {
+      name: 'blocks emoji in product source',
+      tool: 'Write',
+      input: { file_path: 'src/components/X.tsx', content: 'export const t = "🚀 ship"' },
+      expectDeny: true,
+    },
+    {
+      name: 'blocks GRAPH_REPORT dump read',
+      tool: 'Read',
+      input: { file_path: 'graphify-out/GRAPH_REPORT.md' },
+      expectDeny: true,
+    },
+    {
+      name: 'blocks recreating plan.md bloat',
+      tool: 'Write',
+      input: { file_path: '.agents/plan.md', content: '# plan' },
+      expectDeny: true,
     },
     {
       name: 'blocks nested powershell',

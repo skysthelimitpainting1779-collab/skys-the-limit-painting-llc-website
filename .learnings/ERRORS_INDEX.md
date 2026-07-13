@@ -8,30 +8,45 @@ tags: [errors, learning, index, self-heal]
 # Error Learning Index
 
 > **Agent cold-start:** read THIS file only (not full `ERRORS.md`).
-> Updated: 2026-07-10T09:08:40.017Z | Unique: 10 | Records: 25 | Dupes suppressed: 7 | Auto-heals: 1
+> Updated: 2026-07-13T18:00:20.674Z | Unique: 41 | Records: 87 | Dupes suppressed: 38 | Auto-heals: 1
 
 ## Open / needs attention
 
-- **ERR-20260710-9a60** [general/medium] Synthetic failure dedupe-test-1783674519332 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
-- **ERR-20260710-4bfd** [general/medium] Synthetic failure dedupe-test-1783674427016 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
-- **ERR-20260710-834e** [general/medium] Synthetic failure dedupe-test-1783674420360 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
-- **ERR-20260710-e4d2** [general/medium] Synthetic failure dedupe-test-1783674404787 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
-- **ERR-20260710-4c3b** [shell-powershell/medium] PowerShell mangles JSON stdin for active-prevention check (1x) — Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipes for prevention dry-runs
+- **ERR-20260713-2d70** [general/medium] Synthetic failure dedupe-test-1783965620221 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260713-510d** [general/medium] Synthetic failure dedupe-test-1783965602559 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260713-c4db** [general/medium] Synthetic failure dedupe-test-1783965419315 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260713-956a** [general/medium] Synthetic failure dedupe-test-1783965168168 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260713-d1ae** [general/medium] Synthetic failure dedupe-test-1783965097113 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260713-59ae** [general/medium] Synthetic failure dedupe-test-1783965060949 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260713-5751** [general/medium] Synthetic failure dedupe-test-1783965026324 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260710-28ec** [general/medium] Synthetic failure dedupe-test-1783703913505 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260710-f905** [general/medium] Synthetic failure dedupe-test-1783703882913 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
+- **ERR-20260710-d34f** [general/medium] Synthetic failure dedupe-test-1783691871271 (2x) — Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run ver
 
 ## Top lessons (deduped)
 
 | ID | Cat | Status | × | Lesson |
 |----|-----|--------|---|--------|
-| ERR-20260710-9a60 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
-| ERR-20260710-4bfd | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
-| ERR-20260710-834e | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
-| ERR-20260710-e4d2 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
-| ERR-20260710-87d7 | general | resolved | 1 | Semgrep Guardian blocks Write/Edit when not logged in. Log into guardian MCP for real scans, or acce |
-| ERR-20260710-1770 | general | resolved | 1 | After Machine PATH fix, fully restart IDE/agent shells. agentos:health uses registry PATH for bash.o |
-| ERR-20260710-28e9 | general | resolved | 1 | ROOT CAUSE: bare bash was WSL System32 before Git. Fix: Admin scripts/fix-windows-bash-path.ps1 prep |
-| ERR-20260710-4c3b | shell-powershell | open | 1 | Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipe |
-| ERR-20260709-2e26 | nextjs-render | resolved | 1 | Never use next/dynamic with { ssr: false } inside Server Components. Import client leaves statically |
-| ERR-20260709-070a | shell-powershell | resolved | 1 | On Windows, prefer `node scripts/...` over nested powershell -Command. Never assign values to switch |
+| ERR-20260713-2d70 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260713-510d | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260713-c4db | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260713-956a | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260713-d1ae | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260713-59ae | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260713-5751 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-28ec | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-f905 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-d34f | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-2de4 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-0b5d | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-34b7 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-1182 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-bea3 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-2aa4 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-96d1 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-cee9 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-b6d4 | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
+| ERR-20260710-5c1f | general | open | 2 | Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regre |
 
 ## Loop commands
 

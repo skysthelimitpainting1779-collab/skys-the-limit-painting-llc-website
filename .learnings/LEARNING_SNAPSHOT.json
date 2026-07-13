@@ -1,13 +1,23 @@
 {
   "type": "learning_snapshot",
-  "at": "2026-07-10T09:01:04.778Z",
-  "sha": "95773e28c0b5d0c79c0c490d8a024fff7914da88",
+  "at": "2026-07-10T09:10:40.046Z",
+  "sha": "c037ad61ac40566936c6a3efb46bee5d0e533c44",
   "branch": "infra/fix-ci-cd-pipeline-end-to-end",
   "conclusion": "success",
   "pipeline": "session",
   "job": "session-learn",
-  "episode_id": "ep-mrephgne-df2914",
+  "episode_id": "ep-mreptsj3-4c14c2",
   "top_lessons": [
+    {
+      "fingerprint": "d7552e5d3eb7fc7a",
+      "category": "shell-powershell",
+      "title": "PowerShell mangles JSON stdin for active-prevention check",
+      "score": 1.2,
+      "prevention": "Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipes for prevention dry-runs",
+      "skill_path": null,
+      "times_seen": 2,
+      "times_helped": 1
+    },
     {
       "fingerprint": "dom:api:ea9c5f1594762e6b",
       "category": "domain:api",
@@ -17,30 +27,20 @@
       "skill_path": null,
       "times_seen": 1,
       "times_helped": 0
-    },
-    {
-      "fingerprint": "d7552e5d3eb7fc7a",
-      "category": "shell-powershell",
-      "title": "PowerShell mangles JSON stdin for active-prevention check",
-      "score": 1.1,
-      "prevention": "Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipes for prevention dry-runs",
-      "skill_path": null,
-      "times_seen": 1,
-      "times_helped": 0
     }
   ],
   "patterns": [
+    {
+      "key": "category:shell-powershell",
+      "category": "shell-powershell",
+      "weight": 1.2,
+      "recommendation": "When working on shell-powershell: apply lesson \"PowerShell mangles JSON stdin for active-prevention check\" — Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipes for prevention dry-runs"
+    },
     {
       "key": "category:domain:api",
       "category": "domain:api",
       "weight": 1.1,
       "recommendation": "When working on domain:api: apply lesson \"[api] Lead email validation\" — Domain api: fix in jurisdiction; see .agents/domains/api/learnings/"
-    },
-    {
-      "key": "category:shell-powershell",
-      "category": "shell-powershell",
-      "weight": 1.1,
-      "recommendation": "When working on shell-powershell: apply lesson \"PowerShell mangles JSON stdin for active-prevention check\" — Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipes for prevention dry-runs"
     },
     {
       "key": "ci:failure_rate",
@@ -73,6 +73,6 @@
   },
   "domain_sync": {
     "ok": true,
-    "raw": "◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]\n◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }\n◇ injected env (0) from .env.local // tip: ⌘ override existing { override: true }\n◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]\n◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }\n◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]\n◇ injected"
+    "raw": "◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]\n◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }\n◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }\n◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }\n◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]\n◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }\n◇ injected env ("
   }
 }

@@ -6,15 +6,10 @@ import ConversionFooterCta from '../components/ConversionFooterCta';
 import SocialLinks from '../components/SocialLinks';
 import VercelInsights from '../components/VercelInsights';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import Script from 'next/script';
-import { Geist } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { cn } from '../lib/utils';
 import { ENV } from '../lib/env';
-
-// Client-only chrome: do not block first paint / LCP
-const CustomCursor = dynamic(() => import('../components/CustomCursor'), { ssr: false });
-const HeatmapOverlay = dynamic(() => import('../components/HeatmapOverlay'), { ssr: false });
 
 const businessSameAs = [
   ENV.FACEBOOK_URL,
@@ -26,7 +21,7 @@ const businessSameAs = [
 
 const siteUrl = ENV.SITE_URL.replace(/\/$/, '') || 'https://www.skysthelimitpaintingllc.com';
 
-const geist = Geist({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
@@ -86,13 +81,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const currentYear = new Date().getFullYear();
+  const currentYear = 2026;
 
   return (
-    <html lang="en" className={cn('font-sans', geist.variable)}>
+    <html lang="en" className={cn(inter.variable, 'dark antialiased')}>
       <head>
         <link rel="llms" href={`${siteUrl}/llms.txt`} />
-        {/* next/font (Geist) only — no blocking multi-family Google Fonts CSS */}
+        {/* next/font (Inter) only — no blocking multi-family Google Fonts CSS */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -146,13 +141,11 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <div className="min-h-[100dvh] flex flex-col bg-page-bg text-page-text">
-          <CustomCursor />
-          <HeatmapOverlay />
           <div className="noise-overlay" aria-hidden="true"></div>
 
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-white focus:px-4 focus:py-3 focus:text-sm focus:font-black focus:text-[#050505]"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-[#FF5A00] focus:px-4 focus:py-3 focus:text-sm focus:font-black focus:text-white"
           >
             Skip to content
           </a>
@@ -164,30 +157,21 @@ export default function RootLayout({
           </main>
 
           {/* Mobile Sticky Bottom CTA */}
-          <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex max-w-[calc(100vw-2rem)] gap-2 overflow-hidden">
-            <a
-              href="tel:+16514104196"
-              data-track="call_click"
-              data-track-payload='{"source":"mobile_sticky"}'
-              className="min-w-0 basis-0 flex-1 bg-black-charcoal border border-white/10 text-white py-4 px-2 rounded-none font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.8)] whitespace-nowrap text-xs"
-            >
-              Call/Text
-            </a>
+          <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 max-w-[calc(100vw-2rem)]">
             <Link
               href="/estimate"
               data-track="hero_cta_click"
               data-track-payload='{"source":"mobile_sticky","label":"Price Range"}'
-              className="min-w-0 basis-0 flex-1 bg-white text-[#050505] py-4 px-2 rounded-none font-bold text-center shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center text-xs whitespace-nowrap"
+              className="flex w-full items-center justify-center bg-[#FF5A00] px-2 py-4 text-center text-xs font-black uppercase tracking-[0.12em] text-white shadow-[0_0_20px_rgba(0,0,0,0.8)]"
             >
-              Price Range
+              Calculate room scope
             </Link>
           </div>
 
           <ConversionFooterCta />
 
           {/* Footer */}
-          <footer className="bg-black-primary text-white py-20 px-6 mt-12 relative overflow-hidden">
-            <div className="absolute right-0 bottom-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 via-black-charcoal/0 to-transparent pointer-events-none rounded-full blur-3xl"></div>
+          <footer className="relative mt-12 overflow-hidden bg-[#0A0A0A] px-6 py-20 text-white">
             <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6 relative z-10">
               <div className="col-span-1 lg:col-span-2">
                 <h2 className="text-3xl font-display font-bold mb-4">Sky&apos;s the Limit Painting LLC</h2>
@@ -305,12 +289,20 @@ export default function RootLayout({
             </div>
 
             <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-400">
-              <p>&copy; {currentYear} Sky&apos;s the Limit Painting LLC. All rights reserved.</p>
-              <p>
-                Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers&apos; comp under MN Statute
-                176.041 | Fully Insured
-              </p>
-              <p>Twin Cities Metro Area, MN</p>
+              <div className="flex flex-col items-center md:items-start gap-1">
+                <p>&copy; {currentYear} Sky&apos;s the Limit Painting LLC. All rights reserved.</p>
+                <div className="flex gap-4 mt-2">
+                  <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                  <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                </div>
+              </div>
+              <div className="text-center md:text-right">
+                <p>
+                  Registered MN Specialty Contractor (ID: IR816596) | Owner exempt from workers&apos; comp under MN Statute
+                  176.041 | Fully Insured
+                </p>
+                <p className="mt-1">Twin Cities Metro Area, MN</p>
+              </div>
             </div>
           </footer>
         </div>

@@ -227,24 +227,16 @@ function runSessionLearn(state, { force = false } = {}) {
       wait_ms: SESSION_LEARN_DEBOUNCE - (now - (state.last_session_learn || 0)),
     };
   }
-  const script = join(ROOT, 'scripts', 'session-learn.mjs');
-  if (!existsSync(script)) return { ok: false, error: 'session-learn.mjs missing' };
+  // session-learn theater removed — rebuild prevention only
   try {
-    execFileSync(process.execPath, [script, '--close', '--skip-evaluate'], {
-      cwd: ROOT,
-      stdio: process.env.HOOKS_VERBOSE === '1' ? 'inherit' : 'ignore',
-      timeout: 300_000,
-      windowsHide: true,
-      env: { ...process.env, SESSION_LEARN_SKIP: '0' },
-    });
+    rebuildActiveContext();
     state.last_session_learn = Date.now();
-    logEvent(state, 'session_learn', { ok: true });
+    logEvent(state, 'session_learn', { ok: true, mode: 'prevent-only' });
     saveState(state);
-    return { ok: true };
+    return { ok: true, mode: 'prevent-only' };
   } catch (err) {
     logEvent(state, 'session_learn', { ok: false, error: err.message });
     saveState(state);
-    // Never block agent session end on learn close
     return { ok: false, error: err.message };
   }
 }
@@ -267,12 +259,10 @@ function claudePreTool(payload) {
     .toLowerCase()
     .replace(/\\/g, '/');
 
-  // 1) Active prevention: hard DENY known-bad patterns from real incidents
+  // 1) Active prevention: hard DENY — SKIP alone is ignored (break-glass needs ALLOW_PREVENTION_BYPASS=1)
   let preventOut = null;
   try {
-    if (process.env.ACTIVE_PREVENTION_SKIP !== '1') {
-      preventOut = preToolHookOutput(tool, input);
-    }
+    preventOut = preToolHookOutput(tool, input);
   } catch {
     preventOut = null;
   }
@@ -426,28 +416,10 @@ function main() {
       }
 
       console.error(`[hooks] session-start: ${preExploreMessage()}`);
-      console.error(
-        '[hooks] Ontology: npm run agentos:health · After work: agentos:auto-commit / entire-sync (no fake git skills).'
-      );
+      console.error('[hooks] zero-theater: npm run goal · ship:eval · agents:zero-theater · learn:prevent');
       try {
         const injectPreview = buildInjectText().slice(0, 400);
         console.error(`[hooks] active-prevention: ${injectPreview}${injectPreview.length >= 400 ? '…' : ''}`);
-      } catch {
-        /* non-fatal */
-      }
-      try {
-        const health = spawnSync(
-          process.execPath,
-          [join(ROOT, 'scripts/agent-os-ontology.mjs'), 'health'],
-          { cwd: ROOT, encoding: 'utf8', windowsHide: true, timeout: 20000 }
-        );
-        if (health.stdout) {
-          const j = JSON.parse(health.stdout);
-          const acts = (j.proactive_actions || []).slice(0, 4).join('; ');
-          console.error(
-            `[hooks] ontology v${j.ontology_version || '?'} agents=${j.footprint?.agents_mb ?? '?'}MB graph_nodes=${j.graph?.nodes ?? '?'} → ${acts}`
-          );
-        }
       } catch {
         /* non-fatal */
       }

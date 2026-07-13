@@ -1,3 +1,7 @@
-# graphify
-- **graphify** (`.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
-When the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` before doing anything else.
+@../AGENTS.md
+
+## Claude Code (project)
+
+- Graphify skill: `/graphify` → `.claude/skills/graphify/`
+- No dumps of `graphify-out/wiki/**` or `GRAPH_REPORT.md`
+- Domain agents under `.claude/agents/` only when the task matches

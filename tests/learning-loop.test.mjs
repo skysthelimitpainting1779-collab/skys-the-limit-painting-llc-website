@@ -100,19 +100,13 @@ test('learning-loop CLI record dedupes second identical failure', () => {
   assert.ok(index.stats.duplicates_suppressed >= 1);
 });
 
-test('validate-okf exits 0 on auto-compiled wiki tree', () => {
-  const r = spawnSync(process.execPath, ['scripts/validate-okf.js'], {
-    encoding: 'utf8',
-    cwd: process.cwd(),
-  });
-  assert.equal(r.status, 0, r.stderr || r.stdout);
-  assert.match(r.stdout, /OKF Validation passed/);
-});
-
-test('agent OS still quarantines without git checkout rollback', () => {
+test('agent OS kernel quarantines without git checkout rollback', () => {
   const harness = readFileSync(new URL('../scripts/agent-os.js', import.meta.url), 'utf8');
-  assert.match(harness, /recordFailure/);
-  assert.match(harness, /learning-loop/);
+  assert.match(harness, /Quarantine only/);
+  assert.match(harness, /agent-os-core\.mjs/);
   assert.doesNotMatch(harness, /execSync\(`git checkout --/);
   assert.doesNotMatch(harness, /execSync\('git checkout --/);
+  assert.ok(!existsSync(new URL('../scripts/validate-okf.js', import.meta.url)));
+  assert.ok(!existsSync(new URL('../scripts/agent-os-ontology.mjs', import.meta.url)));
+  assert.ok(!existsSync(new URL('../scripts/learn-pipeline.mjs', import.meta.url)));
 });

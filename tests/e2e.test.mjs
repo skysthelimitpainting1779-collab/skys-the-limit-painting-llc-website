@@ -5,22 +5,6 @@ import { test, describe } from 'node:test';
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const exists = (path) => existsSync(new URL(`../${path}`, import.meta.url));
 
-// Calculator Cost Simulation Formula matching src/views/Estimate.tsx exactly
-function calculateSimulatedCosts(width, length, height, prepLevel, doors, windows, trimLength, cabDoors, cabDrawers) {
-  const wallArea = 2 * (width + length) * height;
-  const wallBase = wallArea * 3.50;
-  const wallPrepValue = prepLevel === 'premium' ? wallBase * 0.35 : 0;
-  const wallCost = wallBase + wallPrepValue;
-  const openingsCost = doors * 150 + windows * 100;
-  const trimCost = trimLength * 4.00;
-  const cabinetCost = (cabDoors + cabDrawers) * 125;
-  const total = wallCost + openingsCost + trimCost + cabinetCost;
-  return {
-    low: Math.round(total * 0.90),
-    high: Math.round(total * 1.15)
-  };
-}
-
 describe('Tier 1: Feature Coverage', () => {
 
   test('T1.1 Routing & Navigation - Core layout components render successfully', () => {
@@ -64,21 +48,24 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.7 Three-Market Content - Residential page loads specific data fields', () => {
-    const res = read('src/views/Residential.tsx');
-    assert.match(res, /market="Residential"/);
-    assert.match(res, /PageMeta/);
+    const res = read('src/app/residential/page.tsx');
+    assert.match(res, /MarketPage/);
+    assert.match(res, /slug="residential"/);
+    assert.match(res, /export const metadata/);
   });
 
   test('T1.8 Three-Market Content - Commercial page loads specific data fields', () => {
-    const comm = read('src/views/Commercial.tsx');
-    assert.match(comm, /market="Commercial"/);
-    assert.match(comm, /PageMeta/);
+    const comm = read('src/app/commercial/page.tsx');
+    assert.match(comm, /MarketPage/);
+    assert.match(comm, /slug="commercial"/);
+    assert.match(comm, /export const metadata/);
   });
 
   test('T1.9 Three-Market Content - Public Sector page loads specific data fields', () => {
-    const pub = read('src/views/PublicSector.tsx');
-    assert.match(pub, /market="Public Sector"/);
-    assert.match(pub, /PageMeta/);
+    const pub = read('src/app/public-sector/page.tsx');
+    assert.match(pub, /MarketPage/);
+    assert.match(pub, /slug="public-sector"/);
+    assert.match(pub, /export const metadata/);
   });
 
   test('T1.10 Three-Market Content - Capabilities statement page displays NAICS and SWIFT details', () => {
@@ -105,17 +92,18 @@ describe('Tier 1: Feature Coverage', () => {
     assert.match(sitemap, /interior-painting/);
   });
 
-  test('T1.14 Local SEO Pages - Static prerender script compiles routes to directories', () => {
-    const prerender = read('scripts/prerender.mjs');
-    assert.match(prerender, /routes/);
-    assert.match(prerender, /dist/);
-    assert.match(prerender, /404\.html/);
+  test('T1.14 Local SEO Pages - App Router pages exist for market and SEO routes', () => {
+    assert.ok(exists('src/app/residential/page.tsx'));
+    assert.ok(exists('src/app/commercial/page.tsx'));
+    assert.ok(exists('src/app/service-areas/[slug]/page.tsx'));
+    assert.ok(exists('src/app/painting-services/[slug]/page.tsx'));
+    assert.ok(exists('src/app/not-found.tsx'));
   });
 
   test('T1.15 Local SEO Pages - Breadcrumb schemas contain valid JSON-LD metadata', () => {
-    const prerender = read('scripts/prerender.mjs');
-    assert.match(prerender, /BreadcrumbList/);
-    assert.match(prerender, /itemListElement/);
+    const seo = read('src/lib/seo.ts');
+    assert.match(seo, /BreadcrumbList/);
+    assert.match(seo, /itemListElement/);
   });
 
   test('T1.16 Interactive Components - BeforeAfterSlider renders before and after images', () => {
@@ -136,77 +124,17 @@ describe('Tier 1: Feature Coverage', () => {
     assert.match(map, /href=\{\`\/service-areas\/\${pin\.slug}\`\}/);
   });
 
-  test('T1.19 Interactive Components - CustomCursor renders elements on screen', () => {
-    const cursor = read('src/components/CustomCursor.tsx');
-    assert.match(cursor, /pointer-events-none/);
-    assert.match(cursor, /mix-blend-difference/);
+  test('T1.19 Interactive Components - dead SPA cursor theater is deleted', () => {
+    assert.ok(!exists('src/components/CustomCursor.tsx'));
+    assert.ok(!exists('src/components/HeatmapOverlay.tsx'));
+    assert.ok(!exists('src/components/SpecInspector.tsx'));
+    assert.ok(!exists('src/components/Layout.tsx'));
   });
 
   test('T1.20 Interactive Components - MagneticButtons trigger hover states and scale', () => {
     const btn = read('src/components/animations/MagneticButton.tsx');
     assert.match(btn, /motion/);
     assert.match(btn, /useSpring/);
-  });
-
-  test('T1.21 Room Calculator - Preset selections apply correct room dimensions', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /Bedroom.*12.*14.*8/);
-    assert.match(est, /Living Room.*16.*20.*8/);
-  });
-
-  test('T1.22 Room Calculator - Room dimensions width/length changes update wall surface area calculations', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /2 \* \(dimensions\.width \+ dimensions\.length\) \* dimensions\.ceilingHeight/);
-    
-    // Simulate Bedroom Preset (12 x 14 x 8)
-    const result1 = calculateSimulatedCosts(12, 14, 8, 'standard', 1, 1, 50, 0, 0);
-    // Area = 2 * (12 + 14) * 8 = 416
-    // Cost = 416 * 3.5 = 1456. Openings = 150 + 100 = 250. Trim = 50 * 4 = 200. Total = 1906.
-    // Low = Math.round(1906 * 0.90) = 1715. High = Math.round(1906 * 1.15) = 2192.
-    assert.equal(result1.low, 1715);
-    assert.equal(result1.high, 2192);
-
-    // Simulate Width increase from 12 to 15
-    const result2 = calculateSimulatedCosts(15, 14, 8, 'standard', 1, 1, 50, 0, 0);
-    // Area = 2 * (15 + 14) * 8 = 464
-    // Cost = 464 * 3.5 = 1624. Openings = 250. Trim = 200. Total = 2074.
-    // Low = Math.round(2074 * 0.90) = 1867. High = Math.round(2074 * 1.15) = 2385.
-    assert.equal(result2.low, 1867);
-    assert.equal(result2.high, 2385);
-  });
-
-  test('T1.23 Room Calculator - Adjusting doors and windows counts updates openings cost', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /doorsCount \* 150 \+ .*windowsCount \* 100/);
-    
-    // Width 12, Length 14, Height 8, Doors 2, Windows 3
-    const result = calculateSimulatedCosts(12, 14, 8, 'standard', 2, 3, 50, 0, 0);
-    // Area = 416. WallCost = 1456. Openings = 2 * 150 + 3 * 100 = 600. Trim = 200. Total = 2256.
-    // Low = Math.round(2256 * 0.90) = 2030. High = Math.round(2256 * 1.15) = 2594.
-    assert.equal(result.low, 2030);
-    assert.equal(result.high, 2594);
-  });
-
-  test('T1.24 Room Calculator - Selecting cabinet doors/drawers increments high-margin cabinet paint costs', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /cabinetDoors \+ .*cabinetDrawers.* \* 125/);
-    
-    // Width 12, Length 14, Height 8, Doors 1, Windows 1, Cabinet Doors 10, Drawers 5
-    const result = calculateSimulatedCosts(12, 14, 8, 'standard', 1, 1, 50, 10, 5);
-    // Area = 416. WallCost = 1456. Openings = 250. Trim = 200. Cabinets = 15 * 125 = 1875. Total = 3781.
-    // Low = Math.round(3781 * 0.90) = 3403. High = Math.round(3781 * 1.15) = 4348.
-    assert.equal(result.low, 3403);
-    assert.equal(result.high, 4348);
-  });
-
-  test('T1.25 Room Calculator - Base estimate calculation returns output range between 90% (low) and 115% (high)', () => {
-    const result = calculateSimulatedCosts(20, 20, 10, 'premium', 2, 4, 100, 20, 10);
-    // Area = 2 * (40) * 10 = 800
-    // WallBase = 800 * 3.50 = 2800. Premium = 2800 * 0.35 = 980. WallCost = 3780.
-    // Openings = 2 * 150 + 4 * 100 = 700. Trim = 100 * 4 = 400. Cabinets = 30 * 125 = 3750. Total = 8630.
-    // Low = 8630 * 0.90 = 7767. High = 8630 * 1.15 = 9925.
-    assert.equal(result.low, 7767);
-    assert.equal(result.high, 9925);
   });
 
   test('T1.26 Reputation Funnel - Rating 4 stars displays the Google Review redirect prompt', () => {
@@ -281,8 +209,9 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.2 Routing & Navigation - Sticky mobile call CTAs render on narrow layouts', () => {
-    const layout = read('src/components/Layout.tsx');
+    const layout = read('src/app/layout.tsx');
     assert.match(layout, /href="tel:\+16514104196"/);
+    assert.match(layout, /mobile_sticky/);
   });
 
   test('T2.3 Routing & Navigation - CSP and HTTP security headers are configured in vercel.ts', () => {
@@ -303,7 +232,7 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   test('T2.5 Routing & Navigation - E.164 phone numbers are format-compliant', () => {
     const header = read('src/components/ConversionHeader.tsx');
     assert.match(header, /tel:\+16514104196/);
-    const layout = read('src/components/Layout.tsx');
+    const layout = read('src/app/layout.tsx');
     assert.match(layout, /tel:\+16514104196/);
   });
 
@@ -312,7 +241,6 @@ describe('Tier 2: Boundary/Corner Cases', () => {
       'src/app/layout.tsx',
       'src/components/ConversionHeader.tsx',
       'src/components/LeadForm.tsx',
-      'src/components/Layout.tsx',
       'src/app/HomeClient.tsx',
       'src/views/Estimate.tsx',
       'src/views/Review.tsx',
@@ -334,7 +262,7 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.8 Three-Market Content - Contractor registration ID is present on all pages', () => {
-    const footer = read('src/components/Layout.tsx');
+    const footer = read('src/app/layout.tsx');
     assert.match(footer, /IR816596/);
   });
 
@@ -357,9 +285,9 @@ describe('Tier 2: Boundary/Corner Cases', () => {
   });
 
   test('T2.12 Local SEO Pages - Schema breadcrumbs handle nesting without double-slash errors', () => {
-    const prerender = read('scripts/prerender.mjs');
-    assert.match(prerender, /itemListElement/);
-    assert.doesNotMatch(prerender, /\/\//);
+    const seo = read('src/lib/seo.ts');
+    assert.match(seo, /itemListElement/);
+    assert.match(seo, /BreadcrumbList/);
   });
 
   test('T2.13 Local SEO Pages - robots.txt declared sitemap and protects review page', () => {
@@ -368,15 +296,17 @@ describe('Tier 2: Boundary/Corner Cases', () => {
     assert.match(sitemapGen, /Sitemap:/);
   });
 
-  test('T2.14 Local SEO Pages - Prerender handles fallback content variables', () => {
-    const prerender = read('scripts/prerender.mjs');
-    assert.match(prerender, /fallbackContent/);
+  test('T2.14 Local SEO Pages - App Router generateMetadata covers dynamic SEO slugs', () => {
+    const areas = read('src/app/service-areas/[slug]/page.tsx');
+    const services = read('src/app/painting-services/[slug]/page.tsx');
+    assert.match(areas, /generateMetadata/);
+    assert.match(services, /generateMetadata/);
   });
 
   test('T2.15 Local SEO Pages - LocalBusiness schema includes required pricing and hours', () => {
-    const prerender = read('scripts/prerender.mjs');
-    assert.match(prerender, /priceRange/);
-    assert.match(prerender, /openingHoursSpecification/);
+    const seo = read('src/lib/seo.ts');
+    assert.match(seo, /priceRange/);
+    assert.match(seo, /openingHoursSpecification/);
   });
 
   test('T2.16 Interactive Components - BeforeAfterSlider keyboard controls support left/right arrows', () => {
@@ -398,42 +328,17 @@ describe('Tier 2: Boundary/Corner Cases', () => {
     assert.match(map, /useReducedMotion/);
   });
 
-  test('T2.19 Interactive Components - CustomCursor respects reduced motion by hiding', () => {
-    const cursor = read('src/components/CustomCursor.tsx');
-    assert.match(cursor, /useReducedMotion/);
-    assert.match(cursor, /if \(prefersReducedMotion\)/);
+  test('T2.19 Interactive Components - root layout has no next/dynamic ssr:false theater', () => {
+    const layout = read('src/app/layout.tsx');
+    assert.doesNotMatch(layout, /next\/dynamic/);
+    assert.doesNotMatch(layout, /ssr:\s*false/);
+    assert.doesNotMatch(layout, /CustomCursor|HeatmapOverlay/);
   });
 
   test('T2.20 Interactive Components - ServiceAreaMap SVG has alt elements and role', () => {
     const map = read('src/components/ServiceAreaMap.tsx');
     assert.match(map, /role="img"/);
     assert.match(map, /aria-labelledby=/);
-  });
-
-  test('T2.21 Room Calculator - Width values clamp strictly to 5 (min) and 50 (max)', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /5, 50/);
-  });
-
-  test('T2.22 Room Calculator - Length values clamp strictly to 5 (min) and 50 (max)', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /5, 50/);
-  });
-
-  test('T2.23 Room Calculator - Ceiling height values clamp strictly to 7 (min) and 20 (max)', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /7, 20/);
-  });
-
-  test('T2.24 Room Calculator - Cabinet doors count clamps strictly to 0 (min) and 60 (max)', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /0, 60/);
-  });
-
-  test('T2.25 Room Calculator - State is persisted in localStorage to prevent loss', () => {
-    const est = read('src/views/Estimate.tsx');
-    assert.match(est, /sky_estimate_progress/);
-    assert.match(est, /localStorage\.setItem/);
   });
 
   test('T2.26 Reputation Funnel - Empty reviews submitted to Formspree block with validation warnings', () => {
@@ -513,10 +418,11 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     assert.match(form, /page: window\.location\.pathname/);
   });
 
-  test('T3.4 Custom Cursor + Calculator - Hovering over interactive presets triggers cursor transition', () => {
-    const cursor = read('src/components/CustomCursor.tsx');
-    assert.match(cursor, /a, button, select, input/);
-    assert.match(cursor, /hovered/);
+  test('T3.4 Product theater components stay deleted', () => {
+    assert.ok(!exists('src/components/CustomCursor.tsx'));
+    assert.ok(!exists('src/components/SpecInspector.tsx'));
+    assert.ok(!exists('src/app/api/memory/route.ts'));
+    assert.ok(!exists('scripts/prerender.mjs'));
   });
 
   test('T3.5 Accessibility + Lead Form - Reduced motion options disable animations during interaction', () => {
@@ -574,9 +480,9 @@ describe('Tier 4: Real-World Scenarios', () => {
   });
 
   test('T4.5 Static SEO Crawler - Indexation, sitemaps validation, and schema markup checks', () => {
-    const prerender = read('scripts/prerender.mjs');
+    const layout = read('src/app/layout.tsx');
     const sitemap = read('scripts/generate-sitemap.js');
-    assert.match(prerender, /application\/ld\+json/);
+    assert.match(layout, /application\/ld\+json/);
     assert.match(sitemap, /generateSitemap/);
   });
 

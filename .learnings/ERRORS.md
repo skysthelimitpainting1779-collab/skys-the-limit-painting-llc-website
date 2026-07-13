@@ -9,32 +9,10 @@ tags: [errors, learning, self-heal]
 
 > Agents: read .learnings/ERRORS_INDEX.md first.
 
+## [ERR-20260710-db2b] Synthetic failure dedupe-test-1783677847443
 
-## [ERR-20260709-b484] OKF validator failed on auto-compiled wiki stubs
-
-**Category**: okf-wiki | **Status**: auto-healed | **Count**: 1
-
-### Prevention
-Auto-compiled wiki pages under .agents/wiki are exempt from semantic OKF checks. Only hand-authored docs need type/title/timestamp and a real Synthesis section. Prefer tags: [graphify, auto-compiled] + last_sync.
-
-## [ERR-20260709-070a] PowerShell switch/quoting misuse
-
-**Category**: shell-powershell | **Status**: resolved | **Count**: 1
-
-### Prevention
-On Windows, prefer `node scripts/...` over nested powershell -Command. Never assign values to switch parameters. Use .ps1 files for multi-statement scripts; escape $ as `$ inside double-quoted -Command strings.
-
-## [ERR-20260709-2e26] next/dynamic ssr:false in Server Component
-
-**Category**: nextjs-render | **Status**: resolved | **Count**: 1
-
-### Prevention
-Never use next/dynamic with { ssr: false } inside Server Components. Import client leaves statically when browser work is already behind useEffect.
-
-## [ERR-20260709-a408] Synthetic failure dedupe-test-1783624769367
-
-**Logged**: 2026-07-09T19:19:29.444Z
-**Fingerprint**: `b97a68b78fddb696`
+**Logged**: 2026-07-10T10:04:07.574Z
+**Fingerprint**: `a6616792d875ccf1`
 **Category**: general
 **Severity**: medium
 **Status**: open
@@ -42,346 +20,11 @@ Never use next/dynamic with { ssr: false } inside Server Components. Import clie
 **Count**: 1
 
 ### Summary
-Synthetic failure dedupe-test-1783624769367 — `node -e "process.exit(1)"`
+Synthetic failure dedupe-test-1783677847443 — `node -e "process.exit(1)"`
 
 ### Error (snippet)
 ```text
-unique-marker-dedupe-test-1783624769367 boom
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-a408-b97a68b78fddb696.txt
-- Healable: false
-
-
-## [ERR-20260709-2f10] Synthetic failure dedupe-test-1783625186720
-
-**Logged**: 2026-07-09T19:26:26.862Z
-**Fingerprint**: `2fc1edb424a9ec69`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: test
-**Count**: 1
-
-### Summary
-Synthetic failure dedupe-test-1783625186720 — `node -e "process.exit(1)"`
-
-### Error (snippet)
-```text
-unique-marker-dedupe-test-1783625186720 boom
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-2f10-2fc1edb424a9ec69.txt
-- Healable: false
-
-
-## [ERR-20260709-d1ae] Synthetic failure dedupe-test-1783625211996
-
-**Logged**: 2026-07-09T19:26:52.080Z
-**Fingerprint**: `c3cfad1c0e006754`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: test
-**Count**: 1
-
-### Summary
-Synthetic failure dedupe-test-1783625211996 — `node -e "process.exit(1)"`
-
-### Error (snippet)
-```text
-unique-marker-dedupe-test-1783625211996 boom
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-d1ae-c3cfad1c0e006754.txt
-- Healable: false
-
-
-## [ERR-20260709-ac3c] [entire] fix(seo): resolve GSC redirect error, robots.txt syntax, and Lighthouse color contrast violations
-
-**Logged**: 2026-07-09T19:44:11.530Z
-**Fingerprint**: `f7a05ea562b04da4`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: entire
-**Count**: 1
-
-### Summary
-[entire] fix(seo): resolve GSC redirect error, robots.txt syntax, and Lighthouse color contrast violations — `entire-to-agentos`
-
-### Error (snippet)
-```text
-Commit 67ae9e0 (2026-07-08T11:15:57-07:00): fix(seo): resolve GSC redirect error, robots.txt syntax, and Lighthouse color contrast violations
-SHA: 67ae9e084fa5556975fc3206ae5a5b0b9e7a4adc
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-ac3c-f7a05ea562b04da4.txt
-- Healable: false
-
-
-## [ERR-20260709-6a02] [entire] infra: fix CI/CD pipeline, HubSpot mock sync, and md-linter ignores
-
-**Logged**: 2026-07-09T19:44:11.572Z
-**Fingerprint**: `15b68b71113b80bd`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: entire
-**Count**: 1
-
-### Summary
-[entire] infra: fix CI/CD pipeline, HubSpot mock sync, and md-linter ignores — `entire-to-agentos`
-
-### Error (snippet)
-```text
-Commit d352247 (2026-07-07T20:51:37-07:00): infra: fix CI/CD pipeline, HubSpot mock sync, and md-linter ignores
-SHA: d352247676c83d63bcae93f39fcfd4820a08b93d
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-6a02-15b68b71113b80bd.txt
-- Healable: false
-
-
-## [ERR-20260709-c410] [entire] infra: fix remaining node-version strings and husky deprecation warnings
-
-**Logged**: 2026-07-09T19:44:11.620Z
-**Fingerprint**: `303aac89388b21b6`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: entire
-**Count**: 1
-
-### Summary
-[entire] infra: fix remaining node-version strings and husky deprecation warnings — `entire-to-agentos`
-
-### Error (snippet)
-```text
-Commit b4c7d0f (2026-07-06T06:58:59-07:00): infra: fix remaining node-version strings and husky deprecation warnings
-SHA: b4c7d0f9df9b79b29bdacc938444bf7e7cb08be9
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-c410-303aac89388b21b6.txt
-- Healable: false
-
-
-## [ERR-20260709-daf2] [entire] infra: complete end-to-end CI/CD and security scan fixes
-
-**Logged**: 2026-07-09T19:44:11.662Z
-**Fingerprint**: `9cdca29083618287`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: entire
-**Count**: 1
-
-### Summary
-[entire] infra: complete end-to-end CI/CD and security scan fixes — `entire-to-agentos`
-
-### Error (snippet)
-```text
-Commit 5e78170 (2026-07-06T06:56:42-07:00): infra: complete end-to-end CI/CD and security scan fixes
-SHA: 5e781702b9e65e8ed9871ae1a6dd2d5b44837c0c
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: .learnings/archive/ERR-20260709-daf2-9cdca29083618287.txt
-- Healable: false
-
-
-## [ERR-20260710-28e9] WSL System32 bash wins over Git on Windows Machine PATH
-
-**Logged**: 2026-07-10T08:37:58.194Z
-**Fingerprint**: `72be20ed8866c7b5`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: general
-**Count**: 1
-
-### Summary
-WSL System32 bash wins over Git on Windows Machine PATH — `bash --version`
-
-### Error (snippet)
-```text
-The system cannot find the file specified when hooks call bash; where bash shows System32\bash.exe first
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: n/a
-- Healable: false
-
-
-## [ERR-20260710-87d7] Semgrep Guardian PreToolUse blocks all edits when not logged in
-
-**Logged**: 2026-07-10T08:37:58.339Z
-**Fingerprint**: `cae6658adb6d1801`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: general
-**Count**: 1
-
-### Summary
-Semgrep Guardian PreToolUse blocks all edits when not logged in — `semgrep PreToolUse hook`
-
-### Error (snippet)
-```text
-Not logged into Semgrep Guardian decision block on Write/Edit
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: n/a
-- Healable: false
-
-
-## [ERR-20260710-1770] Stale process PATH after Machine PATH fix
-
-**Logged**: 2026-07-10T08:37:58.462Z
-**Fingerprint**: `5cede907b3467539`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: general
-**Count**: 1
-
-### Summary
-Stale process PATH after Machine PATH fix — `where bash`
-
-### Error (snippet)
-```text
-Registry has Git first but long-lived IDE/agent still resolves System32 bash until full restart
-```
-
-### Prevention
-Reproduce with the exact command, fix root cause, add a regression test when durable, then re-run verify chain.
-
-### Metadata
-- Archive: n/a
-- Healable: false
-
-
-## [ERR-20260710-pwsh] PowerShell mangles JSON stdin for active-prevention check
-
-**Logged**: 2026-07-10T08:55:00.000Z
-**Category**: shell-powershell
-**Severity**: low
-**Status**: open
-**Area**: tooling
-**Count**: 1
-
-### Summary
-PowerShell command-line / echo piping corrupts JSON tool payloads so `active-prevention.mjs check` reports decision:null for known-deny patterns.
-
-### Error (snippet)
-```text
-echo '{"tool_name":"Write",...ssr: false...}' | node scripts/active-prevention.mjs check
-→ {"ok":true,"decision":null}
-while self-test and node unit tests correctly deny
-```
-
-### Prevention
-On Windows do not dry-run active-prevention with pwsh-escaped JSON on the CLI. Use `npm run learn:prevent:test`, `tsx --test tests/active-prevention.test.mjs`, or write a UTF-8 JSON file and `Get-Content -Raw file | node scripts/active-prevention.mjs check`. Prefer `node scripts/...` over nested powershell -Command.
-
-### Metadata
-- Related: ERR-20260709-070a
-- Healable: false
-
-## [ERR-20260710-ledger] ERRORS.md status lag vs ERRORS_INDEX after resolve
-
-**Logged**: 2026-07-10T08:55:00.000Z
-**Category**: general
-**Severity**: low
-**Status**: open
-**Area**: agent-os
-**Count**: 1
-
-### Summary
-After session-learn auto-resolve, ERRORS_INDEX shows resolved but full ERRORS.md body may still list Status: open (e.g. ERR-20260710-1770).
-
-### Prevention
-Treat `.learnings/index.json` + `ERRORS_INDEX.md` as SSOT. After resolve/close, run `node scripts/learning-loop.mjs compact` and verify ERRORS.md headers match, or fix rebuildMarkdownViews to rewrite status fields.
-
-### Metadata
-- Healable: true (compact/view rebuild)
-
-
-## [ERR-20260710-4c3b] PowerShell mangles JSON stdin for active-prevention check
-
-**Logged**: 2026-07-10T08:55:59.391Z
-**Fingerprint**: `d7552e5d3eb7fc7a`
-**Category**: shell-powershell
-**Severity**: medium
-**Status**: open
-**Area**: general
-**Count**: 1
-
-### Summary
-PowerShell mangles JSON stdin for active-prevention check — `powershell echo | node scripts/active-prevention.mjs check`
-
-### Error (snippet)
-```text
-pwsh echo pipe returns decision:null for ssr:false deny payload; self-test correctly denies
-```
-
-### Prevention
-Use npm run learn:prevent:test or JSON file + Get-Content -Raw; never rely on pwsh-escaped JSON pipes for prevention dry-runs
-
-### Metadata
-- Archive: n/a
-- Healable: false
-
-
-## [ERR-20260710-e4d2] Synthetic failure dedupe-test-1783674404787
-
-**Logged**: 2026-07-10T09:06:44.885Z
-**Fingerprint**: `183c2df9ba23e3cd`
-**Category**: general
-**Severity**: medium
-**Status**: open
-**Area**: test
-**Count**: 1
-
-### Summary
-Synthetic failure dedupe-test-1783674404787 — `node -e "process.exit(1)"`
-
-### Error (snippet)
-```text
-unique-marker-dedupe-test-1783674404787 boom
+unique-marker-dedupe-test-1783677847443 boom
 ```
 
 ### Prevention
@@ -391,11 +34,10 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 - Archive: n/a
 - Healable: false
 
+## [ERR-20260710-b8a4] Synthetic failure dedupe-test-1783677879673
 
-## [ERR-20260710-834e] Synthetic failure dedupe-test-1783674420360
-
-**Logged**: 2026-07-10T09:07:00.480Z
-**Fingerprint**: `ee732fbaa3fc1826`
+**Logged**: 2026-07-10T10:04:39.780Z
+**Fingerprint**: `c9da7d74cfb47908`
 **Category**: general
 **Severity**: medium
 **Status**: open
@@ -403,11 +45,11 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 **Count**: 1
 
 ### Summary
-Synthetic failure dedupe-test-1783674420360 — `node -e "process.exit(1)"`
+Synthetic failure dedupe-test-1783677879673 — `node -e "process.exit(1)"`
 
 ### Error (snippet)
 ```text
-unique-marker-dedupe-test-1783674420360 boom
+unique-marker-dedupe-test-1783677879673 boom
 ```
 
 ### Prevention
@@ -417,11 +59,10 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 - Archive: n/a
 - Healable: false
 
+## [ERR-20260710-f574] Synthetic failure dedupe-test-1783677908273
 
-## [ERR-20260710-4bfd] Synthetic failure dedupe-test-1783674427016
-
-**Logged**: 2026-07-10T09:07:07.128Z
-**Fingerprint**: `a8f5dffeb954c32e`
+**Logged**: 2026-07-10T10:05:08.387Z
+**Fingerprint**: `3ff94cd693c744e4`
 **Category**: general
 **Severity**: medium
 **Status**: open
@@ -429,11 +70,11 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 **Count**: 1
 
 ### Summary
-Synthetic failure dedupe-test-1783674427016 — `node -e "process.exit(1)"`
+Synthetic failure dedupe-test-1783677908273 — `node -e "process.exit(1)"`
 
 ### Error (snippet)
 ```text
-unique-marker-dedupe-test-1783674427016 boom
+unique-marker-dedupe-test-1783677908273 boom
 ```
 
 ### Prevention
@@ -443,11 +84,10 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 - Archive: n/a
 - Healable: false
 
+## [ERR-20260710-4e3b] Synthetic failure dedupe-test-1783677926658
 
-## [ERR-20260710-9a60] Synthetic failure dedupe-test-1783674519332
-
-**Logged**: 2026-07-10T09:08:39.583Z
-**Fingerprint**: `a0aee5a62cf4eae6`
+**Logged**: 2026-07-10T10:05:26.759Z
+**Fingerprint**: `df213ce28dae69c7`
 **Category**: general
 **Severity**: medium
 **Status**: open
@@ -455,11 +95,11 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 **Count**: 1
 
 ### Summary
-Synthetic failure dedupe-test-1783674519332 — `node -e "process.exit(1)"`
+Synthetic failure dedupe-test-1783677926658 — `node -e "process.exit(1)"`
 
 ### Error (snippet)
 ```text
-unique-marker-dedupe-test-1783674519332 boom
+unique-marker-dedupe-test-1783677926658 boom
 ```
 
 ### Prevention
@@ -469,3 +109,527 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 - Archive: n/a
 - Healable: false
 
+## [ERR-20260710-40c2] Synthetic failure dedupe-test-1783678463977
+
+**Logged**: 2026-07-10T10:14:24.059Z
+**Fingerprint**: `765d59644d49e3cc`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678463977 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678463977 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-5c1f] Synthetic failure dedupe-test-1783678540214
+
+**Logged**: 2026-07-10T10:15:40.345Z
+**Fingerprint**: `084b92501527a67c`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678540214 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678540214 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-b6d4] Synthetic failure dedupe-test-1783678569797
+
+**Logged**: 2026-07-10T10:16:09.907Z
+**Fingerprint**: `18094ee515bb32f5`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678569797 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678569797 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-cee9] Synthetic failure dedupe-test-1783678584789
+
+**Logged**: 2026-07-10T10:16:24.919Z
+**Fingerprint**: `d1ac8b422273485f`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678584789 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678584789 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-96d1] Synthetic failure dedupe-test-1783678781089
+
+**Logged**: 2026-07-10T10:19:41.185Z
+**Fingerprint**: `6469349a1146bc94`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678781089 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678781089 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-2aa4] Synthetic failure dedupe-test-1783678788774
+
+**Logged**: 2026-07-10T10:19:48.895Z
+**Fingerprint**: `0125aa1888c6e434`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678788774 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678788774 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-bea3] Synthetic failure dedupe-test-1783678800455
+
+**Logged**: 2026-07-10T10:20:00.526Z
+**Fingerprint**: `59266c23df1f8a76`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678800455 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678800455 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-1182] Synthetic failure dedupe-test-1783678816624
+
+**Logged**: 2026-07-10T10:20:16.733Z
+**Fingerprint**: `0981dcb0a618bcc3`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678816624 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678816624 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-34b7] Synthetic failure dedupe-test-1783678863470
+
+**Logged**: 2026-07-10T10:21:03.560Z
+**Fingerprint**: `3aa88f6683b5220a`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783678863470 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783678863470 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-0b5d] Synthetic failure dedupe-test-1783683191968
+
+**Logged**: 2026-07-10T11:33:12.267Z
+**Fingerprint**: `dbc99f49b4059fba`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783683191968 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783683191968 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-2de4] Synthetic failure dedupe-test-1783691738748
+
+**Logged**: 2026-07-10T13:55:40.248Z
+**Fingerprint**: `de06d873e862d1fa`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783691738748 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783691738748 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-d34f] Synthetic failure dedupe-test-1783691871271
+
+**Logged**: 2026-07-10T13:57:51.795Z
+**Fingerprint**: `a142dfe61e952aba`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783691871271 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783691871271 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-f905] Synthetic failure dedupe-test-1783703882913
+
+**Logged**: 2026-07-10T17:18:03.420Z
+**Fingerprint**: `ac934b0628d939c4`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783703882913 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783703882913 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260710-28ec] Synthetic failure dedupe-test-1783703913505
+
+**Logged**: 2026-07-10T17:18:33.925Z
+**Fingerprint**: `72e3af0e62a58edf`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783703913505 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783703913505 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-5751] Synthetic failure dedupe-test-1783965026324
+
+**Logged**: 2026-07-13T17:50:26.495Z
+**Fingerprint**: `b7376a320eff0511`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965026324 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965026324 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-59ae] Synthetic failure dedupe-test-1783965060949
+
+**Logged**: 2026-07-13T17:51:01.228Z
+**Fingerprint**: `ee59dec62ba74313`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965060949 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965060949 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-d1ae] Synthetic failure dedupe-test-1783965097113
+
+**Logged**: 2026-07-13T17:51:37.367Z
+**Fingerprint**: `a4e734747d1700bc`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965097113 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965097113 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-956a] Synthetic failure dedupe-test-1783965168168
+
+**Logged**: 2026-07-13T17:52:48.322Z
+**Fingerprint**: `2539e13b7f2a4c6d`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965168168 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965168168 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-c4db] Synthetic failure dedupe-test-1783965419315
+
+**Logged**: 2026-07-13T17:56:59.428Z
+**Fingerprint**: `5fc1df5d17b89762`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965419315 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965419315 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-510d] Synthetic failure dedupe-test-1783965602559
+
+**Logged**: 2026-07-13T18:00:02.845Z
+**Fingerprint**: `7e7c534b62502f5c`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965602559 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965602559 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
+## [ERR-20260713-2d70] Synthetic failure dedupe-test-1783965620221
+
+**Logged**: 2026-07-13T18:00:20.346Z
+**Fingerprint**: `5c496b3f8ac6b9ff`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1783965620221 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1783965620221 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false

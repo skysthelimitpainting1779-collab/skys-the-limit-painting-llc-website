@@ -48,7 +48,13 @@ import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { recordFailure, rebuildMarkdownViews } from './learning-loop.mjs';
-import { shouldPublishSkill } from './evaluate-skills.mjs';
+
+/** Minimal publish gate (evaluate-skills theater removed). */
+function shouldPublishSkill({ lesson } = {}) {
+  if (!lesson || isFakeEntireLesson(lesson)) return { ok: false, reason: 'fake-or-empty' };
+  if (!isSkillWorthyLesson(lesson)) return { ok: false, reason: 'not-skill-worthy' };
+  return { ok: true, reason: 'pass' };
+}
 
 const ROOT = process.cwd();
 const STATE_PATH = join(ROOT, '.agents', 'entire-sync-state.json');

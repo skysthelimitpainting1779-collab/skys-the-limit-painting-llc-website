@@ -102,14 +102,13 @@ test('file: libsql backend works offline as Turso-compatible store', async () =>
   assert.equal(again.goals[0].id, 'G-TURSO');
 });
 
-test('agent-os.js CLI wires store commands', () => {
+test('agent-os.js CLI wires store command (no turso theater CLI)', () => {
   const src = readFileSync(join(ORIG_CWD, 'scripts/agent-os.js'), 'utf8');
   assert.match(src, /agent-os-store\.mjs/);
-  assert.match(src, /migrate-turso/);
-  assert.match(src, /pull-turso/);
   assert.match(src, /bootStore/);
-  assert.match(src, /flushStore/);
-  assert.match(src, /saveHub/);
+  assert.match(src, /command === 'store'/);
+  // migrate/pull/bootstrap removed from CLI surface
+  assert.match(src, /REMOVED theater command/);
 });
 
 function pathToFileUrl(p) {

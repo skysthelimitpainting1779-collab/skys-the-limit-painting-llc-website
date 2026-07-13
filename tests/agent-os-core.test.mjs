@@ -90,15 +90,14 @@ test('bumpMetric never NaNs', () => {
   assert.equal(db.metrics.tasks_verified, 3);
 });
 
-test('agent-os.js wires core + learning-loop and bans nested PowerShell lint', () => {
+test('agent-os.js is a zero-theater kernel wired to core only', () => {
   const src = readFileSync(new URL('../scripts/agent-os.js', import.meta.url), 'utf8');
   assert.match(src, /agent-os-core\.mjs/);
-  assert.match(src, /recordFailure/);
-  assert.match(src, /runCommandOrThrow|safeExec/);
-  assert.match(src, /executeNextTask/);
+  assert.match(src, /MAX_TASK_ATTEMPTS|shouldQuarantineTask/);
+  assert.match(src, /assertPhaseEntry|auto-seed/);
+  assert.match(src, /Quarantine only/);
   assert.doesNotMatch(src, /executable\s*=\s*['`]powershell -ExecutionPolicy Bypass -Command "npm/);
-  assert.doesNotMatch(src, /execSync\(`git checkout --/);
-  // run must not fake-verify without state machine
-  assert.match(src, /runQueueLoop/);
-  assert.match(src, /executeNextTask\(\)/);
+  assert.doesNotMatch(src, /runQueueLoop/);
+  assert.doesNotMatch(src, /executeNextTask/);
+  assert.doesNotMatch(src, /generateHtmlDashboard/);
 });

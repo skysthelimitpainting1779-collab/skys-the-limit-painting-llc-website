@@ -54,7 +54,7 @@ jobs:
           GRAPHIFY_SKIP_HOOK: '1'
 
       - name: Run tests
-        run: node scripts/agent-os.js bootstrap && npm test
+        run: npm test
         env:
           AGENT_OS_SKIP_SCAN: '1'
           HOOKS_SKIP: '1'

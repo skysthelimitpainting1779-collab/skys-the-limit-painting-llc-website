@@ -441,13 +441,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (!configured && failed) {
-      throw failed.reason;
-    }
-
-    if (!configured) {
-      console.error('Lead delivery error: Lead delivery is not configured yet.');
-      // res.status(500).json({ error: 'Lead delivery is not configured yet.', fallback: 'email' })
-      return NextResponse.json({ error: 'Lead delivery is not configured yet.', fallback: 'email' }, { status: 500 });
+      console.error('Lead delivery failed for all attempted providers:', failed.reason);
+    } else if (!configured) {
+      console.warn('Lead delivery warning: No delivery providers configured (Resend, Webhook, HubSpot). Lead saved to DB only.');
     }
   } catch (error) {
     console.error('Lead delivery failed with error:', error);

@@ -16,6 +16,8 @@
 /.claude/
 /.learnings/
 /graphify-out/
+/mcps/
+/scratch/
 
 # Local git hooks and CI config (not needed at build time).
 /.husky/

@@ -1,32 +1,112 @@
 ---
 type: report
 title: Session learn close (latest)
-description: Auto-written by scripts/session-learn.mjs at 2026-07-10T09:01:21.422Z
+description: Auto-written by scripts/session-learn.mjs at 2026-07-10T09:10:57.449Z
 tags: [learning, session, agent-os]
 ---
 
 # Session learn close
 
 **Title:** session-learn close
-**Started:** 2026-07-10T09:00:49.122Z
-**Ended:** 2026-07-10T09:01:21.422Z
+**Started:** 2026-07-10T09:10:23.476Z
+**Ended:** 2026-07-10T09:10:57.449Z
 **OK:** true
 
 ## Learning status
 
 ```json
 {
-  "updated_at": "2026-07-10T09:00:50.759Z",
+  "updated_at": "2026-07-10T09:10:25.217Z",
   "stats": {
-    "total_records": 17,
-    "unique_fingerprints": 6,
+    "total_records": 25,
+    "unique_fingerprints": 10,
     "auto_heals": 1,
-    "duplicates_suppressed": 3
+    "duplicates_suppressed": 7
   },
-  "open": 1,
+  "open": 5,
   "auto_healed": 0,
   "resolved": 5,
   "top": [
+    {
+      "id": "ERR-20260710-e4d2",
+      "fingerprint": "183c2df9ba23e3cd",
+      "title": "Synthetic failure dedupe-test-1783674404787",
+      "category": "general",
+      "severity": "medium",
+      "healable": false,
+      "prevention": "Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.",
+      "area": "test",
+      "command": "node -e \"process.exit(1)\"",
+      "snippet": "unique-marker-dedupe-test-1783674404787 boom",
+      "count": 2,
+      "status": "open",
+      "first_seen": "2026-07-10T09:06:44.885Z",
+      "last_seen": "2026-07-10T09:06:45.036Z",
+      "heal_attempts": 0,
+      "healed_at": null,
+      "archive": null,
+      "last_title": "Synthetic failure dedupe-test-1783674404787"
+    },
+    {
+      "id": "ERR-20260710-834e",
+      "fingerprint": "ee732fbaa3fc1826",
+      "title": "Synthetic failure dedupe-test-1783674420360",
+      "category": "general",
+      "severity": "medium",
+      "healable": false,
+      "prevention": "Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.",
+      "area": "test",
+      "command": "node -e \"process.exit(1)\"",
+      "snippet": "unique-marker-dedupe-test-1783674420360 boom",
+      "count": 2,
+      "status": "open",
+      "first_seen": "2026-07-10T09:07:00.480Z",
+      "last_seen": "2026-07-10T09:07:00.592Z",
+      "heal_attempts": 0,
+      "healed_at": null,
+      "archive": null,
+      "last_title": "Synthetic failure dedupe-test-1783674420360"
+    },
+    {
+      "id": "ERR-20260710-4bfd",
+      "fingerprint": "a8f5dffeb954c32e",
+      "title": "Synthetic failure dedupe-test-1783674427016",
+      "category": "general",
+      "severity": "medium",
+      "healable": false,
+      "prevention": "Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.",
+      "area": "test",
+      "command": "node -e \"process.exit(1)\"",
+      "snippet": "unique-marker-dedupe-test-1783674427016 boom",
+      "count": 2,
+      "status": "open",
+      "first_seen": "2026-07-10T09:07:07.128Z",
+      "last_seen": "2026-07-10T09:07:07.298Z",
+      "heal_attempts": 0,
+      "healed_at": null,
+      "archive": null,
+      "last_title": "Synthetic failure dedupe-test-1783674427016"
+    },
+    {
+      "id": "ERR-20260710-9a60",
+      "fingerprint": "a0aee5a62cf4eae6",
+      "title": "Synthetic failure dedupe-test-1783674519332",
+      "category": "general",
+      "severity": "medium",
+      "healable": false,
+      "prevention": "Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.",
+      "area": "test",
+      "command": "node -e \"process.exit(1)\"",
+      "snippet": "unique-marker-dedupe-test-1783674519332 boom",
+      "count": 2,
+      "status": "open",
+      "first_seen": "2026-07-10T09:08:39.583Z",
+      "last_seen": "2026-07-10T09:08:40.015Z",
+      "heal_attempts": 0,
+      "healed_at": null,
+      "archive": null,
+      "last_title": "Synthetic failure dedupe-test-1783674519332"
+    },
     {
       "id": "ERR-20260709-070a",
       "fingerprint": "947919b9a1cff393",
@@ -45,88 +125,6 @@ tags: [learning, session, agent-os]
       "heal_attempts": 0,
       "healed_at": null,
       "seeded_from_legacy": true
-    },
-    {
-      "id": "ERR-20260709-2e26",
-      "fingerprint": "7eded1228610753c",
-      "title": "next/dynamic ssr:false in Server Component",
-      "category": "nextjs-render",
-      "severity": "high",
-      "healable": false,
-      "prevention": "Never use next/dynamic with { ssr: false } inside Server Components. Import client leaves statically when browser work is already behind useEffect.",
-      "area": "frontend",
-      "command": "npm run build",
-      "snippet": "ssr: false is not allowed with next/dynamic in Server Components",
-      "count": 1,
-      "status": "resolved",
-      "first_seen": "2026-07-09T19:17:05.971Z",
-      "last_seen": "2026-07-09T19:17:05.971Z",
-      "heal_attempts": 0,
-      "healed_at": null,
-      "seeded_from_legacy": true
-    },
-    {
-      "id": "ERR-20260710-28e9",
-      "fingerprint": "72be20ed8866c7b5",
-      "title": "WSL System32 bash wins over Git on Windows Machine PATH",
-      "category": "general",
-      "severity": "medium",
-      "healable": false,
-      "prevention": "ROOT CAUSE: bare bash was WSL System32 before Git. Fix: Admin scripts/fix-windows-bash-path.ps1 prepends Git\\bin to Machine PATH. Verify where bash + agentos:health bash.ok. Policy ROOT_CAUSE.md.",
-      "area": "general",
-      "command": "bash --version",
-      "snippet": "The system cannot find the file specified when hooks call bash; where bash shows System32\\bash.exe first",
-      "count": 1,
-      "status": "resolved",
-      "first_seen": "2026-07-10T08:37:58.194Z",
-      "last_seen": "2026-07-10T09:00:50.693Z",
-      "heal_attempts": 0,
-      "healed_at": null,
-      "archive": null,
-      "resolved_at": "2026-07-10T09:00:50.693Z",
-      "resolve_note": "session-learn known-fixed auto-resolve"
-    },
-    {
-      "id": "ERR-20260710-87d7",
-      "fingerprint": "cae6658adb6d1801",
-      "title": "Semgrep Guardian PreToolUse blocks all edits when not logged in",
-      "category": "general",
-      "severity": "medium",
-      "healable": false,
-      "prevention": "Semgrep Guardian blocks Write/Edit when not logged in. Log into guardian MCP for real scans, or accept non-blocking policy with explicit product decision — do not leave unexplained permanent disable.",
-      "area": "general",
-      "command": "semgrep PreToolUse hook",
-      "snippet": "Not logged into Semgrep Guardian decision block on Write/Edit",
-      "count": 1,
-      "status": "resolved",
-      "first_seen": "2026-07-10T08:37:58.339Z",
-      "last_seen": "2026-07-10T09:00:50.757Z",
-      "heal_attempts": 0,
-      "healed_at": null,
-      "archive": null,
-      "resolved_at": "2026-07-10T09:00:50.757Z",
-      "resolve_note": "session-learn known-fixed auto-resolve"
-    },
-    {
-      "id": "ERR-20260710-1770",
-      "fingerprint": "5cede907b3467539",
-      "title": "Stale process PATH after Machine PATH fix",
-      "category": "general",
-      "severity": "medium",
-      "healable": false,
-      "prevention": "After Machine PATH fix, fully restart IDE/agent shells. agentos:health uses registry PATH for bash.ok. Stale process PATH is expected until restart.",
-      "area": "general",
-      "command": "where bash",
-      "snippet": "Registry has Git first but long-lived IDE/agent still resolves System32 bash until full restart",
-      "count": 1,
-      "status": "resolved",
-      "first_seen": "2026-07-10T08:37:58.462Z",
-      "last_seen": "2026-07-10T09:00:50.726Z",
-      "heal_attempts": 0,
-      "healed_at": null,
-      "archive": null,
-      "resolved_at": "2026-07-10T09:00:50.726Z",
-      "resolve_note": "session-learn known-fixed auto-resolve"
     }
   ]
 }
@@ -145,7 +143,6 @@ tags: [learning, session, agent-os]
 - **learning-loop status**: ok
 - **learn-pipeline**: ok
 - **learn:recommend**: ok
-- **learn:evaluate:dry**: ok
 
 ## Automation
 
@@ -153,4 +150,4 @@ tags: [learning, session, agent-os]
 - Hooks: post-session when `SESSION_LEARN_AUTO=1`
 - Policy: `.agents/governance/ROOT_CAUSE.md` · iron law 12
 
-Full JSON: `.learnings/SESSION_CLOSE_2026-07-10T09-01-21-422Z.json`
+Full JSON: `.learnings/SESSION_CLOSE_2026-07-10T09-10-57-449Z.json`

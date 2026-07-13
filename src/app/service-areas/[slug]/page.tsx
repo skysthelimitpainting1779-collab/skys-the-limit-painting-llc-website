@@ -15,6 +15,7 @@ function getPublicSupabase() {
 }
 
 export async function getServiceAreaPage(slug: string): Promise<LandingPage | null> {
+  'use cache';
   // 1. Try fetching from the database first
   try {
     const supabase = getPublicSupabase();

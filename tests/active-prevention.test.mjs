@@ -43,6 +43,44 @@ test('allows clean node commands', () => {
   assert.equal(r.decision, null);
 });
 
+test('denies emoji in src product files', () => {
+  const r = evaluateToolUse('Write', {
+    file_path: 'src/components/Badge.tsx',
+    content: 'export const label = "🔥 hot"',
+  });
+  assert.equal(r.decision, 'deny');
+});
+
+test('denies GRAPH_REPORT read dumps', () => {
+  const r = evaluateToolUse('Read', {
+    file_path: 'graphify-out/GRAPH_REPORT.md',
+  });
+  assert.equal(r.decision, 'deny');
+});
+
+test('denies recreating purged bloat', () => {
+  const r = evaluateToolUse('Write', {
+    file_path: '.agents/plan.md',
+    content: '# no',
+  });
+  assert.equal(r.decision, 'deny');
+});
+
+test('SOFT env cannot override deny', () => {
+  const prev = process.env.ACTIVE_PREVENTION_SOFT;
+  process.env.ACTIVE_PREVENTION_SOFT = '1';
+  try {
+    const r = evaluateToolUse('Write', {
+      file_path: 'src/x.tsx',
+      content: `import dynamic from 'next/dynamic';\nconst X = dynamic(() => import('./x'), { ssr: false });`,
+    });
+    assert.equal(r.decision, 'deny');
+  } finally {
+    if (prev === undefined) delete process.env.ACTIVE_PREVENTION_SOFT;
+    else process.env.ACTIVE_PREVENTION_SOFT = prev;
+  }
+});
+
 test('preToolHookOutput returns permissionDecision deny JSON', () => {
   const out = preToolHookOutput('Edit', {
     file_path: 'src/app/page.tsx',

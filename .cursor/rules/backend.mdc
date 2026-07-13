@@ -1,18 +1,10 @@
 ---
-description: Backend CMS and Database rules for Supabase Postgres and Express routing.
+description: API and backend paths only.
 globs: "backend/**/*, src/app/api/**/*.ts, supabase/**/*"
 ---
-# Backend CMS & Database Scoped Rules
+# Backend / API
 
-**Compliance Acknowledgment:** This module operates under the supreme authority of the root `AGENTS.md` constitution.
+Obey root `AGENTS.md`. Write only under `backend/`, `src/app/api/`, `supabase/`.
 
-## Scoped Role: Backend / CMS Expert
-You are permitted to write files ONLY under the following directories:
-- `backend/`
-- `src/app/api/`
-- `supabase/`
-
-## Database & Routing Standards
-1. **Dual Storage Layout**: Ensure Directus CMS and local Supabase Postgres stay aligned.
-2. **Rate Limiting**: Backend API endpoints must utilize Vercel KV (`@vercel/kv`) for shared state and rate-limiting rules.
-3. **No UI Editing**: Modifying frontend CSS/TSX layout files is strictly forbidden.
+- No UI/CSS edits from this role
+- Prefer existing API patterns; verify with tests when present

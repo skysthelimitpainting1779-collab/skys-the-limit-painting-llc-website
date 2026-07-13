@@ -107,13 +107,62 @@ Mood words: raw mechanical tension · high contrast · safety-orange signal · t
 
 ---
 
-## 9. Stitch / agent usage
+## 9. Target look — homepage hero (LOCKED)
+
+**Reference:** `references/frontend-target-hero.png` (source of truth for marketing chrome).
+
+### Layout
+
+| Zone | Spec |
+|------|------|
+| **Utility bar** | Full-width black strip: phone · email left; trust line right (desktop) |
+| **Primary nav** | Logo mark + wordmark left; nav center/right (Residential · Commercial · Public Sector · Projects · About · Resources) · **Price Range** orange pill · **Call / phone** orange outline |
+| **Hero** | Full-bleed real-work photo (painter on exterior, warm daylight); **left-weighted dark gradient** so type stays legible |
+| **Trust chips** | Row of dark rounded-rect badges under subhead (Twin Cities Metro · MN ID · Fully Insured · Public-sector ready) |
+| **H1** | Large white display; **one orange accent word** (e.g. **Preps**) — not orange whole line |
+| **Subcopy** | Warm off-white (~`#e7dfd2`), max ~65ch, metro + markets + prep discipline |
+| **CTA row** | (1) **Filled orange** primary · (2) dark secondary · (3) outline/call tertiary |
+| **Proof line** | Small checks under CTAs (Fully Insured · Owner-Led · MN ID · COI) |
+| **Path strip** | 01–04 steps in dark cards **over** the hero bottom (Tell us · Scope/price · Reserve · Transparency) |
+| **Trust footer of hero** | Google rating · “Trusted by…” · MN specialty mark |
+
+### Color roles (marketing)
+
+| Role | Hex / style |
+|------|-------------|
+| Canvas / bars | Near-black `#050505` / `#0a0a0a` |
+| Primary CTA / nav accents | **Safety Orange `#FF5A00`** |
+| Body on photo | Warm cream `#e7dfd2` |
+| Chips / secondary | `bg-black/60`–`70` + `border-white/10` |
+| **Radius** | **0** on industrial edges; chips/CTAs may use **slight** radius only if matching reference pills — default still **0** for cards/blocks |
+
+### Do / don't
+
+- **Do** use real job photography, orange as *signal*, claim-safe MN ID, three clear CTAs  
+- **Don't** soft-skip orange to white-primary CTAs; don't fake 5-star if unearned; don't light-mode hero; don't emoji  
+
+### Gap vs current code (as of lock)
+
+| Area | Current | Target |
+|------|---------|--------|
+| Primary CTA | White fill | **Orange fill** |
+| Nav CTAs | White / muted | **Orange pill + orange outline call** |
+| Trust chips | Text-only row | **Badge chips** under subhead |
+| H1 accent | All white | **Single orange word** |
+| Process steps | Below hero border strip | **Overlapping dark cards on hero** |
+| Social proof | Later on page | **Google + MN mark under path** |
+
+Implement against this section + the reference PNG. Prefer one pass on `ConversionHeader` + `HomeClient` hero before deeper page restyles.
+
+---
+
+## 10. Stitch / agent usage
 
 When generating screens in Google Stitch or image-to-code:
 
-1. Paste **§1–§7** as system design constraints  
-2. Specify surface (marketing | portal | homebase)  
-3. Reference slug **skysthelimit** in file names and copy only when needed  
-4. Prefer Safety Orange CTAs on Pitch Canvas  
+1. Paste **§1–§7** and **§9** as system design constraints  
+2. Attach `references/frontend-target-hero.png` when available  
+3. Specify surface (marketing | portal | homebase)  
+4. Prefer Safety Orange CTAs on Pitch Canvas; one orange accent in headlines  
 
 Template copy for new products: `docs/templates/DESIGN.md`.

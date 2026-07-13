@@ -109,6 +109,7 @@ export function filterPublishedMarkets(items: CMSMarket[] | null | undefined): C
 
 // ─── Data Fetchers (with graceful fallback) ─────────────────────────
 export async function getCaseStudies(client: DirectusClient = getClient()): Promise<CaseStudy[]> {
+  'use cache';
   try {
     const data = await client.request(
       readItems('case_studies', {
@@ -125,6 +126,7 @@ export async function getCaseStudies(client: DirectusClient = getClient()): Prom
 }
 
 export async function getMarkets(client: DirectusClient = getClient()): Promise<CMSMarket[]> {
+  'use cache';
   try {
     const data = await client.request(
       readItems('markets', {
@@ -141,6 +143,7 @@ export async function getMarkets(client: DirectusClient = getClient()): Promise<
 }
 
 export async function getSiteConfig(client: DirectusClient = getClient()): Promise<SiteConfig | null> {
+  'use cache';
   try {
     const data = await client.request(readSingleton('site_config', { fields: ['*'] }));
     return data as SiteConfig;

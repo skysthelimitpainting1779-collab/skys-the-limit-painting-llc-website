@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Calculator, Camera, ClipboardCheck, Phone, ShieldCheck } from 'lucide-react';
 import { businessPhone } from '../lib/contact';
-import MagneticButton from './animations/MagneticButton';
 import IconFeatureCard from './IconFeatureCard';
 
 const proofItems = [
@@ -24,7 +23,7 @@ const proofItems = [
 
 export default function ConversionFooterCta() {
   return (
-    <section className="relative overflow-hidden bg-[#050505] px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="border-y border-zinc-800 bg-[#111111] px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="relative z-20 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
@@ -34,22 +33,20 @@ export default function ConversionFooterCta() {
             Start with a fast planning range, then send the details for a real estimate conversation. The better the surface story, the cleaner the first response.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <MagneticButton pullFactor={0.3}>
-              <Link
-                href="/estimate"
-                data-track="footer_conversion_cta_click"
-                data-track-payload='{"action":"calculator"}'
-                className="inline-flex items-center justify-center gap-2 bg-white px-7 py-4 text-sm font-black text-[#15110a] transition-colors hover:bg-gray-200"
-              >
-                <Calculator size={18} />
-                Get A Price Range
-              </Link>
-            </MagneticButton>
+            <Link
+              href="/estimate"
+              data-track="footer_conversion_cta_click"
+              data-track-payload='{"action":"calculator"}'
+              className="inline-flex items-center justify-center gap-2 bg-[#FF5A00] px-7 py-4 text-sm font-black uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#d94d00]"
+            >
+              <Calculator size={18} />
+              Calculate Room Scope
+            </Link>
             <a
               href={`tel:${businessPhone}`}
               data-track="call_click"
               data-track-payload='{"source":"conversion_footer"}'
-              className="inline-flex items-center justify-center gap-2 border border-white/30 bg-[#11100d]/80 px-7 py-4 text-sm font-black text-white transition-colors hover:border-white hover:text-white"
+              className="inline-flex items-center justify-center gap-2 border border-zinc-600 bg-transparent px-7 py-4 text-sm font-black text-white transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
             >
               <Phone size={18} />
               Call / Text
