@@ -77,7 +77,7 @@
     "tailwindcss": "4.3.1",
     "tsx": "4.23.0",
     "typescript": "6.0.3",
-    "vercel": "^54.18.3"
+    "vercel": "^55.0.0"
   },
   "overrides": {
     "source-map": "0.7.6",
