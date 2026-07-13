@@ -76,7 +76,7 @@
     "remotion": "4.0.484",
     "tailwindcss": "4.3.1",
     "tsx": "4.23.0",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "vercel": "^55.0.0"
   },
   "overrides": {
