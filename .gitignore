@@ -44,6 +44,8 @@ mcps/
 
 # Local scratch / one-off scripts
 scratch/
+# Sidecar-generated learning context (token inject, not source of truth)
+.learnings/
 
 # Root one-off junk
 help.txt
