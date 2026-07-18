@@ -31,3 +31,6 @@ graphify-out/
 # Ignore transient agent plan/task mirrors (these are IDE scratch, not repo artifacts)
 plan.md
 task.md
+
+# Foglamp codebase scan (public unlisted map + secret edit token)
+.foglamp/
