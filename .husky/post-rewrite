@@ -4,7 +4,7 @@ cat > "$_entire_stdin"
 trap 'rm -f "$_entire_stdin"' EXIT
 # Entire CLI hooks
 # Post-rewrite hook: remap session linkage after amend/rebase rewrites
-if [ -f 'C:\Users\Johnny Cage\.local\bin\entire.exe' ]; then 'C:\Users\Johnny Cage\.local\bin\entire.exe' hooks git post-rewrite "$1" < "$_entire_stdin" 2>/dev/null || true; else :; fi
+if command -v entire >/dev/null 2>&1; then entire hooks git post-rewrite "$1" < "$_entire_stdin" 2>/dev/null || true; else :; fi
 
 # Chain: run pre-existing hook
 _entire_hook_dir="$(dirname "$0")"

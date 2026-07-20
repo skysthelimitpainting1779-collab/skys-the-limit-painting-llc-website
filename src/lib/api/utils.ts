@@ -35,32 +35,62 @@ export function buildManyChatLeadId(): string {
   return `SKY-MC-${stamp}-${random}`;
 }
 
-const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'projectType', 'timeline', 'contactMethod', 'notes'];
+import { z } from 'zod';
+
+const requiredFields = ['name', 'phone', 'email', 'city', 'market', 'timeline', 'contactMethod'];
+
+export const leadSchema = z.object({
+  name: z.string().min(1, "Missing required fields: name"),
+  phone: z.string().min(1, "Missing required fields: phone"),
+  email: z.string().regex(/^[^\s@]{1,254}@[^\s@]{1,254}\.[^\s@]{2,63}$/, "Enter a valid email address."),
+  city: z.string().min(1, "Missing required fields: city"),
+  market: z.string().min(1, "Missing required fields: market"),
+  projectType: z.string().optional(),
+  propertyType: z.string().optional(),
+  timeline: z.string().min(1, "Missing required fields: timeline"),
+  budget: z.string().optional(),
+  contactMethod: z.string().min(1, "Missing required fields: contactMethod"),
+  notes: z.string().optional(),
+  website: z.string().max(0, "Spam check failed.").optional(),
+  photosUrl: z.union([
+    z.literal(''),
+    z.string().refine(
+      (photosUrl) => {
+        if (photosUrl === '') return true;
+        try {
+          const url = new URL(photosUrl);
+          return ['http:', 'https:'].includes(url.protocol) && url.hostname.includes('.');
+        } catch {
+          return false;
+        }
+      },
+      { message: "Enter a valid project photo link." }
+    )
+  ]).optional()
+});
 
 export function validate(payload: Record<string, unknown>): string {
-  const missing = requiredFields.filter((field) => !asText(getSafeValue(payload, field)));
-  if (missing.length > 0) {
-    return `Missing required fields: ${missing.join(', ')}`;
-  }
-
-  if (!/^[^\s@]{1,254}@[^\s@]{1,254}\.[^\s@]{2,63}$/.test(asText(payload.email))) {
-    return 'Enter a valid email address.';
-  }
-
+  // Check honeypot directly first to match exact test behavior
   if (asText(payload.website)) {
     return 'Spam check failed.';
   }
 
-  const photosUrl = asText(payload.photosUrl);
-  if (photosUrl) {
-    try {
-      const url = new URL(photosUrl);
-      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname.includes('.')) {
-        return 'Enter a valid project photo link.';
-      }
-    } catch {
-      return 'Enter a valid project photo link.';
-    }
+  // Pre-process for validation (trim whitespace)
+  const trimmed: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(payload)) {
+    trimmed[key] = asText(getSafeValue(payload, key));
+  }
+
+  // Find missing required fields
+  const missing = requiredFields.filter((field) => !trimmed[field]);
+  if (missing.length > 0) {
+    return `Missing required fields: ${missing.join(', ')}`;
+  }
+
+  // Run Zod validation for formats
+  const result = leadSchema.safeParse(trimmed);
+  if (!result.success) {
+    return result.error.issues[0].message;
   }
 
   return '';

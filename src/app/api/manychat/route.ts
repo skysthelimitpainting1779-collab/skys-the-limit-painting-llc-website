@@ -1,49 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { createRateLimiter, asText, escapeHtml, buildLeadId, isPayload, validate } from '@/lib/api/utils';
 
 const leadToEmail = process.env.LEAD_TO_EMAIL || 'skysthelimitpainting1779@gmail.com';
 
 // Simple in-memory IP rate limiter
-const ipCache = new Map<string, { count: number; lastReset: number }>();
-const LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 5; // max 5 requests per minute per IP
-
-function rateLimit(ip: string): boolean {
-  const now = Date.now();
-  const state = ipCache.get(ip);
-  if (!state) {
-    ipCache.set(ip, { count: 1, lastReset: now });
-    return true;
-  }
-  if (now - state.lastReset > LIMIT_WINDOW_MS) {
-    ipCache.set(ip, { count: 1, lastReset: now });
-    return true;
-  }
-  if (state.count >= MAX_REQUESTS) {
-    return false;
-  }
-  state.count += 1;
-  return true;
-}
-
-function asText(value: unknown): string {
-  return typeof value === 'string' ? value.trim() : '';
-}
-
-function escapeHtml(value: unknown): string {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function buildLeadId(): string {
-  const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
-  const random = Math.random().toString(36).slice(2, 8).toUpperCase();
-  return `SKY-MC-${stamp}-${random}`;
-}
+const rateLimit = createRateLimiter(5, 60 * 1000);
 
 function buildLeadHtml(payload: Record<string, unknown>): string {
   const rows = Object.entries(payload)
@@ -306,6 +267,11 @@ export async function POST(req: NextRequest) {
 
   if (!lead.phone && !lead.email) {
     return NextResponse.json({ error: 'ManyChat lead must have either a phone number or email address.' }, { status: 400 });
+  }
+
+  const validationError = validate(lead);
+  if (validationError) {
+    return NextResponse.json({ error: validationError }, { status: 400 });
   }
 
   try {
