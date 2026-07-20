@@ -3,6 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { test } from 'node:test';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('top-level routes use the three-market architecture in Next.js filesystem routing', () => {
   const appExists = existsSync(new URL('../src/App.tsx', import.meta.url));
@@ -67,7 +68,7 @@ test('remediation guardrails cover secrets, headers, App Router SEO, and accessi
     'Strict-Transport-Security',
     'Content-Security-Policy',
   ]) {
-    assert.match(vercelTs, new RegExp(key.replace(/-/g, '\\-')), `${key} header is missing`);
+    assert.match(vercelTs, new RegExp(escapeRegExp(key)), `${key} header is missing`);
   }
   assert.doesNotMatch(vercelTs, /rewrites\s*:/);
 
