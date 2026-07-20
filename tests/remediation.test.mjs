@@ -35,7 +35,7 @@ test('Vercel config has security headers and no blanket SPA rewrite', () => {
     'Strict-Transport-Security',
     'Content-Security-Policy',
   ]) {
-    assert.match(vercelTs, new RegExp(key.replace(/-/g, '\\-')), `${key} header is missing`);
+    assert.match(vercelTs, new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `${key} header is missing`);
   }
 
   // No blanket SPA rewrite (marketing is Next App Router, not Vite SPA).
