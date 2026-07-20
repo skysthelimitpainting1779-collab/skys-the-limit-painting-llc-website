@@ -24,14 +24,14 @@ npm run host:compile          # regenerate Claude/Cursor/Codex/Copilot/Gemini ad
 
 ## Entire CLI
 
-**Installed globally:** `~/.local/bin/entire.exe` (v0.8.42)  
+**Installed globally:** via Scoop (`scoop install entire/cli`) - v0.8.42  
 **Purpose:** Session checkpointing linked to Git commits for all coding agents
 
 **Enabled agents:** Cursor, Gemini CLI, Codex  
 **Git hooks:** Integrated via Husky (`.husky/prepare-commit-msg`, `commit-msg`, `post-commit`, `post-rewrite`, `pre-push`)
 
 **Maintenance:**
-- Keep Entire CLI updated: `entire update` or re-download from GitHub releases
+- Keep Entire CLI updated: `scoop update entire/cli`
 - Verify hooks after npm install: Husky may overwrite; check `.husky/*` files contain Entire calls
 - Add new agents: `entire agent add <name>` (claude-code, copilot-cli, cursor, gemini, codex, etc.)
 - Disable Vercel deployments for `entire/**` branches: `entire configure`
