@@ -3,7 +3,7 @@ name: Learning Pipeline
 # Lean: after CI, rebuild active prevention only. No learn-pipeline theater.
 on:
   workflow_run:
-    workflows: ['CI/CD Pipeline']
+    workflows: ['CI Pipeline']
     types: [completed]
   workflow_dispatch:
 
