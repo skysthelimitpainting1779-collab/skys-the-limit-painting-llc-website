@@ -3,6 +3,7 @@ import { ArrowRight, Check, ClipboardCheck, HardHat, Ruler, ShieldCheck } from '
 import LeadForm from '../components/LeadForm';
 import PrepProtocolStage from '../components/PrepProtocolStage';
 import ResponsiveImage from '../components/ResponsiveImage';
+import ReviewCarousel from '../components/ReviewCarousel';
 import { faqSchema } from '../lib/seo';
 
 const scopeRows = [
@@ -134,6 +135,29 @@ export default function HomeClient() {
                 return <li key={title as string} className="flex gap-4 py-5"><Mark aria-hidden="true" className="mt-1 shrink-0 text-[#FF5A00]" size={18} /><div><p className="text-sm font-bold uppercase tracking-wide text-white">{title as string}</p><p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-zinc-500">{detail as string}</p></div></li>;
               })}
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Social proof — customer reviews */}
+      <section aria-label="Customer reviews" className="border-b border-zinc-800">
+        <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12">
+          <div className="grid gap-8 lg:grid-cols-[0.6fr_1.4fr] lg:gap-16 lg:items-center">
+            <div>
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">Client record</p>
+              <h2 className="mt-4 text-4xl font-black uppercase leading-none tracking-[-0.05em] text-white sm:text-5xl">Word from the field.</h2>
+              <a
+                href="https://g.page/r/skysthelimitpainting/review"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="google_review_click"
+                data-track-payload='{"source":"homepage_reviews"}'
+                className="mt-6 inline-flex items-center gap-2 border border-zinc-600 px-4 py-3 text-xs font-black uppercase tracking-[0.1em] text-zinc-300 transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
+              >
+                Leave a Google Review <ArrowRight size={14} />
+              </a>
+            </div>
+            <ReviewCarousel />
           </div>
         </div>
       </section>

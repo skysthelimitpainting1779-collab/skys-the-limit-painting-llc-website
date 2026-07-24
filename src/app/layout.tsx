@@ -6,7 +6,6 @@ import ConversionFooterCta from '../components/ConversionFooterCta';
 import SocialLinks from '../components/SocialLinks';
 import VercelInsights from '../components/VercelInsights';
 import Link from 'next/link';
-import Script from 'next/script';
 import { Inter } from 'next/font/google';
 import { cn } from '../lib/utils';
 import { ENV } from '../lib/env';
@@ -166,7 +165,7 @@ export default function RootLayout({
               data-track-payload='{"source":"mobile_sticky","label":"Price Range"}'
               className="flex w-full items-center justify-center bg-[#FF5A00] px-2 py-4 text-center text-xs font-black uppercase tracking-[0.12em] text-white shadow-[0_0_20px_rgba(0,0,0,0.8)]"
             >
-              Calculate room scope
+              Get My Free Price Range
             </Link>
           </div>
 
@@ -308,7 +307,6 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
-        <Script id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/246259637.js" strategy="lazyOnload" />
         <VercelInsights />
       </body>
     </html>
