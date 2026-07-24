@@ -1,25 +1,20 @@
 ---
-name: Feature request
-about: Suggest an improvement or new capability
-title: "[Feature] "
-labels: enhancement
-assignees: ""
+name: Feature (prefer Linear)
+about: Prefer creating features in Linear skysthelimit · Platform. Use this only if Linear is unavailable.
+title: "[FEAT → Linear] "
+labels: []
 ---
 
-## Goal
+**Create this as a Linear issue instead:** https://linear.app/skysthelimit
 
-What should this improve for customers, the business, or maintainers?
+Use body template: `docs/templates/ISSUE_FEATURE.md`
 
-## Proposed Change
+---
 
-Describe the idea.
+## Temporary capture (move to Linear ASAP)
 
-## Acceptance Criteria
+**Goal:**
 
-- [ ] The behavior is clear to users
-- [ ] The implementation is documented when needed
-- [ ] The change can be validated
+**Acceptance:**
 
-## Notes
-
-Add examples, screenshots, or related links.
+**SKY-XX (after creating in Linear):**

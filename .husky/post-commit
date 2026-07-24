@@ -1,8 +1,9 @@
-#!/usr/bin/env sh
-# Keep the Graphify knowledge base in sync after each commit, but never block,
-# slow down, or fail a commit: only run when graphify is already installed
-# locally (avoids npx fetching it from the network on every commit).
-if command -v graphify >/dev/null 2>&1; then
-  echo "Agentic OS: synchronizing structural memory graph..."
-  graphify update . || true
+#!/bin/sh
+# Entire CLI hooks
+# Post-commit hook: condense session data if commit has Entire-Checkpoint trailer
+if command -v entire >/dev/null 2>&1; then entire hooks git post-commit 2>/dev/null || true; else :; fi
+# Chain: run pre-existing hook
+_entire_hook_dir="$(dirname "$0")"
+if [ -x "$_entire_hook_dir/post-commit.pre-entire" ]; then
+    "$_entire_hook_dir/post-commit.pre-entire" "$@"
 fi

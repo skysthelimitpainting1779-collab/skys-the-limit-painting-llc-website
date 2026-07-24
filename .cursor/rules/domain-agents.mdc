@@ -1,0 +1,30 @@
+---
+description: Domain agents — isolated jurisdiction, MCPs, skills, learnings per folder
+alwaysApply: true
+---
+
+# Domain agents (mandatory routing)
+
+Registry: `.agents/domains/REGISTRY.json`  
+Each domain folder is a full agent: `AGENT.md`, `SYSTEM_PROMPT.md`, `rules/`, `learnings/`.
+
+## Before implementing
+
+1. Identify paths you will touch.
+2. `npm run domain:route -- <path>` for each (or guess from table in `.agents/AGENTS.md`).
+3. Load **one** domain: `npm run domain:prompt -- <id>` (or read `SYSTEM_PROMPT.md`).
+4. Before finish: `npm run domain:enforce -- <id> --files a,b,c` — **must pass**.
+
+## Isolation + memory
+
+- Write **only** allow_globs for that domain.
+- **state.json** — live status/counters (`domain:state`)
+- **errors** — `domain:error -- <id> --title … --error …`
+- **successes** — `domain:success -- <id> --title …`
+- Sync Turso after durable outcomes: `npm run domain:sync -- <id|all>`
+- Do not edit another domain’s files; hand off instead.
+
+## Subagents
+
+When spawning a subagent for a domain, set its system prompt to the output of  
+`npm run domain:prompt -- <id>` and list allowed globs explicitly.

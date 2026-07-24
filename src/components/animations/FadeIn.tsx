@@ -21,10 +21,10 @@ export default function FadeIn({ children, delay = 0, direction = 'up', fullWidt
 
   return (
     <motion.div
-      initial={false}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      initial={{ opacity: 0, y: direction === 'up' ? 24 : direction === 'down' ? -24 : 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18, margin: '0px 0px -10% 0px' }}
-      transition={{ type: 'spring', stiffness: 125, damping: 22, delay }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay }}
       data-motion-direction={direction}
       className={`${fullWidth ? 'w-full' : ''} ${className}`}
     >

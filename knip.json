@@ -1,0 +1,77 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "next": true,
+  "entry": [
+    "remotion/index.ts",
+    "scripts/**/*.{js,mjs}",
+    "tests/**/*.{mjs,js,ts}",
+    "next.config.ts",
+    "src/proxy.ts"
+  ],
+  "project": [
+    "src/**/*.{ts,tsx,js,jsx}",
+    "scripts/**/*.{js,mjs}",
+    "tests/**/*.{mjs,js,ts}",
+    "remotion/**/*.{ts,tsx}"
+  ],
+  "ignore": [
+    ".agents/**",
+    ".claude/**",
+    ".cursor/**",
+    ".codex/**",
+    ".gemini/**",
+    ".entire/**",
+    ".learnings/**",
+    ".github/**",
+    "graphify-out/**",
+    "scratch/**",
+    "mcps/**",
+    "public/**",
+    "directus/**",
+    "supabase/**",
+    "references/**",
+    "next-env.d.ts",
+    "src/components/ui/**",
+    "src/components/animations/**",
+    "src/components/ReviewCarousel.tsx",
+    "src/components/SpotlightCard.tsx"
+  ],
+  "ignoreBinaries": [
+    "graphify",
+    "entire",
+    "vercel",
+    "remotion"
+  ],
+  "ignoreDependencies": [
+    "@libsql/client",
+    "@remotion/cli",
+    "@tailwindcss/postcss",
+    "dotenv",
+    "knip",
+    "markdownlint-cli",
+    "playwright",
+    "postcss",
+    "react-wrap-balancer",
+    "remotion",
+    "tailwindcss",
+    "tsx",
+    "tw-animate-css",
+    "typescript",
+    "vercel"
+  ],
+  "rules": {
+    "files": "error",
+    "dependencies": "error",
+    "devDependencies": "error",
+    "unlisted": "error",
+    "binaries": "off",
+    "unresolved": "error",
+    "exports": "off",
+    "nsExports": "off",
+    "types": "off",
+    "nsTypes": "off",
+    "enumMembers": "off",
+    "classMembers": "off",
+    "duplicates": "off"
+  }
+}

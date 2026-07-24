@@ -1,0 +1,102 @@
+<!--
+  AUTO-GENERATED — DO NOT EDIT.
+  Source of truth: root AGENTS.md (run: node scripts/sync-agent-rules.js)
+-->
+
+# Cursor Rules
+
+Shared project rules are in root `AGENTS.md`. Body below is a sync copy for hosts that do not import it.
+
+---
+
+# AGENTS.md
+
+Portable kernel for **any** coding agent. Keep short. Depth loads on demand (skills / RPI / graph).
+
+**Product:** skysthelimit · **Tasks:** Linear `SKY-XX` · **Stack:** [`.agents/STACK.md`](.agents/STACK.md)
+
+---
+
+## Commands
+
+```bash
+npm install && npm run dev
+npm run lint          # types + react version
+npm test
+npm run build
+npm run graph:query -- "<task>"
+npm run goal -- status
+npm run goal:verify   # lint + test (done criteria)
+npm run ship:eval     # deterministic ship graders
+```
+
+---
+
+## Behavior (Karpathy)
+
+1. **Think before coding** — state assumptions; ask if unclear; surface tradeoffs; push back on bad plans.
+2. **Simplicity first** — minimum code that solves the ask; no speculative abstractions or unrequested flexibility.
+3. **Surgical changes** — touch only what the task requires; match local style; mention unrelated smells, don’t “fix” them.
+4. **Goal-driven execution** — define verifiable success; loop until `npm run goal:verify` (or task-specific checks) passes.
+
+---
+
+## Ship loop (RPI — HumanLayer / YC-style)
+
+For non-trivial work, **do not one-shot**. Use phases (artifacts under `.agents/goals/<slug>/`):
+
+| Phase | Output | Stop when |
+|-------|--------|-----------|
+| **R** Research | `research.md` — files, flows, risks (graph:query first) | You can name exact files to touch |
+| **P** Plan | `plan.md` — steps + **verify check per step** | Human/agent agrees criteria |
+| **I** Implement | code + tests | `npm run goal:verify` green |
+
+```bash
+npm run goal -- start "short title"     # creates goal dir + GOAL.md
+npm run goal -- phase research|plan|implement
+npm run goal:verify
+npm run goal -- done                    # only after verify passes
+```
+
+Skill: `.agents/skills/ship-loop/SKILL.md` · Workflow: `.agents/workflows/ship-loop.md`
+
+---
+
+## Project style
+
+- Next.js App Router · TypeScript under `src/`
+- Industrial UI: **radius 0** · `#FF5A00` on charcoal · **no emojis** in product source
+- Root cause only (no soft-skip “fixes”) · public claims must be verifiable
+
+---
+
+## Context rules
+
+| Load always | Load on demand | Never bulk-load |
+|-------------|----------------|-----------------|
+| This file | Skills (`SKILL.md`), one at a time | `graphify-out/wiki/**`, `GRAPH_REPORT.md` |
+| | `.agents/STACK.md`, domain prompts | Full skill packs, hub dumps, ontology novels |
+| | `.learnings/` via recommend/inject | |
+
+---
+
+## Evals (Anthropic-style: sensors over vibes)
+
+Prefer **deterministic graders** over self-praise:
+
+```bash
+npm run ship:eval     # lint + test + optional build; writes .agents/goals/_eval/last.json
+```
+
+Done means **checks pass**, not “looks good.” Add a failing test before bugfixes when practical.
+
+---
+
+## Optional
+
+```bash
+npm run agentos:health
+npm run domain:route -- path/to/file
+npm run learn:recommend
+```
+

@@ -33,36 +33,30 @@ jobs:
           node-version-file: '.nvmrc'
           cache: npm
 
-      - name: Restore node_modules cache
-        id: cache-nm
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nm-
-
       - name: Install dependencies
-        if: steps.cache-nm.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Type check & Lint
-        run: npm run lint
+      - name: Lint (types · md · knip)
+        run: npm run lint:ci
+        env:
+          HOOKS_SKIP: '1'
+          ENTIRE_SYNC_SKIP: '1'
+          GRAPHIFY_SKIP_HOOK: '1'
 
       - name: Run tests
-        run: node scripts/agent-os.js bootstrap && npm test
-
-      - name: Restore Next.js build cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx', 'src/**/*.js', 'src/**/*.jsx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
-            ${{ runner.os }}-nextjs-
+        run: npm test
+        env:
+          AGENT_OS_SKIP_SCAN: '1'
+          HOOKS_SKIP: '1'
 
       - name: Build Next.js app
         run: npm run build
+        env:
+          HOOKS_SKIP: '1'
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
 
   deploy-production:
     name: Deploy to Production
@@ -81,17 +75,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: npm
 
-      - name: Restore node_modules cache
-        id: cache-nm
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-nm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nm-
-
       - name: Install dependencies
-        if: steps.cache-nm.outputs.cache-hit != 'true' && env.VERCEL_TOKEN != ''
+        if: env.VERCEL_TOKEN != ''
         run: npm ci
 
       - name: Pull Vercel Environment Information

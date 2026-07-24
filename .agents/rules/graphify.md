@@ -1,14 +1,23 @@
 ---
 trigger: always_on
-description: Consult the graphify knowledge graph at graphify-out/ for codebase and architecture questions.
+description: Graphify query first; never dump wiki or GRAPH_REPORT. Hard deny on grep/cat/ls for code structure.
 ---
 
-## graphify
+# Graphify (token discipline)
 
-This project has a graphify knowledge graph at graphify-out/.
+## Code Discovery — Mandatory Priority Order
+1. **Always query Graphify first** via `call_mcp_tool graphify/query_graph`
+2. Retry with a rephrased question before falling back — Graphify uses semantic BFS; different phrasing finds different nodes.
+3. Fall back to grep/glob/cat ONLY for: string literals, error messages, config values, non-code files (Dockerfiles, shell scripts, JSON configs).
+4. Open only the **1–3** source files cited by the graph result.
 
-Rules:
-- For codebase or architecture questions, when `graphify-out/graph.json` exists, first run `graphify query "<question>"` (CLI) or `query_graph` (MCP). Use `graphify path "<A>" "<B>"` / `shortest_path` for relationships and `graphify explain "<concept>"` / `get_node` for focused concepts. These return a scoped subgraph, usually much smaller than `GRAPH_REPORT.md` or raw grep output.
-- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
-- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context
-- After modifying code files in this session, run `graphify update .` to keep the graph current (AST-only, no API cost)
+## Hard Denials
+- NEVER use `cat`, `ls`, `grep` to discover functions, classes, routes, or component structure — use the graph.
+- NEVER grep `.ts`/`.tsx`/`.js` files when the question is about code relationships or architecture.
+- Paste `graphify-out/GRAPH_REPORT.md` into context — NEVER.
+- Bulk-read `graphify-out/wiki/**` or `.agents/wiki/` — NEVER.
+
+## If Graphify Returns 0 or <100 Nodes
+Run `graph_stats` immediately. If node count is wrong for a real codebase, the MCP is mis-bound to another project's graph.json. See `devhealer-workspace-binding.md` for the fix protocol.
+
+Wiki pages under `graphify-out/wiki` are **query/navigate only**, not always-on memory.

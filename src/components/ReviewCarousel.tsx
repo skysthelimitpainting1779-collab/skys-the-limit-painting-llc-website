@@ -201,7 +201,7 @@ export default function ReviewCarousel() {
             >
               <ChevronLeft size={20} />
             </button>
-            <span className="text-xs text-gray-500 font-mono px-2">
+            <span className="text-xs text-zinc-400 font-mono px-2">
               {String(activeIndex + 1).padStart(2, '0')} / {String(testimonials.length).padStart(2, '0')}
             </span>
             <button

@@ -1,5 +1,26 @@
-# Code ownership and review guidance.
+# Code ownership — GitHub requests review from these accounts on PRs.
+# Requires: Settings → Branches → require review from Code Owners (recommended).
 #
-# Default codeowner for all repository changes:
-* @johnnycsv232
+# Accounts:
+#   @skysthelimitpainting1779-collab  — Sky's the Limit Painting LLC website account
+#   @johnnycsv232                     — primary collaborator
 
+# Default owner for the entire repository
+* @skysthelimitpainting1779-collab @johnnycsv232
+
+# Website product surface
+/src/ @skysthelimitpainting1779-collab @johnnycsv232
+/public/ @skysthelimitpainting1779-collab @johnnycsv232
+
+# Infra / CI / deploy
+/.github/ @skysthelimitpainting1779-collab @johnnycsv232
+/scripts/ @skysthelimitpainting1779-collab @johnnycsv232
+/vercel.json @skysthelimitpainting1779-collab @johnnycsv232
+/package.json @skysthelimitpainting1779-collab @johnnycsv232
+/package-lock.json @skysthelimitpainting1779-collab @johnnycsv232
+
+# Data & backend
+/supabase/ @skysthelimitpainting1779-collab @johnnycsv232
+
+# Agent OS control plane
+/.agents/ @skysthelimitpainting1779-collab @johnnycsv232

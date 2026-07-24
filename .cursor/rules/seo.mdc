@@ -1,0 +1,10 @@
+---
+description: SEO metadata, sitemap, robots, AI crawlability.
+globs: "scripts/seo/**/*, public/llms.txt, public/sitemap.xml, src/**/layout.tsx, src/**/page.tsx"
+---
+# SEO
+
+Obey root `AGENTS.md`. Canonical URLs, valid metadata, no invented claims.
+
+- Prefer domain agent `seo` when routing
+- Do not dump wiki; use graph:query for orientation

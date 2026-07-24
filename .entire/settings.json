@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "log_level": "info",
+  "telemetry": false,
+  "external_agents": true,
+  "checkpoints": {
+    "primary": {
+      "type": "git-refs"
+    }
+  }
+}

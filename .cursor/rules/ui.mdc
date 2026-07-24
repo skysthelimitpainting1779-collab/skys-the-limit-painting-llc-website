@@ -1,0 +1,11 @@
+---
+description: Frontend UI — radius 0, safety orange on charcoal, no emojis.
+globs: "src/app/**/*.tsx, src/components/**/*.tsx, src/views/**/*.tsx, src/app/**/*.css, src/index.css"
+---
+# Frontend / UI
+
+Obey root `AGENTS.md`. Write only under `src/app/` (not api), `src/components/`, `src/views/`.
+
+- border-radius 0 / rounded-none
+- #FF5A00 on charcoal — not white-on-orange
+- No emojis in product source

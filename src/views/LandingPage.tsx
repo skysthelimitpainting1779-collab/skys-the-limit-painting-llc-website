@@ -9,6 +9,11 @@ import FadeIn from '../components/animations/FadeIn';
 import LeadForm from '../components/LeadForm';
 import ResponsiveImage from '../components/ResponsiveImage';
 import IconFeatureCard from '../components/IconFeatureCard';
+import { buttonVariants } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { motion } from 'motion/react';
+import { StaggerContainer, StaggerItem } from '../components/animations/Stagger';
 import { breadcrumbSchema, localBusinessSchema, serviceSchema } from '../lib/seo';
 import { businessPhone } from '../lib/contact';
 import {
@@ -67,53 +72,68 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
   return (
     <PageTransition>
       <section className="relative overflow-hidden bg-[#070706] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <ResponsiveImage
-          src={page.image}
-          alt={`${page.title} visual proof`}
-          width={1920}
-          height={1080}
-          sizes="100vw"
-          priority
-          className="absolute inset-0 h-full w-full object-cover opacity-48"
-        />
+        <motion.div
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0"
+        >
+          <ResponsiveImage
+            src={page.image}
+            alt={`${page.title} visual proof`}
+            width={1920}
+            height={1080}
+            sizes="100vw"
+            priority
+            className="h-full w-full object-cover opacity-48"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#070706_0%,rgba(7,7,6,0.93)_42%,rgba(7,7,6,0.5)_100%)]"></div>
         <div className="measurement-rules absolute inset-0 opacity-20"></div>
         <div className="road-rule absolute left-0 top-0 h-1 w-full opacity-80"></div>
 
         <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
-          <FadeIn className="w-full overflow-hidden lg:col-span-7">
-            <div className="font-display mb-7 inline-flex max-w-full items-center gap-3 border border-[#d8c7aa]/20 bg-[#070706]/65 px-4 py-3 text-xs font-semibold text-white backdrop-blur sm:text-xs">
-              {page.kind === 'area' ? <MapPin size={16} /> : <PaintRoller size={16} />}
-              <span>{page.eyebrow}</span>
-            </div>
-            <h1 className="max-w-[calc(100vw-2rem)] break-words text-[2rem] font-black leading-[1.02] text-white sm:max-w-5xl sm:text-5xl md:text-7xl">{page.title}</h1>
-            <p className="mt-7 max-w-[calc(100vw-2rem)] text-base leading-relaxed text-[#e7dfd2] sm:max-w-3xl md:text-xl">{page.headline}</p>
-            <div className="mt-8 flex max-w-[calc(100vw-2rem)] flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
-              <Link
-                href="/contact"
-                onClick={() => trackEvent('landing_cta_click', { page: path, action: 'estimate' })}
-                className="inline-flex items-center justify-center gap-2 bg-white px-7 py-4 text-sm font-semibold text-[#15110a] transition-colors hover:bg-white"
-              >
-                Start This Scope <ArrowRight size={18} />
-              </Link>
-              <Link
-                href="/estimate"
-                onClick={() => trackEvent('landing_cta_click', { page: path, action: 'calculator' })}
-                className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/55 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition-colors hover:border-white hover:text-white"
-              >
-                <Calculator size={18} /> Price Range
-              </Link>
-              <a
-                href={`tel:${businessPhone}`}
-                onClick={() => trackEvent('call_click', { source: path })}
-                className="inline-flex items-center justify-center gap-2 border border-[#d8c7aa]/30 bg-[#070706]/55 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition-colors hover:border-white hover:text-white"
-              >
-                <Phone size={18} /> Call Anthony
-              </a>
-            </div>
-          </FadeIn>
+          <StaggerContainer className="w-full overflow-hidden lg:col-span-7">
+            <StaggerItem>
+              <Badge variant="outline" className="font-display mb-7 inline-flex max-w-full items-center gap-3 border-[#d8c7aa]/20 bg-[#070706]/65 px-4 py-3 text-xs font-semibold text-white backdrop-blur sm:text-xs rounded-none">
+                {page.kind === 'area' ? <MapPin size={16} /> : <PaintRoller size={16} />}
+                <span>{page.eyebrow}</span>
+              </Badge>
+            </StaggerItem>
+            <StaggerItem>
+              <h1 className="max-w-[calc(100vw-2rem)] break-words text-[2rem] font-black leading-[1.02] text-white sm:max-w-5xl sm:text-5xl md:text-7xl">{page.title}</h1>
+            </StaggerItem>
+            <StaggerItem>
+              <p className="mt-7 max-w-prose text-base leading-relaxed text-[#e7dfd2] md:text-xl">{page.headline}</p>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="mt-8 flex max-w-[calc(100vw-2rem)] flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
+                <Link
+                  href="/contact"
+                  onClick={() => trackEvent('landing_cta_click', { page: path, action: 'estimate' })}
+                  className={cn(buttonVariants({ variant: "default", size: "lg" }), "gap-2 bg-white px-7 py-7 text-sm font-semibold text-[#15110a] hover:bg-white/90 rounded-none")}
+                >
+                  Start This Scope <ArrowRight size={18} />
+                </Link>
+                <Link
+                  href="/estimate"
+                  onClick={() => trackEvent('landing_cta_click', { page: path, action: 'calculator' })}
+                  className={cn(buttonVariants({ variant: "outline", size: "lg" }), "gap-2 border-[#d8c7aa]/30 bg-[#070706]/55 px-7 py-7 text-sm font-semibold text-white backdrop-blur hover:border-white hover:text-white rounded-none hover:bg-white/10")}
+                >
+                  <Calculator size={18} /> Price Range
+                </Link>
+                <a
+                  href={`tel:${businessPhone}`}
+                  onClick={() => trackEvent('call_click', { source: path })}
+                  className={cn(buttonVariants({ variant: "outline", size: "lg" }), "gap-2 border-[#d8c7aa]/30 bg-[#070706]/55 px-7 py-7 text-sm font-semibold text-white backdrop-blur hover:border-white hover:text-white rounded-none hover:bg-white/10")}
+                >
+                  <Phone size={18} /> Call Anthony
+                </a>
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
 
-          <FadeIn delay={0.12} direction="left" className="w-full overflow-hidden lg:col-span-5">
+          <FadeIn delay={0.4} direction="left" className="w-full overflow-hidden lg:col-span-5">
             <div className="w-full overflow-hidden border border-[#d8c7aa]/18 bg-[#11100d]/86 p-6 backdrop-blur">
               <p className="text-xs font-semibold text-white">{page.accent}</p>
               <p className="mt-5 text-base leading-relaxed text-[#e7dfd2]">{page.description}</p>
@@ -134,8 +154,8 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
           <FadeIn className="lg:col-span-4">
             <p className="text-xs font-semibold text-[#8b4d20]">Scope map</p>
-            <h2 className="mt-5 break-words text-3xl font-black leading-tight sm:text-4xl md:text-5xl">A focused page for a real buyer question.</h2>
-            <p className="mt-5 text-base leading-relaxed text-[#4c453d]">
+            <h2 className="mt-5 max-w-prose break-words text-3xl font-black leading-tight sm:text-4xl md:text-5xl">A focused page for a real buyer question.</h2>
+            <p className="mt-5 max-w-prose text-base leading-relaxed text-[#4c453d]">
               Start with the kind of work, where it is, what surface needs attention, and what proof or timeline matters before the first call.
             </p>
             {page.kind === 'area' && page.neighborhoods && page.neighborhoods.length > 0 && (
@@ -171,12 +191,12 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start">
           <FadeIn className="lg:sticky lg:top-36 lg:col-span-5">
             <p className="text-xs font-semibold text-white">How it moves</p>
-            <h2 className="mt-5 text-4xl font-black leading-tight text-white md:text-6xl">Clear steps before anyone starts painting.</h2>
+            <h2 className="mt-5 max-w-prose text-4xl font-black leading-tight text-white md:text-6xl">Clear steps before anyone starts painting.</h2>
           </FadeIn>
           <div className="grid gap-5 lg:col-span-7">
             {page.process.map((step, index) => (
               <FadeIn key={step.title} delay={0.08 * index}>
-                <article className="grid overflow-hidden border border-white/10 bg-[#11100d] md:grid-cols-12">
+                <article className="grid overflow-hidden border-t border-white/10 md:grid-cols-12">
                   <div className="relative min-h-[180px] md:col-span-5">
                     <ResponsiveImage
                       src={sectionImages[index % sectionImages.length]}
@@ -206,7 +226,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
           <FadeIn className="lg:col-span-5">
             <p className="text-xs font-semibold text-white">Proof intake</p>
-            <h2 className="mt-5 text-4xl font-black leading-tight md:text-5xl">Send photos, location, timeline, and the surface story.</h2>
+            <h2 className="mt-5 max-w-prose text-4xl font-black leading-tight md:text-5xl">Send photos, location, timeline, and the surface story.</h2>
           </FadeIn>
           <FadeIn delay={0.1} className="lg:col-span-7">
             <div className="grid gap-4 md:grid-cols-3">
@@ -220,7 +240,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
                   icon={card.icon}
                   title={card.title}
                   body={card.body}
-                  className="min-h-[210px] border-l border-white/35 bg-[#11100d] p-6"
+                  className="min-h-[210px] border-t border-white/15 pt-8"
                   iconClassName="mb-8 text-white"
                   bodyClassName="mt-4 text-sm leading-relaxed text-[#cbd4d3]"
                   as="div"
@@ -256,7 +276,7 @@ export default function LandingPageRoute({ kind, initialPageData }: LandingPageR
               <p className="text-xs font-semibold text-white">Related paths</p>
               <h2 className="mt-3 text-3xl font-black text-white md:text-4xl">Keep moving through the right lane.</h2>
             </div>
-            <Link href={marketPath[page.market]} className="inline-flex items-center gap-2 text-sm font-semibold text-white">
+            <Link href={marketPath[page.market]} className={cn(buttonVariants({ variant: "link" }), "px-0 text-white hover:text-white font-semibold")}>
               View {page.market} <ArrowRight size={17} />
             </Link>
           </div>

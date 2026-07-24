@@ -16,6 +16,8 @@
 /.claude/
 /.learnings/
 /graphify-out/
+/mcps/
+/scratch/
 
 # Local git hooks and CI config (not needed at build time).
 /.husky/
@@ -29,3 +31,7 @@
 # Operating manuals / docs (kept in the repo, not shipped to Vercel).
 /agents.md
 /CLAUDE.md
+
+# Entire CLI local state / config (not needed on Vercel)
+/.entire/
+

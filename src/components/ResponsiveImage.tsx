@@ -29,7 +29,7 @@ export default function ResponsiveImage({
       priority={priority}
       loading={priority ? undefined : loading}
       decoding="async"
-      fetchPriority={priority ? undefined : fetchPriority}
+      fetchPriority={priority ? 'high' : fetchPriority}
       unoptimized={unoptimized}
     />
   );

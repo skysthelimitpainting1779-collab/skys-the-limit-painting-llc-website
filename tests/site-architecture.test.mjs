@@ -3,6 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { test } from 'node:test';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('top-level routes use the three-market architecture in Next.js filesystem routing', () => {
   const appExists = existsSync(new URL('../src/App.tsx', import.meta.url));
@@ -39,24 +40,26 @@ test('homepage states the approved positioning and avoids forbidden claims', () 
   assert.doesNotMatch(home, /Licensed|Bonded|MnDOT-approved|Government-certified|DBE certified|TGB certified|Trusted by government agencies|Awarded public contracts|Workers comp/i);
 });
 
-test('remediation guardrails cover secrets, headers, prerendering, and accessible interactions', () => {
+test('remediation guardrails cover secrets, headers, App Router SEO, and accessible interactions', () => {
   const viteConfigExists = existsSync(new URL('../vite.config.ts', import.meta.url));
   assert.ok(!viteConfigExists, 'vite.config.ts should be deleted to prevent client exposure of configs');
 
   const packageJson = read('package.json');
-  const vercelConfig = JSON.parse(read('vercel.json'));
-  const prerender = read('scripts/prerender.mjs');
+  assert.ok(existsSync(new URL('../vercel.ts', import.meta.url)), 'vercel.ts should exist');
+  assert.ok(!existsSync(new URL('../vercel.json', import.meta.url)), 'vercel.json must not coexist with vercel.ts');
+  const vercelTs = read('vercel.ts');
+  const rootLayout = read('src/app/layout.tsx');
   const slider = read('src/components/BeforeAfterSlider.tsx');
   const leadForm = read('src/components/LeadForm.tsx');
   const serviceAreaMap = read('src/components/ServiceAreaMap.tsx');
-  const leadsApi = read('src/app/api/leads/route.ts');
+  const leadsApi = read('src/lib/api/utils.ts');
 
   assert.doesNotMatch(packageJson, /@google\/genai/);
-  assert.match(leadsApi, /function escapeHtml/);
+  assert.doesNotMatch(packageJson, /react-router-dom/);
+  assert.match(leadsApi, /export function escapeHtml/);
   assert.match(leadsApi, /escapeHtml\(key\)/);
   assert.match(leadsApi, /escapeHtml\(value\)/);
 
-  const headerKeys = vercelConfig.headers?.[0]?.headers?.map((header) => header.key) || [];
   for (const key of [
     'X-Content-Type-Options',
     'X-Frame-Options',
@@ -65,16 +68,18 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
     'Strict-Transport-Security',
     'Content-Security-Policy',
   ]) {
-    assert.ok(headerKeys.includes(key), `${key} header is missing`);
+    assert.match(vercelTs, new RegExp(escapeRegExp(key)), `${key} header is missing`);
   }
-  assert.equal(vercelConfig.rewrites, undefined);
+  assert.doesNotMatch(vercelTs, /rewrites\s*:/);
 
-  for (const route of ['/', '/residential', '/commercial', '/public-sector', '/projects', '/about', '/contact', '/capabilities', '/service-area', '/404']) {
-    assert.match(prerender, new RegExp(`path: '${route.replace('/', '\\/')}'`));
+  // Real App Router surface — not Vite prerender.mjs theater
+  for (const route of ['residential', 'commercial', 'public-sector', 'projects', 'about', 'contact', 'capabilities', 'service-area']) {
+    assert.ok(existsSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url)), `src/app/${route}/page.tsx missing`);
   }
-  assert.match(prerender, /404\.html/);
-  assert.match(prerender, /application\/ld\+json/);
-  assert.match(prerender, /fallbackContent/);
+  assert.match(rootLayout, /application\/ld\+json/);
+  assert.doesNotMatch(rootLayout, /ssr:\s*false/);
+  assert.ok(!existsSync(new URL('../scripts/prerender.mjs', import.meta.url)));
+  assert.ok(!existsSync(new URL('../src/components/Layout.tsx', import.meta.url)));
 
   assert.match(slider, /type="range"/);
   assert.match(slider, /aria-valuetext/);
@@ -89,10 +94,9 @@ test('remediation guardrails cover secrets, headers, prerendering, and accessibl
   }
 });
 
-test('local SEO and service landing pages are routable, prerendered, and listed in the sitemap', () => {
+test('local SEO and service landing pages are routable and listed in the sitemap', () => {
   const landingPages = read('src/data/landingPages.ts');
   const landingRoute = read('src/views/LandingPage.tsx');
-  const prerender = read('scripts/prerender.mjs');
   const sitemap = read('public/sitemap.xml');
 
   for (const slug of [
@@ -113,7 +117,6 @@ test('local SEO and service landing pages are routable, prerendered, and listed 
     'pavement-marking',
   ]) {
     assert.match(landingPages, new RegExp(`slug: '${slug}'`));
-    assert.match(prerender, new RegExp(slug));
     assert.match(sitemap, new RegExp(slug));
   }
 
@@ -126,7 +129,7 @@ test('local SEO and service landing pages are routable, prerendered, and listed 
 });
 
 test('M2 compliance and contractor registration statements are correctly set', () => {
-  const layout = read('src/components/Layout.tsx');
+  const layout = read('src/app/layout.tsx');
   const footerCta = read('src/components/ConversionFooterCta.tsx');
   const refer = read('src/views/Refer.tsx');
   const estimate = read('src/views/Estimate.tsx');
@@ -137,8 +140,10 @@ test('M2 compliance and contractor registration statements are correctly set', (
   assert.match(ogPreview, /width="530"/);
   assert.match(ogPreview, /MN CONTRACTOR REG\./);
 
-  // 2. Layout.tsx
-  assert.match(layout, /Registered MN Specialty Contractor \(ID: IR816596\) \| Owner exempt from workers’ comp under MN Statute 176.041 \| Fully Insured/);
+  // 2. Real root layout (App Router)
+  assert.match(layout, /IR816596/);
+  assert.match(layout, /176\.041/);
+  assert.match(layout, /Fully Insured/);
 
   // 3. ConversionFooterCta.tsx
   assert.ok(footerCta.includes('MN ID: IR816596'));

@@ -1,99 +1,157 @@
+# skysthelimit — Sky's the Limit Painting LLC Website
+
+**Slug:** `skysthelimit` · **npm:** `skysthelimit-website` · **Tasks:** [Linear](https://linear.app/skysthelimit)
+
+**Live site:** [https://www.skysthelimitpaintingllc.com](https://www.skysthelimitpaintingllc.com)
+
+Production website for **Sky's the Limit Painting LLC** — an owner-operated, fully insured Minnesota Specialty Contractor (Painting, **MN ID: IR816596**) based in Inver Grove Heights and serving the Twin Cities metro.
+
+The site drives residential, commercial, and public-sector leads with estimate intake, local SEO, and AI-crawlable structure. Product work (homebase, portal, CMS, procurement) is managed in **Linear**, not GitHub Issues.
+
 ---
-type: documentation
-title: Sky's the Limit Painting LLC Website Repository
-description: Production Next.js 16 website for Sky's the Limit Painting LLC (MN Specialty Contractor — Painting, IR816596). Includes the Agent OS control plane, hardened CI/CD, a design system, and the full marketing/lead-generation site.
-tags: [documentation, website, nextjs, painting, compliance, agent-os]
+
+## Links
+
+| | |
+|---|---|
+| **Website** | [www.skysthelimitpaintingllc.com](https://www.skysthelimitpaintingllc.com) |
+| **Linear** | [skysthelimit workspace](https://linear.app/skysthelimit) |
+| **Phone** | [651-410-4196](tel:+16514104196) (call / text) |
+| **Email** | [skysthelimitpainting1779@gmail.com](mailto:skysthelimitpainting1779@gmail.com) |
+| **AI crawl map** | [/llms.txt](https://www.skysthelimitpaintingllc.com/llms.txt) |
+| **GitHub** | [skysthelimitpainting1779-collab/skys-the-limit-painting-llc-website](https://github.com/skysthelimitpainting1779-collab/skys-the-limit-painting-llc-website) (target rename: `skysthelimit-website`) |
+| **Naming SSOT** | [`docs/NAMING.md`](./docs/NAMING.md) |
+| **Agent OS** | [`docs/AGENT_OS.md`](./docs/AGENT_OS.md) · kernel [`.agents/AGENTS.md`](./.agents/AGENTS.md) |
+| **Design SSOT** | [`DESIGN.md`](./DESIGN.md) |
+| **Templates** | [`docs/templates/`](./docs/templates/) |
+
 ---
 
-# Sky's the Limit Painting LLC — Website
+## Stack
 
-Production-ready website for **Sky's the Limit Painting LLC**, an owner-operated, fully insured registered Minnesota Specialty Contractor (Painting, MN ID: IR816596) based in Inver Grove Heights and serving the Twin Cities metro. The site drives lead generation, automated estimate intake, and local/service-area SEO across residential, commercial, and public-sector markets.
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Tailwind CSS 4** · shadcn/ui · Motion
+- **Supabase** (Postgres / Auth / Storage)
+- **Resend** (transactional email)
+- **Vercel** (hosting, Analytics, Speed Insights)
+- **Remotion** (brand video loops)
+- **Agent OS** (`.agents/` kernel + domain agents + graph + Turso memory — see [`docs/AGENT_OS.md`](./docs/AGENT_OS.md))
+- **Linear** — tasks / milestones (`skysthelimit · Platform` · `Reliability`)
 
-## Tech Stack
+**Node:** `24.x` (see `.nvmrc`)
 
-- **Framework**: Next.js 16 (App Router, Turbopack) + React 19
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4, shadcn/ui (`components.json`), `motion` (Framer Motion)
-- **Backend / Data**: Supabase (Postgres, Auth, Storage) via `@supabase/ssr`
-- **Email**: Resend
-- **Video-as-code**: Remotion (hero and per-market loops in `remotion/`)
-- **Analytics**: Vercel Analytics + Speed Insights, GA, custom event tracking
-- **Hosting**: Vercel
+```bash
+npm run agentos:health    # Agent OS checklist
+npm run domain:list       # specialist agents
+npm run graph:query -- "portal auth"
+```
 
-## Agent Operating Manual
+---
 
-Use [.agents/AGENTS.md](.agents/AGENTS.md) as the source of truth for agent work — it defines the wiki-first workflow, verification gate, claim guardrails, and Google Open Knowledge standard. Enforced policies (POL-001…POL-007) are the source of truth in `scripts/agent-os.js` and are generated into `.agents/decisions.md` on bootstrap.
+## Quick start
 
-## Setup
+```bash
+npm ci
+cp .env.example .env.local   # fill secrets as needed
+npm run dev                  # http://localhost:3000
+```
 
-Requires **Node 24.x** (matches CI) and npm.
+### Verify (matches CI)
 
-1. **Install dependencies**
-   ```bash
-   npm ci
-   ```
+```bash
+npm run lint:ci                              # react pins · tsc · md · knip
+node scripts/agent-os.js bootstrap && npm test
+npm run build
+# or:
+npm run ci
+```
 
-2. **Run the dev server** (http://localhost:3000)
-   ```bash
-   npm run dev
-   ```
+### Common scripts
 
-3. **Build for production** (also generates `sitemap.xml` / `robots.txt` via `postbuild`)
-   ```bash
-   npm run build
-   ```
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build + sitemap |
+| `npm run lint` | Git guard + react pins + TypeScript |
+| `npm run lint:ci` | Full quality lint (CI) |
+| `npm test` | Test suite |
+| `npm run agentos:status` | Agent OS control plane |
+| `npm run agentos:entire-sync` | Codify Entire → skills/rules |
 
-4. **Lint & typecheck** (git-standards guard + `tsc --noEmit`)
-   ```bash
-   npm run lint
-   ```
-
-5. **Run the test suite** (bootstrap the Agent OS ledgers first, exactly as CI does)
-   ```bash
-   node scripts/agent-os.js bootstrap && npm test
-   ```
-
-### Environment variables
-
-Copy `.env.example` and fill in what you need. `src/lib/env.ts` resolves variables across standard, `NEXT_PUBLIC_`, `VITE_`, and Vercel integration `backend_` / `NEXT_PUBLIC_backend_` prefixes, so a Vercel-Supabase integration works without manual renaming. The site degrades gracefully (static fallbacks) when Supabase is not configured.
+---
 
 ## Routes
 
 | Path | Purpose |
-| --- | --- |
-| `/` | Home |
-| `/residential`, `/commercial`, `/public-sector` | Market lanes |
-| `/painting-services/[slug]` | Service landing pages (interior, exterior, cabinet refinishing, deck & fence, commercial repaints, …) |
-| `/service-area`, `/service-areas/[slug]` | Coverage map + per-city local SEO pages |
-| `/estimate` | Room Cost Calculator / estimate intake |
-| `/projects` | Work gallery |
-| `/about`, `/capabilities`, `/contact` | Company, capabilities statement, lead form |
-| `/refer`, `/review` | Referral program, Google review funnel |
+|------|---------|
+| `/` | Homepage |
+| `/residential` · `/commercial` · `/public-sector` | Market lanes |
+| `/painting-services/[slug]` | Service SEO landings |
+| `/service-area` · `/service-areas/[slug]` | Coverage + city pages |
+| `/estimate` | Interactive estimate / lead path |
+| `/projects` | Portfolio |
+| `/about` · `/capabilities` · `/contact` | Company & leads |
+| `/refer` · `/review` | Referral & review funnel |
 | `/admin` | Internal console |
-| `/api/leads`, `/api/storage/upload-url`, `/api/memory`, `/api/manychat` | API routes |
+| `/api/leads` · `/api/*` | API routes |
 
-## SEO & Structured Data
+---
 
-Structured data must follow [docs/google-open-knowledge.md](docs/google-open-knowledge.md): keep JSON-LD aligned with visible content, use stable entity IDs, validate changed URLs with the Google Rich Results Test, and avoid unsupported claims. The site emits `PaintingContractor`/`HousePainter`, `Service`, `BreadcrumbList`, `LocalBusiness`, and `FAQPage` schema (`src/lib/seo.ts`, `src/app/layout.tsx`). Homepage metadata, canonical, OpenGraph, and the `FAQPage` block live in `src/app/page.tsx` and `src/app/HomeClient.tsx`.
+## Compliance & claims
 
-## Claim Guardrails
+Only verified facts in marketing copy:
 
-Marketing copy reflects only verified facts:
+- **Contractor ID:** IR816596 (MN Specialty Contractor — Painting) near contractor references
+- **Insurance:** Fully insured (GL + commercial auto/tools); COI for qualified commercial/public work
+- **Workers' comp:** Owner-operator exempt under MN Statute 176.041 (zero payroll)
+- **No unsupported claims:** no fake reviews, no “licensed/bonded/award-winning” without evidence
+- **Owner-operated** positioning; journeyworker painting background only
 
-- **Insurance**: Fully insured (general liability + commercial auto/tools); COI available for qualified commercial/public-sector opportunities.
-- **Registration**: Registered MN Specialty Contractor (Painting), MN ID: IR816596. Owner exempt from workers' comp under MN Statute 176.041.
-- **Credentials**: Journeyworker Painter & Decorator background only — no DBE/TGB, government-certified, EPA, "licensed," or "bonded" claims unless separately verified.
-- **Owner-operated** positioning is emphasized; reviews use honest proof, not fabricated testimonials or star counts.
+---
 
-## CI/CD Posture
+## CI / CD & PR automation
 
-- **Node**: `24.x` across `ci.yml`, `release.yml`, and `security-scan.yml`.
-- **Supply chain**: all GitHub Action steps pinned to 40-character commit SHAs; Dependabot manages bumps. `dependency-review-action` (v5) and CodeQL run on every PR.
-- **Lint gate**: `scripts/enforce-git.js` enforces branch-name prefixes (`feat/`, `fix/`, `chore/`, `docs/`, `infra/`, `devin/`, `agent/`, `dependabot/`) and Conventional Commits.
-- **No auto-commits**: workflows never push back to branches; failures are reported, not auto-healed by committing.
+| Workflow | What it does |
+|----------|----------------|
+| **CI/CD Pipeline** | Git standards → lint · knip · test · build |
+| **PR Automation** | Branch normalize · PR title · labels · Vercel verify · auto review · sticky dashboard |
+| **Security Scan** | npm audit · dependency review |
+| **CodeQL** | JS/TS analysis |
+| **Release** | Tag `v*` → production deploy (Vercel token) |
 
-## Verification Checklist
+**Branch prefixes:** `feat/` `fix/` `chore/` `docs/` `infra/` `agent/` `devin/` `dependabot/`  
 
-- `npm run lint`, `node scripts/agent-os.js bootstrap && npm test`, and `npm run build` all green.
-- Browser-check `/`, a market lane, `/estimate`, `/projects`, and `/contact` after visual or copy changes.
-- Validate any changed structured data with the Google Rich Results Test.
+**Commits:** Conventional Commits — `type(scope): subject`
+
+**Agent work:** see [`.agents/AGENTS.md`](.agents/AGENTS.md)
+
+---
+
+## Project layout
+
+```text
+src/app/          Next.js App Router pages & API
+src/components/   UI & conversion components
+src/views/        Page bodies
+src/lib/          SEO, Supabase, env, analytics
+scripts/          CI, Agent OS, Entire, hooks, PR automation
+.agents/          Agent OS control plane
+.github/          Workflows, CODEOWNERS, templates
+public/           Static assets, llms.txt, sitemap
+supabase/         Migrations
+tests/            Node test suite
+```
+
+---
+
+## Environment
+
+See [`.env.example`](.env.example). `src/lib/env.ts` accepts standard / `NEXT_PUBLIC_` / Vercel integration prefixes. The site falls back safely when optional services (e.g. Supabase) are unset.
+
+Required for full production: Supabase, Resend, site URL, analytics IDs as needed.
+
+---
+
+## License / ownership
+
+Private business website for **Sky's the Limit Painting LLC**. Not open-source licensed for third-party reuse of brand assets or marketing content.

@@ -1,0 +1,13 @@
+---
+description: Portable kernel — always
+alwaysApply: true
+---
+
+# Kernel
+
+Follow repository root **AGENTS.md**.
+
+- Goal-driven: `npm run goal` / `npm run goal:verify`
+- Graph first: `npm run graph:query -- "<task>"`
+- No wiki/GRAPH_REPORT dumps; no emojis in src; root-cause only
+- Specialists: `.agents/specialists.json` (compiled host agents)

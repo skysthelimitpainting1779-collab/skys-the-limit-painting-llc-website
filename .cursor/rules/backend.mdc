@@ -1,0 +1,10 @@
+---
+description: API and backend paths only.
+globs: "backend/**/*, src/app/api/**/*.ts, supabase/**/*"
+---
+# Backend / API
+
+Obey root `AGENTS.md`. Write only under `backend/`, `src/app/api/`, `supabase/`.
+
+- No UI/CSS edits from this role
+- Prefer existing API patterns; verify with tests when present

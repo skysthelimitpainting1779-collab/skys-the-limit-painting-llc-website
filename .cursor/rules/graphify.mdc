@@ -1,0 +1,18 @@
+---
+description: graphify + ontology token discipline
+alwaysApply: true
+---
+
+# Graphify-first (ontology L3 memory)
+
+```bash
+npm run graph:query -- "<question>"
+npm run graph:path -- "A" "B"
+npm run graph:explain -- "concept"
+npm run graph:update
+```
+
+Respect `.graphifyignore` (no repomix, no vendor skill packs).  
+Canonical wiki: `graphify-out/wiki/index.md` only if navigating **one** page after query.
+
+Forbidden: dump `GRAPH_REPORT.md`, bulk wiki, recreate archives.

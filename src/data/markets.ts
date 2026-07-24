@@ -33,15 +33,15 @@ export const markets: Market[] = [
     navLabel: 'Residential',
     number: '01',
     title: 'Residential Painting',
-    headline: 'Careful painting for homes that deserve clean prep and a better finish.',
-    summary: 'Whole-home interiors, kitchens, baths, accent walls, cabinet refinishing, trim, ceilings, decks, and fences. One room or the entire house — we bring the same meticulous prep, clean execution, and respect for your living space every time.',
+    headline: 'A calmer, cleaner residential painting experience — built around your home, your schedule, and a finish worth living with.',
+    summary: 'Whole-home interiors, kitchens, baths, accent walls, cabinet refinishing, trim, ceilings, decks, and fences. One room or the entire house — every project begins with protection, preparation, and a clear plan for your space.',
     description:
-      'Residential work is where trust matters most. Sky’s the Limit Painting brings owner-led accountability, clean communication, surface prep, careful protection, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
+      'Residential work is personal. Sky’s the Limit Painting brings owner-led accountability, careful protection, clear communication, surface prep, and finish quality into homes across Inver Grove Heights and the Twin Cities Metro.',
     image: '/images/site/iphone-interior-painting-progress.webp',
     heroImage: '/images/site/marketing-hero-exterior-painting.webp',
     icon: Home,
     accent: 'Warm detail',
-    proof: ['Interior and exterior repainting', 'Trim, doors, walls, ceilings, and prep', 'Clean protection and final walkthrough'],
+    proof: ['Interior and exterior repainting', 'Protection, prep, and daily jobsite care', 'Final walkthrough with the owner'],
     capabilities: [
       {
         title: 'Interior Finish Work',
@@ -65,7 +65,7 @@ export const markets: Market[] = [
     cta: 'Plan A Residential Project',
     metaTitle: 'Residential Painting | Sky’s the Limit Painting LLC',
     metaDescription:
-      'Residential painting in Inver Grove Heights and the Twin Cities Metro with clean prep, careful protection, owner accountability, and sharp finish work.',
+      'Residential painting in Inver Grove Heights, Minneapolis, St. Paul, and the Twin Cities Metro. Owner-led prep, careful home protection, clear communication, and refined finishes.',
   },
   {
     slug: 'commercial',
@@ -114,7 +114,7 @@ export const markets: Market[] = [
     title: 'Public Sector Opportunities',
     headline: 'Documentation-minded painting, facility, and striping readiness for qualified public opportunities.',
     summary:
-      'Schools, municipal buildings, government facilities, and public infrastructure. Fully bonded, insured, and experienced with public procurement standards, documentation, and compliance requirements.',
+      'Schools, municipal buildings, government facilities, and public infrastructure. Insured and prepared for qualified opportunities requiring organized documentation and compliance-minded communication.',
     description:
       'Sky’s the Limit Painting is building a documented path for public-sector painting, facility, and pavement-marking work across Minnesota. We are registered under NAICS Code 238320 (Painting and Wall Covering) and maintain the safety, insurance, and documentation discipline public-sector conversations require.',
     image: '/images/services/striping/SkyLLP_ParkingLot_Striping.webp',

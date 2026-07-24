@@ -167,7 +167,7 @@ export default function AboutPage() {
                 { step: '04', title: 'Verify', body: 'Joint walkthrough. We don\u2019t consider the job done until you\u2019re satisfied and the site is clean.' },
               ].map((item) => (
                 <div key={item.step} className="border-t border-zinc-800 pt-8">
-                  <span className="text-sm font-semibold text-zinc-600">{item.step}</span>
+                  <span className="text-sm font-semibold text-zinc-400">{item.step}</span>
                   <h3 className="mt-4 text-2xl font-black text-white">{item.title}</h3>
                   <p className="mt-4 text-base leading-relaxed text-zinc-400">{item.body}</p>
                 </div>
