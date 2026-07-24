@@ -1,0 +1,66 @@
+name: Quality Gate
+
+on:
+  workflow_call:
+    secrets:
+      NEXT_PUBLIC_SUPABASE_URL:
+        required: false
+      NEXT_PUBLIC_SUPABASE_ANON_KEY:
+        required: false
+      PAYLOAD_SECRET:
+        required: false
+      DATABASE_URI:
+        required: false
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HOOKS_SKIP: '1'
+  ENTIRE_SYNC_SKIP: '1'
+  GRAPHIFY_SKIP_HOOK: '1'
+  AGENT_OS_SKIP_SCAN: '1'
+
+jobs:
+  quality:
+    name: Lint, Test & Build (Node 24)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Validate workflow contracts
+        run: npm run ci:contract
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore Next.js cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**/*', 'src/**/*', 'pages/**/*', 'next.config.*', 'tsconfig.json') }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('package-lock.json') }}-
+
+      - name: Lint and typecheck
+        run: npm run lint:ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build Next.js app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
