@@ -53,6 +53,26 @@ function collectLocalPaths(workflowText) {
   return [...paths].sort();
 }
 
+function collectActionRefs(workflowText) {
+  const refsByRepository = new Map();
+  const usesPattern = /^\s*uses:\s*['"]?([^@\s'"]+)@([^\s'"]+)['"]?(?:\s+#.*)?$/gm;
+
+  for (const match of workflowText.matchAll(usesPattern)) {
+    const action = match[1];
+    const ref = match[2];
+    if (action.startsWith('./') || action.startsWith('docker://')) continue;
+
+    const parts = action.split('/');
+    if (parts.length < 2) continue;
+    const repository = parts.slice(0, 2).join('/');
+    const refs = refsByRepository.get(repository) || new Set();
+    refs.add(ref);
+    refsByRepository.set(repository, refs);
+  }
+
+  return refsByRepository;
+}
+
 export function findWorkflowContractErrors({ root = process.cwd() } = {}) {
   const packagePath = resolve(root, 'package.json');
   const workflowsDir = resolve(root, '.github', 'workflows');
@@ -83,6 +103,14 @@ export function findWorkflowContractErrors({ root = process.cwd() } = {}) {
         errors.push(`${displayPath}: missing local file ${normalized}`);
       }
     }
+
+    for (const [repository, refs] of collectActionRefs(workflowText)) {
+      if (refs.size > 1) {
+        errors.push(
+          `${displayPath}: ${repository} actions use inconsistent refs: ${[...refs].sort().join(', ')}`
+        );
+      }
+    }
   }
 
   return errors.sort();
@@ -96,7 +124,9 @@ export function runWorkflowContractCheck({ root = process.cwd() } = {}) {
     return 1;
   }
 
-  console.log('[ci-contract] Workflow commands match package.json and local files.');
+  console.log(
+    '[ci-contract] Workflow commands, local files, and shared action refs are consistent.'
+  );
   return 0;
 }
 
