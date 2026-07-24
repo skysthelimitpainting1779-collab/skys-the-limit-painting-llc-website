@@ -46,7 +46,7 @@ function collectLocalPaths(workflowText) {
     if (path.startsWith('.') || path.startsWith('scripts/')) paths.add(path);
   }
 
-  for (const match of workflowText.matchAll(/^\s*uses:\s*['"]?(\.\/[^\s'"]+)['"]?\s*$/gm)) {
+  for (const match of workflowText.matchAll(/^\s*(?:-\s*)?uses:\s*['"]?(\.\/[^\s'"]+)['"]?\s*$/gm)) {
     paths.add(match[1]);
   }
 
@@ -55,7 +55,7 @@ function collectLocalPaths(workflowText) {
 
 function collectActionRefs(workflowText) {
   const refsByRepository = new Map();
-  const usesPattern = /^\s*uses:\s*['"]?([^@\s'"]+)@([^\s'"]+)['"]?(?:\s+#.*)?$/gm;
+  const usesPattern = /^\s*(?:-\s*)?uses:\s*['"]?([^@\s'"]+)@([^\s'"]+)['"]?(?:\s+#.*)?$/gm;
 
   for (const match of workflowText.matchAll(usesPattern)) {
     const action = match[1];
