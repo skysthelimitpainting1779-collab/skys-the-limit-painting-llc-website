@@ -83,6 +83,34 @@ Skill: `ship-loop` (`.agents/skills/ship-loop/`).
 
 ---
 
+## Delivery acceptance & recovery
+
+**Acceptance gate:** `npm run goal:verify` is the mandatory pre-delivery gate.
+It runs lint + test (and optionally `--build`) and writes a timestamped result to
+`.agents/goals/_eval/last.json`. No production deployment is accepted without a
+passing verify result tied to the current revision.
+
+**CI gate:** GitHub Actions (`.github/workflows/ci.yml`) runs git-standards,
+dependency audit, tests, and build on PRs to `main` and branch pushes.
+
+**Recovery route (owner: repo maintainer):**
+
+```bash
+# Rollback Vercel production to the previous deployment
+npx vercel rollback --yes
+
+# Or promote a known-good deployment
+npx vercel promote <deployment-url>
+```
+
+- Vercel auto-deploys on push to `main`; a failed deploy is recoverable via the
+  Vercel dashboard or CLI rollback within 90 days.
+- For database migrations: `supabase db reset` (local) or restore from Supabase
+  dashboard backup (production).
+- Never force-push to `main`; revert via `git revert <sha>` and re-deploy.
+
+---
+
 ## Project style
 
 - Next.js App Router · TypeScript under `src/`

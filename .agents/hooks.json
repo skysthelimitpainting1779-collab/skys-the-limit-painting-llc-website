@@ -1,5 +1,5 @@
 {
-  "dev-healer": {
+  "agent-os": {
     "enabled": true,
     "PreToolUse": [
       {
@@ -7,37 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/context-injector-hook.py",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "default_api:grep_search",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/graphify-grep-enforcer.py",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/schema-validator.py",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/command-validator.py",
+            "command": "node scripts/hooks/run.mjs claude-pre-tool",
             "timeout": 5
           }
         ]
@@ -49,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python c:/Users/Johnny Cage/DEV/skysthelimit-collab/.agents/plugins/dev-healer/hooks/posttool_episodic_capture.py",
+            "command": "node scripts/hooks/run.mjs claude-post-tool",
             "timeout": 10
           }
         ]
