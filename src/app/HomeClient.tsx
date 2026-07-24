@@ -38,11 +38,19 @@ export default function HomeClient() {
             <div>
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">Twin Cities / Residential painting scope desk</p>
               <h1 id="home-title" className="mt-6 max-w-4xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-white sm:text-7xl lg:text-8xl">
-                Residential detail. Commercial discipline. Public-sector ready.
+                Residential detail. Commercial discipline. <span className="text-[#FF5A00]">Preps</span> first.
               </h1>
               <p className="mt-8 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
                 Sky&apos;s the Limit Painting LLC scopes the protection, correction, coating system, and final walkthrough before a project reaches your home.
               </p>
+              {/* Trust badge chips */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {['Twin Cities Metro', 'MN ID: IR816596', '100% Insured', 'Public-Sector Ready'].map((chip) => (
+                  <span key={chip} className="inline-flex items-center border border-white/10 bg-black/60 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300">
+                    {chip}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="mt-10">
@@ -63,6 +71,24 @@ export default function HomeClient() {
               <p className="mt-2 text-sm font-semibold text-white">Protection and surface correction are part of the work order—not an upgrade.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Process path strip — overlapping dark cards */}
+      <section aria-label="How it works" className="relative z-10 -mt-12 border-b border-zinc-800">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px border border-zinc-700 bg-zinc-700 lg:grid-cols-4">
+          {[
+            ['01', 'Tell us', 'Property type, city, surfaces, and timeline'],
+            ['02', 'Scope + price', 'Written estimate from real site conditions'],
+            ['03', 'Reserve', 'Lock a start date that works for you'],
+            ['04', 'Transparency', 'Photos, walkthrough, and final detail check'],
+          ].map(([num, title, desc]) => (
+            <div key={num} className="bg-[#111111] px-5 py-6">
+              <p className="font-mono text-[10px] font-bold tracking-[0.2em] text-[#FF5A00]">{num}</p>
+              <p className="mt-2 text-sm font-black uppercase tracking-wide text-white">{title}</p>
+              <p className="mt-1.5 text-xs leading-5 text-zinc-400">{desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 

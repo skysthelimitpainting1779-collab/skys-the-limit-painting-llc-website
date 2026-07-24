@@ -3,7 +3,7 @@
 import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
+import { Calculator, Menu, X, ChevronDown, Phone } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => {
@@ -170,22 +170,14 @@ export default function ConversionHeader() {
                 href="/estimate"
                 data-track="hero_cta_click"
                 data-track-payload='{"source":"header","label":"Price Range"}'
-                className="u-transition hidden items-center justify-center gap-2 border border-line-strong bg-white/5 px-4 py-3 text-sm font-black text-white hover:border-white xl:inline-flex"
+                className="u-transition inline-flex items-center justify-center gap-2 bg-[#FF5A00] px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-white hover:bg-[#E94F00]"
               >
                 <Calculator size={15} />
                 Price Range
               </Link>
-              <Link
-                href="/contact"
-                data-track="hero_cta_click"
-                data-track-payload='{"source":"header","label":"Get Estimate"}'
-                className="u-transition whitespace-nowrap border border-white bg-white px-4 py-3 text-sm font-black text-surface-void hover:bg-transparent hover:text-white"
-              >
-                Get Estimate
-              </Link>
-              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="group hidden flex-col items-end gap-0 xl:flex">
-                <span className="text-xs font-bold text-ink-4">Call / Text</span>
-                <span className="u-transition tnum whitespace-nowrap text-xl font-black leading-none text-white hover:text-ink-3">651-410-4196</span>
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"header"}' className="u-transition inline-flex items-center justify-center gap-2 border border-[#FF5A00] px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-[#FF5A00] hover:bg-[#FF5A00] hover:text-white">
+                <Phone size={15} />
+                651-410-4196
               </a>
             </div>
 
@@ -224,10 +216,10 @@ export default function ConversionHeader() {
               <NavLink to="/contact">Contact</NavLink>
             </nav>
             <div className="mt-12 flex flex-col gap-4">
-              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="u-transition w-full text-center border border-line-strong bg-white/5 px-6 py-4 font-black text-white hover:border-white">
+              <Link href="/estimate" data-track="hero_cta_click" data-track-payload='{"source":"mobile_menu","label":"Price Range"}' className="u-transition w-full text-center bg-[#FF5A00] px-6 py-4 font-black uppercase tracking-[0.08em] text-white hover:bg-[#E94F00]">
                 Get A Price Range
               </Link>
-              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center bg-white text-surface-void px-6 py-4 rounded-none font-black text-lg">
+              <a href="tel:+16514104196" data-track="call_click" data-track-payload='{"source":"mobile_menu"}' className="w-full text-center border border-[#FF5A00] px-6 py-4 font-black uppercase tracking-[0.08em] text-[#FF5A00]">
                 Call / Text 651-410-4196
               </a>
             </div>
