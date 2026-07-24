@@ -11,7 +11,6 @@
 | `release.yml` | `v*` tags or confirmed manual dispatch | Reuse the quality gate, deploy a Vercel production artifact, publish a GitHub release for tags |
 | `learn-pipeline.yml` | Successful `CI` completion or manual dispatch | Active-prevention self-test and rebuild verification |
 | `ci-health-check.yml` | Daily schedule or manual dispatch | Run the reusable quality gate and maintain one deduplicated health incident issue |
-| `dependabot-auto-merge.yml` | Dependabot pull requests | Enable squash auto-merge for patch updates only; required checks still gate merge |
 
 ## Local quality gate
 
@@ -23,7 +22,7 @@ npm test
 npm run build
 ```
 
-`npm run ci:contract` verifies that every `npm run` command and every local script or reusable-workflow path referenced from `.github/workflows` exists. Run it whenever a workflow or `package.json` script changes.
+`npm run ci:contract` verifies that every `npm run` command and every local script or reusable-workflow path referenced from `.github/workflows` exists. It also requires steps from the same action repository, such as CodeQL `init` and `analyze`, to use the same pinned ref. Run it whenever a workflow or `package.json` script changes.
 
 ## Required deployment secrets
 
@@ -48,15 +47,21 @@ Preferred release path:
 
 Manual production deployment is available through `workflow_dispatch`; select the intended ref and explicitly enable `deploy_production`.
 
+## Dependency updates
+
+Dependabot opens dependency pull requests, but the repository does not auto-merge them. Review and merge only after CI, CodeQL, and Dependency Security are green. Do not restore workflow-driven auto-merge unless repository rulesets require those checks before merge.
+
 ## Branch coverage
 
 CI runs for `main`, `staging`, and the branch prefixes enforced by `scripts/enforce-git.js`:
 
 `feat/`, `fix/`, `chore/`, `docs/`, `infra/`, `devin/`, `agent/`, and `dependabot/`.
 
+For pull requests, Git Guard validates the author-controlled PR title rather than GitHub's generated merge-commit message. Conventional titles may contain repeated scopes used by dependency automation, such as `chore(deps)(deps-dev): ...`.
+
 ## Failure routing
 
-- A workflow command mismatch fails at **Validate workflow contracts** before dependency installation.
+- A workflow command, local path, or shared action-ref mismatch fails at **Validate workflow contracts** before dependency installation.
 - Lint and type failures fail at **Lint and typecheck**.
 - Test failures fail at **Run tests**.
 - Build failures fail at **Build Next.js app**.
