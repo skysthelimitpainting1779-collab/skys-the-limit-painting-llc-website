@@ -18,7 +18,7 @@ const ALLOWED_PREFIXES = [
   'dependabot/',
 ];
 const CC_RE =
-  /^(feat|fix|chore|docs|infra|refactor|test|style|ci|build|perf|revert)(?:\([a-z0-9_.-]+\))?!?: .{1,200}/i;
+  /^(feat|fix|chore|docs|infra|refactor|test|style|ci|build|perf|revert)(?:\([a-z0-9_./-]+\))?!?: .{1,200}/i;
 const MERGE_RE = /^Merge (pull request|branch|remote-tracking branch)\b/i;
 const REVERT_RE = /^Revert\b/i;
 
