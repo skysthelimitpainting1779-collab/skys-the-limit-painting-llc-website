@@ -18,6 +18,7 @@
     "lint:md": "markdownlint \"**/*.md\" --ignore \"**/node_modules/**\" --ignore \"wiki/**\" --ignore \".agents/wiki/**\" --ignore \"graphify-out/**\" --ignore \"**/.agents/wiki/**\"",
     "compile": "node scripts/compile.js",
     "ci": "node scripts/ci_check.js",
+    "ci:contract": "node scripts/ci-contract.mjs",
     "test": "node --test tests/*.mjs",
     "learn:prevent:test": "node scripts/active-prevention.mjs self-test",
     "learn:prevent:rebuild": "node scripts/active-prevention.mjs rebuild",
