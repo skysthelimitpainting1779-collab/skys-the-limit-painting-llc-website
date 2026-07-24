@@ -53,6 +53,13 @@ jobs:
       - name: Audit production dependencies
         run: npm audit --audit-level=critical --omit=dev
 
+      - name: Lint (types + react versions)
+        run: npm run lint:ci
+        env:
+          HOOKS_SKIP: "1"
+          ENTIRE_SYNC_SKIP: "1"
+          GRAPHIFY_SKIP_HOOK: "1"
+
       - name: Next.js Cache
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
@@ -71,3 +78,7 @@ jobs:
         run: npm run build
         env:
           HOOKS_SKIP: "1"
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}

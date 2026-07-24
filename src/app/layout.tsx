@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '../index.css';
-import React from 'react';
+import React, { Suspense } from 'react';
 import ConversionHeader from '../components/ConversionHeader';
 import ConversionFooterCta from '../components/ConversionFooterCta';
 import SocialLinks from '../components/SocialLinks';
@@ -150,7 +150,9 @@ export default function RootLayout({
             Skip to content
           </a>
 
-          <ConversionHeader />
+          <Suspense fallback={null}>
+            <ConversionHeader />
+          </Suspense>
 
           <main id="main-content" className="flex-grow pt-[117px] pb-20 md:pb-0">
             {children}

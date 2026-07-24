@@ -1,5 +1,5 @@
 import type { NextConfig } from 'next';
-import { withPayload } from '@payloadcms/next';
+import { withPayload } from '@payloadcms/next/withPayload';
 
 /**
  * Next.js 16 frontier config.
