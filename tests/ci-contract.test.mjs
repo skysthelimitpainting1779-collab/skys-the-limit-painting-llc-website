@@ -38,10 +38,24 @@ test('reports missing npm scripts and missing local command files', () => {
   }
 });
 
+test('reports inconsistent refs for actions from the same repository', () => {
+  const root = makeFixture({
+    workflow: `jobs:\n  analyze:\n    steps:\n      - uses: github/codeql-action/init@sha-one\n      - uses: github/codeql-action/analyze@sha-two\n`,
+  });
+
+  try {
+    assert.deepEqual(findWorkflowContractErrors({ root }), [
+      '.github/workflows/ci.yml: github/codeql-action actions use inconsistent refs: sha-one, sha-two',
+    ]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('accepts valid npm scripts, npm test, local files, and local reusable workflows', () => {
   const root = makeFixture({
     packageScripts: { 'lint:ci': 'node scripts/lint.mjs', test: 'node --test' },
-    workflow: `jobs:\n  test:\n    uses: ./.github/workflows/quality.yml\n  lint:\n    steps:\n      - run: npm run lint:ci\n      - run: npm test\n      - run: node scripts/check.mjs\n`,
+    workflow: `jobs:\n  test:\n    uses: ./.github/workflows/quality.yml\n  lint:\n    steps:\n      - run: npm run lint:ci\n      - run: npm test\n      - run: node scripts/check.mjs\n      - uses: github/codeql-action/init@same-sha\n      - uses: github/codeql-action/analyze@same-sha\n`,
     files: [
       '.github/workflows/quality.yml',
       'scripts/check.mjs',
