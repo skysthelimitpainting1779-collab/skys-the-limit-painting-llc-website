@@ -1,4 +1,4 @@
-name: CI Health Check
+name: CI Health
 
 on:
   schedule:
@@ -7,26 +7,87 @@ on:
 
 permissions:
   contents: read
-  issues: write
+
+concurrency:
+  group: ci-health
+  cancel-in-progress: true
 
 jobs:
-  health-check:
+  quality:
+    name: Scheduled Quality Gate
+    uses: ./.github/workflows/quality-gate.yml
+    secrets: inherit
+
+  report-failure:
+    name: Report Health Failure
+    needs: quality
+    if: failure()
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Run CI Health Check Script
-        run: bash .github/scripts/ci-health-check.sh
-
-      - name: Report Failure
-        if: failure()
+      - name: Create one open health issue
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
-            github.rest.issues.create({
+            const title = 'CI health check failed';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const { data: openIssues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: '🚨 CI Health Check Failed',
-              body: 'The automated CI health check failed. Please check the [Actions log](' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId + ') for more details.'
+              state: 'open',
+              per_page: 100,
             });
+            const existing = openIssues.find((issue) => issue.title === title && !issue.pull_request);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body: `The scheduled quality gate failed again: ${runUrl}`,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body: `The scheduled quality gate failed. Review the run: ${runUrl}`,
+              });
+            }
+
+  resolve-health:
+    name: Resolve Health Incident
+    needs: quality
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Close resolved health issues
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const title = 'CI health check failed';
+            const { data: openIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            for (const issue of openIssues.filter((item) => item.title === title && !item.pull_request)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: 'The scheduled quality gate is healthy again. Closing this incident.',
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'completed',
+              });
+            }
