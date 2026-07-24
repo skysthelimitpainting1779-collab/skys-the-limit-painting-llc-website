@@ -30,7 +30,11 @@
     "directus/**",
     "supabase/**",
     "references/**",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "src/components/ui/**",
+    "src/components/animations/**",
+    "src/components/ReviewCarousel.tsx",
+    "src/components/SpotlightCard.tsx"
   ],
   "ignoreBinaries": [
     "graphify",
@@ -45,7 +49,9 @@
     "dotenv",
     "knip",
     "markdownlint-cli",
+    "playwright",
     "postcss",
+    "react-wrap-balancer",
     "remotion",
     "tailwindcss",
     "tsx",
