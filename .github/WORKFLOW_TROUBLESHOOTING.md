@@ -1,104 +1,68 @@
-# Workflow troubleshooting
+# CI/CD workflows
 
-## Learning pipeline (Entire → Turso)
+## Pipeline topology
 
-Workflow: `learn-pipeline.yml` runs **after** `CI/CD Pipeline` completes (and weekly).
+| Workflow | Trigger | Responsibility |
+|---|---|---|
+| `ci.yml` | Pushes and pull requests for governed branches | Git standards, then the reusable quality gate |
+| `quality-gate.yml` | Reusable workflow and manual dispatch | Workflow contract, install, lint/typecheck, tests, Next.js build |
+| `security-scan.yml` | Push, pull request, weekly schedule | Production dependency audit and pull-request dependency review |
+| `codeql.yml` | Push, pull request, weekly schedule | The only CodeQL analysis workflow |
+| `release.yml` | `v*` tags or confirmed manual dispatch | Reuse the quality gate, deploy a Vercel production artifact, publish a GitHub release for tags |
+| `learn-pipeline.yml` | Successful `CI` completion or manual dispatch | Active-prevention self-test and rebuild verification |
+| `ci-health-check.yml` | Daily schedule or manual dispatch | Run the reusable quality gate and maintain one deduplicated health incident issue |
+| `dependabot-auto-merge.yml` | Dependabot pull requests | Enable squash auto-merge for patch updates only; required checks still gate merge |
 
-```text
-CI finish → entire-to-agentos → Turso learn_* tables → RECOMMENDATIONS.md artifact
-```
-
-Secrets (recommended for shared memory):
-
-- `TURSO_DATABASE_URL` = `libsql://…`
-- `TURSO_AUTH_TOKEN`
-
-Without secrets, job uses ephemeral `file:./.agents/agent-os.db` and uploads artifacts.
-
-Local:
+## Local quality gate
 
 ```bash
-npm run learn:pipeline -- --conclusion success --pipeline ci --job quality
-npm run learn:query
-npm run learn:recommend -- ci
-```
-
-Schema docs: `.agents/knowledge/LEARNING_TURSO.md`
-
-## Local = CI
-
-```bash
+npm run ci:contract
 npm ci
-npm run lint:ci          # react + types + md + knip
-node scripts/agent-os.js bootstrap && npm test
+npm run lint:ci
+npm test
 npm run build
-# or all-in-one:
-npm run ci
 ```
 
-## PR Automation (the good stuff)
+`npm run ci:contract` verifies that every `npm run` command and every local script or reusable-workflow path referenced from `.github/workflows` exists. Run it whenever a workflow or `package.json` script changes.
 
-Workflow: `.github/workflows/pr-automation.yml`
+## Required deployment secrets
 
-| Job | Purpose |
-|-----|---------|
-| Branch normalize | `feature/`→`feat/`, `bugfix/`→`fix/`, auto-rename via API |
-| PR title | Conventional Commits title; tries auto-fix |
-| Labels | Path areas + size XS–XL + `preview:ready` |
-| Vercel verify | READY for PR SHA + HTTP health (`VERCEL_TOKEN`) |
-| Auto review | Structured review / request-changes |
-| Sticky dashboard | One living PR comment (marker `agent-os-dashboard`) |
-| **PR automation all green** | Single required status for branch protection |
+- `VERCEL_TOKEN`
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `PAYLOAD_SECRET`
+- `DATABASE_URI`
 
-Local:
+The quality gate tolerates absent application secrets only when the application build itself tolerates them. Production deployment fails immediately when `VERCEL_TOKEN` is missing.
 
-```bash
-npm run branch:normalize:json
-npm run pr:title
-npm run vercel:verify
-npm run pr:review
-npm run pr:label
-npm run pr:dashboard
-```
+## Production release
 
-**Branch protection (recommended required checks):**
+Preferred release path:
 
-1. `PR automation all green`  
-2. `1 · Quality (lint · knip · test · build)` from CI/CD Pipeline  
+1. Merge a green pull request into `main`.
+2. Create and push a tag such as `v1.2.3` on that `main` commit.
+3. `release.yml` reruns the canonical quality gate.
+4. The workflow verifies that the tag commit belongs to `main`.
+5. Vercel is pulled, built, and deployed with `--prebuilt --prod`.
+6. GitHub release notes are generated after deployment succeeds.
 
+Manual production deployment is available through `workflow_dispatch`; select the intended ref and explicitly enable `deploy_production`.
 
-## Git standards fail
+## Branch coverage
 
-Branch must start with: `feat/` `fix/` `chore/` `docs/` `infra/` `agent/` `devin/` `dependabot/`
+CI runs for `main`, `staging`, and the branch prefixes enforced by `scripts/enforce-git.js`:
 
-Commits: Conventional Commits `type(scope): subject`  
-CI sets `GIT_GUARD_STRICT=1` (warnings become errors).
+`feat/`, `fix/`, `chore/`, `docs/`, `infra/`, `devin/`, `agent/`, and `dependabot/`.
 
-## Knip fails
+## Failure routing
 
-Config: `knip.json`. Ignores `.agents/**`, skills, graphify-out.  
-Only **unused files** and **unused dependencies** fail CI (exports are off).
-
-```bash
-npm run lint:knip
-```
-
-## Markdownlint fails
-
-Config: `.markdownlint.json` + `.markdownlintignore`.
-
-```bash
-npm run lint:md
-```
-
-## Duplicate CodeQL
-
-CodeQL runs only in `codeql.yml`. `security-scan.yml` is npm audit + dependency review.
-
-## Entire / hooks noise in CI
-
-CI sets `HOOKS_SKIP`, `ENTIRE_SYNC_SKIP`, `GRAPHIFY_SKIP_HOOK` so agent hooks never run on runners.
+- A workflow command mismatch fails at **Validate workflow contracts** before dependency installation.
+- Lint and type failures fail at **Lint and typecheck**.
+- Test failures fail at **Run tests**.
+- Build failures fail at **Build Next.js app**.
+- Missing Vercel credentials fail at **Verify production credentials**.
+- The scheduled health workflow creates one open `CI health check failed` issue and comments on it for repeated failures; it closes the issue after recovery.
 
 ## Node version
 
-Use `.nvmrc` (`24.0.0`). Workflows use `node-version-file: '.nvmrc'`.
+`.nvmrc` is the single source of truth. Every Node workflow uses `node-version-file: '.nvmrc'`.

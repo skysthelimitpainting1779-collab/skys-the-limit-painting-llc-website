@@ -2,21 +2,34 @@ name: Dependabot Auto Merge
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
-  pull-requests: write
   contents: write
+  pull-requests: write
+
+concurrency:
+  group: dependabot-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
-  auto-merge:
+  auto-merge-patch:
+    name: Enable Auto Merge for Patch Updates
+    if: >
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.repository == 'skysthelimitpainting1779-collab/skys-the-limit-painting-llc-website'
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    env:
-      PR_URL: ${{ github.event.pull_request.html_url }}
+    timeout-minutes: 5
     steps:
-      - name: Auto-approve and enable auto-merge
+      - name: Read Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable squash auto-merge
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --squash "$PR_URL"
         env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr review --approve "$PR_URL"
-          gh pr merge --auto --squash "$PR_URL"

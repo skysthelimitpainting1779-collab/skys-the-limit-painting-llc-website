@@ -34,7 +34,7 @@ test('primary navigation leads with residential, commercial, and public sector',
 test('homepage states the approved positioning and avoids forbidden claims', () => {
   const home = read('src/app/HomeClient.tsx');
 
-  assert.match(home, /Residential detail\. Commercial discipline\. Public-sector ready\./);
+  assert.match(home, /Residential detail\. Commercial discipline\.[\s\S]*Preps[\s\S]*first\./i);
   assert.match(home, /registered Minnesota Specialty Contractor \(Painting\)/);
   assert.doesNotMatch(home, /Public-work ambition/i);
   assert.doesNotMatch(home, /Licensed|Bonded|MnDOT-approved|Government-certified|DBE certified|TGB certified|Trusted by government agencies|Awarded public contracts|Workers comp/i);
@@ -45,9 +45,9 @@ test('remediation guardrails cover secrets, headers, App Router SEO, and accessi
   assert.ok(!viteConfigExists, 'vite.config.ts should be deleted to prevent client exposure of configs');
 
   const packageJson = read('package.json');
-  assert.ok(existsSync(new URL('../vercel.ts', import.meta.url)), 'vercel.ts should exist');
-  assert.ok(!existsSync(new URL('../vercel.json', import.meta.url)), 'vercel.json must not coexist with vercel.ts');
-  const vercelTs = read('vercel.ts');
+  assert.ok(!existsSync(new URL('../vercel.ts', import.meta.url)), 'legacy vercel.ts should remain deleted');
+  assert.ok(existsSync(new URL('../vercel.json', import.meta.url)), 'vercel.json should exist');
+  const vercelJson = read('vercel.json');
   const rootLayout = read('src/app/layout.tsx');
   const slider = read('src/components/BeforeAfterSlider.tsx');
   const leadForm = read('src/components/LeadForm.tsx');
@@ -68,9 +68,9 @@ test('remediation guardrails cover secrets, headers, App Router SEO, and accessi
     'Strict-Transport-Security',
     'Content-Security-Policy',
   ]) {
-    assert.match(vercelTs, new RegExp(escapeRegExp(key)), `${key} header is missing`);
+    assert.match(vercelJson, new RegExp(escapeRegExp(key)), `${key} header is missing`);
   }
-  assert.doesNotMatch(vercelTs, /rewrites\s*:/);
+  assert.ok(!Object.hasOwn(JSON.parse(vercelJson), 'rewrites'));
 
   // Real App Router surface — not Vite prerender.mjs theater
   for (const route of ['residential', 'commercial', 'public-sector', 'projects', 'about', 'contact', 'capabilities', 'service-area']) {

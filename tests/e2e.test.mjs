@@ -30,10 +30,9 @@ describe('Tier 1: Feature Coverage', () => {
   });
 
   test('T1.4 Routing & Navigation - Redirects for legacy routes redirect to new pages', () => {
-    // SSOT is vercel.ts (typed Vercel config); assert redirect routes as source.
-    const vercelTs = read('vercel.ts');
-    assert.match(vercelTs, /routes\.redirect\('\/services',\s*'\/residential'/);
-    assert.match(vercelTs, /routes\.redirect\('\/services\/interior',\s*'\/residential'/);
+    const vercel = JSON.parse(read('vercel.json'));
+    assert.ok(vercel.redirects.some(({ source, destination }) => source === '/services' && destination === '/residential'));
+    assert.ok(vercel.redirects.some(({ source, destination }) => source === '/services/interior' && destination === '/residential'));
   });
 
   test('T1.5 Routing & Navigation - Invalid paths serve the customized 404 page', () => {
@@ -44,7 +43,7 @@ describe('Tier 1: Feature Coverage', () => {
 
   test('T1.6 Three-Market Content - Home page renders the approved positioning statement', () => {
     const home = read('src/app/HomeClient.tsx');
-    assert.match(home, /Residential detail\. Commercial discipline\. Public-sector ready\./);
+    assert.match(home, /Residential detail\. Commercial discipline\.[\s\S]*Preps[\s\S]*first\./i);
   });
 
   test('T1.7 Three-Market Content - Residential page loads specific data fields', () => {
@@ -214,13 +213,13 @@ describe('Tier 2: Boundary/Corner Cases', () => {
     assert.match(layout, /mobile_sticky/);
   });
 
-  test('T2.3 Routing & Navigation - CSP and HTTP security headers are configured in vercel.ts', () => {
-    const vercelTs = read('vercel.ts');
-    assert.match(vercelTs, /Content-Security-Policy/);
-    assert.match(vercelTs, /default-src 'self'/);
-    assert.match(vercelTs, /object-src 'none'/);
-    assert.match(vercelTs, /frame-ancestors 'none'/);
-    assert.match(vercelTs, /Strict-Transport-Security/);
+  test('T2.3 Routing & Navigation - CSP and HTTP security headers are configured in vercel.json', () => {
+    const vercel = read('vercel.json');
+    assert.match(vercel, /Content-Security-Policy/);
+    assert.match(vercel, /default-src 'self'/);
+    assert.match(vercel, /object-src 'none'/);
+    assert.match(vercel, /frame-ancestors 'none'/);
+    assert.match(vercel, /Strict-Transport-Security/);
   });
 
   test('T2.4 Routing & Navigation - Referral parameters are parsed and stored in LocalStorage', () => {

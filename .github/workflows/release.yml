@@ -1,108 +1,101 @@
-name: Release & Deploy
+name: Release
 
 on:
   push:
-    branches: [main]
     tags:
       - 'v*'
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    inputs:
+      deploy_production:
+        description: Confirm a production deployment from the selected ref
+        required: true
+        default: false
+        type: boolean
 
 permissions:
-  contents: write
+  contents: read
 
-env:
-  SITE_URL: https://skysthelimitpaintingllc.com
-  VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
-  VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
+concurrency:
+  group: production-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  validate:
-    name: Validate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint (types · md · knip)
-        run: npm run lint:ci
-        env:
-          HOOKS_SKIP: '1'
-          ENTIRE_SYNC_SKIP: '1'
-          GRAPHIFY_SKIP_HOOK: '1'
-
-      - name: Run tests
-        run: npm test
-        env:
-          AGENT_OS_SKIP_SCAN: '1'
-          HOOKS_SKIP: '1'
-
-      - name: Build Next.js app
-        run: npm run build
-        env:
-          HOOKS_SKIP: '1'
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+  quality:
+    name: Production Quality Gate
+    if: github.event_name == 'push' || inputs.deploy_production == true
+    uses: ./.github/workflows/quality-gate.yml
+    secrets: inherit
 
   deploy-production:
-    name: Deploy to Production
-    needs: validate
-    if: startsWith(github.ref, 'refs/tags/v')
+    name: Deploy Production
+    needs: quality
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
     env:
+      VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
+      VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: npm
-
-      - name: Install dependencies
-        if: env.VERCEL_TOKEN != ''
-        run: npm ci
-
-      - name: Pull Vercel Environment Information
-        if: env.VERCEL_TOKEN != ''
-        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build Prebuilt Vercel Deployment Artifacts
-        if: env.VERCEL_TOKEN != ''
-        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy prebuilt artifact to Vercel Production
-        if: env.VERCEL_TOKEN != ''
-        run: npx vercel deploy --prebuilt --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
-
-  create-release:
-    name: Create GitHub Release
-    needs: deploy-production
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
-      - name: Create GitHub release
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Verify production credentials
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is not configured"
+            exit 1
+          fi
+
+      - name: Verify release tag is on main
+        if: github.event_name == 'push'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Release tag must point to a commit on main"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull Vercel production environment
+        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Vercel production artifact
+        run: npx vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy Vercel production artifact
+        id: deploy
+        run: |
+          deployment_url="$(npx vercel deploy --prebuilt --prod --archive=tgz --token="$VERCEL_TOKEN")"
+          echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
+          echo "Production deployment: $deployment_url"
+
+  create-release:
+    name: Create GitHub Release
+    needs: deploy-production
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Publish GitHub release
         uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b # v3.0.1
         with:
           generate_release_notes: true
