@@ -18,6 +18,8 @@
     "compile": "node scripts/compile.js",
     "ci": "node scripts/ci_check.js",
     "test": "node --test tests/*.mjs",
+    "learn:prevent:test": "node scripts/active-prevention.mjs self-test",
+    "learn:prevent:rebuild": "node scripts/active-prevention.mjs rebuild",
     "ops:harness": "node scripts/harness-ops.js",
     "ops:cron": "node scripts/cron-ops.js",
     "ops:cron:watch": "node scripts/cron-ops.js --watch",
