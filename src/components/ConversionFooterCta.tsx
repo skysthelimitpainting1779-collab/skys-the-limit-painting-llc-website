@@ -27,10 +27,10 @@ export default function ConversionFooterCta() {
       <div className="relative z-20 mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <h2 className="mt-5 text-4xl font-black leading-tight md:text-6xl">
-            Get a tighter scope before paint ever opens.
+            Know your price before paint ever opens.
           </h2>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#c9c1b4] md:text-lg">
-            Start with a fast planning range, then send the details for a real estimate conversation. The better the surface story, the cleaner the first response.
+            Get a fast planning range in under a minute, then send the details for a firm on-site estimate. Owner-led walkthrough, written scope, no pressure.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
