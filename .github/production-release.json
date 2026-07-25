@@ -1,5 +1,5 @@
 {
-  "releaseId": "production-2026-07-25-ci-cd-hardening",
-  "requestedAt": "2026-07-25T19:07:00Z",
-  "reason": "Promote the verified CI/CD hardening release and replace the stale custom-domain deployment."
+  "releaseId": "production-2026-07-25-bounded-vercel-promotion",
+  "requestedAt": "2026-07-25T19:24:00Z",
+  "reason": "Promote the verified CI/CD hardening release using a bounded staged deployment and project-wide Vercel promotion."
 }
