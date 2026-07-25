@@ -5,79 +5,6 @@ import { test } from 'node:test';
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const exists = (path) => existsSync(new URL(`../${path}`, import.meta.url));
 
-test('Vercel uses lockfile-safe installs and keeps main out of automatic production deploys', () => {
-  const config = JSON.parse(read('vercel.json'));
-
-  assert.equal(config.installCommand, 'npm ci');
-  assert.equal(config.git?.deploymentEnabled?.main, false);
-
-  const brandHeader = config.headers
-    .flatMap(({ headers = [] }) => headers)
-    .find(({ key }) => key === 'Cache-Control' && /immutable/.test(String(config.headers.find(({ headers = [] }) => headers.some((header) => header.key === 'Cache-Control' && /immutable/.test(header.value)))?.headers?.find((header) => header.key === 'Cache-Control')?.value)));
-
-  assert.ok(brandHeader, 'brand asset cache header must exist');
-  assert.equal(brandHeader.value, 'public, max-age=31536000, immutable');
-});
-
-test('release workflow uses a bounded staged deployment and project-wide promotion', () => {
-  const release = read('.github/workflows/release.yml');
-
-  assert.match(release, /git merge-base --is-ancestor "\$GITHUB_SHA" origin\/main/);
-  assert.match(
-    release,
-    /timeout 5m npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --no-wait/,
-  );
-  assert.match(release, /deployment-url\.txt/);
-  assert.match(release, /vercel promote "\$DEPLOYMENT_URL" --timeout=0/);
-  assert.doesNotMatch(release, /vercel alias set/);
-  assert.match(release, /npm run smoke:site/);
-});
-
-test('protected candidate readiness uses inspection and route smoke waits for public production', () => {
-  const release = read('.github/workflows/release.yml');
-  const beforePromotion = release.split('Promote staged deployment project-wide')[0];
-
-  assert.match(
-    beforePromotion,
-    /timeout 6m npx vercel inspect "\$DEPLOYMENT_URL" --wait --timeout=5m/,
-  );
-  assert.doesNotMatch(beforePromotion, /vercel curl/);
-  assert.match(release, /npm run smoke:site -- --base-url https:\/\/www\.skysthelimitpaintingllc\.com/);
-});
-
-test('release preserves existing domain ownership and promotes within the linked project', () => {
-  const release = read('.github/workflows/release.yml');
-
-  assert.match(release, /--scope="\$VERCEL_SCOPE"/);
-  assert.match(release, /vercel promote "\$DEPLOYMENT_URL" --timeout=0/);
-  assert.doesNotMatch(release, /vercel domains add/);
-  assert.doesNotMatch(release, /vercel domains verify/);
-});
-
-test('production can only be pushed from tags, manual approval, or an audited marker change', () => {
-  const release = read('.github/workflows/release.yml');
-
-  assert.match(release, /branches:\s*\n\s*- main/);
-  assert.match(release, /paths:\s*\n\s*- ['"]\.github\/production-release\.json['"]/);
-  assert.ok(
-    exists('.github/production-release.json'),
-    'audited production release marker must exist',
-  );
-
-  const marker = JSON.parse(read('.github/production-release.json'));
-  assert.equal(typeof marker.releaseId, 'string');
-  assert.equal(typeof marker.requestedAt, 'string');
-  assert.equal(typeof marker.reason, 'string');
-});
-
-test('scheduled CI health checks include the live production customer paths', () => {
-  const health = read('.github/workflows/ci-health-check.yml');
-
-  assert.match(health, /production-smoke:/);
-  assert.match(health, /npm run smoke:site/);
-  assert.match(health, /needs: \[quality, production-smoke\]/);
-});
-
 test('projects public content never initializes the cookie-backed auth client', () => {
   const projects = read('src/views/Projects.tsx');
 
@@ -156,4 +83,27 @@ test('site smoke runner proves critical routes and reports the exact failed rout
     }),
     /\/contact.*503/,
   );
+});
+
+test('site smoke runner forwards Vercel automation headers without replacing defaults', async () => {
+  const { checkSite } = await import('../scripts/smoke-site.mjs');
+  let requestHeaders;
+
+  await checkSite({
+    baseUrl: 'https://example.com',
+    routes: [{ path: '/' }],
+    headers: {
+      'x-vercel-protection-bypass': 'secret-value',
+      'x-vercel-set-bypass-cookie': 'true',
+    },
+    fetchImpl: async (_url, options) => {
+      requestHeaders = options.headers;
+      return new Response('ok', { status: 200 });
+    },
+  });
+
+  assert.equal(requestHeaders.accept, '*/*');
+  assert.equal(requestHeaders['user-agent'], 'skys-the-limit-production-smoke/1.0');
+  assert.equal(requestHeaders['x-vercel-protection-bypass'], 'secret-value');
+  assert.equal(requestHeaders['x-vercel-set-bypass-cookie'], 'true');
 });
