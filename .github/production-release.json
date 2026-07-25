@@ -1,5 +1,5 @@
 {
-  "releaseId": "production-2026-07-25-safe-project-promotion",
-  "requestedAt": "2026-07-25T19:34:00Z",
-  "reason": "Promote the verified CI/CD hardening artifact project-wide without mutating the existing production domain registration."
+  "releaseId": "production-2026-07-25-safe-project-promotion-retry-1",
+  "requestedAt": "2026-07-25T19:40:00Z",
+  "reason": "Retrigger the verified bounded project-wide production promotion after the merge event did not create a Vercel candidate."
 }
