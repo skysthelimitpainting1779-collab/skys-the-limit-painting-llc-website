@@ -1,5 +1,5 @@
 {
-  "releaseId": "production-2026-07-25-safe-project-promotion-retry-1",
-  "requestedAt": "2026-07-25T19:40:00Z",
-  "reason": "Retrigger the verified bounded project-wide production promotion after the merge event did not create a Vercel candidate."
+  "releaseId": "production-2026-07-25-protected-candidate-inspect",
+  "requestedAt": "2026-07-25T19:53:00Z",
+  "reason": "Cancel the stuck protected-candidate curl run and promote the verified production artifact after bounded Vercel deployment inspection."
 }
