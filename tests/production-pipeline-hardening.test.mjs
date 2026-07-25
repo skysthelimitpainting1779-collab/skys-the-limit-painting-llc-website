@@ -33,18 +33,19 @@ test('release workflow uses a bounded staged deployment and project-wide promoti
   assert.match(release, /npm run smoke:site/);
 });
 
-test('candidate readiness and protected route smoke commands are time-bounded', () => {
+test('protected candidate validation uses deployment state, then public HTTP smoke after promotion', () => {
   const release = read('.github/workflows/release.yml');
 
   assert.match(
     release,
     /timeout 6m npx vercel inspect "\$DEPLOYMENT_URL" --wait --timeout=5m/,
   );
-  assert.match(
-    release,
-    /timeout 30s npx vercel curl "\$route" --deployment "\$DEPLOYMENT_URL"/,
-  );
-  assert.doesNotMatch(release, /for attempt in \$\(seq 1 30\)/);
+  assert.doesNotMatch(release, /vercel curl/);
+
+  const promotionIndex = release.indexOf('vercel promote "$DEPLOYMENT_URL"');
+  const publicSmokeIndex = release.indexOf('npm run smoke:site');
+  assert.ok(promotionIndex >= 0, 'project-wide promotion command must exist');
+  assert.ok(publicSmokeIndex > promotionIndex, 'public route smoke must run after promotion');
 });
 
 test('release preserves existing domain ownership and promotes within the linked project', () => {
