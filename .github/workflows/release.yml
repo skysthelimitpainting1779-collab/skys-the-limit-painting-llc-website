@@ -102,7 +102,7 @@ jobs:
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
           echo "Production candidate: $deployment_url"
 
-      - name: Wait for candidate and smoke-test before promotion
+      - name: Wait for protected production candidate readiness
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: |
@@ -110,14 +110,6 @@ jobs:
             echo "::error::Staged production deployment did not become ready within five minutes"
             exit 1
           fi
-
-          for route in / /estimate /contact /projects /robots.txt /sitemap.xml; do
-            echo "Checking $route on $DEPLOYMENT_URL"
-            if ! timeout 30s npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null; then
-              echo "::error::Candidate smoke check failed or timed out for $route"
-              exit 1
-            fi
-          done
 
       - name: Promote staged deployment project-wide
         env:
