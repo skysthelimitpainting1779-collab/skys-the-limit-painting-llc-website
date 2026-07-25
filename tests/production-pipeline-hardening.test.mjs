@@ -28,6 +28,22 @@ test('release workflow owns production promotion and validates the selected main
   assert.match(release, /npm run smoke:site/);
 });
 
+test('production can only be pushed from tags, manual approval, or an audited marker change', () => {
+  const release = read('.github/workflows/release.yml');
+
+  assert.match(release, /branches:\s*\n\s*- main/);
+  assert.match(release, /paths:\s*\n\s*- ['"]\.github\/production-release\.json['"]/);
+  assert.ok(
+    exists('.github/production-release.json'),
+    'audited production release marker must exist',
+  );
+
+  const marker = JSON.parse(read('.github/production-release.json'));
+  assert.equal(typeof marker.releaseId, 'string');
+  assert.equal(typeof marker.requestedAt, 'string');
+  assert.equal(typeof marker.reason, 'string');
+});
+
 test('scheduled CI health checks include the live production customer paths', () => {
   const health = read('.github/workflows/ci-health-check.yml');
 

@@ -1,0 +1,5 @@
+{
+  "releaseId": "production-2026-07-25-ci-cd-hardening",
+  "requestedAt": "2026-07-25T19:07:00Z",
+  "reason": "Promote the verified CI/CD hardening release and replace the stale custom-domain deployment."
+}

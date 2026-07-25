@@ -2,8 +2,12 @@ name: Release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
+    paths:
+      - '.github/production-release.json'
   workflow_dispatch:
     inputs:
       deploy_production:
