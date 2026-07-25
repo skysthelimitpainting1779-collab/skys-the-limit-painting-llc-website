@@ -65,10 +65,10 @@ export interface DirectusSchema {
   site_config: SiteConfig;
 }
 
-export interface DirectusEnv {
-  NEXT_PUBLIC_DIRECTUS_URL?: string;
-  DIRECTUS_URL?: string;
-}
+export type DirectusEnv = Pick<
+  NodeJS.ProcessEnv,
+  'NEXT_PUBLIC_DIRECTUS_URL' | 'DIRECTUS_URL'
+>;
 
 export type DirectusClient = RestClient<DirectusSchema>;
 
