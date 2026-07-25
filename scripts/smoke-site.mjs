@@ -29,6 +29,7 @@ export async function checkSite({
   baseUrl,
   routes = DEFAULT_ROUTES,
   fetchImpl = globalThis.fetch,
+  headers = {},
 } = {}) {
   if (typeof fetchImpl !== 'function') {
     throw new TypeError('A fetch implementation is required.');
@@ -48,6 +49,7 @@ export async function checkSite({
         headers: {
           accept: '*/*',
           'user-agent': 'skys-the-limit-production-smoke/1.0',
+          ...headers,
         },
         signal: AbortSignal.timeout(15_000),
       });
@@ -100,7 +102,14 @@ function readArgument(name, args = process.argv.slice(2)) {
 
 async function main() {
   const baseUrl = readArgument('--base-url') || process.env.SITE_URL;
-  const results = await checkSite({ baseUrl });
+  const bypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET?.trim();
+  const headers = bypassSecret
+    ? {
+        'x-vercel-protection-bypass': bypassSecret,
+        'x-vercel-set-bypass-cookie': 'true',
+      }
+    : {};
+  const results = await checkSite({ baseUrl, headers });
 
   for (const result of results) {
     console.log(`PASS ${result.path} (${result.status})`);
