@@ -34,13 +34,14 @@ jobs:
     name: Deploy Production
     needs: quality
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     environment:
       name: production
       url: https://www.skysthelimitpaintingllc.com
     env:
       VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
       VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
+      VERCEL_SCOPE: skysthelimitpainting1779-4125s-projects
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
@@ -73,15 +74,15 @@ jobs:
         run: npm ci
 
       - name: Pull Vercel production environment
-        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
       - name: Build Vercel production artifact
-        run: npx vercel build --prod --token="$VERCEL_TOKEN"
+        run: npx vercel build --prod --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
       - name: Deploy isolated production artifact
         id: deploy
         run: |
-          deployment_url="$(npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --token="$VERCEL_TOKEN")"
+          deployment_url="$(npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE")"
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
           echo "Production candidate: $deployment_url"
 
@@ -91,15 +92,21 @@ jobs:
         run: |
           for route in / /estimate /contact /projects /robots.txt /sitemap.xml; do
             echo "Checking $route on $DEPLOYMENT_URL"
-            npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null
+            npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null
           done
+
+      - name: Reclaim and verify production domain
+        run: |
+          npx vercel domains add www.skysthelimitpaintingllc.com --force --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
+          npx vercel domains inspect www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
+          npx vercel domains verify www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
       - name: Promote deployment to production domain
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: |
           deployment_url="$DEPLOYMENT_URL"
-          npx vercel alias set "$deployment_url" www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN"
+          npx vercel alias set "$deployment_url" www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
       - name: Verify live customer routes
         run: |
