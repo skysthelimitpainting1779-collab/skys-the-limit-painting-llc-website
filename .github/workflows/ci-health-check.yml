@@ -18,10 +18,26 @@ jobs:
     uses: ./.github/workflows/quality-gate.yml
     secrets: inherit
 
+  production-smoke:
+    name: Production Route Smoke Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Check live customer routes
+        run: npm run smoke:site -- --base-url https://www.skysthelimitpaintingllc.com
+
   report-failure:
     name: Report Health Failure
-    needs: quality
-    if: failure()
+    needs: [quality, production-smoke]
+    if: always() && (needs.quality.result != 'success' || needs.production-smoke.result != 'success')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,6 +49,9 @@ jobs:
           script: |
             const title = 'CI health check failed';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const qualityResult = '${{ needs.quality.result }}';
+            const productionResult = '${{ needs.production-smoke.result }}';
+            const summary = `Quality gate: ${qualityResult}; production smoke: ${productionResult}.`;
             const { data: openIssues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -45,21 +64,21 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: existing.number,
-                body: `The scheduled quality gate failed again: ${runUrl}`,
+                body: `The scheduled health checks failed again. ${summary} Review the run: ${runUrl}`,
               });
             } else {
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title,
-                body: `The scheduled quality gate failed. Review the run: ${runUrl}`,
+                body: `The scheduled repository or production health check failed. ${summary} Review the run: ${runUrl}`,
               });
             }
 
   resolve-health:
     name: Resolve Health Incident
-    needs: quality
-    if: success()
+    needs: [quality, production-smoke]
+    if: always() && needs.quality.result == 'success' && needs.production-smoke.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -81,7 +100,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                body: 'The scheduled quality gate is healthy again. Closing this incident.',
+                body: 'The repository quality gate and live production smoke checks are healthy again. Closing this incident.',
               });
               await github.rest.issues.update({
                 owner: context.repo.owner,
