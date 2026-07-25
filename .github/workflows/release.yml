@@ -126,13 +126,7 @@ jobs:
             npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null
           done
 
-      - name: Reclaim and verify production domain
-        run: |
-          npx vercel domains add www.skysthelimitpaintingllc.com --force --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
-          npx vercel domains inspect www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
-          npx vercel domains verify www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
-
-      - name: Promote verified deployment project-wide
+      - name: Promote staged deployment project-wide
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: npx vercel promote "$DEPLOYMENT_URL" --timeout=0 --yes --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
