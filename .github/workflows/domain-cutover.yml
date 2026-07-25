@@ -1,0 +1,34 @@
+name: One-Time Domain Cutover
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/domain-cutover.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  cutover:
+    name: Point production domains to verified deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: skysthelimitpainting1779-4125s-projects
+      DEPLOYMENT_URL: https://website-oita30hri-skysthelimitpainting1779-4125s-projects.vercel.app
+    steps:
+      - name: Verify Vercel token
+        shell: bash
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is not configured"
+            exit 1
+          fi
+
+      - name: Point www domain to verified production deployment
+        run: npx vercel@55.0.0 alias set "$DEPLOYMENT_URL" www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
+
+      - name: Point apex domain to verified production deployment
+        run: npx vercel@55.0.0 alias set "$DEPLOYMENT_URL" skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
