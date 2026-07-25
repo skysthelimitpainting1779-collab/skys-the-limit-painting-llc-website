@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: production-${{ github.ref }}
+  group: production-release
   cancel-in-progress: false
 
 jobs:
@@ -30,10 +30,10 @@ jobs:
     name: Deploy Production
     needs: quality
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     environment:
       name: production
-      url: ${{ steps.deploy.outputs.url }}
+      url: https://www.skysthelimitpaintingllc.com
     env:
       VERCEL_ORG_ID: team_bseTA2AuCO6A2fCOVY9ubrJo
       VERCEL_PROJECT_ID: prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m
@@ -57,12 +57,11 @@ jobs:
             exit 1
           fi
 
-      - name: Verify release tag is on main
-        if: github.event_name == 'push'
+      - name: Verify selected production ref is on main
         run: |
           git fetch origin main
           if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
-            echo "::error::Release tag must point to a commit on main"
+            echo "::error::Production releases must point to a commit on main"
             exit 1
           fi
 
@@ -75,12 +74,40 @@ jobs:
       - name: Build Vercel production artifact
         run: npx vercel build --prod --token="$VERCEL_TOKEN"
 
-      - name: Deploy Vercel production artifact
+      - name: Deploy isolated production artifact
         id: deploy
         run: |
-          deployment_url="$(npx vercel deploy --prebuilt --prod --archive=tgz --token="$VERCEL_TOKEN")"
+          deployment_url="$(npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --token="$VERCEL_TOKEN")"
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
-          echo "Production deployment: $deployment_url"
+          echo "Production candidate: $deployment_url"
+
+      - name: Smoke-test deployment before promotion
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          for route in / /estimate /contact /projects /robots.txt /sitemap.xml; do
+            echo "Checking $route on $DEPLOYMENT_URL"
+            npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null
+          done
+
+      - name: Promote deployment to production domain
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          deployment_url="$DEPLOYMENT_URL"
+          npx vercel alias set "$deployment_url" www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN"
+
+      - name: Verify live customer routes
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if npm run smoke:site -- --base-url https://www.skysthelimitpaintingllc.com; then
+              exit 0
+            fi
+            echo "Production routing has not converged yet (attempt $attempt/6)."
+            sleep 10
+          done
+          echo "::error::Production domain failed smoke checks after promotion"
+          exit 1
 
   create-release:
     name: Create GitHub Release
