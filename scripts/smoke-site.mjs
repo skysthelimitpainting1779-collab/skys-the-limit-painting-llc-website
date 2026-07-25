@@ -1,7 +1,11 @@
 import { pathToFileURL } from 'node:url';
 
 export const DEFAULT_ROUTES = [
-  { path: '/', contains: "Sky's the Limit Painting" },
+  {
+    path: '/',
+    contains: "Sky's the Limit Painting",
+    notContains: ['SPEC CALIBRATOR', 'Heatmap: OFF'],
+  },
   { path: '/estimate' },
   { path: '/contact' },
   { path: '/projects', contains: 'Real Surfaces.' },
@@ -51,7 +55,11 @@ export async function checkSite({
       const hasExpectedContent = route.contains
         ? body.includes(route.contains)
         : true;
-      const ok = response.ok && hasExpectedContent;
+      const prohibitedContent = (route.notContains || []).filter((text) =>
+        body.includes(text),
+      );
+      const ok =
+        response.ok && hasExpectedContent && prohibitedContent.length === 0;
 
       results.push({
         path: route.path,
@@ -63,6 +71,10 @@ export async function checkSite({
         failures.push(`${route.path} returned HTTP ${response.status}`);
       } else if (!hasExpectedContent) {
         failures.push(`${route.path} did not contain ${JSON.stringify(route.contains)}`);
+      } else if (prohibitedContent.length > 0) {
+        failures.push(
+          `${route.path} still contains retired internal UI: ${prohibitedContent.join(', ')}`,
+        );
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
