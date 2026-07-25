@@ -19,9 +19,10 @@ test('Vercel uses lockfile-safe installs and keeps main out of automatic product
   assert.equal(brandHeader.value, 'public, max-age=31536000, immutable');
 });
 
-test('release workflow owns production promotion and validates the selected mainline ref', () => {
+test('release workflow owns production promotion and deploys gated main updates', () => {
   const release = read('.github/workflows/release.yml');
 
+  assert.match(release, /branches:\s*\n\s*- main/);
   assert.match(release, /git merge-base --is-ancestor "\$GITHUB_SHA" origin\/main/);
   assert.match(release, /vercel deploy --prebuilt --prod --skip-domain/);
   assert.match(release, /vercel alias set "\$deployment_url" www\.skysthelimitpaintingllc\.com/);
