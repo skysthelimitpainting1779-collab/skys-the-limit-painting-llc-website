@@ -1,5 +1,5 @@
 {
-  "releaseId": "production-2026-07-25-safe-project-promotion-retry-1",
-  "requestedAt": "2026-07-25T19:40:00Z",
-  "reason": "Retrigger the verified bounded project-wide production promotion after the merge event did not create a Vercel candidate."
+  "releaseId": "production-2026-07-25-bounded-candidate-smoke",
+  "requestedAt": "2026-07-25T19:52:00Z",
+  "reason": "Promote the verified production artifact after replacing the hanging protected-candidate smoke loop with deterministic readiness inspection and bounded route checks."
 }
