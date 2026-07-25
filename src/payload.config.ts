@@ -43,7 +43,7 @@ export default buildConfig({
     pool: {
       // Direct Postgres connection (not the anon REST API)
       // Must be the pooler connection string from Supabase: Settings > Database > Connection String
-      connectionString: process.env.SUPABASE_DB_URL,
+      connectionString: process.env.SUPABASE_DB_URL || 'postgres://localhost:5432/payload_placeholder',
     },
     // Dedicated schema — never touches the existing public CRM/content tables
     schemaName: 'payload',
