@@ -34,23 +34,13 @@ test('release workflow uses a bounded staged deployment and project-wide promoti
   assert.match(release, /npm run smoke:site/);
 });
 
-test('release explicitly claims and verifies the custom domain before project promotion', () => {
+test('release preserves existing domain ownership and promotes within the linked project', () => {
   const release = read('.github/workflows/release.yml');
 
-  assert.match(
-    release,
-    /vercel domains add www\.skysthelimitpaintingllc\.com --force/,
-  );
-  assert.match(
-    release,
-    /vercel domains inspect www\.skysthelimitpaintingllc\.com/,
-  );
   assert.match(release, /--scope="\$VERCEL_SCOPE"/);
-  assert.ok(
-    release.indexOf('vercel domains add www.skysthelimitpaintingllc.com --force') <
-      release.indexOf('vercel promote "$DEPLOYMENT_URL" --timeout=0'),
-    'domain ownership must be repaired before project-wide promotion',
-  );
+  assert.match(release, /vercel promote "\$DEPLOYMENT_URL" --timeout=0/);
+  assert.doesNotMatch(release, /vercel domains add/);
+  assert.doesNotMatch(release, /vercel domains verify/);
 });
 
 test('production can only be pushed from tags, manual approval, or an audited marker change', () => {
