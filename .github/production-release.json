@@ -1,5 +1,5 @@
 {
-  "releaseId": "production-2026-07-25-custom-domain-repair",
-  "requestedAt": "2026-07-25T19:22:00Z",
-  "reason": "Attach and verify www.skysthelimitpaintingllc.com on the website project, then promote the verified CI/CD hardening artifact."
+  "releaseId": "production-2026-07-25-safe-project-promotion",
+  "requestedAt": "2026-07-25T19:34:00Z",
+  "reason": "Promote the verified CI/CD hardening artifact project-wide without mutating the existing production domain registration."
 }
