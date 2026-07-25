@@ -65,19 +65,28 @@ export interface DirectusSchema {
   site_config: SiteConfig;
 }
 
-export type DirectusEnv = Pick<
-  NodeJS.ProcessEnv,
-  'NEXT_PUBLIC_DIRECTUS_URL' | 'DIRECTUS_URL'
->;
+export interface DirectusEnv {
+  NEXT_PUBLIC_DIRECTUS_URL?: string;
+  DIRECTUS_URL?: string;
+}
 
 export type DirectusClient = RestClient<DirectusSchema>;
 
 // ─── Client Factory ─────────────────────────────────────────────────
-export function hasDirectusConfig(env: DirectusEnv = process.env): boolean {
+function runtimeDirectusEnv(): DirectusEnv {
+  return {
+    NEXT_PUBLIC_DIRECTUS_URL: process.env.NEXT_PUBLIC_DIRECTUS_URL,
+    DIRECTUS_URL: process.env.DIRECTUS_URL,
+  };
+}
+
+export function hasDirectusConfig(
+  env: DirectusEnv = runtimeDirectusEnv(),
+): boolean {
   return Boolean(env.NEXT_PUBLIC_DIRECTUS_URL?.trim() || env.DIRECTUS_URL?.trim());
 }
 
-export function getDirectusUrl(env: DirectusEnv = process.env): string {
+export function getDirectusUrl(env: DirectusEnv = runtimeDirectusEnv()): string {
   return (
     env.NEXT_PUBLIC_DIRECTUS_URL ||
     env.DIRECTUS_URL ||
