@@ -1,5 +1,0 @@
-{
-  "releaseId": "production-2026-07-25-public-route-smoke",
-  "requestedAt": "2026-07-25T20:04:00Z",
-  "reason": "Promote the READY inspected artifact without probing its protected URL, then enforce the complete route and retired-UI smoke suite on public production."
-}
