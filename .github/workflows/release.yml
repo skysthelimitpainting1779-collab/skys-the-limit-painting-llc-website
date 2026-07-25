@@ -78,36 +78,62 @@ jobs:
       - name: Build Vercel production artifact
         run: npx vercel build --prod --token="$VERCEL_TOKEN"
 
-      - name: Deploy isolated production artifact
+      - name: Start isolated production deployment
         id: deploy
         run: |
-          deployment_url="$(npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --token="$VERCEL_TOKEN")"
+          if ! timeout 5m npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --no-wait --token="$VERCEL_TOKEN" > deployment-url.txt; then
+            echo "::error::Vercel did not accept the staged deployment within five minutes"
+            exit 1
+          fi
+
+          deployment_url="$(tr -d '\r\n' < deployment-url.txt)"
+          case "$deployment_url" in
+            https://*.vercel.app) ;;
+            *)
+              echo "::error::Unexpected Vercel deployment URL: $deployment_url"
+              exit 1
+              ;;
+          esac
+
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
           echo "Production candidate: $deployment_url"
 
-      - name: Smoke-test deployment before promotion
+      - name: Wait for candidate and smoke-test before promotion
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: |
+          candidate_ready=false
+          for attempt in $(seq 1 30); do
+            if npx vercel curl / --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null 2>&1; then
+              candidate_ready=true
+              break
+            fi
+            echo "Candidate is not ready yet (attempt $attempt/30)."
+            sleep 10
+          done
+
+          if [ "$candidate_ready" != "true" ]; then
+            echo "::error::Staged production deployment did not become ready within five minutes"
+            exit 1
+          fi
+
           for route in / /estimate /contact /projects /robots.txt /sitemap.xml; do
             echo "Checking $route on $DEPLOYMENT_URL"
             npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null
           done
 
-      - name: Promote deployment to production domain
+      - name: Promote staged deployment to all production domains
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
-        run: |
-          deployment_url="$DEPLOYMENT_URL"
-          npx vercel alias set "$deployment_url" www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN"
+        run: npx vercel promote "$DEPLOYMENT_URL" --timeout=0 --yes --token="$VERCEL_TOKEN"
 
       - name: Verify live customer routes
         run: |
-          for attempt in 1 2 3 4 5 6; do
+          for attempt in $(seq 1 12); do
             if npm run smoke:site -- --base-url https://www.skysthelimitpaintingllc.com; then
               exit 0
             fi
-            echo "Production routing has not converged yet (attempt $attempt/6)."
+            echo "Production routing has not converged yet (attempt $attempt/12)."
             sleep 10
           done
           echo "::error::Production domain failed smoke checks after promotion"
