@@ -79,12 +79,35 @@ jobs:
       - name: Build Vercel production artifact
         run: npx vercel build --prod --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
-      - name: Deploy isolated production artifact
+      - name: Start isolated production deployment
         id: deploy
+        shell: bash
         run: |
-          deployment_url="$(npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE")"
+          set -euo pipefail
+          timeout 5m npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --no-wait --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > deployment-url.txt
+          deployment_url="$(tail -n 1 deployment-url.txt | tr -d '\r')"
+          if [[ ! "$deployment_url" =~ ^https:// ]]; then
+            echo "::error::Vercel did not return a deployment URL"
+            cat deployment-url.txt
+            exit 1
+          fi
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
           echo "Production candidate: $deployment_url"
+
+      - name: Wait for production candidate readiness
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          for attempt in $(seq 1 30); do
+            if npx vercel curl / --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null; then
+              echo "Production candidate is ready."
+              exit 0
+            fi
+            echo "Candidate is not ready yet (attempt $attempt/30)."
+            sleep 10
+          done
+          echo "::error::Production candidate did not become ready within five minutes"
+          exit 1
 
       - name: Smoke-test deployment before promotion
         env:
@@ -101,12 +124,10 @@ jobs:
           npx vercel domains inspect www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
           npx vercel domains verify www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
-      - name: Promote deployment to production domain
+      - name: Promote verified deployment project-wide
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
-        run: |
-          deployment_url="$DEPLOYMENT_URL"
-          npx vercel alias set "$deployment_url" www.skysthelimitpaintingllc.com --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
+        run: npx vercel promote "$DEPLOYMENT_URL" --timeout=0 --yes --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE"
 
       - name: Verify live customer routes
         run: |
