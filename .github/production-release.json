@@ -1,5 +1,5 @@
 {
-  "releaseId": "production-2026-07-25-bounded-candidate-smoke",
-  "requestedAt": "2026-07-25T19:52:00Z",
-  "reason": "Promote the verified production artifact after replacing the hanging protected-candidate smoke loop with deterministic readiness inspection and bounded route checks."
+  "releaseId": "production-2026-07-25-public-route-smoke",
+  "requestedAt": "2026-07-25T20:04:00Z",
+  "reason": "Promote the READY inspected artifact without probing its protected URL, then enforce the complete route and retired-UI smoke suite on public production."
 }
