@@ -1,9 +1,9 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-export interface PublicSupabaseEnv {
-  NEXT_PUBLIC_SUPABASE_URL?: string;
-  NEXT_PUBLIC_SUPABASE_ANON_KEY?: string;
-}
+export type PublicSupabaseEnv = Pick<
+  NodeJS.ProcessEnv,
+  'NEXT_PUBLIC_SUPABASE_URL' | 'NEXT_PUBLIC_SUPABASE_ANON_KEY'
+>;
 
 export function hasPublicSupabaseConfig(
   env: PublicSupabaseEnv = process.env,
