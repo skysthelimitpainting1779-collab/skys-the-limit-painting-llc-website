@@ -106,24 +106,17 @@ jobs:
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: |
-          candidate_ready=false
-          for attempt in $(seq 1 30); do
-            if npx vercel curl / --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null 2>&1; then
-              candidate_ready=true
-              break
-            fi
-            echo "Candidate is not ready yet (attempt $attempt/30)."
-            sleep 10
-          done
-
-          if [ "$candidate_ready" != "true" ]; then
+          if ! timeout 6m npx vercel inspect "$DEPLOYMENT_URL" --wait --timeout=5m --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null; then
             echo "::error::Staged production deployment did not become ready within five minutes"
             exit 1
           fi
 
           for route in / /estimate /contact /projects /robots.txt /sitemap.xml; do
             echo "Checking $route on $DEPLOYMENT_URL"
-            npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null
+            if ! timeout 30s npx vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE" > /dev/null; then
+              echo "::error::Candidate smoke check failed or timed out for $route"
+              exit 1
+            fi
           done
 
       - name: Promote staged deployment project-wide

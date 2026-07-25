@@ -28,10 +28,23 @@ test('release workflow uses a bounded staged deployment and project-wide promoti
     /timeout 5m npx vercel deploy --prebuilt --prod --skip-domain --archive=tgz --no-wait/,
   );
   assert.match(release, /deployment-url\.txt/);
-  assert.match(release, /for attempt in \$\(seq 1 30\)/);
   assert.match(release, /vercel promote "\$DEPLOYMENT_URL" --timeout=0/);
   assert.doesNotMatch(release, /vercel alias set/);
   assert.match(release, /npm run smoke:site/);
+});
+
+test('candidate readiness and protected route smoke commands are time-bounded', () => {
+  const release = read('.github/workflows/release.yml');
+
+  assert.match(
+    release,
+    /timeout 6m npx vercel inspect "\$DEPLOYMENT_URL" --wait --timeout=5m/,
+  );
+  assert.match(
+    release,
+    /timeout 30s npx vercel curl "\$route" --deployment "\$DEPLOYMENT_URL"/,
+  );
+  assert.doesNotMatch(release, /for attempt in \$\(seq 1 30\)/);
 });
 
 test('release preserves existing domain ownership and promotes within the linked project', () => {
