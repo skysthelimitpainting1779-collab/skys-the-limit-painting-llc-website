@@ -28,6 +28,25 @@ test('release workflow owns production promotion and validates the selected main
   assert.match(release, /npm run smoke:site/);
 });
 
+test('release explicitly claims and verifies the custom domain before aliasing', () => {
+  const release = read('.github/workflows/release.yml');
+
+  assert.match(
+    release,
+    /vercel domains add www\.skysthelimitpaintingllc\.com --force/,
+  );
+  assert.match(
+    release,
+    /vercel domains inspect www\.skysthelimitpaintingllc\.com/,
+  );
+  assert.match(release, /--scope="\$VERCEL_SCOPE"/);
+  assert.ok(
+    release.indexOf('vercel domains add www.skysthelimitpaintingllc.com --force') <
+      release.indexOf('vercel alias set "$deployment_url" www.skysthelimitpaintingllc.com'),
+    'domain ownership must be repaired before alias promotion',
+  );
+});
+
 test('production can only be pushed from tags, manual approval, or an audited marker change', () => {
   const release = read('.github/workflows/release.yml');
 
