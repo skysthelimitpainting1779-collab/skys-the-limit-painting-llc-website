@@ -58,6 +58,7 @@ export default function HomeClient() {
               <Link href="/estimate" className="inline-flex min-h-14 items-center gap-4 bg-[#FF5A00] px-6 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d94d00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF5A00]">
                 Calculate room scope <ArrowRight aria-hidden="true" size={18} />
               </Link>
+              <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-[#2E7D32]">Typical response: same day &middot; Spring/summer slots filling now</p>
               <div className="mt-5 grid max-w-2xl border border-zinc-700 sm:grid-cols-3">
                 {[['MN ID', 'IR816596'], ['EXEMPTION', '176.041 EXEMPT'], ['COVERAGE', '100% INSURED']].map(([label, value]) => <div key={label} className="border-b border-zinc-800 px-4 py-3 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0"><p className="font-mono text-[9px] uppercase tracking-[0.14em] text-zinc-500">{label}</p><p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-white">{value}</p></div>)}
               </div>

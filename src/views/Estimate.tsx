@@ -186,7 +186,7 @@ export default function EstimatePage() {
           <p className="eyebrow mb-2">Estimated Range</p>
           <p className="text-4xl font-black text-white tnum">${low.toLocaleString()} - ${high.toLocaleString()}</p>
         </div>
-        <p className="text-sm">If this fits your budget, fill out the form below and our team will reach out to schedule a firm, on-site walkthrough.</p>
+        <p className="text-sm">If this fits your budget, fill out the form below and Anthony will reach out within one business day to schedule a firm, on-site walkthrough. No obligation, no pressure.</p>
       </div>
     , 200, true);
 
