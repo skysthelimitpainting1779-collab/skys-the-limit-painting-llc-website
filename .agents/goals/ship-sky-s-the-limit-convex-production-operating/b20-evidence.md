@@ -21,11 +21,13 @@
 
 ## Discovery and documentation evidence
 
+- Post-merge checkpoint: `509d17258646`; observed `origin/main`: `45aae73febc7`. Neither reference is an approval record.
 - Graphifyy incremental update: 5,956 nodes, 7,367 edges, 538 communities.
 - Graphifyy query traversed the B20 Clerk/Convex auth, protected-route, event/idempotency, and reconciliation symbols before final verification.
-- Context7 `/websites/convex_dev`: Clerk issuer domain belongs in `convex/auth.config.ts`; development and production Clerk instances must be configured separately per Convex deployment.
-- Context7 `/websites/convex_dev`: `npx convex run <function> '<JSON>' --deployment <explicit>` can invoke internal queries and mutations; operator execution omits `--push`, disables implicit codegen/typecheck, and requires an explicit deployment selection.
-- Context7 `/clerk/clerk-docs`: Next.js runtime identity uses Clerk publishable configuration plus server-only `CLERK_SECRET_KEY`, independent of Convex deployment credentials.
+- Read-only Graphify inventory: G20 is `pending`; it names `security-verification` as the primary skill and requires Graphify, Vercel, GitHub, and Vercel official-documentation evidence before readiness.
+- Read-only Context7 inventories: `/websites/convex_dev` documents `CLERK_JWT_ISSUER_DOMAIN` in Convex auth configuration and separate development/production instances; `/websites/vercel` documents a project as the unit for repository, environment-variable, and deployment configuration.
+- Local Vercel baseline records opaque team `team_bseTA2AuCO6A2fCOVY9ubrJo` and project `prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m`; the two-service binding is the `website` web project plus the `skysthelimit` Convex Marketplace integration. This is local recorded evidence only, not a live read.
+- Environment names only: `CLERK_JWT_ISSUER_DOMAIN`, `CLERK_JWT_ISSUER_ENV`, `NEXT_PUBLIC_APP_ENV`, and `NEXT_PUBLIC_CONVEX_URL`; no values were read or recorded.
 
 ## Verification
 
@@ -41,11 +43,11 @@
 - Anonymous local Convex push (`CONVEX_AGENT_MODE=anonymous npx convex dev --once`) passed at `127.0.0.1:3210`; this proves local deployability only and did not contact or mutate a cloud deployment.
 - Skill `convex-migration-operator`: system validation, repository skill routing validation, and host-adapter compilation passed.
 
-## Evidence still required before G20 approval
+## Exact remaining remote evidence gaps before G20 approval
 
 - Authorized offline snapshots or read-only exports for the live Supabase, Payload, and Directus inventories. Current reports correctly remain blocked rather than inferring live state.
 - Approved execution of the prepared handoff against an explicitly named non-production Convex deployment, followed by a real opaque target inventory export and checksum reconciliation. The repository-owned path now exists, but only mocked calls have been verified.
 - Configure and verify `CLERK_JWT_ISSUER_DOMAIN`, `CLERK_JWT_ISSUER_ENV`, `NEXT_PUBLIC_APP_ENV`, and `NEXT_PUBLIC_CONVEX_URL` in each appropriate Convex/Vercel environment without exposing secret values.
-- Commit the checkpoint, create a Preview deployment, and verify the approved Vercel web/integrations service topology and internal-only integration binding. No preview deployment has been created in this batch yet.
+- Read-only confirmation of the Vercel project/team service topology and the internal-only binding between the web and Convex integration services, plus a Preview deployment for the checkpoint. No remote read, deployment, or mutation occurred for this repair.
 
-G20-FOUNDATION-READY must remain pending until these items have evidence and the named approver records approval.
+G20-FOUNDATION-READY remains pending. No approval is inferred; it requires the listed remote evidence and an explicit named-approver record.

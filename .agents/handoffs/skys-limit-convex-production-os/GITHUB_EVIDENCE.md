@@ -1,7 +1,7 @@
 # GitHub Evidence Manifest
 
 **Repository:** `skysthelimitpainting1779-collab/skys-the-limit-painting-llc-website`  
-**Commit:** `c7e94605eefdace7a76ce5145808478df8503dbb`
+**Historical baseline commit (not current HEAD):** `c7e94605eefdace7a76ce5145808478df8503dbb`
 
 | Path | Blob SHA | Verified finding |
 |---|---|---|

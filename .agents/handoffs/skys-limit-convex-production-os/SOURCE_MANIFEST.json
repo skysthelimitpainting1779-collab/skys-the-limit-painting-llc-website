@@ -172,10 +172,13 @@
   ],
   "uploadedSources": [
     "source/master-audit.md",
-    "source/graph-engineered-v2.json",
-    "source/graph-engineered-v2.md",
     "source/original-execution-graph.json"
   ],
+  "omittedHistoricalUploadedSources": [
+    "source/graph-engineered-v2.json",
+    "source/graph-engineered-v2.md"
+  ],
+  "sourcePackagingStatus": "The two graph-engineered-v2 paths were historical baseline inputs but are not present in this package; no checksum is asserted for omitted files.",
   "compiledArtifacts": [
     "compiled/.graph/graph.json",
     "compiled/.graph/graph.md",
