@@ -64,6 +64,12 @@ Map: [`.agents/HOST_NATIVE.md`](.agents/HOST_NATIVE.md)
 3. **Surgical changes** — only what the task requires.
 4. **Goal-driven** — verifiable success; loop until `npm run goal:verify` passes.
 
+## Mandatory discovery and reuse
+
+- **Graphifyy first:** Before navigating or searching code, query the codebase knowledge graph with `search_graph`, `trace_path`, `get_code_snippet`, `query_graph`, or the repository `graph:*` commands. Fall back to `rg` only for literals/config/non-code or when graph results are insufficient.
+- **Context7 first:** Before implementing or changing behavior from an external library, framework, provider, or API, query its current official documentation through Context7. Record the selected library ID and the contract that affects the change.
+- **Skill before repetition:** Before performing a workflow a second time—or when the plan already shows it will recur—create or update a repository skill under `.agents/skills/` and route subsequent executions through it. Use `repeatable-workflow-capture`; validate the skill, run `npm run skills:validate`, and compile host adapters.
+
 ---
 
 ## Ship loop (RPI)

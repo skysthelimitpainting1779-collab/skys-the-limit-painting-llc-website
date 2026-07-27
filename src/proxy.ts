@@ -1,99 +1,24 @@
-import { createServerClient } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
-import { updateSession } from './lib/supabase/middleware';
-import {
-  gatePortalAccess,
-  gateStaffAccess,
-  isProtectedPortalPath,
-  isProtectedStaffPath,
-  portalLoginUrl,
-} from './lib/auth/portal';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import type { NextFetchEvent, NextRequest } from 'next/server';
 
-/**
- * Next.js proxy (session refresh + portal/admin route protection).
- * Public marketing pages are NOT matched — see config.matcher below.
- * Payload admin routes (/admin/[[...segments]]) are excluded; Payload handles its own auth.
- */
-export async function proxy(request: NextRequest) {
-  // Always refresh session cookies when this proxy runs
-  let response = await updateSession(request);
+const isProtectedRoute = createRouteMatcher(['/portal(.*)', '/manage(.*)']);
+const isPortalLogin = createRouteMatcher(['/portal/login(.*)']);
 
-  const pathname = request.nextUrl.pathname;
-
-  const portalProtected = isProtectedPortalPath(pathname);
-  const staffProtected = isProtectedStaffPath(pathname);
-  if (!portalProtected && !staffProtected) {
-    return response;
+const handleClerkRequest = clerkMiddleware(async (auth, request) => {
+  if (isProtectedRoute(request) && !isPortalLogin(request)) {
+    await auth.protect();
   }
+});
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  // Without Supabase, portal cannot authenticate — deny protected surfaces.
-  if (!supabaseUrl || !supabaseAnonKey) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/portal/login';
-    url.searchParams.set('next', pathname);
-    url.searchParams.set('error', 'auth_not_configured');
-    return NextResponse.redirect(url);
-  }
-
-  // Re-read user with the same cookie bridge as updateSession
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        );
-      },
-    },
-  });
-
-  let user: {
-    id: string;
-    email?: string | null;
-    role?: string | null;
-    disabled?: boolean;
-  } | null = null;
-  try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user
-      ? {
-          id: data.user.id,
-          email: data.user.email,
-          role: typeof data.user.app_metadata?.role === 'string' ? data.user.app_metadata.role : null,
-          disabled: data.user.app_metadata?.disabled === true,
-        }
-      : null;
-  } catch {
-    user = null;
-  }
-
-  const portalGate = gatePortalAccess(user);
-  const staffGate = gateStaffAccess(user);
-  if ((portalProtected && !portalGate.authenticated) || (staffProtected && !staffGate.authorized)) {
-    const url = request.nextUrl.clone();
-    const login = portalLoginUrl(pathname);
-    const [pathOnly, qs] = login.split('?');
-    url.pathname = pathOnly || '/portal/login';
-    url.search = qs ? `?${qs}` : '';
-    return NextResponse.redirect(url);
-  }
-
-  return response;
+/** Clerk establishes request identity; Convex functions authorize resources. */
+export function proxy(request: NextRequest, event: NextFetchEvent) {
+  return handleClerkRequest(request, event);
 }
 
 export const config = {
   matcher: [
-    // Exclude Payload admin routes — Payload handles its own auth internally
     '/portal',
     '/portal/:path*',
     '/manage/:path*',
-    '/auth/callback',
   ],
 };

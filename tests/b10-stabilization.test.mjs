@@ -82,8 +82,8 @@ describe('B10 revenue and security stabilization', () => {
 
   test('missing dynamic routes emit explicit noindex metadata', () => {
     for (const file of [
-      'src/app/painting-services/[slug]/page.tsx',
-      'src/app/service-areas/[slug]/page.tsx',
+      'src/app/(marketing)/painting-services/[slug]/page.tsx',
+      'src/app/(marketing)/service-areas/[slug]/page.tsx',
     ]) {
       const source = read(file);
       assert.match(source, /robots:\s*\{\s*index:\s*false,\s*follow:\s*false/s);
@@ -110,7 +110,7 @@ describe('B10 revenue and security stabilization', () => {
 
   test('404 and portal login metadata are non-indexable and portal search params are suspended', () => {
     assert.match(read('src/app/not-found.tsx'), /index:\s*false/);
-    assert.match(read('src/app/portal/login/page.tsx'), /<Suspense/);
+    assert.match(read('src/app/(protected)/portal/login/page.tsx'), /<Suspense/);
   });
 
   test('staff surfaces deny anonymous, customer, and disabled identities', () => {
