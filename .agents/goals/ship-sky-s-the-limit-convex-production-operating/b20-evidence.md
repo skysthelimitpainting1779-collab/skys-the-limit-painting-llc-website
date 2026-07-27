@@ -48,6 +48,15 @@
 - Authorized offline snapshots or read-only exports for the live Supabase, Payload, and Directus inventories. Current reports correctly remain blocked rather than inferring live state.
 - Approved execution of the prepared handoff against an explicitly named non-production Convex deployment, followed by a real opaque target inventory export and checksum reconciliation. The repository-owned path now exists, but only mocked calls have been verified.
 - Configure and verify `CLERK_JWT_ISSUER_DOMAIN`, `CLERK_JWT_ISSUER_ENV`, `NEXT_PUBLIC_APP_ENV`, and `NEXT_PUBLIC_CONVEX_URL` in each appropriate Convex/Vercel environment without exposing secret values.
-- Read-only confirmation of the Vercel project/team service topology and the internal-only binding between the web and Convex integration services, plus a Preview deployment for the checkpoint. No remote read, deployment, or mutation occurred for this repair.
+- During the provenance repair, no remote read, deployment, or mutation occurred. The later authenticated Preview checkpoint is recorded separately below.
+
+## Preview deployment checkpoint
+
+- Authenticated Vercel evidence now confirms Preview deployment `dpl_NBj421UhyoSTFsUmBMSN5xQzMjCo` for commit `a780e68b7e462f3a782f3d777bedf3531dc520ce`.
+- The Vercel/Convex integration selected the exact non-production Convex deployment `hidden-roadrunner-577`, environment `Preview`, and injected the public Convex URLs for the application build.
+- Vercel environment-name inventory confirms `CONVEX_DEPLOY_KEY` and `NEXT_PUBLIC_APP_ENV` are scoped to Preview. Values were not recorded.
+- The Preview build stopped because the Convex deployment itself lacks `NEXT_PUBLIC_APP_ENV`. The Vercel deploy key can deploy code but cannot administer Convex deployment environment variables.
+- Credential scratch `E:\SkysLimitScratch\g20-convex-20260727T113802545` was created at `2026-07-27T18:38:02.5935594Z` and deleted at `2026-07-27T18:38:12.0003796Z`. Deletion was verified; no secret value or secret hash was retained; the attempted Convex environment update did not succeed.
+- The remaining Preview blocker is authenticated Convex-owner configuration of non-secret `NEXT_PUBLIC_APP_ENV=preview` on `hidden-roadrunner-577`, followed by a fresh Preview build and read-only target inventory/reconciliation.
 
 G20-FOUNDATION-READY remains pending. No approval is inferred; it requires the listed remote evidence and an explicit named-approver record.

@@ -16,4 +16,16 @@ Use `npm run migration:convex --` for the complete operator path.
 7. Run `reconcile.mjs --dry-run` with the original handoff and exported Convex target inventory.
 8. Stop on any conflict, checksum mismatch, malformed CLI response, or deployment-selection mismatch. Do not retry with changed inputs under the same run ID.
 
-Do not store handoffs, target inventories, credentials, or dynamic execution output in the repository. Do not log operation payloads or raw provider errors.
+Do not store handoffs, target inventories, credentials, or raw dynamic execution
+output in the repository. Sanitized gate evidence may record opaque provider IDs,
+counts, timestamps, and cleanup results. Do not log operation payloads or raw
+provider errors.
+
+## Preview environment administration
+
+The Vercel-managed Preview deploy key can deploy code but cannot administer
+Convex deployment environment variables. For a missing non-secret Preview
+variable, authenticate as the Convex project owner, select the exact named
+Preview deployment in the Convex dashboard, set only the approved variable,
+and verify the deployment name and value before triggering a new Preview build.
+Never retry this account-admin operation with a deploy key.

@@ -11,13 +11,13 @@ if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY) {
   process.exit(1);
 }
 
-const model = process.env.GRAPHIFY_GEMINI_MODEL || "gemini-2.5-flash-lite";
+const model = process.env.GRAPHIFY_GEMINI_MODEL || "gemini-3.1-flash-lite";
 if (!/^gemini-[A-Za-z0-9._-]+$/.test(model)) {
   console.error("GRAPHIFY_GEMINI_MODEL must be a Gemini model identifier beginning with 'gemini-'.");
   process.exit(1);
 }
 
-const executable = process.platform === "win32" ? "graphify.cmd" : "graphify";
+const executable = process.platform === "win32" ? "graphify.exe" : "graphify";
 const result = spawnSync(
   executable,
   ["label", ".", "--backend", "gemini", "--model", model, "--no-viz", "--timing"],

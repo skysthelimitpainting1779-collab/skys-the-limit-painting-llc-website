@@ -29,8 +29,11 @@ npm run graph:query -- "B00 control plane goal scripts architecture guard host c
 - Contract: Preview variables and integrations are independently scoped from Production, and branch-specific Preview configuration may differ.
 - Library ID: `/websites/convex_dev`
 - Contract: Convex deploy selects its target from an explicit deployment identity or deploy key; migration and inventory commands must name a non-production deployment.
+- Contract: `convex env set` accepts `--deployment <name>`, but a Vercel-managed deploy key does not substitute for Convex owner authentication when administering deployment environment variables; use the owner dashboard for that operation.
 - Library ID: `/clerk/clerk-docs`
 - Contract: Clerk development and production instances use distinct credentials and issuer configuration, which must align with the corresponding Convex deployment.
+- Library ID: `/websites/ai_google_dev_gemini-api`
+- Contract: `gemini-3.1-flash-lite` is the supported cost-efficient model identifier for high-volume lightweight tasks; the Graphify labeler must fail closed rather than accept provider errors with placeholder labels.
 
 ## Primary risks and non-goals
 
