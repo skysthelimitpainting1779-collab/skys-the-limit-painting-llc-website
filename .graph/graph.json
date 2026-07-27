@@ -620,7 +620,7 @@
         "id": "G20-FOUNDATION-READY",
         "title": "Identity, authorization, Convex, and migration foundation passed",
         "type": "human",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-101",
           "STL-102",
@@ -3062,7 +3062,7 @@
         "id": "STL-101",
         "title": "Add Convex environments/provider",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G10-STABILIZED"
         ],
@@ -3191,7 +3191,7 @@
         "id": "STL-102",
         "title": "Integrate approved identity provider",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-101",
           "STL-105",
@@ -3324,7 +3324,7 @@
         "id": "STL-103",
         "title": "Implement Convex authz/audit",
         "type": "validator",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-102"
         ],
@@ -3452,7 +3452,7 @@
         "id": "STL-104",
         "title": "Split marketing/portal/ops route groups",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-102",
           "STL-105"
@@ -3582,7 +3582,7 @@
         "id": "STL-105",
         "title": "Strict server/client env schema",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G10-STABILIZED"
         ],
@@ -3710,7 +3710,7 @@
         "id": "STL-106",
         "title": "CRM foundational schema",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-101",
           "STL-103",
@@ -3844,7 +3844,7 @@
         "id": "STL-107",
         "title": "Domain events/idempotency/webhook receipts",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-101",
           "STL-105"
@@ -3975,7 +3975,7 @@
         "id": "STL-108",
         "title": "Supabase live inventory/export",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G10-STABILIZED"
         ],
@@ -4102,7 +4102,7 @@
         "id": "STL-109",
         "title": "Payload/Directus inventory/export",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G10-STABILIZED"
         ],
@@ -4230,7 +4230,7 @@
         "id": "STL-110",
         "title": "Migration mapping/reconciliation framework",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-106",
           "STL-107",

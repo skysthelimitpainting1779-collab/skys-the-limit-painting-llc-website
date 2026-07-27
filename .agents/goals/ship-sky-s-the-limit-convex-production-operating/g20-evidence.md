@@ -4,7 +4,7 @@ Gate: `G20-FOUNDATION-READY`
 Base revision: `3c9da0838619cf6005c457d86dea23b210891787`
 Reviewed snapshot: `docs/evidence/g20-evidence-snapshot.sha256`
 Prepared: 2026-07-27
-Status: evidence verified; explicit owner approval required
+Status: approved
 
 ## Required evidence
 
@@ -95,13 +95,14 @@ Two read-only reviewers queried Graphify before inspecting the worktree:
   matrix, domain event uniqueness, live source inventory with the explicit
   no-target-export boundary, and reconciliation framework.
 - Gate-contract reviewer: the evidence structure and human approval contract
-  are correct; gate closure remains prohibited until the owner explicitly
-  approves this completed snapshot.
+  are correct.
 
 The technical reviewer independently repeated the sanitized Supabase metadata
 inventory and `vercel env ls`, confirmed the retained results, and made no
-edits. The focused suite passed 31/31, Convex TypeScript compilation passed,
-and `npm run goal:verify` passed Context7, lint, and all 383 tests at
+edits. A final code-review pass verified every snapshot hash, repeated the
+secret scan and diff checks, and found no technical or evidence issue. The
+focused suite passed 31/31, Convex TypeScript compilation passed, and
+`npm run goal:verify` passed Context7, lint, and all 383 tests at
 `2026-07-27T21:50:59.825Z`.
 
 ## Approval record
@@ -110,9 +111,12 @@ Approval must be explicit and must occur after the completed evidence and
 independent-review results are presented. Earlier authorization to perform the
 work is not approval of the completed G20 packet.
 
-- Approver: pending authenticated repository owner
-- Decision: pending
-- Timestamp: pending
-- Approved snapshot/revision: pending
+- Approver: Johnny Cage, authenticated repository owner
+- Decision: approved
+- Timestamp: `2026-07-27T22:39:52.8534238Z`
+- Approved snapshot/revision:
+  `e330aa5bca9fc44dc417e247e43efc14bd2979ed`
+- Approval text: `Proceed b25 use skills and context 7 and graphifyy`
 
-No B25 implementation may begin until this record is complete.
+B25 implementation is authorized subject to its own governance and verification
+requirements.

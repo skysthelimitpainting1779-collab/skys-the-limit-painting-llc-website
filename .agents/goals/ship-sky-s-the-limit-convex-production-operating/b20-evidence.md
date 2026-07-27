@@ -63,4 +63,4 @@
 - Deployment `dpl_3mja4yMG9erE8TwcKCXfzrxokHYd` for commit `5bae0686712be13dfd1bc38e40f09e4eec0bd5fe` compiled Next.js and TypeScript, validated the environment, and deployed Convex functions successfully to `hidden-roadrunner-577`.
 - Vercel then reported `ENOENT` while packaging the declared multi-service output in the production-linked `website` project. This does not roll back the successful Convex Preview deployment. The Services topology remains reserved for the separately governed Preview sandbox and is not enabled or promoted in the production-linked project.
 
-The G20 evidence packet is assembled for independent review. No approval is inferred or pre-recorded; `G20-FOUNDATION-READY` remains pending until the authenticated repository owner explicitly approves this completed packet.
+The G20 evidence packet passed independent technical and final code review. The authenticated repository owner explicitly approved the completed snapshot at `e330aa5bca9fc44dc417e247e43efc14bd2979ed` on `2026-07-27T22:39:52.8534238Z`; the authoritative approval record is `.agents/goals/ship-sky-s-the-limit-convex-production-operating/g20-evidence.md`.
