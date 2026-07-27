@@ -132,6 +132,18 @@ test('company and project access are active, tenant-bound, and explicit-grant-on
   const allowed = await requireProjectGrant(createContext({ identity: staffSession, tables }), { projectId: 'projects:one', permission: 'project:read' });
   assert.equal(allowed.project._id, 'projects:one');
 
+  const wrongPermission = createContext({
+    identity: staffSession,
+    tables: { ...tables, resourceGrants: [{ ...tables.resourceGrants.at(-1), permissions: ['project:write'] }] },
+  });
+  await assert.rejects(() => requireProjectGrant(wrongPermission, { projectId: 'projects:one', permission: 'project:read' }), AuthorizationError);
+
+  const crossCompanyGrant = createContext({
+    identity: staffSession,
+    tables: { ...tables, resourceGrants: [{ ...tables.resourceGrants.at(-1), companyId: 'companies:b' }] },
+  });
+  await assert.rejects(() => requireProjectGrant(crossCompanyGrant, { projectId: 'projects:one', permission: 'project:read' }), AuthorizationError);
+
   const archivedCompany = createContext({ identity: staffSession, tables: { ...tables, companies: [{ ...activeCompany, status: 'archived' }] } });
   await assert.rejects(() => requireCompanyMembership(archivedCompany, { companyId: activeCompany._id }), /company/i);
   const completedProject = createContext({ identity: staffSession, tables: { ...tables, projects: [{ _id: 'projects:one', companyId: activeCompany._id, status: 'complete' }] } });
