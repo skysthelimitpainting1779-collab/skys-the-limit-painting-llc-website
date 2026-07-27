@@ -116,7 +116,7 @@ npm run goal -- done
   writeFileSync(join(dir, 'GOAL.md'), goalMd);
   writeFileSync(
     join(dir, 'research.md'),
-    `# Research — ${title}\n\n## Graph query\n\n\`\`\`bash\nnpm run graph:query -- "${title}"\n\`\`\`\n\n## Files / flows\n\n- \n\n## Risks\n\n- \n`,
+    `# Research — ${title}\n\n## Graph query\n\n\`\`\`bash\nnpm run graph:query -- "${title}"\n\`\`\`\n\n## Context7 contracts\n\n- Applicability: not-applicable — no external library or provider behavior is changed\n\n## Files / flows\n\n- \n\n## Risks\n\n- \n`,
   );
   writeFileSync(
     join(dir, 'plan.md'),
@@ -192,6 +192,7 @@ function cmdPhase(phase) {
 
 function runVerify({ build = false } = {}) {
   const steps = [
+    { name: 'context7', cmd: ['node', 'scripts/validate-context7-contract.mjs'] },
     { name: 'lint', cmd: ['npm', 'run', 'lint'] },
     { name: 'test', cmd: ['npm', 'test'] },
   ];

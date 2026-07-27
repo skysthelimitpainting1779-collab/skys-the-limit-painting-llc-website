@@ -27,6 +27,7 @@
     "arch:decisions": "node scripts/verify-architecture-decisions.mjs",
     "goal": "node scripts/goal.mjs",
     "goal:verify": "node scripts/goal.mjs verify",
+    "context7:verify": "node scripts/validate-context7-contract.mjs",
     "ship:eval": "node scripts/ship-eval.mjs",
     "ship:improve": "node scripts/ship-improve.mjs",
     "graph:status": "node scripts/graph-context.mjs status",

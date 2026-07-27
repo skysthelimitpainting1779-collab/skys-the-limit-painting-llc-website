@@ -23,6 +23,15 @@ npm run graph:query -- "B00 control plane goal scripts architecture guard host c
 - Preview configuration lacks Convex, Clerk, Stripe, and Workflow credentials/resources.
 - Current Vercel and Context7 docs use stable `services`, service `bindings`, and explicit service rewrites. The package plugin’s `experimentalServices` example is stale.
 
+## Context7 contracts
+
+- Library ID: `/websites/vercel`
+- Contract: Preview variables and integrations are independently scoped from Production, and branch-specific Preview configuration may differ.
+- Library ID: `/websites/convex_dev`
+- Contract: Convex deploy selects its target from an explicit deployment identity or deploy key; migration and inventory commands must name a non-production deployment.
+- Library ID: `/clerk/clerk-docs`
+- Contract: Clerk development and production instances use distinct credentials and issuer configuration, which must align with the corresponding Convex deployment.
+
 ## Primary risks and non-goals
 
 - Production framework settings, resources, secrets, domains, and aliases remain unchanged through B60.
