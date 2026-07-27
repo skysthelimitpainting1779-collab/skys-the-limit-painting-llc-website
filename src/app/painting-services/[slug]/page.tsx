@@ -18,7 +18,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const page = serviceLandingPages.find((p) => p.slug === slug);
   if (!page) {
-    return {};
+    return {
+      title: 'Service Not Found',
+      robots: { index: false, follow: false },
+    };
   }
   const imageUrl = `https://www.skysthelimitpaintingllc.com${page.image}`;
   return {

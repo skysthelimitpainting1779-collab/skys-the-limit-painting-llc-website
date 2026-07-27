@@ -39,7 +39,9 @@
     { "source": "/services/exterior", "destination": "/residential", "permanent": true },
     { "source": "/services/commercial", "destination": "/commercial", "permanent": true },
     { "source": "/services/striping", "destination": "/public-sector", "permanent": true },
-    { "source": "/services/pavement-marking", "destination": "/public-sector", "permanent": true }
+    { "source": "/services/pavement-marking", "destination": "/public-sector", "permanent": true },
+    { "source": "/painting-services/cabinet-refinishing", "destination": "/painting-services/cabinet-painting", "permanent": true },
+    { "source": "/painting-services/commercial-repaints", "destination": "/painting-services/commercial-painting", "permanent": true }
   ],
   "crons": [
     {

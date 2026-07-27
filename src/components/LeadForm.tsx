@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useMemo, useState, useEffect } from 'react';
+import { FormEvent, useMemo, useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, ShieldCheck, Upload, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { buildEstimateMailto } from '../lib/contact';
@@ -26,6 +26,7 @@ const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outl
 const selectButtonClass = 'border p-3.5 text-center text-xs font-black   transition-all duration-200 cursor-pointer rounded-none';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
+  const idempotencyKeyRef = useRef('');
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
@@ -34,7 +35,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<Array<{ fileId: string; name: string }>>([]);
 
   const [formData, setFormData] = useState({
     market: defaultMarket,
@@ -121,7 +122,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     setUploading(true);
     setValidationError('');
     
-    const urls: string[] = [...uploadedFiles];
+    const privateFiles = [...uploadedFiles];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -135,14 +136,12 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       
       const fileExt = file.name.split('.').pop() || 'jpg';
       const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
-      const bucketName = 'lead-photos';
-
       try {
         // Fetch presigned upload URL from secure backend endpoint
         const urlResponse = await fetch('/api/storage/upload-url', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName }),
+          body: JSON.stringify({ fileName, contentType: file.type, size: file.size }),
         });
 
         if (!urlResponse.ok) {
@@ -150,7 +149,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           throw new Error(`Failed to generate upload URL: ${errMsg}`);
         }
 
-        const { uploadUrl, publicUrl } = await urlResponse.json();
+        const { uploadUrl, fileId } = await urlResponse.json();
 
         // Upload directly using authorized signed URL via PUT
         const response = await fetch(uploadUrl, {
@@ -166,15 +165,14 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           throw new Error(errMsg);
         }
 
-        urls.push(publicUrl);
+        privateFiles.push({ fileId, name: file.name });
       } catch (err) {
         console.error('Failed to upload file via presigned URL:', err);
         setValidationError(`Failed to upload ${file.name}. Please try again.`);
       }
     }
 
-    setUploadedFiles(urls);
-    updateField('photosUrl', urls.join(', '));
+    setUploadedFiles(privateFiles);
     setUploading(false);
     setUploadProgress('');
   };
@@ -182,7 +180,6 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
   const handleRemovePhoto = (indexToRemove: number) => {
     const updated = uploadedFiles.filter((_, idx) => idx !== indexToRemove);
     setUploadedFiles(updated);
-    updateField('photosUrl', updated.join(', '));
   };
 
   const isStepValid = (step: number) => {
@@ -270,7 +267,11 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     }
 
     const referrerEmail = typeof window !== 'undefined' ? localStorage.getItem('referrer_email') : null;
+    if (!idempotencyKeyRef.current) {
+      idempotencyKeyRef.current = globalThis.crypto.randomUUID();
+    }
     const payload = {
+      idempotencyKey: idempotencyKeyRef.current,
       source,
       page: window.location.pathname,
       name: formData.name,
@@ -285,6 +286,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       budget: formData.budget,
       contactMethod: formData.contactMethod,
       photosUrl: formData.photosUrl,
+      photoFileIds: uploadedFiles.map((file) => file.fileId),
       notes: formData.notes,
       company: '',
       website: formData.website,
@@ -313,7 +315,10 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKeyRef.current,
+        },
         body: JSON.stringify(payload),
       });
 
@@ -635,9 +640,9 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
                   {uploadedFiles.length > 0 && (
                     <div className="grid grid-cols-4 gap-2.5 pt-1">
-                      {uploadedFiles.map((url, idx) => (
-                        <div key={url} className="relative aspect-square border border-white/10 bg-white/5 overflow-hidden rounded-none">
-                          <img src={url} alt={`Uploaded project photo ${idx + 1}`} className="w-full h-full object-cover" />
+                      {uploadedFiles.map((file, idx) => (
+                        <div key={file.fileId} className="relative min-h-20 border border-white/10 bg-white/5 overflow-hidden rounded-none p-2 flex items-center">
+                          <span className="text-[10px] text-white/70 break-all">{file.name}</span>
                           <button
                             type="button"
                             onClick={() => handleRemovePhoto(idx)}

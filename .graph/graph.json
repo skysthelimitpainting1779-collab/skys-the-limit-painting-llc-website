@@ -1802,7 +1802,7 @@
         "id": "STL-001",
         "title": "Make lead creation durable/fail-closed",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -1928,7 +1928,7 @@
         "id": "STL-002",
         "title": "Fix estimate payload and corrupted copy",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2053,7 +2053,7 @@
         "id": "STL-003",
         "title": "Disable public manage sign-up and enforce staff authorization",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2181,7 +2181,7 @@
         "id": "STL-004",
         "title": "Make lead/project uploads private",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2308,7 +2308,7 @@
         "id": "STL-005",
         "title": "Repair cabinet/commercial service pages or redirects",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2435,7 +2435,7 @@
         "id": "STL-006",
         "title": "Correct 404 canonical/robots metadata",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2561,7 +2561,7 @@
         "id": "STL-007",
         "title": "Resolve SSR search-param bailout",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2686,7 +2686,7 @@
         "id": "STL-008",
         "title": "Replace optional webhook authentication",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2812,7 +2812,7 @@
         "id": "STL-009",
         "title": "Expand smoke/E2E critical journeys",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G00-AUDIT-LOCKED"
         ],
@@ -2937,7 +2937,7 @@
         "id": "STL-010",
         "title": "Add lead-delivery reconciliation queue",
         "type": "agent",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-001"
         ],

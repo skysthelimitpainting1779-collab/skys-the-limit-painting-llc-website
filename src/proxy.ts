@@ -1,7 +1,13 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from './lib/supabase/middleware';
-import { gatePortalAccess, isProtectedPortalPath, portalLoginUrl } from './lib/auth/portal';
+import {
+  gatePortalAccess,
+  gateStaffAccess,
+  isProtectedPortalPath,
+  isProtectedStaffPath,
+  portalLoginUrl,
+} from './lib/auth/portal';
 
 /**
  * Next.js proxy (session refresh + portal/admin route protection).
@@ -14,7 +20,9 @@ export async function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  if (!isProtectedPortalPath(pathname)) {
+  const portalProtected = isProtectedPortalPath(pathname);
+  const staffProtected = isProtectedStaffPath(pathname);
+  if (!portalProtected && !staffProtected) {
     return response;
   }
 
@@ -46,18 +54,29 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  let user: { id: string; email?: string | null } | null = null;
+  let user: {
+    id: string;
+    email?: string | null;
+    role?: string | null;
+    disabled?: boolean;
+  } | null = null;
   try {
     const { data } = await supabase.auth.getUser();
     user = data.user
-      ? { id: data.user.id, email: data.user.email }
+      ? {
+          id: data.user.id,
+          email: data.user.email,
+          role: typeof data.user.app_metadata?.role === 'string' ? data.user.app_metadata.role : null,
+          disabled: data.user.app_metadata?.disabled === true,
+        }
       : null;
   } catch {
     user = null;
   }
 
-  const gate = gatePortalAccess(user);
-  if (!gate.authenticated) {
+  const portalGate = gatePortalAccess(user);
+  const staffGate = gateStaffAccess(user);
+  if ((portalProtected && !portalGate.authenticated) || (staffProtected && !staffGate.authorized)) {
     const url = request.nextUrl.clone();
     const login = portalLoginUrl(pathname);
     const [pathOnly, qs] = login.split('?');
@@ -74,6 +93,7 @@ export const config = {
     // Exclude Payload admin routes — Payload handles its own auth internally
     '/portal',
     '/portal/:path*',
+    '/manage/:path*',
     '/auth/callback',
   ],
 };

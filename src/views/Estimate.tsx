@@ -22,6 +22,7 @@ interface ChatMessage {
 const springConfig: any = { type: "spring", stiffness: 300, damping: 24 };
 
 export default function EstimatePage() {
+  const idempotencyKeyRef = useRef('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -195,19 +196,36 @@ export default function EstimatePage() {
 
   const handleFinalSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!idempotencyKeyRef.current) {
+      idempotencyKeyRef.current = globalThis.crypto.randomUUID();
+    }
     const payload = {
+      idempotencyKey: idempotencyKeyRef.current,
       source: 'Chatbot Estimate',
       page: '/estimate',
       name, phone, email, city,
       projectType, prepLevel,
-      notes: `Project: ${projectType} \nPrep: ${prepLevel}`
+      roomType,
+      width,
+      length,
+      height,
+      stories,
+      siding,
+      cabinetCount,
+      market: 'Residential',
+      timeline: 'Estimate requested',
+      contactMethod: 'Phone',
+      notes: `Project: ${projectType}\nPrep: ${prepLevel}\nRoom: ${roomType}\nDimensions: ${width}x${length}x${height} ft\nStories: ${stories}\nSiding: ${siding}\nCabinet doors/drawers: ${cabinetCount}`,
     };
 
     setStatus('submitting');
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKeyRef.current,
+        },
         body: JSON.stringify(payload),
       });
       if (response.ok) {
@@ -368,7 +386,7 @@ export default function EstimatePage() {
                  <motion.div variants={containerVariants} initial="hidden" animate="show" exit="hidden" className="flex flex-col gap-3">
                    <motion.button variants={itemVariants} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} onClick={() => handlePrep('standard', 'Standard Prep')} className="text-left bg-[#182023] hover:bg-white/10 border border-white/10 p-5 transition-colors shadow-lg">
                      <p className="font-bold text-sm text-white">Standard Prep</p>
-                     <p className="text-xs text-[#9ca3af] mt-2 leading-relaxed">Light সংকট, minor caulk, 1 coat primer & topcoat. Great for minor refreshes.</p>
+                     <p className="text-xs text-[#9ca3af] mt-2 leading-relaxed">Light patching, minor caulk, one primer coat, and one topcoat. Best for minor refreshes.</p>
                    </motion.button>
                    <motion.button variants={itemVariants} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} onClick={() => handlePrep('premium', 'Premium Detail Prep')} className="text-left bg-[#182023] hover:bg-white/10 border border-white/10 p-5 transition-colors shadow-lg">
                      <p className="font-bold text-sm text-[#FF5A00] flex items-center gap-2">Premium Detail Prep <span className="bg-[#FF5A00]/20 text-[#FF5A00] text-[10px] uppercase px-2 py-0.5 tracking-wider font-bold">Recommended</span></p>
