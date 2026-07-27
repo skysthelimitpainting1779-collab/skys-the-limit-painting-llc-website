@@ -29,3 +29,12 @@ variable, authenticate as the Convex project owner, select the exact named
 Preview deployment in the Convex dashboard, set only the approved variable,
 and verify the deployment name and value before triggering a new Preview build.
 Never retry this account-admin operation with a deploy key.
+
+## Clerk Preview issuer discovery
+
+When the Convex Preview deployment needs `CLERK_JWT_ISSUER_DOMAIN`, run
+`scripts/derive-clerk-preview-issuer.ps1`. It reads the existing Vercel Preview
+publishable key only inside an access-restricted scratch directory, validates
+the `pk_test_` tier, decodes Clerk's documented Frontend API origin, deletes the
+scratch directory, and returns only the non-secret HTTPS issuer origin plus
+sanitized lifecycle evidence.

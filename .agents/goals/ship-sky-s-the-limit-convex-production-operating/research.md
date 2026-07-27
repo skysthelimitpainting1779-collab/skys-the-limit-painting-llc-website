@@ -32,6 +32,9 @@ npm run graph:query -- "B00 control plane goal scripts architecture guard host c
 - Contract: `convex env set` accepts `--deployment <name>`, but a Vercel-managed deploy key does not substitute for Convex owner authentication when administering deployment environment variables; use the owner dashboard for that operation.
 - Library ID: `/clerk/clerk-docs`
 - Contract: Clerk development and production instances use distinct credentials and issuer configuration, which must align with the corresponding Convex deployment.
+- Contract: a `pk_test_` publishable key identifies Clerk's non-production tier and encodes the Frontend API domain used as the Preview JWT issuer.
+- Library ID: `/supabase/supabase`
+- Contract: a read-only production inventory may inspect schema/table metadata, row counts, and RLS state without exporting row payloads; exposed `public` tables require RLS and explicit grants.
 - Library ID: `/websites/ai_google_dev_gemini-api`
 - Contract: `gemini-3.1-flash-lite` is the supported cost-efficient model identifier for high-volume lightweight tasks; the Graphify labeler must fail closed rather than accept provider errors with placeholder labels.
 

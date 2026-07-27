@@ -1,18 +1,24 @@
 {
   "ok": true,
-  "at": "2026-07-27T17:37:27.816Z",
+  "at": "2026-07-27T19:01:43.695Z",
   "results": [
+    {
+      "name": "context7",
+      "pass": true,
+      "status": 0,
+      "tail": "[context7] contract evidence valid: C:\\Users\\Johnny Cage\\DEV\\skys-limit-worktrees\\agent-skys-limit-convex-os\\.agents\\goals\\ship-sky-s-the-limit-convex-production-operating\\research.md\n"
+    },
     {
       "name": "lint",
       "pass": true,
       "status": 0,
-      "tail": "[architecture] Current architecture decisions verified.\n[Git Guard] Running Git standards compliance check...\n[Git Guard] Branch: \"agent/skys-limit-convex-os\"\n\u001b[32m[Git Guard] Branch name OK.\u001b[0m\n[Git Guard] Checking: \"chore(agent-os): repair Entire and Graphify hooks\"\n\u001b[32m[Git Guard] Commit message OK.\u001b[0m\n[verify-react-versions] OK — react and react-dom are pinned to identical versions\n"
+      "tail": "[architecture] Current architecture decisions verified.\n[Git Guard] Running Git standards compliance check...\n[Git Guard] Branch: \"agent/skys-limit-convex-os\"\n\u001b[32m[Git Guard] Branch name OK.\u001b[0m\n[Git Guard] Checking: \"docs(g20): record preview access boundary\"\n\u001b[32m[Git Guard] Commit message OK.\u001b[0m\n[verify-react-versions] OK — react and react-dom are pinned to identical versions\n"
     },
     {
       "name": "test",
       "pass": true,
       "status": 0,
-      "tail": "tion cannot render protected children (1.5202ms)\n✔ public API route files remain outside presentation route groups (1.1793ms)\n✔ CSP permits only the Clerk and Convex browser endpoints needed by protected surfaces (0.7528ms)\n✔ top-level routes use the three-market architecture in Next.js filesystem routing (4.2093ms)\n✔ primary navigation leads with residential, commercial, and public sector (0.8884ms)\n✔ homepage states the approved positioning and avoids forbidden claims (1.272ms)\n✔ remediation guardrails cover secrets, headers, App Router SEO, and accessible interactions (9.031ms)\n✔ local SEO and service landing pages are routable and listed in the sitemap (3.0204ms)\n✔ M2 compliance and contractor registration statements are correctly set (16.4217ms)\n✔ all execution nodes resolve to installed primary and declared supporting skills (138.7817ms)\n✔ declares the approved web and integrations Vercel Services topology (2.3116ms)\n✔ binds web to integrations without exposing the integrations service publicly (1.5095ms)\n✔ integrations service exports a minimal Hono application (0.4994ms)\nℹ tests 383\nℹ suites 23\nℹ pass 383\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 13914.2822\n"
+      "tail": "ation cannot render protected children (1.4613ms)\n✔ public API route files remain outside presentation route groups (1.0755ms)\n✔ CSP permits only the Clerk and Convex browser endpoints needed by protected surfaces (4.5047ms)\n✔ top-level routes use the three-market architecture in Next.js filesystem routing (3.2404ms)\n✔ primary navigation leads with residential, commercial, and public sector (0.828ms)\n✔ homepage states the approved positioning and avoids forbidden claims (1.0113ms)\n✔ remediation guardrails cover secrets, headers, App Router SEO, and accessible interactions (5.1794ms)\n✔ local SEO and service landing pages are routable and listed in the sitemap (2.5873ms)\n✔ M2 compliance and contractor registration statements are correctly set (5.9119ms)\n✔ all execution nodes resolve to installed primary and declared supporting skills (133.5883ms)\n✔ declares the approved web and integrations Vercel Services topology (3.466ms)\n✔ binds web to integrations without exposing the integrations service publicly (0.4777ms)\n✔ integrations service exports a minimal Hono application (0.4806ms)\nℹ tests 383\nℹ suites 23\nℹ pass 383\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 10247.5657\n"
     }
   ],
   "goal": "ship-sky-s-the-limit-convex-production-operating",

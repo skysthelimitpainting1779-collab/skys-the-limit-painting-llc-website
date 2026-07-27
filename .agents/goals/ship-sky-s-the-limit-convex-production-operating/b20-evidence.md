@@ -22,16 +22,17 @@
 ## Discovery and documentation evidence
 
 - Post-merge checkpoint: `509d17258646`; observed `origin/main`: `45aae73febc7`. Neither reference is an approval record.
-- Graphifyy incremental update: 5,956 nodes, 7,367 edges, 538 communities.
+- Graphifyy incremental update: 6,326 nodes, 7,780 edges, 584 communities.
 - Graphifyy query traversed the B20 Clerk/Convex auth, protected-route, event/idempotency, and reconciliation symbols before final verification.
 - Read-only Graphify inventory: G20 is `pending`; it names `security-verification` as the primary skill and requires Graphify, Vercel, GitHub, and Vercel official-documentation evidence before readiness.
-- Read-only Context7 inventories: `/websites/convex_dev` documents `CLERK_JWT_ISSUER_DOMAIN` in Convex auth configuration and separate development/production instances; `/websites/vercel` documents a project as the unit for repository, environment-variable, and deployment configuration.
+- Read-only Context7 inventories: `/websites/convex_dev` documents `CLERK_JWT_ISSUER_DOMAIN` in Convex auth configuration and separate development/production instances; `/websites/vercel` documents a project as the unit for repository, environment-variable, and deployment configuration; `/clerk/clerk-docs` documents the Preview publishable-key issuer contract; `/supabase/supabase` documents metadata/RLS inventory without row export.
 - Local Vercel baseline records opaque team `team_bseTA2AuCO6A2fCOVY9ubrJo` and project `prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m`; the two-service binding is the `website` web project plus the `skysthelimit` Convex Marketplace integration. This is local recorded evidence only, not a live read.
 - Environment names only: `CLERK_JWT_ISSUER_DOMAIN`, `CLERK_JWT_ISSUER_ENV`, `NEXT_PUBLIC_APP_ENV`, and `NEXT_PUBLIC_CONVEX_URL`; no values were read or recorded.
 
 ## Verification
 
 - Mandatory `npm run goal:verify -- --build` at `2026-07-27T14:38:02.276Z`: lint passed, 383/383 tests passed, and the Next.js production build passed.
+- Mandatory checkpoint `npm run goal:verify` at `2026-07-27T19:01:43.695Z`: Context7 contract verification, lint, and 383/383 tests passed for commit `5bae0686712be13dfd1bc38e40f09e4eec0bd5fe`.
 - Identity/lifecycle focused suite: 43/43 passed. Convex typecheck, anonymous local function push, root TypeScript, and an independent Next/Turbopack production build also passed.
 - Independent security review found and verified repairs for stale-user resurrection, invitation-ID lifecycle binding, role escalation, redirect validation, post-provider authorization races, and unknown-invitation retry behavior.
 - Skill `repeatable-workflow-capture`: system validation passed.
@@ -43,20 +44,23 @@
 - Anonymous local Convex push (`CONVEX_AGENT_MODE=anonymous npx convex dev --once`) passed at `127.0.0.1:3210`; this proves local deployability only and did not contact or mutate a cloud deployment.
 - Skill `convex-migration-operator`: system validation, repository skill routing validation, and host-adapter compilation passed.
 
-## Exact remaining remote evidence gaps before G20 approval
+## Live source inventory and later-gate boundary
 
-- Authorized offline snapshots or read-only exports for the live Supabase, Payload, and Directus inventories. Current reports correctly remain blocked rather than inferring live state.
-- Approved execution of the prepared handoff against an explicitly named non-production Convex deployment, followed by a real opaque target inventory export and checksum reconciliation. The repository-owned path now exists, but only mocked calls have been verified.
-- Configure and verify `CLERK_JWT_ISSUER_DOMAIN`, `CLERK_JWT_ISSUER_ENV`, `NEXT_PUBLIC_APP_ENV`, and `NEXT_PUBLIC_CONVEX_URL` in each appropriate Convex/Vercel environment without exposing secret values.
-- During the provenance repair, no remote read, deployment, or mutation occurred. The later authenticated Preview checkpoint is recorded separately below.
+- The connected production Supabase project `ouykfhoxlrkjgscdjjqg` is active and healthy. A connector-mediated read-only inventory returned 11 `public` tables and 77 aggregate rows; all 11 report RLS enabled. No row payloads or personal identifiers were read or retained.
+- The same inventory confirmed two storage buckets and no stored objects. Auth metadata was inspected only for aggregate table counts and RLS state; no account records were exported.
+- Payload is configured to use `SUPABASE_DB_URL`. The live Supabase inventory contains no Payload collection tables, so no deployed Payload dataset exists in that source.
+- The production Vercel environment-name inventory contains no `DIRECTUS_URL` or `NEXT_PUBLIC_DIRECTUS_URL`; the application Directus adapter therefore has no configured live source to inventory.
+- The reconciliation framework is verified by the 25/25 focused suite. Applying a handoff or reconciling migrated production data remains a later migration gate and was not inferred or executed for G20.
+- A read-only Convex target export was attempted only against `hidden-roadrunner-577`. Convex owner CLI authentication is unavailable and the Vercel-managed deploy key is not exportable, so the operator failed closed before reading data. Both restricted scratch attempts were deleted and produced no output file.
 
 ## Preview deployment checkpoint
 
-- Authenticated Vercel evidence now confirms Preview deployment `dpl_NBj421UhyoSTFsUmBMSN5xQzMjCo` for commit `a780e68b7e462f3a782f3d777bedf3531dc520ce`.
+- Authenticated Vercel evidence confirms the exact non-production Convex deployment `hidden-roadrunner-577`, ref `preview/agent/skys-limit-convex-os`, cloud URL `https://hidden-roadrunner-577.convex.cloud`.
 - The Vercel/Convex integration selected the exact non-production Convex deployment `hidden-roadrunner-577`, environment `Preview`, and injected the public Convex URLs for the application build.
-- Vercel environment-name inventory confirms `CONVEX_DEPLOY_KEY` and `NEXT_PUBLIC_APP_ENV` are scoped to Preview. Values were not recorded.
-- The Preview build stopped because the Convex deployment itself lacks `NEXT_PUBLIC_APP_ENV`. The Vercel deploy key can deploy code but cannot administer Convex deployment environment variables.
+- Convex Preview configuration now contains `NEXT_PUBLIC_APP_ENV`, `CLERK_JWT_ISSUER_ENV`, and `CLERK_JWT_ISSUER_DOMAIN`; Vercel Preview contains `CONVEX_DEPLOY_KEY` and `NEXT_PUBLIC_CONVEX_URL`. Only names and scopes were recorded.
 - Credential scratch `E:\SkysLimitScratch\g20-convex-20260727T113802545` was created at `2026-07-27T18:38:02.5935594Z` and deleted at `2026-07-27T18:38:12.0003796Z`. Deletion was verified; no secret value or secret hash was retained; the attempted Convex environment update did not succeed.
-- The remaining Preview blocker is authenticated Convex-owner configuration of non-secret `NEXT_PUBLIC_APP_ENV=preview` on `hidden-roadrunner-577`, followed by a fresh Preview build and read-only target inventory/reconciliation.
+- Clerk issuer scratch `E:\SkysLimitScratch\g20-clerk-20260727T120804619` was created at `2026-07-27T19:08:04.7170737Z` and deleted at `2026-07-27T19:08:08.9822485Z`. Deletion was verified; only the non-secret issuer origin was used, and the sanitized result file was deleted after configuration.
+- Deployment `dpl_3mja4yMG9erE8TwcKCXfzrxokHYd` for commit `5bae0686712be13dfd1bc38e40f09e4eec0bd5fe` compiled Next.js and TypeScript, validated the environment, and deployed Convex functions successfully to `hidden-roadrunner-577`.
+- Vercel then reported `ENOENT` while packaging the declared multi-service output in the production-linked `website` project. This does not roll back the successful Convex Preview deployment. The Services topology remains reserved for the separately governed Preview sandbox and is not enabled or promoted in the production-linked project.
 
-G20-FOUNDATION-READY remains pending. No approval is inferred; it requires the listed remote evidence and an explicit named-approver record.
+The G20 evidence packet is assembled for independent review. No approval is inferred or pre-recorded; `G20-FOUNDATION-READY` remains pending until the authenticated repository owner explicitly approves this completed packet.
