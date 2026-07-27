@@ -28,11 +28,18 @@ if (afterHeading === undefined) {
 }
 
 const section = afterHeading.split(/^##\s/m)[0].trim();
-const notApplicable = section.match(/Applicability:\s*not-applicable\s*[—-]\s*(.{12,})/i);
+const notApplicableMatch = section.match(
+  /Applicability:[ \t]*not-applicable[ \t]*[—-][ \t]*([^\r\n]*\S[^\r\n]*)/i,
+);
 const libraryId = section.match(/Library ID:\s*`?(\/[a-z0-9_.-]+\/[a-z0-9_.-]+)`?/i);
-const contract = section.match(/Contract:\s*(.{12,})/i);
+const contractMatch = section.match(/Contract:[ \t]*([^\r\n]*\S[^\r\n]*)/i);
+const notApplicableReason = notApplicableMatch?.[1].trim();
+const contract = contractMatch?.[1].trim();
 
-if (!notApplicable && !(libraryId && contract)) {
+if (
+  !(notApplicableReason && notApplicableReason.length >= 12) &&
+  !(libraryId && contract && contract.length >= 12)
+) {
   console.error(
     "[context7] Record a Context7 Library ID plus Contract, or a reasoned not-applicable declaration.",
   );
