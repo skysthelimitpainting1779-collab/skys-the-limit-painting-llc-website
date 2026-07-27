@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "at": "2026-07-27T21:50:59.825Z",
+  "at": "2026-07-27T23:20:32.354Z",
   "results": [
     {
       "name": "context7",
@@ -12,16 +12,22 @@
       "name": "lint",
       "pass": true,
       "status": 0,
-      "tail": "[architecture] Current architecture decisions verified.\n[Git Guard] Running Git standards compliance check...\n[Git Guard] Branch: \"agent/skys-limit-convex-os\"\n\u001b[32m[Git Guard] Branch name OK.\u001b[0m\n[Git Guard] Checking: \"docs(g20): assemble approval packet\"\n\u001b[32m[Git Guard] Commit message OK.\u001b[0m\n[verify-react-versions] OK — react and react-dom are pinned to identical versions\n"
+      "tail": "replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.learnings/ERRORS.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.learnings/ERRORS_INDEX.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.learnings/index.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'DESIGN.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'package.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/components/ConversionHeader.tsx', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/components/LeadForm.tsx', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/components/ui/badge.tsx', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/components/ui/button.tsx', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/views/Refer.tsx', LF will be replaced by CRLF the next time Git touches it\n"
     },
     {
       "name": "test",
       "pass": true,
       "status": 0,
-      "tail": "annot render protected children (4.0613ms)\n✔ public API route files remain outside presentation route groups (3.3053ms)\n✔ CSP permits only the Clerk and Convex browser endpoints needed by protected surfaces (26.2684ms)\n✔ top-level routes use the three-market architecture in Next.js filesystem routing (29.4399ms)\n✔ primary navigation leads with residential, commercial, and public sector (0.8321ms)\n✔ homepage states the approved positioning and avoids forbidden claims (2.6138ms)\n✔ remediation guardrails cover secrets, headers, App Router SEO, and accessible interactions (10.7486ms)\n✔ local SEO and service landing pages are routable and listed in the sitemap (3.1493ms)\n✔ M2 compliance and contractor registration statements are correctly set (2.9169ms)\n✔ all execution nodes resolve to installed primary and declared supporting skills (1381.2257ms)\n✔ declares the approved web and integrations Vercel Services topology (16.1969ms)\n✔ binds web to integrations without exposing the integrations service publicly (9.2288ms)\n✔ integrations service exports a minimal Hono application (1.5884ms)\nℹ tests 383\nℹ suites 23\nℹ pass 383\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 45229.2415\n"
+      "tail": "ion cannot render protected children (1.5403ms)\n✔ public API route files remain outside presentation route groups (1.1319ms)\n✔ CSP permits only the Clerk and Convex browser endpoints needed by protected surfaces (0.6805ms)\n✔ top-level routes use the three-market architecture in Next.js filesystem routing (6.8541ms)\n✔ primary navigation leads with residential, commercial, and public sector (0.8198ms)\n✔ homepage states the approved positioning and avoids forbidden claims (1.3268ms)\n✔ remediation guardrails cover secrets, headers, App Router SEO, and accessible interactions (9.0697ms)\n✔ local SEO and service landing pages are routable and listed in the sitemap (8.3953ms)\n✔ M2 compliance and contractor registration statements are correctly set (4.8757ms)\n✔ all execution nodes resolve to installed primary and declared supporting skills (126.9648ms)\n✔ declares the approved web and integrations Vercel Services topology (6.4028ms)\n✔ binds web to integrations without exposing the integrations service publicly (4.7476ms)\n✔ integrations service exports a minimal Hono application (0.6801ms)\nℹ tests 390\nℹ suites 23\nℹ pass 390\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 12027.3379\n"
+    },
+    {
+      "name": "build",
+      "pass": true,
+      "status": 0,
+      "tail": "                            15m      1y\n├ ○ /public-sector\n├ ○ /refer\n├ ○ /residential\n├ ○ /review\n├ ○ /robots.txt\n├ ○ /service-area\n├ ◐ /service-areas/[slug]                        15m      1y\n│ ├ /service-areas/[slug]                        15m      1y\n│ ├ /service-areas/inver-grove-heights           15m      1y\n│ ├ /service-areas/south-st-paul                 15m      1y\n│ └ [+5 more paths]\n└ ƒ /sitemap.xml\n\n\nƒ Proxy (Middleware)\n\n○  (Static)             prerendered as static content\n◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content\nƒ  (Dynamic)            server-rendered on demand\n\n◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }\n◇ injected env (4) from .env.local // tip: ⌘ enable debugging { debug: true }\nGenerating sitemap and robots.txt dynamically...\nSitemap written to: C:\\Users\\Johnny Cage\\DEV\\skys-limit-worktrees\\agent-skys-limit-convex-os\\public\\sitemap.xml\nRobots.txt written to: C:\\Users\\Johnny Cage\\DEV\\skys-limit-worktrees\\agent-skys-limit-convex-os\\public\\robots.txt\nSitemap and robots.txt generated successfully!\nSupabase environment variables not found. Generating sitemap using static defaults.\n"
     }
   ],
   "goal": "ship-sky-s-the-limit-convex-production-operating",
-  "graders": "deterministic (lint, test)",
+  "graders": "deterministic (lint, test, build)",
   "note": "Anthropic: prefer code graders over self-assessment"
 }

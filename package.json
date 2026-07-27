@@ -16,8 +16,8 @@
     "preview": "next start",
     "clean": "node -e \"import('node:fs').then(({ rmSync }) => { rmSync('dist', { recursive: true, force: true }); rmSync('.next', { recursive: true, force: true }); })\"",
     "prepare": "git config core.hooksPath .husky 2>/dev/null || true",
-    "lint": "node scripts/verify-architecture-decisions.mjs && node scripts/enforce-git.js && node scripts/verify-react-versions.mjs && tsc --noEmit",
-    "lint:ci": "node scripts/verify-architecture-decisions.mjs && node scripts/verify-react-versions.mjs && tsc --noEmit",
+    "lint": "npm run lint:design && npm run lint:design:changed && npm run lint:slop && node scripts/verify-architecture-decisions.mjs && node scripts/enforce-git.js && node scripts/verify-react-versions.mjs && tsc --noEmit",
+    "lint:ci": "npm run lint:design && npm run lint:design:changed && npm run lint:slop && node scripts/verify-architecture-decisions.mjs && node scripts/verify-react-versions.mjs && tsc --noEmit",
     "lint:react": "node scripts/verify-react-versions.mjs",
     "lint:types": "tsc --noEmit",
     "lint:md": "markdownlint \"**/*.md\" --ignore \"**/node_modules/**\" --ignore \"wiki/**\" --ignore \".agents/wiki/**\" --ignore \"graphify-out/**\" --ignore \"**/.agents/wiki/**\"",
@@ -54,7 +54,14 @@
     "arch:force": "node scripts/cron-custodian.js --force",
     "remotion:studio": "remotion studio remotion/index.ts",
     "render:hero": "remotion render remotion/index.ts HeroCinematic public/videos/sky-hero-cinematic.mp4 --codec=h264 --crf=20 --muted",
-    "render:markets": "remotion render remotion/index.ts ResidentialLoop public/videos/sky-residential-loop.mp4 --codec=h264 --crf=22 --muted && remotion render remotion/index.ts CommercialLoop public/videos/sky-commercial-loop.mp4 --codec=h264 --crf=22 --muted && remotion render remotion/index.ts PublicSectorLoop public/videos/sky-public-sector-loop.mp4 --codec=h264 --crf=22 --muted"
+    "render:markets": "remotion render remotion/index.ts ResidentialLoop public/videos/sky-residential-loop.mp4 --codec=h264 --crf=22 --muted && remotion render remotion/index.ts CommercialLoop public/videos/sky-commercial-loop.mp4 --codec=h264 --crf=22 --muted && remotion render remotion/index.ts PublicSectorLoop public/videos/sky-public-sector-loop.mp4 --codec=h264 --crf=22 --muted",
+    "lint:design": "node scripts/lint-design.mjs --spec",
+    "lint:design:changed": "node scripts/lint-design.mjs --changed",
+    "lint:design:all": "node scripts/lint-design.mjs --all",
+    "lint:slop": "node scripts/lint-ui-slop.mjs --changed",
+    "lint:slop:all": "node scripts/lint-ui-slop.mjs --all",
+    "verify:ui-design-evidence": "node scripts/verify-ui-design-evidence.mjs",
+    "design:gate": "npm run lint:design && npm run lint:design:changed && npm run lint:slop && npm run verify:ui-design-evidence"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

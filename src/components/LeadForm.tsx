@@ -22,8 +22,8 @@ const budgetOptions = ['Under $2,500', '$2,500-$7,500', '$7,500-$20,000', '$20,0
 const contactMethods = ['Call', 'Text', 'Email'];
 
 const labelClass = 'block text-xs font-black text-white mb-2';
-const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-all focus:border-white focus-visible:ring-2 focus-visible:ring-[white]/20 text-base rounded-none';
-const selectButtonClass = 'border p-3.5 text-center text-xs font-black   transition-all duration-200 cursor-pointer rounded-none';
+const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outline-none placeholder:text-white/40 transition-[color,background-color,border-color,box-shadow] focus:border-white focus-visible:ring-2 focus-visible:ring-[white]/20 text-base rounded-none';
+const selectButtonClass = 'border p-3.5 text-center text-xs font-black transition-[color,background-color,border-color,box-shadow] duration-200 cursor-pointer rounded-none';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
   const idempotencyKeyRef = useRef('');
@@ -462,7 +462,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
           <span className="text-xs font-bold text-gray-400">{progressPercent}%</span>
         </div>
         <div className="h-1 bg-white/10 w-full rounded-none">
-          <div className="h-full bg-white transition-all duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
+          <div className="h-full bg-white transition-[width] duration-300 rounded-none" style={{ width: `${progressPercent}%` }}></div>
         </div>
       </div>
 
