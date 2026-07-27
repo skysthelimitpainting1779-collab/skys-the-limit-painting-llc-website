@@ -114,7 +114,8 @@ npx vercel promote <deployment-url>
 ## Project style
 
 - Next.js App Router · TypeScript under `src/`
-- Industrial UI: **radius 0** · `#FF5A00` on charcoal · **no emojis** in product source
+- Target architecture: [`.agents/CURRENT_DECISIONS.md`](.agents/CURRENT_DECISIONS.md)
+- Measured Craft UI: semantic geometry · `#FF5A00` on charcoal · **no emojis** in product source
 - Root cause only · public claims verifiable
 
 ---
