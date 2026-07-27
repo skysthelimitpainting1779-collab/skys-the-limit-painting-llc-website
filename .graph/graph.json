@@ -378,7 +378,7 @@
         "id": "G10-STABILIZED",
         "title": "Revenue and security stabilization passed",
         "type": "human",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "STL-001",
           "STL-002",
@@ -508,7 +508,7 @@
         "id": "ADR-AUTH-PROVIDER",
         "title": "Approve canonical identity provider ADR",
         "type": "human",
-        "status": "pending",
+        "status": "succeeded",
         "dependsOn": [
           "G10-STABILIZED"
         ],
