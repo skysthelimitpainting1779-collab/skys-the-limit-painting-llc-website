@@ -15,6 +15,10 @@ function sourceFiles(directoryUrl) {
   });
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 test('Vercel validates the deployment environment then deploys Convex around the web build', () => {
   const packageJson = JSON.parse(read('package.json'));
   const vercel = JSON.parse(read('vercel.json'));
@@ -27,7 +31,7 @@ test('Vercel validates the deployment environment then deploys Convex around the
     packageJson.scripts['build:vercel'],
     'npm run validate:convex-deploy-env && npx convex deploy --cmd "npm run build"'
   );
-  assert.equal(vercel.services.web.buildCommand, 'npm run build:vercel');
+  assert.equal(vercel.buildCommand, 'npm run build:vercel');
 });
 
 test('deployment validation consumes the key without printing it', () => {
@@ -46,7 +50,7 @@ test('deployment validation consumes the key without printing it', () => {
 
   assert.equal(result.status, 0, result.stderr);
   assert.equal(result.stdout, 'Convex deployment environment validated.\n');
-  assert.doesNotMatch(`${result.stdout}${result.stderr}`, new RegExp(secret.replace('|', '\\|')));
+  assert.doesNotMatch(`${result.stdout}${result.stderr}`, new RegExp(escapeRegExp(secret)));
 });
 
 test('deployment validation fails closed before Convex CLI execution', () => {
