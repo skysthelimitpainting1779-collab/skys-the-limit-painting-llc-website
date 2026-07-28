@@ -11,9 +11,10 @@ This file is authoritative for the migration target. It overrides stale target-s
 
 ## Vercel topology and effects
 
-- One Vercel project contains a Next.js `web` service and an internal TypeScript `integrations` service.
-- The integrations service owns verified provider webhooks, adapters, and Vercel Workflow entrypoints.
-- Internal service calls use Vercel service bindings; only explicit webhook routes receive public rewrites.
+- The currently production-linked Vercel `website` project remains one native Next.js service through G70. Its proven build path is `npm run build:vercel`, which validates environment separation, deploys Convex functions to the selected deployment, and builds Next.js.
+- The target topology adds an internal TypeScript `integrations` service for verified provider webhooks, adapters, and Vercel Workflow entrypoints.
+- That target topology must first run in a dedicated non-production Services project. It is not activated by the production-linked `website` project before G70 approval and a successful preview packaging contract.
+- When activated, internal service calls use Vercel service bindings; only explicit webhook routes receive public rewrites.
 - Convex scheduling handles deterministic internal jobs. Vercel Workflow handles durable multi-step external effects.
 - Webhooks verify raw-body signatures and event IDs are idempotent.
 - Production framework conversion, promotion, domains, and resource changes require the G70 approval gate.
