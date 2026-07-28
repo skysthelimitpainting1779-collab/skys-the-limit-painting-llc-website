@@ -63,7 +63,14 @@ test('deployment validation fails closed before Convex CLI execution', () => {
   });
 
   assert.equal(result.status, 1);
-  assert.equal(result.stderr, 'Convex deployment environment validation failed.\n');
+  const stderr = result.stderr.replace(
+    /^\(node:\d+\) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\r?\n\(Use `node --trace-warnings \.\.\.` to show where the warning was created\)\r?\n/,
+    ''
+  );
+  assert.equal(
+    stderr,
+    'Convex deployment environment validation failed.\n'
+  );
   assert.doesNotMatch(result.stderr, /preview:wrong-tier/);
 });
 

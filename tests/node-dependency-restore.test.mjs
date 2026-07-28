@@ -176,13 +176,17 @@ test('the agent and GitHub skill bundles are byte-for-byte identical', () => {
 });
 
 powershellTest('path overlap detection rejects equal, ancestor, and descendant paths', () => {
+  const repository = process.platform === 'win32' ? 'C:\\repo' : '/repo';
+  const dependencyDirectory = join(repository, 'node_modules');
+  const siblingA = process.platform === 'win32' ? 'C:\\repo-a' : '/repo-a';
+  const siblingB = process.platform === 'win32' ? 'C:\\repo-b' : '/repo-b';
   const result = runPowerShell(`
 ${importCommon}
 $cases = @(
-  @( ${psLiteral('C:\\repo\\node_modules')}, ${psLiteral('C:\\repo\\node_modules')}, $true ),
-  @( ${psLiteral('C:\\repo')}, ${psLiteral('C:\\repo\\node_modules')}, $true ),
-  @( ${psLiteral('C:\\repo\\node_modules')}, ${psLiteral('C:\\repo')}, $true ),
-  @( ${psLiteral('C:\\repo-a')}, ${psLiteral('C:\\repo-b')}, $false )
+  @( ${psLiteral(dependencyDirectory)}, ${psLiteral(dependencyDirectory)}, $true ),
+  @( ${psLiteral(repository)}, ${psLiteral(dependencyDirectory)}, $true ),
+  @( ${psLiteral(dependencyDirectory)}, ${psLiteral(repository)}, $true ),
+  @( ${psLiteral(siblingA)}, ${psLiteral(siblingB)}, $false )
 )
 foreach ($case in $cases) {
   $actual = Test-DependencyPathsOverlap -Left $case[0] -Right $case[1]

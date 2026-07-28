@@ -97,11 +97,14 @@ by a ledger deployment record tied to the restored commit.
 
 ## Database operation
 
-`SKY_DEV_RUNTIME` overrides the control-plane location. The default is
-`%LOCALAPPDATA%/SkyDevControlPlane`. Post-commit and post-checkout Graphify hooks
-bootstrap or update the worktree graph and sync SQLite only after a completed
-rebuild. Pre-push fails when `graphify-out/graph.json` or its SQLite mirror was
-not built at `HEAD`.
+`SKY_DEV_CONTROL_PLANE` can point launchers at the workspace containing the
+shared `dev` repository when parent-directory discovery is unavailable, such as
+in CI or an isolated checkout. `SKY_DEV_RUNTIME` overrides the database
+location. The default is `%LOCALAPPDATA%/SkyDevControlPlane` on Windows and
+`~/.local/share/sky-dev-control-plane` when `LOCALAPPDATA` is unavailable.
+Post-commit and post-checkout Graphify hooks bootstrap or update the worktree
+graph and sync SQLite only after a completed rebuild. Pre-push fails when
+`graphify-out/graph.json` or its SQLite mirror was not built at `HEAD`.
 
 Local SQLite is canonical for agents sharing this machine. Turso is a valid
 later replication target when coordination must span machines, but it must use

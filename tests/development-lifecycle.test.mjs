@@ -1,7 +1,16 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -245,14 +254,73 @@ test('agent tooling discovers the shared control plane without tracked machine p
     'scripts/execution/start_agentgraph_mcp.py',
     rootUrl,
   );
-  const result = spawnSync(
-    'python',
-    [fileURLToPath(launcher), '--print-path'],
-    { encoding: 'utf8' },
-  );
-  assert.equal(result.status, 0, result.stderr);
-  assert.equal(existsSync(result.stdout.trim()), true);
-  assert.match(result.stdout.trim(), /[\\/]dev[\\/]mcp_server\.py$/);
+  const fixture = mkdtempSync(join(tmpdir(), 'sky-dev-control-plane-'));
+  const controlPlane = join(fixture, 'dev');
+  const server = join(controlPlane, 'mcp_server.py');
+  mkdirSync(controlPlane);
+  writeFileSync(server, '# control-plane fixture\n');
+  for (const filename of [
+    'sync-graphify-db.ps1',
+    'graphify_sqlite.py',
+    'execution_graph_sqlite.py',
+  ]) {
+    writeFileSync(join(controlPlane, filename), '');
+  }
+  try {
+    const result = spawnSync(
+      'python',
+      [fileURLToPath(launcher), '--print-path'],
+      {
+        encoding: 'utf8',
+        env: {
+          ...process.env,
+          SKY_DEV_CONTROL_PLANE: fixture,
+        },
+      },
+    );
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(existsSync(result.stdout.trim()), true);
+    assert.equal(readFileSync(result.stdout.trim(), 'utf8'), '# control-plane fixture\n');
+
+    const nestedWorktree = join(fixture, 'worktrees', 'app');
+    mkdirSync(nestedWorktree, { recursive: true });
+    const discoveryEnv = { ...process.env };
+    delete discoveryEnv.SKY_DEV_CONTROL_PLANE;
+    const discovered = spawnSync(
+      'python',
+      [fileURLToPath(launcher), '--print-path'],
+      {
+        cwd: nestedWorktree,
+        encoding: 'utf8',
+        env: discoveryEnv,
+      },
+    );
+    assert.equal(discovered.status, 0, discovered.stderr);
+    assert.equal(
+      readFileSync(discovered.stdout.trim(), 'utf8'),
+      '# control-plane fixture\n'
+    );
+
+    rmSync(join(controlPlane, 'execution_graph_sqlite.py'));
+    const incomplete = spawnSync(
+      'python',
+      [fileURLToPath(launcher), '--print-path'],
+      {
+        encoding: 'utf8',
+        env: {
+          ...process.env,
+          SKY_DEV_CONTROL_PLANE: fixture,
+        },
+      },
+    );
+    assert.notEqual(incomplete.status, 0);
+    assert.match(
+      incomplete.stderr,
+      /SKY_DEV_CONTROL_PLANE is not a control-plane workspace/
+    );
+  } finally {
+    rmSync(fixture, { force: true, recursive: true });
+  }
 
   const launcherText = readFileSync(launcher, 'utf8');
   assert.match(launcherText, /AGENTGRAPH_SOURCE_ROOT/);

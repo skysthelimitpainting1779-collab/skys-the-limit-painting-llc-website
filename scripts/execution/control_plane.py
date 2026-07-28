@@ -4,14 +4,35 @@ import os
 from pathlib import Path
 
 
+_REQUIRED_CONTROL_PLANE_FILES = (
+    "mcp_server.py",
+    "sync-graphify-db.ps1",
+    "graphify_sqlite.py",
+    "execution_graph_sqlite.py",
+)
+
+
+def _is_control_plane_workspace(candidate: Path) -> bool:
+    control_plane = candidate / "dev"
+    return all(
+        (control_plane / filename).is_file()
+        for filename in _REQUIRED_CONTROL_PLANE_FILES
+    )
+
+
 def find_control_plane_workspace(start: Path | None = None) -> Path:
+    override = os.environ.get("SKY_DEV_CONTROL_PLANE")
+    if override:
+        candidate = Path(override).expanduser().resolve()
+        if _is_control_plane_workspace(candidate):
+            return candidate
+        raise FileNotFoundError(
+            f"SKY_DEV_CONTROL_PLANE is not a control-plane workspace: {candidate}"
+        )
+
     current = (start or Path.cwd()).resolve()
     for candidate in (current, *current.parents):
-        control_plane = candidate / "dev"
-        if (
-            (control_plane / "mcp_server.py").is_file()
-            and (control_plane / "sync-graphify-db.ps1").is_file()
-        ):
+        if _is_control_plane_workspace(candidate):
             return candidate
     raise FileNotFoundError(
         f"Shared development control plane not found above {current}"
