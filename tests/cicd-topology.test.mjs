@@ -75,8 +75,9 @@ test('deployment verification consumes Vercel events and runs route smoke only',
 test('Vercel Git integration owns main deployment and the release marker is gone', () => {
   const config = JSON.parse(read('vercel.json'));
 
-  assert.equal(config.services?.web?.installCommand, 'npm ci');
-  assert.equal(config.services?.web?.buildCommand, 'npm run build:vercel');
+  assert.equal(config.framework, 'nextjs');
+  assert.equal(config.installCommand, 'npm ci');
+  assert.equal(config.buildCommand, 'npm run build:vercel');
   assert.equal(config.git?.deploymentEnabled?.main, true);
   assert.equal(config.git?.deploymentEnabled?.['entire/*'], false);
   assert.equal(exists('.github/production-release.json'), false);
