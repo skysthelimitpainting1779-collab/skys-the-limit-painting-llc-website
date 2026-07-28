@@ -7,6 +7,14 @@ What and why (1–3 bullets). Product slug: **skysthelimit**.
 - Closes / related: **SKY-XX**
 - Project: skysthelimit · Platform | Reliability
 
+## Execution
+
+- Program: `stl-post-g20-sequential-tdd-v1`
+- Node:
+- Checkpoint:
+- Evidence SHA-256:
+- Handoff:
+
 ## Type
 
 - [ ] `feat` · [ ] `fix` · [ ] `docs` · [ ] `infra` · [ ] `chore` · [ ] `agent`

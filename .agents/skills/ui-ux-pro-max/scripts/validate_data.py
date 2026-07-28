@@ -32,7 +32,7 @@ JSON_COLUMNS = {"Decision_Rules"}
 
 def _read_rows(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(f, strict=True)
         return reader.fieldnames or [], list(reader)
 
 
@@ -74,10 +74,10 @@ def _check_file(label, filepath, search_cols, output_cols, problems):
 
     for row_idx, row in enumerate(rows, start=2):
         for col in JSON_COLUMNS:
-            if col in row and row[col]:
+            if col in row:
                 try:
                     json.loads(row[col])
-                except json.JSONDecodeError as e:
+                except (json.JSONDecodeError, TypeError) as e:
                     problems.append(
                         f"[{label}] {filepath.name} row {row_idx}: column '{col}' is not valid JSON: {e}"
                     )

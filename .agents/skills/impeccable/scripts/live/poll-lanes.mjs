@@ -5,6 +5,15 @@ export function eventPriority(event = {}) {
   return 3;
 }
 
+export function parseBoundedIntegerParam(value, { fallback, min, max }) {
+  if (value == null || value === '') return fallback;
+  if (!/^\d+$/.test(value)) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed >= min && parsed <= max
+    ? parsed
+    : null;
+}
+
 export function selectAvailablePendingEvent(entries, { now = Date.now(), types = null } = {}) {
   const allowed = types instanceof Set ? types : (Array.isArray(types) ? new Set(types) : null);
   return entries

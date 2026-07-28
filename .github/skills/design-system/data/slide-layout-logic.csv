@@ -9,7 +9,7 @@ comparison,evaluation,split-compare,side-by-side,balanced,false,false
 traction,confidence,chart-insight,chart-left,60-chart,false,false
 cta,urgency,gradient-cta,centered,100-text,true,true
 team,warmth,team-grid,centered,balanced,false,true
-pricing,evaluation,pricing-cards,centered,balanced,false,false
+pricing,decision,pricing-cards,centered,balanced,false,false
 demo,interest,split-demo,visual-left,60-visual,false,false
 vision,hope,full-bleed-hero,centered,100-visual,true,true
 timeline,narrative,timeline-flow,horizontal,balanced,false,false

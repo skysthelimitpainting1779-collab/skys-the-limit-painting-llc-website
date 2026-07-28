@@ -6,6 +6,18 @@ function getAP(id) {
 
 function finding(id, filePath, snippet, line = 0) {
   const ap = getAP(id);
+  if (!ap) {
+    return {
+      antipattern: id,
+      name: `Unknown antipattern: ${id}`,
+      description: 'The detector emitted an unregistered antipattern identifier.',
+      severity: 'warning',
+      category: 'detector-integrity',
+      file: filePath,
+      line,
+      snippet,
+    };
+  }
   const base = { antipattern: id, name: ap.name, description: ap.description, severity: ap.severity || 'warning', category: ap.category || null, file: filePath, line, snippet };
   // Advisory findings are detected but reported separately and never counted as
   // failures. Carry the flag on the finding so every consumer (CLI, JSON, hook)

@@ -24,6 +24,8 @@ graphify-out/
 # Ignore generated skill script outputs only
 .agents/skills/*/lib/
 .agents/skills/*/*/lib/
+!.agents/skills/impeccable/scripts/lib/
+!.agents/skills/impeccable/scripts/lib/**
 
 # Ignore runtime/operational databases and caches (not knowledge files)
 .agents/hub_db.json

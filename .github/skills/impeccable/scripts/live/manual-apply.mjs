@@ -20,9 +20,25 @@ export function createManualApplyController({
   acknowledgePendingEvent,
   flushPendingPolls,
   recordManualEditActivity,
+  persistEvent,
   cwd = () => process.cwd(),
 } = {}) {
   const projectCwd = () => typeof cwd === 'function' ? cwd() : cwd || process.cwd();
+
+  function persistManualApplyEvent(event) {
+    if (typeof persistEvent !== 'function') return true;
+    try {
+      persistEvent(event);
+      return true;
+    } catch (err) {
+      recordManualEditActivity('manual_edit_apply_journal_failed', {
+        id: event?.id || null,
+        eventType: event?.type || null,
+        message: err.message || String(err),
+      });
+      return false;
+    }
+  }
 
   function tombstoneTimedOutApplyId(eventId, details = {}) {
     if (!eventId) return;
@@ -49,6 +65,10 @@ export function createManualApplyController({
     if (chunk) event.chunk = chunk;
     if (repair) event.repair = repair;
     const rollbackSnapshot = snapshotApplyEventFiles(batch, cwdValue);
+    if (!persistManualApplyEvent(event)) {
+      removeManualApplyEvidence(evidencePath, cwdValue);
+      return Promise.reject(new Error('manual_edit_apply_persist_failed'));
+    }
     recordManualEditActivity('manual_edit_apply_dispatched', {
       id: eventId,
       pageUrl,
@@ -59,7 +79,17 @@ export function createManualApplyController({
       fileCount: collectManualApplyFiles(batch, [], cwdValue).length,
     });
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
+      const onTimeout = () => {
+        if (!persistManualApplyEvent({
+          type: 'discarded',
+          id: eventId,
+          sourceEventType: 'manual_edit_apply',
+          reason: 'chat_agent_timeout',
+        })) {
+          const deferred = pendingApplyDeferreds.get(eventId);
+          if (deferred) deferred.timer = setTimeout(onTimeout, 1_000);
+          return;
+        }
         pendingApplyDeferreds.delete(eventId);
         tombstoneTimedOutApplyId(eventId, { batch, rollbackSnapshot, cwd: cwdValue });
         acknowledgePendingEvent(eventId);
@@ -72,7 +102,8 @@ export function createManualApplyController({
           opCount: countManualApplyOps(batch),
         });
         reject(new Error('chat_agent_timeout'));
-      }, APPLY_EVENT_HARD_TIMEOUT_MS);
+      };
+      const timer = setTimeout(onTimeout, APPLY_EVENT_HARD_TIMEOUT_MS);
       pendingApplyDeferreds.set(eventId, { resolve, reject, timer, event, batch, pageUrl, rollbackSnapshot, cwd: cwdValue });
       enqueueEvent(event);
     });
@@ -178,6 +209,12 @@ export function createManualApplyController({
   function resolveDeferred(eventId, body) {
     const deferred = pendingApplyDeferreds.get(eventId);
     if (!deferred) return false;
+    if (!persistManualApplyEvent({
+      type: 'complete',
+      id: eventId,
+      sourceEventType: 'manual_edit_apply',
+      result: body,
+    })) return false;
     pendingApplyDeferreds.delete(eventId);
     clearTimeout(deferred.timer);
     removeManualApplyEvidence(deferred.event?.evidencePath, deferred.cwd || projectCwd());
@@ -188,10 +225,28 @@ export function createManualApplyController({
   function rejectDeferred(eventId, reason) {
     const deferred = pendingApplyDeferreds.get(eventId);
     if (!deferred) return false;
+    if (!persistManualApplyEvent({
+      type: 'discarded',
+      id: eventId,
+      sourceEventType: 'manual_edit_apply',
+      reason: reason || 'chat_agent_error',
+    })) return false;
     pendingApplyDeferreds.delete(eventId);
     clearTimeout(deferred.timer);
     removeManualApplyEvidence(deferred.event?.evidencePath, deferred.cwd || projectCwd());
     deferred.reject(new Error(reason || 'chat_agent_error'));
+    return true;
+  }
+
+  function discardRecoveredEvent(event, reason = 'manual_edit_apply_requires_retry_after_restart') {
+    if (!event?.id) return false;
+    if (!persistManualApplyEvent({
+      type: 'discarded',
+      id: event.id,
+      sourceEventType: 'manual_edit_apply',
+      reason,
+    })) return false;
+    removeManualApplyEvidence(event.evidencePath, projectCwd());
     return true;
   }
 
@@ -241,44 +296,74 @@ export function createManualApplyController({
 
   function cancelPendingEvents(pageUrl, reason = 'manual_edit_discarded') {
     const canceledById = new Map();
+    const failedEventIds = [];
     const shouldCancel = (event) => event?.type === 'manual_edit_apply' && (!pageUrl || event.pageUrl === pageUrl);
+    const candidates = new Map();
 
-    for (let i = pendingEvents.length - 1; i >= 0; i -= 1) {
-      const event = pendingEvents[i]?.event;
-      if (!shouldCancel(event)) continue;
-      pendingEvents.splice(i, 1);
-      removeManualApplyEvidence(event.evidencePath, projectCwd());
-      canceledById.set(event.id, {
-        id: event.id,
-        pageUrl: event.pageUrl,
-        entryCount: event.batch?.entries?.length || 0,
-      });
+    for (const pending of pendingEvents) {
+      if (shouldCancel(pending?.event) && pending.event.id) {
+        candidates.set(pending.event.id, pending.event);
+      }
+    }
+    for (const [eventId, deferred] of pendingApplyDeferreds.entries()) {
+      if (shouldCancel(deferred.event)) candidates.set(eventId, deferred.event);
     }
 
-    for (const [eventId, deferred] of [...pendingApplyDeferreds.entries()]) {
-      if (!shouldCancel(deferred.event)) continue;
-      pendingApplyDeferreds.delete(eventId);
-      clearTimeout(deferred.timer);
-      const cwdValue = deferred.cwd || projectCwd();
-      const rollback = rollbackApplySnapshot(deferred.batch, deferred.rollbackSnapshot, [], reason, cwdValue);
-      tombstoneTimedOutApplyId(eventId, {
-        batch: deferred.batch,
-        rollbackSnapshot: deferred.rollbackSnapshot,
-        reason,
-        cwd: cwdValue,
-      });
-      removeManualApplyEvidence(deferred.event?.evidencePath, cwdValue);
-      canceledById.set(eventId, {
+    for (const [eventId, event] of candidates.entries()) {
+      if (!persistManualApplyEvent({
+        type: 'discarded',
         id: eventId,
-        pageUrl: deferred.pageUrl,
-        entryCount: deferred.batch?.entries?.length || 0,
-        rolledBackFiles: rollback.rolledBackFiles,
-        rollbackFailures: rollback.rollbackFailures,
-      });
-      deferred.reject(new Error(reason));
+        sourceEventType: 'manual_edit_apply',
+        reason,
+      })) {
+        failedEventIds.push(eventId);
+        continue;
+      }
+
+      for (let index = pendingEvents.length - 1; index >= 0; index -= 1) {
+        if (pendingEvents[index]?.event?.id === eventId) pendingEvents.splice(index, 1);
+      }
+
+      const deferred = pendingApplyDeferreds.get(eventId);
+      if (deferred) {
+        pendingApplyDeferreds.delete(eventId);
+        clearTimeout(deferred.timer);
+        const cwdValue = deferred.cwd || projectCwd();
+        const rollback = rollbackApplySnapshot(deferred.batch, deferred.rollbackSnapshot, [], reason, cwdValue);
+        tombstoneTimedOutApplyId(eventId, {
+          batch: deferred.batch,
+          rollbackSnapshot: deferred.rollbackSnapshot,
+          reason,
+          cwd: cwdValue,
+        });
+        removeManualApplyEvidence(deferred.event?.evidencePath, cwdValue);
+        canceledById.set(eventId, {
+          id: eventId,
+          pageUrl: deferred.pageUrl,
+          entryCount: deferred.batch?.entries?.length || 0,
+          rolledBackFiles: rollback.rolledBackFiles,
+          rollbackFailures: rollback.rollbackFailures,
+        });
+        deferred.reject(new Error(reason));
+      } else {
+        removeManualApplyEvidence(event.evidencePath, projectCwd());
+        canceledById.set(eventId, {
+          id: eventId,
+          pageUrl: event.pageUrl,
+          entryCount: event.batch?.entries?.length || 0,
+        });
+      }
     }
 
     if (canceledById.size > 0) flushPendingPolls();
+    if (failedEventIds.length > 0) {
+      const error = new Error(
+        `manual Apply cancellation was not journaled: ${failedEventIds.join(', ')}`
+      );
+      error.code = 'manual_apply_cancellation_not_journaled';
+      error.failedEventIds = failedEventIds;
+      throw error;
+    }
     return [...canceledById.values()];
   }
 
@@ -287,6 +372,7 @@ export function createManualApplyController({
     cancelPendingEvents,
     clearTransaction: (transactionId = null) => clearManualApplyTransaction(projectCwd(), transactionId),
     countOps: countManualApplyOps,
+    discardRecoveredEvent,
     getDeferred,
     hasTimedOutId,
     pruneStaleEvidence,

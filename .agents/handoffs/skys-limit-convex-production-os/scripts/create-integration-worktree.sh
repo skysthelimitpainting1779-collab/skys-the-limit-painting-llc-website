@@ -21,6 +21,21 @@ else
   AUDIT_IS_ANCESTOR=false
 fi
 
+if [[ "$AUDIT_IS_ANCESTOR" != true ]]; then
+  cat <<JSON
+{
+  "ok": false,
+  "repoRoot": "$REPO_ROOT",
+  "packageRoot": "$PACKAGE_ROOT",
+  "auditedCommit": "$AUDIT_COMMIT",
+  "originMain": "$ORIGIN_MAIN",
+  "auditCommitIsAncestor": false,
+  "implementationBlockedForReaudit": true
+}
+JSON
+  exit 2
+fi
+
 index=1
 while true; do
   if [[ "$index" -eq 1 ]]; then
@@ -39,7 +54,7 @@ safe_name="${branch//\//-}"
 worktree_path="$WORKTREE_PARENT/$safe_name"
 [[ ! -e "$worktree_path" ]] || { echo "Worktree path exists: $worktree_path" >&2; exit 1; }
 
-git -C "$REPO_ROOT" worktree add "$worktree_path" -b "$branch" origin/main
+git -C "$REPO_ROOT" worktree add "$worktree_path" -b "$branch" origin/main >&2
 
 handoff="$worktree_path/.agents/handoffs/skys-limit-convex-production-os"
 mkdir -p "$handoff"
@@ -56,6 +71,10 @@ else
     > "$handoff/ORIGIN_MAIN_DELTA.txt"
 fi
 
+if [[ -f "$worktree_path/scripts/execution/refresh_graphify.py" ]]; then
+  python "$worktree_path/scripts/execution/refresh_graphify.py" --root "$worktree_path" >&2
+fi
+
 cat <<JSON
 {
   "ok": true,
@@ -68,6 +87,7 @@ cat <<JSON
   "integrationWorktree": "$worktree_path",
   "handoff": "$handoff",
   "graph": "$worktree_path/.graph",
+  "codeGraph": "$worktree_path/graphify-out/graph.json",
   "implementationBlockedForReaudit": $([[ "$AUDIT_IS_ANCESTOR" == true ]] && echo false || echo true)
 }
 JSON

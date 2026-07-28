@@ -1,6 +1,6 @@
 ---
 name: execution-graph-gate
-description: Validate the canonical execution DAG, print its critical path, and estimate scenario cost before graph installation, session resume, batch execution, or recovery. Use for .graph/graph.json; do not use for graphify-out/graph.json.
+description: Validate the audited execution JSONL and lifecycle contract before session resume, node execution, handoff, or recovery.
 ---
 
 # Execution Graph Gate
@@ -8,29 +8,27 @@ description: Validate the canonical execution DAG, print its critical path, and 
 ## Prerequisites
 
 - Run from the integration worktree.
-- Treat `.graph/graph.json` as the canonical input.
+- Treat `.agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl` as the canonical input.
 - Keep every check read-only.
 - Never repair, reorder, or mark nodes complete from this workflow.
 
 ## Gate
 
 ```bash
-node scripts/validate-graph.mjs .graph/graph.json
-node scripts/critical-path.mjs .graph/graph.json
-node scripts/estimate-cost.mjs .graph/graph.json --scenario expected
+python .agents/skills/hardened-validation/scripts/run.py npm run lifecycle:verify
+python .agents/skills/hardened-validation/scripts/run.py python scripts/execution/validate_execution_graph.py \
+  .agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl \
+  --schema .agents/execution/skys-limit-sequential-tdd-execution-graph-audited.schema.json
 ```
 
 Stop on any nonzero exit. Record the graph SHA-256, repository HEAD, command,
 timestamp, and JSON output as evidence.
 
-Do not resume execution when validation reports an unknown dependency, a cycle,
-invalid cost data, or a hard-budget breach.
-
-Apply budget thresholds to base expected cost and labor. Report contingency and
-retry reserves separately as planning exposure; do not silently fold reserves
-into actual expected spend.
+Do not resume execution when validation reports a hash mismatch, unknown
+dependency, cycle, dirty worktree, missing completed checkpoint, active writer
+lease, or production approval stop.
 
 ## Recovery
 
-Fix the source graph or restore the manifest-verified graph, then rerun all three
-commands. Never edit the installed graph merely to make the gate pass.
+Restore the manifest-verified graph, then rerun both commands. A graph change
+requires a new audit and pinned hash; never edit it merely to make the gate pass.

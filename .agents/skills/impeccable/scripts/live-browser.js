@@ -25,6 +25,19 @@
     window.__IMPECCABLE_LIVE_INIT__ = false; // reset so the real load can init
     return;
   }
+  let LIVE_SERVER_ORIGIN;
+  try {
+    LIVE_SERVER_ORIGIN = window.__IMPECCABLE_LIVE_DOM__?.resolveLiveServerOrigin({
+      scriptSrc: document.currentScript?.src,
+      token: TOKEN,
+      port: PORT,
+    });
+    if (!LIVE_SERVER_ORIGIN) throw new Error('live browser DOM helpers are unavailable');
+  } catch (error) {
+    console.error('[impeccable] refusing an untrusted live script origin:', error);
+    window.__IMPECCABLE_LIVE_INIT__ = false;
+    return;
+  }
 
   //
   // Design tokens
@@ -268,6 +281,8 @@
     makeFrozenAnchor,
     id8,
     cssId,
+    escapeCssString,
+    jsxStylePropToCss,
     liveUiRoot,
     uiAppend,
     uiAppendStyle,
@@ -5241,7 +5256,7 @@
   }
 
   function scopeCssToSveltePreview(css, sessionId) {
-    const prefix = '[data-impeccable-variants="' + String(sessionId).replace(/"/g, '\\"') + '"] ';
+    const prefix = '[data-impeccable-variants="' + escapeCssString(sessionId) + '"] ';
     return scopeCssBlock(String(css || ''), prefix).trim();
   }
 
@@ -5818,13 +5833,6 @@
       declarations.push(prop + ': ' + value);
     }
     return declarations.join('; ');
-  }
-
-  function jsxStylePropToCss(prop) {
-    let out = String(prop || '').trim().replace(/^["']|["']$/g, '');
-    if (!out) return '';
-    if (out.startsWith('--')) return out;
-    return out.replace(/[A-Z]/g, (ch) => '-' + ch.toLowerCase()).replace(/^-ms-/, '-ms-');
   }
 
   function buildSvelteExpressionTextMap(sourceOriginal, liveOriginal) {
@@ -7133,7 +7141,7 @@
     if (msLoadPromise) return msLoadPromise;
     msLoadPromise = new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = 'http://localhost:' + PORT + '/modern-screenshot.js';
+      s.src = new URL('/modern-screenshot.js', LIVE_SERVER_ORIGIN).href;
       s.onload = () => resolve(window.modernScreenshot);
       s.onerror = () => { msLoadPromise = null; reject(new Error('modern-screenshot failed to load')); };
       uiAppendStyle(s);
@@ -10415,7 +10423,7 @@ void main() {
     if (detectScriptLoaded) return;
     detectScriptLoaded = true;
     const s = document.createElement('script');
-    s.src = 'http://localhost:' + PORT + '/detect.js';
+    s.src = new URL('/detect.js', LIVE_SERVER_ORIGIN).href;
     s.dataset.impeccableExtension = 'true';
     document.head.appendChild(s);
   }

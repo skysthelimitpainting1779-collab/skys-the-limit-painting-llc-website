@@ -1,21 +1,22 @@
-# Compiled Graph Runtime Policy
+# Legacy Planning Graph Policy
 
-`graph.json` and `graph.md` are already compiled and validated outputs from Graph Engineer v2.
+`graph.json` and `graph.md` are retained as historical planning and cost-model
+inputs. They are not execution authority and do not contain the live cursor.
 
-## Runtime use
+## Allowed use
 
-- Copy this `.graph` directory into the integration worktree.
-- Use `graph.json` for node dependencies, status, risk, attempts, permissions, evidence, and approval gates.
-- Use `EXECUTION_BATCHES.json` to combine compatible nodes into efficient execution sessions.
-- Use `NODE_BINDINGS.json` as the pre-audited starting repository scope.
+- Use the legacy graph only for read-only critical-path or cost analysis.
 - Use Graphifyy for live symbols, callers, dependencies, affected tests, and blast radius.
-- Append execution evidence to `execution-log.jsonl`.
+- Use `.agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl`
+  for node order, gates, status, and the resume cursor.
+- Store progress and evidence through the shared lifecycle MCP tools.
 
 ## Do not
 
-- Do not install the Graph Engineer skill.
-- Do not rerun its planning, cost, or critical-path scripts during normal execution.
-- Do not regenerate the graph merely because implementation begins.
+- Do not resume work, mark status, authorize production, or create handoffs from
+  `.graph/graph.json`.
+- Do not append runtime evidence under `.graph/`.
+- Do not regenerate this legacy graph during normal execution.
 - Do not use generic labor-hour or cost estimates as elapsed-time forecasts.
 - Do not bulk-load `graph.md`, the master audit, or the full repository map into every worker.
 
@@ -29,4 +30,5 @@ Stop and report a structural recompile request only when one of these is proven:
 - Scope materially expands beyond the approved product.
 - A new production-risk or authorization gate is required.
 
-Ordinary implementation discoveries update node evidence and scoped bindings; they do not trigger graph re-engineering.
+Ordinary implementation discoveries update the lifecycle ledger and scoped
+bindings; they do not trigger graph re-engineering.

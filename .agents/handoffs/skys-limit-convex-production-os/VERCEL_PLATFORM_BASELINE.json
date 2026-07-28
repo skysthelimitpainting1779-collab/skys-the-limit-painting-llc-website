@@ -34,7 +34,9 @@
       "routes": [
         "/painting-services/[slug]"
       ],
-      "requiredNode": "STL-007"
+      "requiredNodes": [
+        "STL-007"
+      ]
     },
     {
       "name": "cannot connect to Postgres: self-signed certificate in certificate chain",

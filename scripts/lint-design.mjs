@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import crypto from "node:crypto";
 import {changedFiles} from "./lib/git-changed-files.mjs";
+import {canonicalSha256} from "./lib/canonical-text.mjs";
 
 const root = process.cwd();
 const configPath = path.join(root, "design-lint.config.json");
@@ -23,7 +23,7 @@ if (!fs.existsSync(designPath)) fail.push(`Missing ${config.designFile}`);
 let design = "";
 if (fs.existsSync(designPath)) {
   design = fs.readFileSync(designPath, "utf8");
-  report.designSha256 = crypto.createHash("sha256").update(design).digest("hex");
+  report.designSha256 = canonicalSha256(design);
   for (const heading of config.requiredHeadings) {
     const expression = new RegExp(`^##\\s+\\d*\\.?\\s*${heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`, "im");
     if (!expression.test(design)) fail.push(`DESIGN.md missing heading: ${heading}`);

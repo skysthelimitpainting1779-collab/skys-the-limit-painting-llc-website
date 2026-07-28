@@ -71,10 +71,11 @@ test('remediation guardrails cover secrets, headers, App Router SEO, and accessi
     assert.match(vercelJson, new RegExp(escapeRegExp(key)), `${key} header is missing`);
   }
   const vercel = JSON.parse(vercelJson);
-  const blanketRewrite = vercel.rewrites.find(({ source }) => source === '/(.*)');
-  assert.deepEqual(blanketRewrite?.destination, { service: 'web' });
+  const rewrites = vercel.rewrites ?? [];
+  const blanketRewrite = rewrites.find(({ source }) => source === '/(.*)');
+  assert.equal(blanketRewrite, undefined);
   assert.equal(
-    vercel.rewrites.some(
+    rewrites.some(
       ({ source, destination }) => source === '/(.*)' && typeof destination === 'string'
     ),
     false

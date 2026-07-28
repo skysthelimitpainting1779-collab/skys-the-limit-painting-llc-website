@@ -15,10 +15,6 @@ function sourceFiles(directoryUrl) {
   });
 }
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 test('Vercel validates the deployment environment then deploys Convex around the web build', () => {
   const packageJson = JSON.parse(read('package.json'));
   const vercel = JSON.parse(read('vercel.json'));
@@ -50,7 +46,7 @@ test('deployment validation consumes the key without printing it', () => {
 
   assert.equal(result.status, 0, result.stderr);
   assert.equal(result.stdout, 'Convex deployment environment validated.\n');
-  assert.doesNotMatch(`${result.stdout}${result.stderr}`, new RegExp(escapeRegExp(secret)));
+  assert.equal(`${result.stdout}${result.stderr}`.includes(secret), false);
 });
 
 test('deployment validation fails closed before Convex CLI execution', () => {

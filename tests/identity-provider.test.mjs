@@ -245,14 +245,17 @@ test('Clerk owns sessions while Convex owns lifecycle, MFA, invitations, and res
       readFile(new URL('../convex/invitations.ts', import.meta.url), 'utf8'),
       readFile(new URL('../convex/crm.ts', import.meta.url), 'utf8'),
       readFile(new URL('../convex/_generated/api.d.ts', import.meta.url), 'utf8'),
-    ]);
+  ]);
 
   assert.match(proxy, /clerkMiddleware/);
-  assert.match(proxy, /auth\.protect/);
+  assert.match(proxy, /authorizedParties:\s*buildClerkAuthorizedParties/);
+  assert.doesNotMatch(proxy, /createRouteMatcher|auth\.protect/);
   assert.doesNotMatch(proxy, /supabase|app_metadata|gateStaffAccess/i);
   assert.match(login, /<SignIn/);
   assert.doesNotMatch(login, /supabase|signInWithOtp|signInWithOAuth/i);
   assert.match(portal, /api\.crm\.myProjects/);
+  assert.match(portal, /useConvexAuth\(\)/);
+  assert.match(portal, /isAuthenticated\s*\?\s*\{\}\s*:\s*['"]skip['"]/);
   assert.doesNotMatch(portal, /supabase|email.*ownership/i);
   assert.doesNotMatch(manage, /supabase|signInWithPassword|signUp\(/i);
   assert.match(manage, /api\.crm\.staffOverview/);

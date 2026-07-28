@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": 1,
+  "programId": "stl-post-g20-sequential-tdd-v1",
+  "enforceAfter": "5eb385d33976503cdac81e982ed74fbbc7f6839c",
+  "integrationBranch": "agent/skys-limit-convex-os",
+  "productionBranch": "main",
+  "evidenceReceipts": {
+    "directory": ".agents/execution/evidence"
+  },
+  "executionGraph": {
+    "authoritative": true,
+    "path": ".agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl",
+    "schemaPath": ".agents/execution/skys-limit-sequential-tdd-execution-graph-audited.schema.json",
+    "validationPath": ".agents/execution/skys-limit-sequential-tdd-execution-graph-audited-validation.json",
+    "manifestPath": ".agents/execution/skys-limit-sequential-tdd-execution-graph-audit-manifest.json",
+    "sha256": "4f6a7d81e9c46ecbf886703fcf03988dd317115f9577152aa7ac09bd5ec532c9"
+  },
+  "requiredCommitTrailers": [
+    "Execution-Program",
+    "Execution-Node",
+    "Checkpoint-ID",
+    "Evidence-SHA256"
+  ],
+  "pullRequestApproval": {
+    "workflow": ".github/workflows/pr-approval.yml",
+    "requiredCheck": "Independent PR Approval",
+    "trustedCheckout": "base_sha",
+    "requiredEvents": [
+      "pull_request_target",
+      "pull_request_review"
+    ]
+  },
+  "runtimeState": {
+    "databaseEnvironmentVariable": "SKY_DEV_RUNTIME",
+    "defaultWindowsDirectory": "%LOCALAPPDATA%/SkyDevControlPlane",
+    "committed": false
+  }
+}

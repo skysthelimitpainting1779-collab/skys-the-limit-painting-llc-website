@@ -676,9 +676,13 @@ function stripStyleAndJoin(lines, block) {
     if (!inStyle) {
       // Strip any complete <style> elements on this line (self-closed or
       // same-line-closed), including their body content.
-      line = line
-        .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/g, '')
-        .replace(/<style\b[^>]*\/\s*>/g, '');
+      let previous;
+      do {
+        previous = line;
+        line = line
+          .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/g, '')
+          .replace(/<style\b[^>]*\/\s*>/g, '');
+      } while (line !== previous);
 
       // If a <style> opener remains (multi-line body starts here), strip from
       // the opener to end-of-line and flip into skip mode.
@@ -702,14 +706,16 @@ function stripStyleAndJoin(lines, block) {
 }
 
 /**
- * Find the inner content of `<TAG ...attrMatch...>…</TAG>` inside `text`,
- * handling nested same-tag elements via depth counting. `attrMatch` is a
- * regex source fragment that must appear inside the opener tag.
+ * Find the inner content of a tag with the requested literal attribute value,
+ * handling nested same-tag elements via depth counting.
  * Returns the inner string (may be empty), or null if not found.
  */
-function extractInnerByAttr(text, attrMatch) {
-  const openerRe = new RegExp('<([A-Za-z][A-Za-z0-9]*)\\b[^>]*' + attrMatch + '[^>]*>');
-  const openMatch = text.match(openerRe);
+function extractInnerByAttr(text, attrName, attrValue) {
+  const openerRe = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>/g;
+  let openMatch;
+  while ((openMatch = openerRe.exec(text))) {
+    if (readHtmlAttr(openMatch[0], attrName) === String(attrValue)) break;
+  }
   if (!openMatch) return null;
 
   const tagName = openMatch[1];
@@ -741,7 +747,7 @@ function extractInnerByAttr(text, attrMatch) {
  */
 function extractOriginal(lines, block) {
   const text = stripStyleAndJoin(lines, block);
-  const inner = extractInnerByAttr(text, 'data-impeccable-variant="original"');
+  const inner = extractInnerByAttr(text, 'data-impeccable-variant', 'original');
   if (inner === null) return [];
   return inner.split('\n');
 }
@@ -752,7 +758,7 @@ function extractOriginal(lines, block) {
  */
 function extractVariant(lines, block, variantNum) {
   const text = stripStyleAndJoin(lines, block);
-  const inner = extractInnerByAttr(text, 'data-impeccable-variant="' + variantNum + '"');
+  const inner = extractInnerByAttr(text, 'data-impeccable-variant', variantNum);
   if (inner === null) return null;
   const result = inner.split('\n');
   // Collapse a lone empty leading/trailing line (common after string splice).
@@ -949,4 +955,4 @@ if (_running?.endsWith('live-accept.mjs') || _running?.endsWith('live-accept.mjs
   acceptCli();
 }
 
-export { findMarkerBlock, extractOriginal, extractVariant, extractCss, deindentContent, detectCommentSyntax, scrubManualEditsAgainstFile, scrubManualEditsAgainstOriginalBlock, applyDeferredSvelteComponentAccepts };
+export { findMarkerBlock, stripStyleAndJoin, extractOriginal, extractVariant, extractCss, deindentContent, detectCommentSyntax, scrubManualEditsAgainstFile, scrubManualEditsAgainstOriginalBlock, applyDeferredSvelteComponentAccepts };

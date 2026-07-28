@@ -76,7 +76,7 @@ colors: {
 | Level | Normal Text | Large Text | UI Components |
 |-------|-------------|------------|---------------|
 | AA | 4.5:1 | 3:1 | 3:1 |
-| AAA | 7:1 | 4.5:1 | 4.5:1 |
+| AAA | 7:1 | 4.5:1 | N/A |
 
 ### Checking Contrast
 ```javascript

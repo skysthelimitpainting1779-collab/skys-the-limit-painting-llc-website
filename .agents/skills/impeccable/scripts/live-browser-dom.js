@@ -9,6 +9,50 @@
   'use strict';
   if (!root) return;
 
+  function resolveLiveServerOrigin({ scriptSrc, token, port } = {}) {
+    const expectedPort = Number(port);
+    if (!Number.isInteger(expectedPort) || expectedPort < 1 || expectedPort > 65535) {
+      throw new Error('Invalid Impeccable live server port');
+    }
+
+    let scriptUrl;
+    try {
+      scriptUrl = new URL(String(scriptSrc || ''));
+    } catch {
+      throw new Error('Invalid Impeccable live script URL');
+    }
+    const host = scriptUrl.hostname.toLowerCase();
+    const loopback =
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host === '::1' ||
+      host === '[::1]';
+    if (scriptUrl.protocol !== 'https:' && !(scriptUrl.protocol === 'http:' && loopback)) {
+      throw new Error('Impeccable live script must use HTTPS or HTTP loopback');
+    }
+    if (scriptUrl.username || scriptUrl.password || scriptUrl.hash) {
+      throw new Error('Impeccable live script URL contains forbidden credentials or fragments');
+    }
+    if (scriptUrl.pathname !== '/live.js') {
+      throw new Error('Impeccable live script path is invalid');
+    }
+    const queryEntries = [...scriptUrl.searchParams.entries()];
+    if (
+      queryEntries.length !== 1 ||
+      queryEntries[0][0] !== 'token' ||
+      queryEntries[0][1] !== String(token)
+    ) {
+      throw new Error('Impeccable live script token is invalid');
+    }
+    const actualPort = scriptUrl.port
+      ? Number(scriptUrl.port)
+      : scriptUrl.protocol === 'https:' ? 443 : 80;
+    if (actualPort !== expectedPort) {
+      throw new Error('Impeccable live script port does not match runtime state');
+    }
+    return scriptUrl.origin;
+  }
+
   function createLiveBrowserDomHelpers({
     prefix,
     skipTags,
@@ -65,13 +109,33 @@
     }
 
     function id8() {
-      if (crypto?.randomUUID) return crypto.randomUUID().replace(/-/g, '').slice(0, 8);
-      return (Math.random().toString(16).slice(2) + Date.now().toString(16)).slice(0, 8);
+      if (!crypto?.getRandomValues) {
+        throw new Error('Web Crypto is required for Impeccable live session identifiers');
+      }
+      const bytes = new Uint8Array(4);
+      crypto.getRandomValues(bytes);
+      return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
     }
 
     function cssId(id) {
       if (css?.escape) return css.escape(id);
       return String(id).replace(/([ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, '\\$1');
+    }
+
+    function escapeCssString(value) {
+      return String(value)
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+        .replace(/\0/g, '\uFFFD')
+        .replace(/[\x01-\x1f\x7f]/g, (char) => `\\${char.codePointAt(0).toString(16)} `);
+    }
+
+    function jsxStylePropToCss(prop) {
+      const value = String(prop || '').trim().replace(/^["']|["']$/g, '');
+      if (!value || value.startsWith('--')) return value;
+      return value
+        .replace(/[A-Z]/g, (char) => '-' + char.toLowerCase())
+        .replace(/^ms-/, '-ms-');
     }
 
     function liveUiRoot() {
@@ -130,6 +194,8 @@
       makeFrozenAnchor,
       id8,
       cssId,
+      escapeCssString,
+      jsxStylePropToCss,
       liveUiRoot,
       uiAppend,
       uiAppendStyle,
@@ -142,5 +208,6 @@
   root.__IMPECCABLE_LIVE_DOM__ = {
     version: 1,
     createLiveBrowserDomHelpers,
+    resolveLiveServerOrigin,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

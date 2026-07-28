@@ -295,6 +295,7 @@ export function createManualEditRoutes({
       let transactionRollback = null;
       try {
         const buffer = readManualEditsBuffer(projectCwd());
+        canceledApplyEvents = manualApply.cancelPendingEvents(pageUrl);
         transactionRollback = manualApply.rollbackTransaction({
           pageUrl,
           reason: 'manual_edit_discarded',
@@ -306,9 +307,12 @@ export function createManualEditRoutes({
           discardedEntries = buffer.entries;
           discarded = truncateManualEditsBuffer(projectCwd());
         }
-        canceledApplyEvents = manualApply.cancelPendingEvents(pageUrl);
       } catch (err) {
-        sendJson(res, 500, { error: 'discard_failed', message: err.message });
+        sendJson(res, 500, {
+          error: 'discard_failed',
+          message: err.message,
+          failedApplyIds: err.failedEventIds || [],
+        });
         return true;
       }
       const { totalCount, perPage } = countPendingByPage(projectCwd());

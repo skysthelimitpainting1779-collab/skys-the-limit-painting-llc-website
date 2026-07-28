@@ -1,13 +1,10 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 import type { NextFetchEvent, NextRequest } from 'next/server';
 
-const isProtectedRoute = createRouteMatcher(['/portal(.*)', '/manage(.*)']);
-const isPortalLogin = createRouteMatcher(['/portal/login(.*)']);
+import { buildClerkAuthorizedParties } from '@/lib/auth/clerk-authorized-parties';
 
-const handleClerkRequest = clerkMiddleware(async (auth, request) => {
-  if (isProtectedRoute(request) && !isPortalLogin(request)) {
-    await auth.protect();
-  }
+const handleClerkRequest = clerkMiddleware({
+  authorizedParties: buildClerkAuthorizedParties(),
 });
 
 /** Clerk establishes request identity; Convex functions authorize resources. */

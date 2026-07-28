@@ -31,7 +31,10 @@ import {
 import { createLiveSessionStore, GENERATION_FENCED_PHASES } from './live/session-store.mjs';
 import { runGenerationPreflight } from './live/generation-preflight.mjs';
 import { validateEvent } from './live/event-validation.mjs';
-import { selectAvailablePendingEvent } from './live/poll-lanes.mjs';
+import {
+  parseBoundedIntegerParam,
+  selectAvailablePendingEvent,
+} from './live/poll-lanes.mjs';
 import { createManualEditRoutes } from './live/manual-edit-routes.mjs';
 import { LIVE_COMMANDS } from './live/vocabulary.mjs';
 import {
@@ -64,6 +67,8 @@ const DESIGN_MD_PATH = PROJECT_CONTEXT.designPath
   ? path.resolve(process.cwd(), PROJECT_CONTEXT.designPath)
   : null;
 const DEFAULT_POLL_TIMEOUT = 600_000;   // 10 min — agent re-polls on timeout anyway
+const MAX_POLL_TIMEOUT = 600_000;
+const MAX_EVENT_LEASE_MS = 600_000;
 const SSE_HEARTBEAT_INTERVAL = 30_000;  // keepalive ping every 30s
 // The browser checkpoints for several unrelated reasons (see checkpointPayload
 // in live-browser.js). Only these two report that variant availability changed,
@@ -126,6 +131,10 @@ const manualApply = createManualApplyController({
   acknowledgePendingEvent,
   flushPendingPolls,
   recordManualEditActivity,
+  persistEvent(event) {
+    if (!state.sessionStore) throw new Error('manual_apply_session_store_unavailable');
+    return state.sessionStore.appendEvent(event);
+  },
   cwd: () => process.cwd(),
 });
 
@@ -1048,8 +1057,21 @@ function handlePollGet(req, res, url) {
     return;
   }
   state.lastPollAt = Date.now();
-  const timeout = parseInt(url.searchParams.get('timeout') || DEFAULT_POLL_TIMEOUT, 10);
-  const leaseMs = parseInt(url.searchParams.get('leaseMs') || '30000', 10);
+  const timeout = parseBoundedIntegerParam(url.searchParams.get('timeout'), {
+    fallback: DEFAULT_POLL_TIMEOUT,
+    min: 0,
+    max: MAX_POLL_TIMEOUT,
+  });
+  const leaseMs = parseBoundedIntegerParam(url.searchParams.get('leaseMs'), {
+    fallback: 30_000,
+    min: 1,
+    max: MAX_EVENT_LEASE_MS,
+  });
+  if (timeout === null || leaseMs === null) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid poll timeout or lease duration' }));
+    return;
+  }
   const types = parsePollTypes(url.searchParams.get('types'));
   const available = findAvailablePendingEvent(Date.now(), types);
   if (available) {
@@ -1197,7 +1219,12 @@ function handlePollPost(req, res) {
         fileCount: validation.result.files.length,
         noteCount: validation.result.notes.length,
       });
-      manualApply.resolveDeferred(msg.id, validation.result);
+      const resolved = manualApply.resolveDeferred(msg.id, validation.result);
+      if (!resolved) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'manual_edit_apply_completion_persist_failed' }));
+        return;
+      }
       acknowledgePendingEvent(msg.id);
       flushPendingPolls();
       res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -1213,6 +1240,28 @@ function handlePollPost(req, res) {
       });
       res.writeHead(409, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'stale_manual_edit_apply_reply', ...rollback }));
+      return;
+    }
+    const recoveredManualApplyEvent = findPendingEventById(msg.id, 'manual_edit_apply');
+    if (recoveredManualApplyEvent) {
+      const discarded = manualApply.discardRecoveredEvent(recoveredManualApplyEvent);
+      if (!discarded) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'manual_edit_apply_discard_persist_failed' }));
+        return;
+      }
+      acknowledgePendingEvent(msg.id, 'manual_edit_apply');
+      recordManualEditActivity('manual_edit_apply_reply_rejected_after_restart', {
+        id: msg.id,
+        pageUrl: recoveredManualApplyEvent.pageUrl,
+        recovered: true,
+      });
+      flushPendingPolls();
+      res.writeHead(409, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        error: 'manual_edit_apply_requires_retry_after_restart',
+        retry: true,
+      }));
       return;
     }
     const sourceEventType = msg.sourceEventType || inferSourceEventType(msg);

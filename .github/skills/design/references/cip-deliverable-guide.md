@@ -1,5 +1,11 @@
 # CIP Deliverable Guide
 
+## Print Production
+
+- Raster artwork: 300 DPI minimum at final output size
+- Color mode: CMYK for print-ready deliverables
+- 3-5mm bleed on every trimmed edge
+
 ## Core Identity
 
 ### Primary Logo

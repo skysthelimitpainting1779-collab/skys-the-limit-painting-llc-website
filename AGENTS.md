@@ -13,6 +13,7 @@ npm install && npm run dev
 npm run lint
 npm test
 npm run build
+npm run lifecycle:verify
 npm run graph:query -- "<task>"
 npm run goal -- status
 npm run goal:verify
@@ -86,6 +87,16 @@ npm run goal -- done
 ```
 
 Skill: `ship-loop` (`.agents/skills/ship-loop/`).
+
+## Governed lifecycle
+
+- Call `execution_graph_preflight` before selecting work.
+- Read `execution_graph_cursor` and `execution_graph_node`, then acquire one writer lease with `lifecycle_checkpoint_begin`.
+- Use one task branch and worktree per active writer. Never mutate `main` directly.
+- Complete the checkpoint only after a clean commit and passing evidence. Cross-node completion supplies the terminal `completed_stage`; `lifecycle_checkpoint_complete` creates the graph-validated handoff.
+- Every governed commit after `5eb385d33976503cdac81e982ed74fbbc7f6839c` requires `Execution-Program`, `Execution-Node`, `Checkpoint-ID`, and `Evidence-SHA256` trailers.
+- The authoritative execution plan is `.agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl`. `.graph/` is planning history only.
+- See `docs/DEVELOPMENT_LIFECYCLE.md` for Git, CI, Vercel, rollback, and recovery rules.
 
 ---
 

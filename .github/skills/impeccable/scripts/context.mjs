@@ -848,10 +848,15 @@ export function hasVisualImplementation(projectRoot) {
       return false;
     }
 
-    const evidence = body
-      .replace(/\/\*[\s\S]*?\*\//g, '')
-      .replace(/<!--[\s\S]*?-->/g, '')
-      .replace(/^\s*\/\/.*$/gm, '');
+    let evidence = body;
+    let previous;
+    do {
+      previous = evidence;
+      evidence = evidence
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/<!--[\s\S]*?--!?>/g, '')
+        .replace(/^\s*\/\/.*$/gm, '');
+    } while (evidence !== previous);
     if (STYLE_EXTENSIONS.has(ext)) {
       const customProperties = evidence.match(/--[a-z0-9_-]+\s*:/gi)?.length ?? 0;
       const visualDeclarations = evidence.match(/\b(?:color|background(?:-color)?|border(?:-color)?|font-family)\s*:/gi)?.length ?? 0;

@@ -1,22 +1,26 @@
 'use client';
 
 import { SignOutButton, UserButton } from '@clerk/nextjs';
-import { useMutation, useQuery } from 'convex/react';
+import { useConvexAuth, useMutation, useQuery } from 'convex/react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
 import { api } from '../../../../convex/_generated/api';
 
 export default function PortalHomePage() {
-  const currentUser = useQuery(api.users.current);
+  const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
+  const currentUser = useQuery(api.users.current, isAuthenticated ? {} : 'skip');
   const syncCurrentIdentity = useMutation(api.users.syncCurrentIdentity);
-  const projects = useQuery(api.crm.myProjects, currentUser?.status === 'active' ? {} : 'skip');
+  const projects = useQuery(
+    api.crm.myProjects,
+    isAuthenticated && currentUser?.status === 'active' ? {} : 'skip',
+  );
 
   useEffect(() => {
-    if (currentUser === null) {
+    if (isAuthenticated && currentUser === null) {
       void syncCurrentIdentity();
     }
-  }, [currentUser, syncCurrentIdentity]);
+  }, [currentUser, isAuthenticated, syncCurrentIdentity]);
 
   return (
     <main className="min-h-[70vh] bg-[#050505] px-6 py-16 text-white">
@@ -28,20 +32,36 @@ export default function PortalHomePage() {
             </p>
             <h1 className="font-display text-4xl font-black">Your projects</h1>
           </div>
-          <div className="flex items-center gap-4">
-            <UserButton />
-            <SignOutButton redirectUrl="/portal/login">
-              <button
-                type="button"
-                className="border border-white/20 px-4 py-2 text-sm font-bold hover:bg-white/5"
-              >
-                Sign out
-              </button>
-            </SignOutButton>
-          </div>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-4">
+              <UserButton />
+              <SignOutButton redirectUrl="/portal/login">
+                <button
+                  type="button"
+                  className="border border-white/20 px-4 py-2 text-sm font-bold hover:bg-white/5"
+                >
+                  Sign out
+                </button>
+              </SignOutButton>
+            </div>
+          ) : null}
         </div>
 
-        {currentUser === undefined || projects === undefined ? (
+        {isAuthLoading ? (
+          <div className="border border-white/10 bg-[#0B0B0D] p-8 text-gray-400">
+            Loading your projects...
+          </div>
+        ) : !isAuthenticated ? (
+          <div className="border border-white/10 bg-[#0B0B0D] p-8">
+            <h2 className="mb-3 text-xl font-bold">Sign in required</h2>
+            <Link
+              href="/portal/login"
+              className="inline-flex bg-white px-6 py-3 font-bold text-[#050505] hover:bg-gray-200"
+            >
+              Sign in
+            </Link>
+          </div>
+        ) : currentUser === undefined || projects === undefined ? (
           <div className="border border-white/10 bg-[#0B0B0D] p-8 text-gray-400">
             Loading your projects...
           </div>

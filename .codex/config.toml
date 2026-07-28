@@ -8,3 +8,8 @@ max_concurrent_threads_per_session = 2
 [features]
 hooks = true
 fast_mode = false
+
+[mcp_servers.agentgraph_dev]
+command = "python"
+args = ["scripts/execution/start_agentgraph_mcp.py"]
+cwd = "."

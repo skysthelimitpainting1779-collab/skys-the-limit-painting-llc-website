@@ -40,10 +40,11 @@ test('Vercel config has security headers and no legacy string blanket SPA rewrit
     assert.ok(headerKeys.has(key), `${key} header is missing`);
   }
 
-  const blanketRewrite = vercel.rewrites.find(({ source }) => source === '/(.*)');
-  assert.deepEqual(blanketRewrite?.destination, { service: 'web' });
+  const rewrites = vercel.rewrites ?? [];
+  const blanketRewrite = rewrites.find(({ source }) => source === '/(.*)');
+  assert.equal(blanketRewrite, undefined);
   assert.equal(
-    vercel.rewrites.some(
+    rewrites.some(
       ({ source, destination }) => source === '/(.*)' && typeof destination === 'string'
     ),
     false
