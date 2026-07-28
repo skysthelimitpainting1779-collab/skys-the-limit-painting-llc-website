@@ -1,28 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "web": {
-      "root": ".",
-      "framework": "nextjs",
-      "installCommand": "npm ci",
-      "buildCommand": "npm run build:vercel",
-      "ignoreCommand": "case \"$VERCEL_GIT_COMMIT_REF\" in entire/*) echo 'agent branch, skipping'; exit 0;; *) echo 'proceeding with build'; exit 1;; esac",
-      "bindings": [
-        {
-          "type": "service",
-          "service": "integrations",
-          "format": "url",
-          "env": "INTEGRATIONS_URL"
-        }
-      ]
-    },
-    "integrations": {
-      "root": "services/integrations/",
-      "framework": "hono",
-      "entrypoint": "src/index.ts",
-      "ignoreCommand": "case \"$VERCEL_GIT_COMMIT_REF\" in entire/*) echo 'agent branch, skipping'; exit 0;; *) echo 'proceeding with build'; exit 1;; esac"
-    }
-  },
+  "framework": "nextjs",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build:vercel",
+  "ignoreCommand": "case \"$VERCEL_GIT_COMMIT_REF\" in entire/*) echo 'agent branch, skipping'; exit 0;; *) echo 'proceeding with build'; exit 1;; esac",
   "headers": [
     {
       "source": "/(.*)",
@@ -62,12 +43,6 @@
     { "source": "/services/pavement-marking", "destination": "/public-sector", "permanent": true },
     { "source": "/painting-services/cabinet-refinishing", "destination": "/painting-services/cabinet-painting", "permanent": true },
     { "source": "/painting-services/commercial-repaints", "destination": "/painting-services/commercial-painting", "permanent": true }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": { "service": "web" }
-    }
   ],
   "crons": [
     {
