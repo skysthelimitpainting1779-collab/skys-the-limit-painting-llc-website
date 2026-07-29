@@ -4,6 +4,7 @@
  */
 
 import { createLiveSessionStore } from './live/session-store.mjs';
+import { comparePendingSnapshotsForPolling } from './live/poll-lanes.mjs';
 
 function manualApplyReplyCommand(eventOrId = 'EVENT_ID') {
   const id = typeof eventOrId === 'string' ? eventOrId : eventOrId?.id || 'EVENT_ID';
@@ -60,6 +61,21 @@ function parseArgs(argv) {
   return out;
 }
 
+export function selectResumeSnapshot(snapshots = []) {
+  const active = [...snapshots].filter(Boolean);
+  const pending = active.filter((snapshot) => snapshot.pendingEvent);
+  if (pending.length > 0) {
+    return pending.sort(comparePendingSnapshotsForPolling)[0];
+  }
+
+  return active.sort((left, right) => {
+    const updatedDifference =
+      (Date.parse(right.updatedAt || '') || 0) - (Date.parse(left.updatedAt || '') || 0);
+    if (updatedDifference !== 0) return updatedDifference;
+    return String(left.id || '').localeCompare(String(right.id || ''));
+  })[0] || null;
+}
+
 export async function resumeCli() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
@@ -68,7 +84,9 @@ export async function resumeCli() {
   }
 
   const store = createLiveSessionStore({ cwd: process.cwd(), sessionId: args.id || undefined });
-  const snapshot = args.id ? store.getSnapshot(args.id) : store.listActiveSessions()[0] || null;
+  const snapshot = args.id
+    ? store.getSnapshot(args.id)
+    : selectResumeSnapshot(store.listActiveSessions());
   if (!snapshot) {
     console.log(JSON.stringify({ active: false, nextAction: 'No active durable live session found.' }, null, 2));
     return;

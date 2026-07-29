@@ -23,7 +23,12 @@ import {
   rmSync,
 } from 'node:fs';
 import { join } from 'node:path';
+import { homedir } from 'node:os';
 import { spawnSync } from 'node:child_process';
+import {
+  redactEvidenceOutput,
+  sensitiveEnvironmentValues,
+} from './lib/evidence-output.mjs';
 
 const ROOT = process.cwd();
 const GOALS = join(ROOT, '.agents', 'goals');
@@ -213,7 +218,11 @@ function runVerify({ build = false } = {}) {
       name: s.name,
       pass,
       status: r.status,
-      tail: `${r.stdout || ''}${r.stderr || ''}`.slice(-1200),
+      tail: redactEvidenceOutput(`${r.stdout || ''}${r.stderr || ''}`, {
+        workspaceRoot: ROOT,
+        homeDirectory: homedir(),
+        sensitiveValues: sensitiveEnvironmentValues(process.env),
+      }).slice(-1200),
     });
   }
   return { ok, at: new Date().toISOString(), results };

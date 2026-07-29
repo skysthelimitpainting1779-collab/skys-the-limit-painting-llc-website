@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import test from 'node:test';
 
 import { createManualApplyController } from '../.github/skills/impeccable/scripts/live/manual-apply.mjs';
+import { selectResumeSnapshot } from '../.github/skills/impeccable/scripts/live-resume.mjs';
 import {
   readBuffer,
   writeBuffer,
@@ -127,6 +128,7 @@ test('manual Apply durability code remains mirrored across skill bundles', () =>
   for (const relativePath of [
     'scripts/live/manual-apply.mjs',
     'scripts/live-server.mjs',
+    'scripts/live-resume.mjs',
     'scripts/live/session-store.mjs',
   ]) {
     assert.equal(
@@ -143,7 +145,64 @@ test('manual Apply durability code remains mirrored across skill bundles', () =>
   assert.match(liveServer, /const recoveredManualApplyEvent = findPendingEventById\(msg\.id, 'manual_edit_apply'\);/);
   assert.match(liveServer, /manualApply\.discardRecoveredEvent\(recoveredManualApplyEvent\)/);
   assert.match(liveServer, /manual_edit_apply_requires_retry_after_restart/);
+  assert.match(liveServer, /\.sort\(comparePendingSnapshotsForPolling\)/);
   assert.doesNotMatch(liveServer, /finalizeRecoveredResult/);
+});
+
+test('no-ID live resume follows poll priority and FIFO ordering', () => {
+  const selected = selectResumeSnapshot([
+    {
+      id: 'newer-but-idle',
+      updatedAt: '2026-07-28T12:05:00.000Z',
+      pendingEvent: null,
+    },
+    {
+      id: 'old-generate',
+      updatedAt: '2026-07-28T12:00:00.000Z',
+      pendingEvent: { id: 'generate', type: 'generate' },
+    },
+    {
+      id: 'newer-manual',
+      updatedAt: '2026-07-28T12:03:00.000Z',
+      pendingEventAt: '2026-07-28T12:01:00.000Z',
+      pendingEvent: { id: 'manual-new', type: 'manual_edit_apply' },
+    },
+    {
+      id: 'older-manual',
+      updatedAt: '2026-07-28T12:04:00.000Z',
+      pendingEventAt: '2026-07-28T12:00:00.000Z',
+      pendingEvent: { id: 'manual-old', type: 'manual_edit_apply' },
+    },
+  ]);
+
+  assert.equal(selected.id, 'older-manual');
+  assert.equal(selectResumeSnapshot([
+    { id: 'older-idle', updatedAt: '2026-07-28T12:01:00.000Z' },
+    { id: 'newer-idle', updatedAt: '2026-07-28T12:02:00.000Z' },
+  ]).id, 'newer-idle');
+  assert.equal(selectResumeSnapshot([]), null);
+});
+
+test('pending event arrival remains stable across later journal updates', () => {
+  const cwd = mkdtempSync(join(tmpdir(), 'pending-event-arrival-'));
+  const store = createLiveSessionStore({ cwd });
+  try {
+    store.appendEvent({ id: 'resume-1', type: 'manual_edit_apply', pageUrl: '/portal' });
+    const initial = store.getSnapshot('resume-1');
+    store.appendEvent({
+      id: 'resume-1',
+      type: 'checkpoint',
+      phase: 'manual_edit_apply_requested',
+      revision: 2,
+    });
+    const updated = store.getSnapshot('resume-1');
+
+    assert.ok(initial.pendingEventAt);
+    assert.equal(updated.pendingEventAt, initial.pendingEventAt);
+    assert.notEqual(updated.updatedAt, null);
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
 });
 
 test('manual edit discard journals Apply cancellation before mutating the buffer', () => {

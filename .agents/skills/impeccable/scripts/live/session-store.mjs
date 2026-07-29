@@ -111,6 +111,7 @@ function baseSnapshot(id) {
     visibleVariant: null,
     paramValues: {},
     pendingEventSeq: null,
+    pendingEventAt: null,
     pendingEvent: null,
     deliveryLease: null,
     checkpointRevision: 0,
@@ -181,8 +182,7 @@ function applyEvent(snapshot, entry, inheritedDiagnostics = []) {
       next.phase = 'generate_requested';
       next.pageUrl = event.pageUrl ?? next.pageUrl;
       next.expectedVariants = event.count ?? next.expectedVariants;
-      next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
-      next.pendingEvent = toPendingEvent(event);
+      assignPendingEvent(next, event, entry);
       next.variantPlan = null;
       if (event.screenshotPath) upsertArtifact(next.annotationArtifacts, { type: 'screenshot', path: event.screenshotPath });
       break;
@@ -229,8 +229,7 @@ function applyEvent(snapshot, entry, inheritedDiagnostics = []) {
       next.previewFile = event.previewFile ?? next.previewFile;
       next.previewMode = event.previewMode ?? next.previewMode;
       next.arrivedVariants = event.arrivedVariants ?? (next.expectedVariants || next.arrivedVariants || 0);
-      next.pendingEventSeq = null;
-      next.pendingEvent = null;
+      clearPendingEvent(next);
       if (event.carbonize === true) {
         next.diagnostics.push({
           error: 'carbonize_cleanup_required',
@@ -281,26 +280,22 @@ function applyEvent(snapshot, entry, inheritedDiagnostics = []) {
       next.cancelReason = 'accept';
       next.visibleVariant = Number(event.variantId ?? next.visibleVariant);
       if (event.paramValues) next.paramValues = { ...event.paramValues };
-      next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
-      next.pendingEvent = toPendingEvent(event);
+      assignPendingEvent(next, event, entry);
       break;
     case 'manual_edit_apply':
       next.phase = 'manual_edit_apply_requested';
       next.pageUrl = event.pageUrl ?? next.pageUrl;
-      next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
-      next.pendingEvent = toPendingEvent(event);
+      assignPendingEvent(next, event, entry);
       break;
     case 'steer':
       next.phase = 'steer_requested';
       next.pageUrl = event.pageUrl ?? next.pageUrl;
-      next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
-      next.pendingEvent = toPendingEvent(event);
+      assignPendingEvent(next, event, entry);
       break;
     case 'carbonize_cleanup':
       next.phase = 'carbonize_cleanup_requested';
       next.sourceFile = event.file ?? next.sourceFile;
-      next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
-      next.pendingEvent = toPendingEvent(event);
+      assignPendingEvent(next, event, entry);
       break;
     case 'steer_done':
       next.phase = 'steer_done';
@@ -308,29 +303,25 @@ function applyEvent(snapshot, entry, inheritedDiagnostics = []) {
       next.previewFile = event.previewFile ?? next.previewFile;
       next.previewMode = event.previewMode ?? next.previewMode;
       next.message = event.message ?? next.message;
-      next.pendingEventSeq = null;
-      next.pendingEvent = null;
+      clearPendingEvent(next);
       break;
     case 'discard':
       next.phase = 'discard_requested';
       next.generationCanceled = true;
       next.generationCanceledAt = event.at ?? (Date.parse(entry.ts || '') || Date.now());
       next.cancelReason = 'discard';
-      next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
-      next.pendingEvent = toPendingEvent(event);
+      assignPendingEvent(next, event, entry);
       break;
     case 'discarded':
       next.phase = 'discarded';
-      next.pendingEventSeq = null;
-      next.pendingEvent = null;
+      clearPendingEvent(next);
       break;
     case 'complete':
       next.phase = 'completed';
       next.sourceFile = event.sourceFile ?? event.file ?? next.sourceFile;
       next.previewFile = event.previewFile ?? next.previewFile;
       next.previewMode = event.previewMode ?? next.previewMode;
-      next.pendingEventSeq = null;
-      next.pendingEvent = null;
+      clearPendingEvent(next);
       break;
     case 'agent_error':
       if (next.generationCanceled && event.sourceEventType === 'generate') {
@@ -338,8 +329,7 @@ function applyEvent(snapshot, entry, inheritedDiagnostics = []) {
         break;
       }
       next.phase = 'agent_error';
-      next.pendingEventSeq = null;
-      next.pendingEvent = null;
+      clearPendingEvent(next);
       next.diagnostics.push({ error: 'agent_error', message: event.message || 'unknown agent error' });
       break;
     default:
@@ -353,6 +343,23 @@ function toPendingEvent(event) {
   const pending = { ...event };
   delete pending.token;
   return pending;
+}
+
+function assignPendingEvent(snapshot, event, entry) {
+  const samePendingEvent =
+    snapshot.pendingEvent?.id === event.id
+    && snapshot.pendingEvent?.type === event.type;
+  snapshot.pendingEventSeq = entry.seq ?? snapshot.pendingEventSeq;
+  snapshot.pendingEvent = toPendingEvent(event);
+  if (!samePendingEvent || !snapshot.pendingEventAt) {
+    snapshot.pendingEventAt = entry.ts || new Date().toISOString();
+  }
+}
+
+function clearPendingEvent(snapshot) {
+  snapshot.pendingEventSeq = null;
+  snapshot.pendingEventAt = null;
+  snapshot.pendingEvent = null;
 }
 
 function upsertArtifact(artifacts, artifact) {

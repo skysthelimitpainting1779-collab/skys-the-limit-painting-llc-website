@@ -5,6 +5,19 @@ export function eventPriority(event = {}) {
   return 3;
 }
 
+export function comparePendingSnapshotsForPolling(left = {}, right = {}) {
+  const priorityDifference =
+    eventPriority(left.pendingEvent) - eventPriority(right.pendingEvent);
+  if (priorityDifference !== 0) return priorityDifference;
+
+  const fifoDifference =
+    (Date.parse(left.pendingEventAt || left.updatedAt || '') || 0)
+    - (Date.parse(right.pendingEventAt || right.updatedAt || '') || 0);
+  if (fifoDifference !== 0) return fifoDifference;
+
+  return String(left.id || '').localeCompare(String(right.id || ''));
+}
+
 export function parseBoundedIntegerParam(value, { fallback, min, max }) {
   if (value == null || value === '') return fallback;
   if (!/^\d+$/.test(value)) return null;

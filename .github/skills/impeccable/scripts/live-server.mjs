@@ -32,6 +32,7 @@ import { createLiveSessionStore, GENERATION_FENCED_PHASES } from './live/session
 import { runGenerationPreflight } from './live/generation-preflight.mjs';
 import { validateEvent } from './live/event-validation.mjs';
 import {
+  comparePendingSnapshotsForPolling,
   parseBoundedIntegerParam,
   selectAvailablePendingEvent,
 } from './live/poll-lanes.mjs';
@@ -166,8 +167,12 @@ function enqueueEvent(event) {
 
 function restorePendingEventsFromStore() {
   if (!state.sessionStore) return;
-  for (const snapshot of state.sessionStore.listActiveSessions()) {
-    if (snapshot.pendingEvent) enqueueEvent(snapshot.pendingEvent);
+  const pendingSnapshots = state.sessionStore
+    .listActiveSessions()
+    .filter((snapshot) => snapshot.pendingEvent)
+    .sort(comparePendingSnapshotsForPolling);
+  for (const snapshot of pendingSnapshots) {
+    enqueueEvent(snapshot.pendingEvent);
   }
 }
 
