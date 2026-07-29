@@ -1,0 +1,29 @@
+{
+  "baseHeadSha": "fb4a8f154b32a3337be444159c80c9183eeb4f9c",
+  "checkpointId": "cp-20260729-orch003-ci-recovery-001",
+  "completedStage": "stage:ORCH-003:verify",
+  "graphSha256": "4f6a7d81e9c46ecbf886703fcf03988dd317115f9577152aa7ac09bd5ec532c9",
+  "issueDecision": {
+    "action": "none",
+    "reason": "Draft PR 169 already tracks the provider preflight implementation; this bounded recovery only restores clean-runner fail-closed behavior."
+  },
+  "nodeId": "ORCH-003",
+  "programId": "stl-post-g20-sequential-tdd-v1",
+  "schemaVersion": 1,
+  "tdd": {
+    "green": "When the runner-local lifecycle database is unavailable, the CLI returns a structured denied decision containing the inactive lifecycle lease and node checks instead of collapsing to a generic evaluation error.",
+    "red": "GitHub Actions run 30476975804 failed the focused CLI assertion because opening the absent runner-local graphify.db threw before the governed denial checks were emitted."
+  },
+  "verification": [
+    {
+      "command": "GitHub Actions run 30476975804 / job 90661021506 log inspection",
+      "result": "The single failing test was isolated to the missing clean-runner lifecycle database path; workflow contract, lifecycle verification, branch standards, lint, and typecheck passed before tests.",
+      "status": "passed"
+    },
+    {
+      "command": "GitHub source inspection: scripts/provider-access-preflight.mjs and tests/provider-access-preflight.test.mjs",
+      "result": "The failure path and smallest fail-closed correction were verified against the exact fb4a8f1 source and assertion.",
+      "status": "passed"
+    }
+  ]
+}
