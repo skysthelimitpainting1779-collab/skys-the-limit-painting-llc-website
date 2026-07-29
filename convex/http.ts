@@ -21,6 +21,26 @@ type ClerkInvitationData = {
 type UserLifecycleType = 'user.created' | 'user.updated' | 'user.deleted';
 type InvitationLifecycleType = 'invitation.accepted' | 'invitation.revoked';
 
+const clerkWebhookSecretPattern =
+  /^whsec_[A-Za-z0-9+/=_-]{24,}$/;
+export const clerkWebhookContractVersion =
+  'skys-limit-clerk-webhook-v1';
+
+export function hasConfiguredClerkWebhookSecret(
+  value: string | undefined,
+): value is string {
+  return Boolean(value && clerkWebhookSecretPattern.test(value));
+}
+
+function clerkWebhookResponse(body: string, status: number): Response {
+  return new Response(body, {
+    status,
+    headers: {
+      'x-skys-limit-webhook-contract': clerkWebhookContractVersion,
+    },
+  });
+}
+
 function isUserLifecycleType(value: string): value is UserLifecycleType {
   return value === 'user.created' || value === 'user.updated' || value === 'user.deleted';
 }
@@ -37,7 +57,9 @@ async function sha256(value: string): Promise<string> {
 
 const clerkLifecycle = httpAction(async (ctx, request) => {
   const signingSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET;
-  if (!signingSecret) return new Response('Webhook not configured', { status: 503 });
+  if (!hasConfiguredClerkWebhookSecret(signingSecret)) {
+    return clerkWebhookResponse('Webhook not configured', 503);
+  }
 
   const rawBody = await request.text();
   let event;
@@ -47,7 +69,7 @@ const clerkLifecycle = httpAction(async (ctx, request) => {
       { signingSecret },
     );
   } catch {
-    return new Response('Invalid signature', { status: 400 });
+    return clerkWebhookResponse('Invalid signature', 400);
   }
 
   // Clerk documents instance invitation events even though some SDK webhook

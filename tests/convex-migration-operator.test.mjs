@@ -39,6 +39,51 @@ test('Clerk Preview issuer derivation uses exclusive non-reparse scratch paths',
   assert.doesNotMatch(agentScript, /New-Item -ItemType Directory -Force -Path \$scratch/);
 });
 
+test('operator codifies project defaults for fresh Convex Preview deployments', () => {
+  const agentSkill = readFileSync(join(
+    process.cwd(),
+    '.agents/skills/convex-migration-operator/SKILL.md',
+  ), 'utf8');
+  const githubSkill = readFileSync(join(
+    process.cwd(),
+    '.github/skills/convex-migration-operator/SKILL.md',
+  ), 'utf8');
+
+  assert.equal(agentSkill, githubSkill);
+  assert.match(agentSkill, /convex env default set NAME --type preview/);
+  assert.match(
+    agentSkill,
+    /--project skysthelimitpainting1779-4125-s-projects:skysthelimit/,
+  );
+  assert.match(agentSkill, /npm run validate:convex-preview-defaults/);
+  assert.match(agentSkill, /npm run validate:convex-preview-webhook/);
+  assert.match(agentSkill, /npm run provision:convex-preview-webhook/);
+  assert.match(agentSkill, /provider-returned deployment name/);
+  assert.match(agentSkill, /unsigned probe/);
+  assert.match(agentSkill, /without giving the CI deploy key environment-secret read permission/);
+  assert.match(agentSkill, /Do not run `convex env set` or copy provider secrets before/);
+  assert.match(agentSkill, /Do not store `CLERK_WEBHOOK_SIGNING_SECRET` as a project default/);
+  assert.match(agentSkill, /piped over stdin/);
+  assert.match(agentSkill, /Changing project defaults has no effect on existing deployments/);
+  for (const contract of [
+    'NEXT_PUBLIC_APP_ENV=preview',
+    'CLERK_JWT_ISSUER_ENV=preview',
+    'CLERK_JWT_ISSUER_DOMAIN',
+    'CLERK_SECRET_KEY',
+  ]) {
+    assert.match(agentSkill, new RegExp(`- \`${contract}`));
+  }
+  for (const event of [
+    'user.created',
+    'user.updated',
+    'user.deleted',
+    'invitation.accepted',
+    'invitation.revoked',
+  ]) {
+    assert.match(agentSkill, new RegExp(`\`${event}\``));
+  }
+});
+
 function createMigrationContext() {
   const tables = new Map();
   let nextId = 0;

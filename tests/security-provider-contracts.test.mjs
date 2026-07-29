@@ -18,6 +18,27 @@ test('Convex declares every required Clerk environment variable', () => {
     assert.match(config, new RegExp(`\\b${name}\\s*:`), `${name} must be declared`);
   }
   assert.match(config, /defineApp\(\s*\{\s*env:/s);
+  assert.match(
+    config,
+    /CLERK_WEBHOOK_SIGNING_SECRET:\s*v\.optional\(v\.string\(\)\)/,
+  );
+});
+
+test('Production verifies the versioned Convex webhook after deploy without reading secrets', () => {
+  const validator = read('scripts/verify-convex-production-webhook.mjs');
+
+  assert.match(validator, /\.convex\.site\/clerk\/lifecycle/);
+  assert.match(validator, /method:\s*'POST'/);
+  assert.match(validator, /response\.status !== 400/);
+  assert.match(validator, /x-skys-limit-webhook-contract/);
+  assert.doesNotMatch(
+    validator,
+    /'env',\s*'get',\s*'CLERK_WEBHOOK_SIGNING_SECRET'/s,
+  );
+  const webhook = read('convex/http.ts');
+  assert.match(webhook, /clerkWebhookSecretPattern/);
+  assert.match(webhook, /clerkWebhookResponse\('Webhook not configured', 503\)/);
+  assert.match(webhook, /x-skys-limit-webhook-contract/);
 });
 
 test('Vercel deployment matching binds exact commit, project, and URL', async () => {

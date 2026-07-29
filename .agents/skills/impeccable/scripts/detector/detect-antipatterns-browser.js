@@ -11,6 +11,332 @@
  */
 (function () {
 if (typeof window === 'undefined') return;
+
+function browserAsciiCode(character) {
+  const code = character?.charCodeAt(0);
+  return code >= 65 && code <= 90 ? code + 32 : code;
+}
+
+function browserMatchesAsciiAt(source, index, marker) {
+  if (index + marker.length > source.length) return false;
+  for (let offset = 0; offset < marker.length; offset += 1) {
+    if (browserAsciiCode(source[index + offset]) !== marker.charCodeAt(offset)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function browserIsHtmlSpace(character) {
+  return (
+    character === ' ' ||
+    character === '\t' ||
+    character === '\n' ||
+    character === '\f' ||
+    character === '\r'
+  );
+}
+
+function browserBeginsMarkup(character) {
+  const code = browserAsciiCode(character);
+  return (
+    (code >= 97 && code <= 122) ||
+    character === '/' ||
+    character === '!' ||
+    character === '?'
+  );
+}
+
+function browserBeginsOpeningTag(character) {
+  const code = browserAsciiCode(character);
+  return code >= 97 && code <= 122;
+}
+
+function browserFindTagEnd(source, start) {
+  let state = 'beforeAttributeName';
+  let quote = null;
+  for (let index = start; index < source.length; index += 1) {
+    const character = source[index];
+    if (state === 'attributeValueQuoted') {
+      if (character === quote) quote = null;
+      if (quote === null) state = 'afterAttributeValueQuoted';
+      continue;
+    }
+    if (character === '>') return index;
+    if (state === 'beforeAttributeName') {
+      if (browserIsHtmlSpace(character) || character === '/') continue;
+      state = 'attributeName';
+      continue;
+    }
+    if (state === 'attributeName') {
+      if (browserIsHtmlSpace(character)) {
+        state = 'afterAttributeName';
+      } else if (character === '=') {
+        state = 'beforeAttributeValue';
+      }
+      continue;
+    }
+    if (state === 'afterAttributeName') {
+      if (browserIsHtmlSpace(character) || character === '/') continue;
+      state = character === '=' ? 'beforeAttributeValue' : 'attributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeValue') {
+      if (browserIsHtmlSpace(character)) continue;
+      if (character === '"' || character === "'") {
+        quote = character;
+        state = 'attributeValueQuoted';
+      } else {
+        state = 'attributeValueUnquoted';
+      }
+      continue;
+    }
+    if (state === 'attributeValueUnquoted') {
+      if (browserIsHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'afterAttributeValueQuoted') {
+      if (browserIsHtmlSpace(character) || character === '/') {
+        state = 'beforeAttributeName';
+      } else {
+        state = 'attributeName';
+      }
+    }
+  }
+  return -1;
+}
+
+function browserFindCommentEnd(source, start) {
+  if (source.startsWith('<!-->', start)) return start + 5;
+  if (source.startsWith('<!--->', start)) return start + 6;
+  const standardEnd = source.indexOf('-->', start + 4);
+  const bangEnd = source.indexOf('--!>', start + 4);
+  if (standardEnd === -1) {
+    return bangEnd === -1 ? -1 : bangEnd + 4;
+  }
+  if (bangEnd === -1) return standardEnd + 3;
+  return Math.min(standardEnd + 3, bangEnd + 4);
+}
+
+function browserIsReconstructableTagPrefix(source, start, end, tagName) {
+  const length = end - start;
+  if (length <= 0 || length > tagName.length) return false;
+  for (let offset = 0; offset < length; offset += 1) {
+    if (
+      browserAsciiCode(source[start + offset]) !==
+      tagName.charCodeAt(offset)
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function browserFindTagStart(source, marker, from) {
+  let state = 'data';
+  let quote = null;
+  let tagNameStart = -1;
+  let tagNameCanReconstruct = false;
+  const tagName = marker.slice(1);
+  for (let start = from; start < source.length; start += 1) {
+    const character = source[start];
+    if (state === 'attributeValueQuoted') {
+      if (character === quote) {
+        quote = null;
+        state = 'afterAttributeValueQuoted';
+      }
+      continue;
+    }
+    if (character === '<' && (state === 'data' || state === 'tagName')) {
+      if (state === 'data' && source.startsWith('<!--', start)) {
+        const commentEnd = browserFindCommentEnd(source, start);
+        if (commentEnd === -1) return -1;
+        start = commentEnd - 1;
+        continue;
+      }
+      const boundary = source[start + marker.length];
+      const markerMatches =
+        browserMatchesAsciiAt(source, start, marker) &&
+        (
+          boundary === undefined ||
+          browserIsHtmlSpace(boundary) ||
+          boundary === '/' ||
+          boundary === '>'
+        );
+      if (
+        markerMatches &&
+        (
+          state === 'data' ||
+          (
+            tagNameCanReconstruct &&
+            browserIsReconstructableTagPrefix(
+              source,
+              tagNameStart,
+              start,
+              tagName,
+            )
+          )
+        )
+      ) {
+        return start;
+      }
+      if (browserBeginsMarkup(source[start + 1])) {
+        tagNameCanReconstruct =
+          browserBeginsOpeningTag(source[start + 1]) &&
+          (
+            state === 'data' ||
+            (
+              tagNameCanReconstruct &&
+              browserIsReconstructableTagPrefix(
+                source,
+                tagNameStart,
+                start,
+                tagName,
+              )
+            )
+          );
+        state = 'tagName';
+        tagNameStart = start + (source[start + 1] === '/' ? 2 : 1);
+      }
+      continue;
+    }
+    if (state === 'data') continue;
+    if (character === '>') {
+      state = 'data';
+      tagNameStart = -1;
+      tagNameCanReconstruct = false;
+      continue;
+    }
+    if (state === 'tagName') {
+      if (browserIsHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeName') {
+      if (browserIsHtmlSpace(character) || character === '/') continue;
+      state = 'attributeName';
+      continue;
+    }
+    if (state === 'attributeName') {
+      if (browserIsHtmlSpace(character)) {
+        state = 'afterAttributeName';
+      } else if (character === '=') {
+        state = 'beforeAttributeValue';
+      }
+      continue;
+    }
+    if (state === 'afterAttributeName') {
+      if (browserIsHtmlSpace(character) || character === '/') continue;
+      state = character === '=' ? 'beforeAttributeValue' : 'attributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeValue') {
+      if (browserIsHtmlSpace(character)) continue;
+      if (character === '"' || character === "'") {
+        quote = character;
+        state = 'attributeValueQuoted';
+      } else {
+        state = 'attributeValueUnquoted';
+      }
+      continue;
+    }
+    if (state === 'attributeValueUnquoted') {
+      if (browserIsHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'afterAttributeValueQuoted') {
+      if (browserIsHtmlSpace(character) || character === '/') {
+        state = 'beforeAttributeName';
+      } else {
+        state = 'attributeName';
+      }
+    }
+  }
+  return -1;
+}
+
+function browserFindRawTextClosingTag(source, marker, from) {
+  for (let start = from; start < source.length; start += 1) {
+    if (source[start] !== '<') continue;
+    const boundary = source[start + marker.length];
+    if (
+      browserMatchesAsciiAt(source, start, marker) &&
+      (
+        boundary === undefined ||
+        browserIsHtmlSpace(boundary) ||
+        boundary === '/' ||
+        boundary === '>'
+      )
+    ) {
+      return start;
+    }
+  }
+  return -1;
+}
+
+function browserRawTextBlocks(source, tagName) {
+  const blocks = [];
+  const openMarker = `<${tagName}`;
+  const closeMarker = `</${tagName}`;
+  let searchFrom = 0;
+  let knownNoCloseFrom = null;
+  while (searchFrom < source.length) {
+    const start = browserFindTagStart(source, openMarker, searchFrom);
+    if (start === -1) break;
+    const openEnd = browserFindTagEnd(source, start + openMarker.length);
+    if (openEnd === -1) break;
+    let closeStart = -1;
+    if (knownNoCloseFrom === null || openEnd + 1 < knownNoCloseFrom) {
+      closeStart = browserFindRawTextClosingTag(
+        source,
+        closeMarker,
+        openEnd + 1,
+      );
+      if (closeStart === -1) knownNoCloseFrom = openEnd + 1;
+    }
+    if (closeStart === -1) {
+      let trailing = openEnd - 1;
+      while (trailing >= 0 && browserIsHtmlSpace(source[trailing])) trailing -= 1;
+      if (source[trailing] === '/') {
+        blocks.push({ start, end: openEnd + 1 });
+        searchFrom = openEnd + 1;
+        continue;
+      }
+      break;
+    }
+    const closeEnd = browserFindTagEnd(source, closeStart + closeMarker.length);
+    if (closeEnd === -1) break;
+    blocks.push({ start, end: closeEnd + 1 });
+    searchFrom = closeEnd + 1;
+  }
+  return blocks;
+}
+
+function stripBrowserRawText(value) {
+  let source = String(value ?? '');
+  for (let pass = 0; pass < 32; pass += 1) {
+    const candidates = ['script', 'style']
+      .flatMap((tagName) => browserRawTextBlocks(source, tagName))
+      .sort((left, right) => left.start - right.start || right.end - left.end);
+    if (candidates.length === 0) return source;
+
+    const blocks = [];
+    for (const candidate of candidates) {
+      const previous = blocks.at(-1);
+      if (previous && candidate.start < previous.end) continue;
+      blocks.push(candidate);
+    }
+    const chunks = [];
+    let cursor = 0;
+    for (const block of blocks) {
+      chunks.push(source.slice(cursor, block.start));
+      cursor = block.end;
+    }
+    chunks.push(source.slice(cursor));
+    source = chunks.join('');
+  }
+  throw new Error('Browser HTML filtering exceeded its reconstruction-pass limit.');
+}
+
 // --- cli/engine/shared/constants.mjs ---
 // ─── Section 1: Constants ───────────────────────────────────────────────────
 
@@ -2355,14 +2681,7 @@ function checkHtmlPatterns(html) {
   // Lives here (regex-on-HTML) rather than in the text-content analyzers so it
   // runs in the bundled browser path too, not just the CLI/static path.
   {
-    let filteredHtml = html;
-    let previous;
-    do {
-      previous = filteredHtml;
-      filteredHtml = filteredHtml
-        .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '')
-        .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, '');
-    } while (filteredHtml !== previous);
+    const filteredHtml = stripBrowserRawText(html);
     const bodyText = filteredHtml.replace(/<[^>]+>/g, ' ');
     const tm = /\b(\w+)\s+theater\b/i.exec(bodyText);
     if (tm) findings.push({ id: 'theater-slop-phrase', snippet: `"${tm[0].trim()}"` });

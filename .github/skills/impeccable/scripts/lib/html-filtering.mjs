@@ -1,5 +1,20 @@
+function isHtmlSpace(character) {
+  return (
+    character === ' ' ||
+    character === '\t' ||
+    character === '\n' ||
+    character === '\f' ||
+    character === '\r'
+  );
+}
+
 function isTagBoundary(character) {
-  return character === undefined || /[\s/>]/.test(character);
+  return (
+    character === undefined ||
+    isHtmlSpace(character) ||
+    character === '/' ||
+    character === '>'
+  );
 }
 
 function asciiCode(character) {
@@ -17,40 +32,231 @@ function matchesAsciiAt(source, index, marker) {
   return true;
 }
 
+function beginsMarkup(character) {
+  const code = asciiCode(character);
+  return (
+    (code >= 97 && code <= 122) ||
+    character === '/' ||
+    character === '!' ||
+    character === '?'
+  );
+}
+
+function beginsOpeningTag(character) {
+  const code = asciiCode(character);
+  return code >= 97 && code <= 122;
+}
+
 function findTagEnd(source, start) {
+  let state = 'beforeAttributeName';
   let quote = null;
   for (let index = start; index < source.length; index += 1) {
     const character = source[index];
-    if (quote) {
+    if (state === 'attributeValueQuoted') {
       if (character === quote) quote = null;
-      continue;
-    }
-    if (character === '"' || character === "'") {
-      quote = character;
+      if (quote === null) state = 'afterAttributeValueQuoted';
       continue;
     }
     if (character === '>') return index;
+
+    if (state === 'beforeAttributeName') {
+      if (isHtmlSpace(character) || character === '/') continue;
+      state = 'attributeName';
+      continue;
+    }
+    if (state === 'attributeName') {
+      if (isHtmlSpace(character)) {
+        state = 'afterAttributeName';
+      } else if (character === '=') {
+        state = 'beforeAttributeValue';
+      }
+      continue;
+    }
+    if (state === 'afterAttributeName') {
+      if (isHtmlSpace(character) || character === '/') continue;
+      state = character === '=' ? 'beforeAttributeValue' : 'attributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeValue') {
+      if (isHtmlSpace(character)) continue;
+      if (character === '"' || character === "'") {
+        quote = character;
+        state = 'attributeValueQuoted';
+      } else {
+        state = 'attributeValueUnquoted';
+      }
+      continue;
+    }
+    if (state === 'attributeValueUnquoted') {
+      if (isHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'afterAttributeValueQuoted') {
+      if (isHtmlSpace(character) || character === '/') {
+        state = 'beforeAttributeName';
+      } else {
+        state = 'attributeName';
+      }
+    }
   }
   return -1;
 }
 
+function findCommentEnd(source, start) {
+  if (source.startsWith('<!-->', start)) return start + 5;
+  if (source.startsWith('<!--->', start)) return start + 6;
+  const standardEnd = source.indexOf('-->', start + 4);
+  const bangEnd = source.indexOf('--!>', start + 4);
+  if (standardEnd === -1) {
+    return bangEnd === -1 ? -1 : bangEnd + 4;
+  }
+  if (bangEnd === -1) return standardEnd + 3;
+  return Math.min(standardEnd + 3, bangEnd + 4);
+}
+
+function isReconstructableTagPrefix(source, start, end, tagName) {
+  const length = end - start;
+  if (length <= 0 || length > tagName.length) return false;
+  for (let offset = 0; offset < length; offset += 1) {
+    if (asciiCode(source[start + offset]) !== tagName.charCodeAt(offset)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function findTagStart(source, marker, from) {
-  let start = source.indexOf('<', from);
-  while (start !== -1) {
+  let state = 'data';
+  let quote = null;
+  let tagNameStart = -1;
+  let tagNameCanReconstruct = false;
+  const tagName = marker.slice(1);
+  for (let start = from; start < source.length; start += 1) {
+    const character = source[start];
+    if (state === 'attributeValueQuoted') {
+      if (character === quote) {
+        quote = null;
+        state = 'afterAttributeValueQuoted';
+      }
+      continue;
+    }
+    if (character === '<' && (state === 'data' || state === 'tagName')) {
+      if (state === 'data' && source.startsWith('<!--', start)) {
+        const commentEnd = findCommentEnd(source, start);
+        if (commentEnd === -1) return -1;
+        start = commentEnd - 1;
+        continue;
+      }
+      const markerMatches =
+        matchesAsciiAt(source, start, marker) &&
+        isTagBoundary(source[start + marker.length]);
+      if (
+        markerMatches &&
+        (
+          state === 'data' ||
+          (
+            tagNameCanReconstruct &&
+            isReconstructableTagPrefix(
+              source,
+              tagNameStart,
+              start,
+              tagName,
+            )
+          )
+        )
+      ) {
+        return start;
+      }
+      if (beginsMarkup(source[start + 1])) {
+        tagNameCanReconstruct =
+          beginsOpeningTag(source[start + 1]) &&
+          (
+            state === 'data' ||
+            (
+              tagNameCanReconstruct &&
+              isReconstructableTagPrefix(
+                source,
+                tagNameStart,
+                start,
+                tagName,
+              )
+            )
+          );
+        state = 'tagName';
+        tagNameStart = start + (source[start + 1] === '/' ? 2 : 1);
+      }
+      continue;
+    }
+    if (state === 'data') continue;
+    if (character === '>') {
+      state = 'data';
+      tagNameStart = -1;
+      tagNameCanReconstruct = false;
+      continue;
+    }
+    if (state === 'tagName') {
+      if (isHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeName') {
+      if (isHtmlSpace(character) || character === '/') continue;
+      state = 'attributeName';
+      continue;
+    }
+    if (state === 'attributeName') {
+      if (isHtmlSpace(character)) {
+        state = 'afterAttributeName';
+      } else if (character === '=') {
+        state = 'beforeAttributeValue';
+      }
+      continue;
+    }
+    if (state === 'afterAttributeName') {
+      if (isHtmlSpace(character) || character === '/') continue;
+      state = character === '=' ? 'beforeAttributeValue' : 'attributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeValue') {
+      if (isHtmlSpace(character)) continue;
+      if (character === '"' || character === "'") {
+        quote = character;
+        state = 'attributeValueQuoted';
+      } else {
+        state = 'attributeValueUnquoted';
+      }
+      continue;
+    }
+    if (state === 'attributeValueUnquoted') {
+      if (isHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'afterAttributeValueQuoted') {
+      if (isHtmlSpace(character) || character === '/') {
+        state = 'beforeAttributeName';
+      } else {
+        state = 'attributeName';
+      }
+    }
+  }
+  return -1;
+}
+
+function findRawTextClosingTag(source, marker, from) {
+  for (let start = from; start < source.length; start += 1) {
     if (
+      source[start] === '<' &&
       matchesAsciiAt(source, start, marker) &&
       isTagBoundary(source[start + marker.length])
     ) {
       return start;
     }
-    start = source.indexOf('<', start + 1);
   }
   return -1;
 }
 
 function isSelfClosingTag(source, tagEnd) {
   let index = tagEnd - 1;
-  while (index >= 0 && /\s/.test(source[index])) index -= 1;
+  while (index >= 0 && isHtmlSpace(source[index])) index -= 1;
   return source[index] === '/';
 }
 
@@ -59,6 +265,7 @@ function findCompleteTagBlocks(source, tagName) {
   const closeMarker = `</${tagName}`;
   const blocks = [];
   let searchFrom = 0;
+  let knownNoCloseFrom = null;
 
   while (searchFrom < source.length) {
     const start = findTagStart(source, openMarker, searchFrom);
@@ -66,20 +273,28 @@ function findCompleteTagBlocks(source, tagName) {
     const openEnd = findTagEnd(source, start + openMarker.length);
     if (openEnd === -1) break;
 
-    const closeStart = findTagStart(source, closeMarker, openEnd + 1);
-    if (closeStart !== -1) {
-      const closeEnd = findTagEnd(source, closeStart + closeMarker.length);
-      if (closeEnd !== -1) {
-        blocks.push({ start, end: closeEnd + 1 });
-        searchFrom = closeEnd + 1;
+    let closeStart = -1;
+    if (knownNoCloseFrom === null || openEnd + 1 < knownNoCloseFrom) {
+      closeStart = findRawTextClosingTag(
+        source,
+        closeMarker,
+        openEnd + 1,
+      );
+      if (closeStart === -1) knownNoCloseFrom = openEnd + 1;
+    }
+    if (closeStart === -1) {
+      if (isSelfClosingTag(source, openEnd)) {
+        blocks.push({ start, end: openEnd + 1 });
+        searchFrom = openEnd + 1;
         continue;
       }
+      break;
     }
 
-    if (isSelfClosingTag(source, openEnd)) {
-      blocks.push({ start, end: openEnd + 1 });
-    }
-    searchFrom = openEnd + 1;
+    const closeEnd = findTagEnd(source, closeStart + closeMarker.length);
+    if (closeEnd === -1) break;
+    blocks.push({ start, end: closeEnd + 1 });
+    searchFrom = closeEnd + 1;
   }
   return blocks;
 }
@@ -88,20 +303,85 @@ function findCompleteComments(source) {
   const blocks = [];
   let searchFrom = 0;
   while (searchFrom < source.length) {
-    const start = source.indexOf('<!--', searchFrom);
+    const start = findCommentStart(source, searchFrom);
     if (start === -1) break;
-    const standardEnd = source.indexOf('-->', start + 4);
-    const bangEnd = source.indexOf('--!>', start + 4);
-    const candidates = [
-      standardEnd === -1 ? null : standardEnd + 3,
-      bangEnd === -1 ? null : bangEnd + 4,
-    ].filter((end) => end !== null);
-    if (candidates.length === 0) break;
-    const end = Math.min(...candidates);
+    const end = findCommentEnd(source, start);
+    if (end === -1) break;
     blocks.push({ start, end });
     searchFrom = end;
   }
   return blocks;
+}
+
+function findCommentStart(source, from) {
+  let state = 'data';
+  let quote = null;
+  for (let start = from; start < source.length; start += 1) {
+    const character = source[start];
+    if (state === 'attributeValueQuoted') {
+      if (character === quote) {
+        quote = null;
+        state = 'afterAttributeValueQuoted';
+      }
+      continue;
+    }
+    if (character === '<' && (state === 'data' || state === 'tagName')) {
+      if (state === 'data' && source.startsWith('<!--', start)) return start;
+      if (state === 'data' && beginsMarkup(source[start + 1])) {
+        state = 'tagName';
+      }
+      continue;
+    }
+    if (state === 'data') continue;
+    if (character === '>') {
+      state = 'data';
+      continue;
+    }
+    if (state === 'tagName') {
+      if (isHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeName') {
+      if (isHtmlSpace(character) || character === '/') continue;
+      state = 'attributeName';
+      continue;
+    }
+    if (state === 'attributeName') {
+      if (isHtmlSpace(character)) {
+        state = 'afterAttributeName';
+      } else if (character === '=') {
+        state = 'beforeAttributeValue';
+      }
+      continue;
+    }
+    if (state === 'afterAttributeName') {
+      if (isHtmlSpace(character) || character === '/') continue;
+      state = character === '=' ? 'beforeAttributeValue' : 'attributeName';
+      continue;
+    }
+    if (state === 'beforeAttributeValue') {
+      if (isHtmlSpace(character)) continue;
+      if (character === '"' || character === "'") {
+        quote = character;
+        state = 'attributeValueQuoted';
+      } else {
+        state = 'attributeValueUnquoted';
+      }
+      continue;
+    }
+    if (state === 'attributeValueUnquoted') {
+      if (isHtmlSpace(character)) state = 'beforeAttributeName';
+      continue;
+    }
+    if (state === 'afterAttributeValueQuoted') {
+      if (isHtmlSpace(character) || character === '/') {
+        state = 'beforeAttributeName';
+      } else {
+        state = 'attributeName';
+      }
+    }
+  }
+  return -1;
 }
 
 function removeBlocks(source, candidates) {

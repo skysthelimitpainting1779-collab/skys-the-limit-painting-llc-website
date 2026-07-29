@@ -11,7 +11,13 @@ import {
   parseRuntimeServerEnv,
 } from '../src/lib/env/server-schema.ts';
 import {
+  ConvexPreviewDefaultsSchema,
+  ConvexPreviewProviderDeploymentSchema,
+  ConvexPreviewWebhookProvisioningSchema,
   DeploymentEnvSchema,
+  ProductionWebhookDeploymentEnvSchema,
+  parseConvexPreviewDefaults,
+  parseConvexPreviewWebhookProvisioning,
   parseDeploymentEnv,
 } from '../src/lib/env/deployment-schema.ts';
 import { parseConvexClerkAuthEnv } from '../convex/clerkAuth.ts';
@@ -108,6 +114,118 @@ test('deployment environment validates the Convex deploy key in an isolated sche
   assert.equal(DeploymentEnvSchema.safeParse({
     ...deploymentEnv,
     NEXT_PUBLIC_APP_ENV: 'production',
+  }).success, false);
+});
+
+test('Convex Preview defaults require preview labels and test-tier Clerk authority', () => {
+  const defaults = {
+    NEXT_PUBLIC_APP_ENV: 'preview',
+    CLERK_JWT_ISSUER_ENV: 'preview',
+    CLERK_JWT_ISSUER_DOMAIN: 'https://sky-preview.clerk.accounts.dev',
+    CLERK_SECRET_KEY: 'sk_test_preview_secret_1234567890',
+  };
+  assert.deepEqual(parseConvexPreviewDefaults(defaults), defaults);
+  assert.equal(ConvexPreviewDefaultsSchema.safeParse({
+    ...defaults,
+    NEXT_PUBLIC_APP_ENV: 'production',
+  }).success, false);
+  assert.equal(ConvexPreviewDefaultsSchema.safeParse({
+    ...defaults,
+    CLERK_JWT_ISSUER_ENV: 'production',
+  }).success, false);
+  assert.equal(ConvexPreviewDefaultsSchema.safeParse({
+    ...defaults,
+    CLERK_SECRET_KEY: 'sk_live_example',
+  }).success, false);
+  assert.equal(ConvexPreviewDefaultsSchema.safeParse({
+    ...defaults,
+    CLERK_SECRET_KEY: 'sk_test_',
+  }).success, false);
+  assert.equal(ConvexPreviewDefaultsSchema.safeParse({
+    ...defaults,
+    CLERK_JWT_ISSUER_DOMAIN: 'https://clerk.example.com',
+  }).success, false);
+  assert.equal(ConvexPreviewDefaultsSchema.safeParse({
+    ...defaults,
+    CLERK_JWT_ISSUER_DOMAIN:
+      'https://sky-preview.clerk.accounts.dev/path',
+  }).success, false);
+});
+
+test('Production deployment requires an endpoint-specific webhook secret', () => {
+  assert.equal(ProductionWebhookDeploymentEnvSchema.safeParse({
+    NEXT_PUBLIC_APP_ENV: 'production',
+    CLERK_WEBHOOK_SIGNING_SECRET:
+      'whsec_production_secret_12345678901234567890',
+  }).success, true);
+  assert.equal(ProductionWebhookDeploymentEnvSchema.safeParse({
+    NEXT_PUBLIC_APP_ENV: 'production',
+  }).success, false);
+  assert.equal(ProductionWebhookDeploymentEnvSchema.safeParse({
+    NEXT_PUBLIC_APP_ENV: 'production',
+    CLERK_WEBHOOK_SIGNING_SECRET: 'whsec_',
+  }).success, false);
+});
+
+test('Convex provider metadata must identify a cloud Preview deployment', () => {
+  const deployment = {
+    id: 577,
+    kind: 'cloud',
+    name: 'hidden-roadrunner-577',
+    deploymentType: 'preview',
+    projectId: 4125,
+    previewIdentifier: 'agent/skys-limit-convex-os',
+    deploymentUrl: 'https://hidden-roadrunner-577.convex.cloud',
+  };
+  assert.equal(
+    ConvexPreviewProviderDeploymentSchema.safeParse(deployment).success,
+    true,
+  );
+  assert.equal(ConvexPreviewProviderDeploymentSchema.safeParse({
+    ...deployment,
+    deploymentType: 'prod',
+  }).success, false);
+});
+
+test('Convex Preview webhook provisioning binds one endpoint to one deployment', () => {
+  const provisioning = {
+    NEXT_PUBLIC_APP_ENV: 'preview',
+    CONVEX_DEPLOYMENT_TYPE: 'preview',
+    CONVEX_DEPLOYMENT: 'hidden-roadrunner-577',
+    CONVEX_SITE_URL: 'https://hidden-roadrunner-577.convex.site',
+    CLERK_WEBHOOK_ENDPOINT_URL:
+      'https://hidden-roadrunner-577.convex.site/clerk/lifecycle',
+    CLERK_WEBHOOK_SIGNING_SECRET:
+      'whsec_preview_secret_12345678901234567890',
+  };
+  assert.deepEqual(
+    parseConvexPreviewWebhookProvisioning(provisioning),
+    provisioning,
+  );
+  assert.equal(ConvexPreviewWebhookProvisioningSchema.safeParse({
+    ...provisioning,
+    CLERK_WEBHOOK_ENDPOINT_URL:
+      'https://another-preview.convex.site/clerk/lifecycle',
+  }).success, false);
+  assert.equal(ConvexPreviewWebhookProvisioningSchema.safeParse({
+    ...provisioning,
+    CLERK_WEBHOOK_SIGNING_SECRET: 'sk_test_wrong_kind',
+  }).success, false);
+  assert.equal(ConvexPreviewWebhookProvisioningSchema.safeParse({
+    ...provisioning,
+    CLERK_WEBHOOK_SIGNING_SECRET: 'whsec_',
+  }).success, false);
+  assert.equal(ConvexPreviewWebhookProvisioningSchema.safeParse({
+    ...provisioning,
+    CONVEX_DEPLOYMENT_TYPE: 'production',
+  }).success, false);
+  assert.equal(ConvexPreviewWebhookProvisioningSchema.safeParse({
+    ...provisioning,
+    CONVEX_DEPLOYMENT: 'another-preview-123',
+  }).success, false);
+  assert.equal(ConvexPreviewWebhookProvisioningSchema.safeParse({
+    ...provisioning,
+    CONVEX_SITE_URL: 'https://example.com',
   }).success, false);
 });
 

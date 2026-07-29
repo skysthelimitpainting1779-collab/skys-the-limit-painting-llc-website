@@ -21,6 +21,7 @@ import {
   relativeLuminance,
 } from '../shared/color.mjs';
 import { extractGoogleFontFamilies } from '../shared/fonts.mjs';
+import { stripHtmlBlocks } from '../../lib/html-filtering.mjs';
 
 const DETECTOR_IS_BROWSER = typeof window !== 'undefined';
 
@@ -1553,14 +1554,9 @@ function checkHtmlPatterns(html) {
   // Lives here (regex-on-HTML) rather than in the text-content analyzers so it
   // runs in the bundled browser path too, not just the CLI/static path.
   {
-    let filteredHtml = html;
-    let previous;
-    do {
-      previous = filteredHtml;
-      filteredHtml = filteredHtml
-        .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '')
-        .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, '');
-    } while (filteredHtml !== previous);
+    const filteredHtml = stripHtmlBlocks(html, {
+      tags: ['script', 'style'],
+    });
     const bodyText = filteredHtml.replace(/<[^>]+>/g, ' ');
     const tm = /\b(\w+)\s+theater\b/i.exec(bodyText);
     if (tm) findings.push({ id: 'theater-slop-phrase', snippet: `"${tm[0].trim()}"` });

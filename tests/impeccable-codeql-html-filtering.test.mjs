@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -49,6 +49,90 @@ test('shared HTML filtering removes reconstructed hidden blocks without replacem
     }),
     'VISIBLE</style>',
   );
+  const visibleUnicodeBoundary =
+    '<script\u00a0>Design theater</script\u00a0>';
+  assert.equal(
+    stripHtmlBlocks(visibleUnicodeBoundary, { tags: ['script'] }),
+    visibleUnicodeBoundary,
+  );
+  const unclosedOpeners = `${'<script>'.repeat(4_096)}visible`;
+  assert.equal(
+    stripHtmlBlocks(unclosedOpeners, { tags: ['script'] }),
+    unclosedOpeners,
+  );
+  const quotedAttributeMarker =
+    '<div title="<script>">Design theater</div></script>';
+  assert.equal(
+    stripHtmlBlocks(quotedAttributeMarker, { tags: ['script'] }),
+    quotedAttributeMarker,
+  );
+  assert.equal(
+    stripHtmlBlocks('2 < 3 "visible" <script>hidden</script>', {
+      tags: ['script'],
+    }),
+    '2 < 3 "visible" ',
+  );
+  assert.equal(
+    stripHtmlBlocks('<script/>'.repeat(4_096), { tags: ['script'] }),
+    '',
+  );
+  const quotedCommentMarker =
+    '<div title="<!--">unlock potential</div>-->';
+  assert.equal(
+    stripHtmlBlocks(quotedCommentMarker, { comments: true }),
+    quotedCommentMarker,
+  );
+  assert.equal(
+    stripHtmlBlocks(
+      `<div data-x=abc' ><script>hidden</script><p>safe</p>`,
+      { tags: ['script'] },
+    ),
+    `<div data-x=abc' ><p>safe</p>`,
+  );
+  assert.equal(
+    stripHtmlBlocks(
+      '<!-- " --><script>hidden</script>',
+      { comments: true, tags: ['script'] },
+    ),
+    '',
+  );
+  for (const abruptComment of ['<!-->', '<!--->']) {
+    assert.equal(
+      stripHtmlBlocks(
+        `${abruptComment}<script>hidden</script>`,
+        { comments: true, tags: ['script'] },
+      ),
+      '',
+    );
+  }
+  assert.equal(
+    stripHtmlBlocks(
+      `<script>const x = '<div title="'; hidden</script>`,
+      { tags: ['script'] },
+    ),
+    '',
+  );
+  const unquotedAttributeMarker =
+    '<div data=<script>>Design theater</div></script>';
+  assert.equal(
+    stripHtmlBlocks(unquotedAttributeMarker, { tags: ['script'] }),
+    unquotedAttributeMarker,
+  );
+  const unrelatedTagNameMarker =
+    '<x<script>Design theater</script>';
+  assert.equal(
+    stripHtmlBlocks(unrelatedTagNameMarker, { tags: ['script'] }),
+    unrelatedTagNameMarker,
+  );
+  for (const visibleMalformedTag of [
+    '</scrip<script>Design theater</script>',
+    '<x<s<script>Design theater</script>cript>',
+  ]) {
+    assert.equal(
+      stripHtmlBlocks(visibleMalformedTag, { tags: ['script'] }),
+      visibleMalformedTag,
+    );
+  }
 
   let reconstructionBomb = '<style>x</style>';
   for (let index = 0; index < 32; index += 1) {
@@ -132,9 +216,60 @@ test('page and detector filters remove tags and comments until stable', async ()
     true,
   );
   assert.equal(
+    checkHtmlPatterns('<script\u00a0>Design theater</script\u00a0>')
+      .some((finding) => finding.id === 'theater-slop-phrase'),
+    true,
+  );
+  assert.equal(
+    checkHtmlPatterns(
+      '<div title="<script>">Design theater</div></script>',
+    ).some((finding) => finding.id === 'theater-slop-phrase'),
+    true,
+  );
+  assert.equal(
+    checkHtmlPatterns(
+      '<x<script>Design theater</script>',
+    ).some((finding) => finding.id === 'theater-slop-phrase'),
+    true,
+  );
+  for (const visibleMalformedTag of [
+    '</scrip<script>Design theater</script>',
+    '<x<s<script>Design theater</script>cript>',
+  ]) {
+    assert.equal(
+      checkHtmlPatterns(visibleMalformedTag)
+        .some((finding) => finding.id === 'theater-slop-phrase'),
+      true,
+    );
+  }
+  assert.equal(
     detectText(hiddenBuzzword, 'page.html')
       .some((finding) => finding.antipattern === 'marketing-buzzword'),
     false,
+  );
+  assert.equal(
+    detectText(
+      '<!doctype html><html><body><div title="<!--">streamline your workflow</div>--></body></html>',
+      'page.html',
+    ).some((finding) => finding.antipattern === 'marketing-buzzword'),
+    true,
+  );
+
+  const browserBundle = readFileSync(
+    new URL('detector/detect-antipatterns-browser.js', scripts),
+    'utf8',
+  );
+  assert.match(browserBundle, /function stripBrowserRawText/);
+  assert.match(browserBundle, /function browserIsHtmlSpace/);
+  assert.match(browserBundle, /function browserBeginsMarkup/);
+  assert.match(browserBundle, /function browserFindRawTextClosingTag/);
+  assert.match(browserBundle, /let knownNoCloseFrom = null/);
+  assert.match(browserBundle, /state === 'attributeValueQuoted'/);
+  assert.match(browserBundle, /if \(closeStart === -1\) \{[\s\S]*?break;/);
+  assert.doesNotMatch(browserBundle, /\/\[\\s\/>\]\/\.test\(boundary\)/);
+  assert.doesNotMatch(
+    browserBundle,
+    /\.replace\(\/<script\\b\[\^>\]\*>\[\\s\\S\]\*\?/,
   );
 });
 
