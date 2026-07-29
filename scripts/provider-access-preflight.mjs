@@ -429,12 +429,24 @@ function controlPlaneDatabasePath() {
   return join(runtimeRoot, 'graphify.db');
 }
 
+function unavailableLifecycleAuthority() {
+  return {
+    programId,
+    checkpointId: null,
+    currentNodeId: null,
+    currentStageId: null,
+    active: false,
+    expiresAt: null,
+  };
+}
+
 function loadLifecycleAuthority(databasePath, evaluatedAt) {
-  const database = new Database(databasePath, {
-    readonly: true,
-    fileMustExist: true,
-  });
+  let database;
   try {
+    database = new Database(databasePath, {
+      readonly: true,
+      fileMustExist: true,
+    });
     const lease = database
       .prepare(
         `SELECT checkpoint_id, node_id, stage_id, expires_at
@@ -452,8 +464,10 @@ function loadLifecycleAuthority(databasePath, evaluatedAt) {
         new Date(lease.expires_at).valueOf() >= evaluatedAt.valueOf(),
       expiresAt: lease?.expires_at || null,
     };
+  } catch {
+    return unavailableLifecycleAuthority();
   } finally {
-    database.close();
+    database?.close();
   }
 }
 

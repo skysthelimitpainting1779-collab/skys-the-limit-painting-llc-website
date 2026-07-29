@@ -183,6 +183,10 @@
     }
   }
 
+  body:has([data-estimate-planner]) .mobile-estimate-cta {
+    display: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

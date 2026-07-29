@@ -144,7 +144,7 @@ export default function RootLayout({
           </main>
 
           {/* Mobile Sticky Bottom CTA */}
-          <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 max-w-[calc(100vw-2rem)]">
+          <div className="mobile-estimate-cta fixed bottom-4 left-4 right-4 z-50 max-w-[calc(100vw-2rem)] md:hidden">
             <Link
               href="/estimate"
               data-track="hero_cta_click"

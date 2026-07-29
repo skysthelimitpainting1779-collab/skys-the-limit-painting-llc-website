@@ -11,6 +11,15 @@ from pathlib import Path
 from typing import Any
 
 
+MAX_UNGOVERNED_REMOTE_COMMITS = 8
+GOVERNANCE_TRAILERS = (
+    "Execution-Program",
+    "Execution-Node",
+    "Checkpoint-ID",
+    "Evidence-SHA256",
+)
+
+
 def git(root: Path, *args: str) -> str:
     return subprocess.run(
         ["git", *args],
@@ -22,11 +31,18 @@ def git(root: Path, *args: str) -> str:
 
 
 def trailers(message: str) -> dict[str, str]:
+    parsed = subprocess.run(
+        ["git", "interpret-trailers", "--parse"],
+        input=message,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
     result: dict[str, str] = {}
-    for line in message.splitlines():
+    for line in parsed.splitlines():
         name, separator, value = line.partition(":")
         if separator and name and value.strip():
-            result[name] = value.strip()
+            result[name] = "" if name in result else value.strip()
     return result
 
 
@@ -62,6 +78,135 @@ def evidence_contains(evidence: Any, expected_sha: str) -> bool:
             str(item.get("evidenceSha256") or ""),
         }
         for item in evidence
+    )
+
+
+def evidence_contains_remote_reconciliation(
+    root: Path,
+    evidence: Any,
+    reconciliation: dict[str, Any],
+    expected_sha: str,
+    expected_ref: str,
+) -> bool:
+    if (
+        not expected_sha
+        or not evidence_contains(evidence, expected_sha)
+        or len(expected_sha) != 64
+    ):
+        return False
+    receipt_path = (
+        root / ".agents" / "execution" / "evidence" / f"{expected_sha}.json"
+    )
+    if not receipt_path.is_file() or sha256_file(receipt_path) != expected_sha:
+        return False
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    recorded = receipt.get("remoteStartReconciliation")
+    return (
+        isinstance(recorded, dict)
+        and recorded.get("commitSha") == reconciliation.get("commitSha")
+        and recorded.get("fromGovernedHead")
+        == reconciliation.get("fromGovernedHead")
+        and recorded.get("ungovernedCommitCount")
+        == reconciliation.get("ungovernedCommitCount")
+        and recorded.get("pushedRef") == expected_ref
+    )
+
+
+def resolve_remote_start_handoff(
+    root: Path,
+    connection: sqlite3.Connection,
+    program_id: str,
+    remote_start: str,
+    pushed_head: str,
+) -> tuple[sqlite3.Row | None, dict[str, Any] | None, str | None]:
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", remote_start, pushed_head],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if ancestor.returncode != 0:
+        return None, None, "remote start is not an ancestor of the pushed HEAD"
+
+    history = [
+        commit
+        for commit in git(
+            root,
+            "rev-list",
+            "--first-parent",
+            f"--max-count={MAX_UNGOVERNED_REMOTE_COMMITS + 1}",
+            remote_start,
+        ).splitlines()
+        if commit
+    ]
+    for distance, candidate in enumerate(history):
+        handoff = connection.execute(
+            """
+            SELECT
+              h.next_node,
+              h.next_stage,
+              h.checkpoint_id,
+              h.node_id,
+              h.stage_id,
+              h.head_sha,
+              e.tree_sha,
+              e.payload_json
+            FROM lifecycle_handoffs AS h
+            JOIN lifecycle_events AS e
+              ON e.program_id = h.program_id
+             AND e.checkpoint_id = h.checkpoint_id
+             AND e.event_type = 'checkpoint_completed'
+             AND e.node_id = h.node_id
+             AND e.stage_id = h.stage_id
+             AND e.head_sha = h.head_sha
+            WHERE h.program_id = ? AND h.head_sha = ?
+            ORDER BY e.event_sequence DESC, h.created_at DESC, h.handoff_id DESC
+            LIMIT 1
+            """,
+            (program_id, candidate),
+        ).fetchone()
+        values = trailers(git(root, "show", "-s", "--format=%B", candidate))
+        if handoff is None:
+            if any(values.get(name) for name in GOVERNANCE_TRAILERS):
+                return (
+                    None,
+                    None,
+                    "remote history contains a governed commit without an exact handoff",
+                )
+            continue
+        if (
+            any(not values.get(name) for name in GOVERNANCE_TRAILERS)
+            or values.get("Execution-Program") != program_id
+            or values.get("Execution-Node") != handoff["node_id"]
+            or values.get("Checkpoint-ID") != handoff["checkpoint_id"]
+        ):
+            return None, None, "remote ancestor handoff has invalid commit authority"
+        candidate_tree = git(root, "rev-parse", f"{candidate}^{{tree}}")
+        if handoff["tree_sha"] != candidate_tree:
+            return None, None, "remote ancestor handoff has an invalid commit tree"
+        completion_payload = json.loads(str(handoff["payload_json"]))
+        if not evidence_contains(
+            completion_payload.get("evidence"),
+            str(values["Evidence-SHA256"]),
+        ):
+            return None, None, "remote ancestor handoff lacks exact evidence authority"
+        if distance == 0:
+            return handoff, None, None
+        return (
+            handoff,
+            {
+                "commitSha": remote_start,
+                "fromGovernedHead": candidate,
+                "ungovernedCommitCount": distance,
+            },
+            None,
+        )
+
+    return (
+        None,
+        None,
+        "remote start has no bounded governed ancestor handoff",
     )
 
 
@@ -333,6 +478,7 @@ def verify(
             "SELECT * FROM execution_graph_imports WHERE program_id = ?",
             (config.get("programId"),),
         ).fetchone()
+        remote_reconciliation: dict[str, Any] | None = None
         if execution_import is None:
             errors.append("SQLite has no imported authority for this execution program")
             graph_id = ""
@@ -370,13 +516,27 @@ def verify(
                     (config.get("programId"), start),
                 ).fetchone()
                 if prior_handoff is None:
-                    errors.append(
-                        "SQLite has no handoff continuing from the remote start commit"
+                    (
+                        prior_handoff,
+                        remote_reconciliation,
+                        reconciliation_error,
+                    ) = resolve_remote_start_handoff(
+                        root,
+                        connection,
+                        str(config.get("programId")),
+                        start,
+                        head,
                     )
+                    if reconciliation_error:
+                        errors.append(reconciliation_error)
                 else:
                     expected_node = str(prior_handoff["next_node"])
                     expected_stage = str(prior_handoff["next_stage"])
+                if prior_handoff is not None:
+                    expected_node = str(prior_handoff["next_node"])
+                    expected_stage = str(prior_handoff["next_stage"])
 
+        reconciliation_evidenced = remote_reconciliation is None
         for commit in commits:
             values = trailers(git(root, "show", "-s", "--format=%B", commit))
             commit_checkpoint_id = values.get("Checkpoint-ID", "")
@@ -424,6 +584,14 @@ def verify(
                 errors.append(
                     f"{commit[:12]} checkpoint does not contain its evidence digest"
                 )
+            if remote_reconciliation and evidence_contains_remote_reconciliation(
+                root,
+                payload.get("evidence"),
+                remote_reconciliation,
+                commit_evidence_sha,
+                f"refs/heads/{config['integrationBranch']}",
+            ):
+                reconciliation_evidenced = True
             if graph_id:
                 started_stage = connection.execute(
                     """
@@ -498,6 +666,11 @@ def verify(
                         errors.append(f"{commit[:12]} {transition}")
                     expected_node = str(handoff["next_node"])
                     expected_stage = str(handoff["next_stage"])
+
+        if not reconciliation_evidenced:
+            errors.append(
+                "remote advance is missing explicit remote_start_reconciliation evidence"
+            )
 
         imports = connection.execute(
             "SELECT * FROM graphify_imports WHERE built_at_commit = ?",
