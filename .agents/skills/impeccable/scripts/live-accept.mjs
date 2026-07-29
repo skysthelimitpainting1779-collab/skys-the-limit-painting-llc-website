@@ -15,6 +15,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { stripHtmlBlocks } from './lib/html-filtering.mjs';
 import { isGeneratedFile } from './lib/is-generated.mjs';
 import { getLiveDir, safeSessionId } from './lib/impeccable-paths.mjs';
 import { resolveLiveTemplateExtensions } from './lib/template-extensions.mjs';
@@ -676,17 +677,11 @@ function stripStyleAndJoin(lines, block) {
     if (!inStyle) {
       // Strip any complete <style> elements on this line (self-closed or
       // same-line-closed), including their body content.
-      let previous;
-      do {
-        previous = line;
-        line = line
-          .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/g, '')
-          .replace(/<style\b[^>]*\/\s*>/g, '');
-      } while (line !== previous);
+      line = stripHtmlBlocks(line, { tags: ['style'] });
 
       // If a <style> opener remains (multi-line body starts here), strip from
       // the opener to end-of-line and flip into skip mode.
-      const openerIdx = line.search(/<style\b/);
+      const openerIdx = line.search(/<style\b/i);
       if (openerIdx !== -1) {
         line = line.slice(0, openerIdx);
         inStyle = true;
@@ -694,10 +689,10 @@ function stripStyleAndJoin(lines, block) {
       out.push(line);
     } else {
       // In multi-line style body; drop everything until we see </style>.
-      const closeIdx = line.search(/<\/style\s*>/);
+      const closeIdx = line.search(/<\/style\s*>/i);
       if (closeIdx !== -1) {
         inStyle = false;
-        out.push(line.slice(closeIdx).replace(/<\/style\s*>/, ''));
+        out.push(line.slice(closeIdx).replace(/<\/style\s*>/i, ''));
       }
       // else: skip line entirely
     }

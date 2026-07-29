@@ -7,6 +7,7 @@ import { isFullPage } from '../../shared/page.mjs';
 import { applyInlineIgnores } from '../../shared/inline-ignores.mjs';
 import { finding } from '../../findings.mjs';
 import { profileFindings, profileStep } from '../../profile/profiler.mjs';
+import { stripHtmlBlocks } from '../../../lib/html-filtering.mjs';
 
 // ---------------------------------------------------------------------------
 // Regex fallback (non-HTML files: CSS, JSX, TSX, etc.)
@@ -20,15 +21,10 @@ const isSafeElement = (line) => /<(?:blockquote|nav[\s>]|pre[\s>]|code[\s>]|a\s|
 /** Strip HTML to plain text — drops script/style/comments/tags so
  *  content-text analyzers don't false-positive on code or CSS. */
 function stripHtmlToText(html) {
-  let filtered = html;
-  let previous;
-  do {
-    previous = filtered;
-    filtered = filtered
-      .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '')
-      .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, '')
-      .replace(/<!--[\s\S]*?--!?>/g, '');
-  } while (filtered !== previous);
+  const filtered = stripHtmlBlocks(html, {
+    comments: true,
+    tags: ['script', 'style'],
+  });
   return filtered
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ');

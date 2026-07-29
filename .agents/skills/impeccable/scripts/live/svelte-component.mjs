@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { createHash } from 'node:crypto';
+import { stripHtmlBlocks } from '../lib/html-filtering.mjs';
 
 export const SVELTE_COMPONENT_ROOT = 'node_modules/.impeccable-live';
 export const SVELTE_RUNTIME_FILE = `${SVELTE_COMPONENT_ROOT}/__runtime.js`;
@@ -632,15 +633,10 @@ function inlineSvelteComponentInsertAccept({
 }
 
 export function svelteMarkupHasVisibleContent(markup) {
-  let visibleMarkup = String(markup || '');
-  let previous;
-  do {
-    previous = visibleMarkup;
-    visibleMarkup = visibleMarkup
-      .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '')
-      .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, '')
-      .replace(/<!--[\s\S]*?--!?>/g, '');
-  } while (visibleMarkup !== previous);
+  const visibleMarkup = stripHtmlBlocks(markup, {
+    comments: true,
+    tags: ['script', 'style'],
+  });
   const text = visibleMarkup
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')

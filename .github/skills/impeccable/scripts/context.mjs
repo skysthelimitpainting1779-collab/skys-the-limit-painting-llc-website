@@ -30,6 +30,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stripHtmlBlocks } from './lib/html-filtering.mjs';
 import { parseTargetOptions } from './lib/target-args.mjs';
 import { IMPECCABLE_COMMAND, IMPECCABLE_PROVIDER_ID } from './lib/provider.mjs';
 import { resolveSurfaceBrief } from './lib/surface-briefs.mjs';
@@ -852,10 +853,12 @@ export function hasVisualImplementation(projectRoot) {
     let previous;
     do {
       previous = evidence;
-      evidence = evidence
-        .replace(/\/\*[\s\S]*?\*\//g, '')
-        .replace(/<!--[\s\S]*?--!?>/g, '')
-        .replace(/^\s*\/\/.*$/gm, '');
+      evidence = stripHtmlBlocks(
+        evidence
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          .replace(/^\s*\/\/.*$/gm, ''),
+        { comments: true },
+      );
     } while (evidence !== previous);
     if (STYLE_EXTENSIONS.has(ext)) {
       const customProperties = evidence.match(/--[a-z0-9_-]+\s*:/gi)?.length ?? 0;
