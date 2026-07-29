@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import {
+  chmodSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -22,6 +23,10 @@ import {
   validateGovernedCommit,
 } from '../scripts/lib/development-lifecycle.mjs';
 import { canonicalSha256 } from '../scripts/lib/canonical-text.mjs';
+import {
+  collectCommitPaths,
+  validateRemoteMergeReconciliation,
+} from '../scripts/verify-development-lifecycle.mjs';
 
 const governedMessage = `fix(ci): enforce lifecycle contract
 
@@ -216,6 +221,19 @@ test('repository pins one audited execution graph as lifecycle authority', () =>
   assert.equal(config.executionGraph.authoritative, true);
   assert.equal(config.integrationBranch, 'agent/skys-limit-convex-os');
   assert.equal(config.evidenceReceipts.directory, '.agents/execution/evidence');
+  assert.deepEqual(config.remoteStartReconciliations, [
+    {
+      mergeCommitSha: '1693afff2c3e44f08baa5debf87ba81238227cc2',
+      mergeTreeSha: 'ac5be24f851515642249b8f210250e9098471b0f',
+      evidenceSha256:
+        'f02ef467a4f161e62e9b5fb1a70735612b5bc6d58bba85018367c2e38e890bf1',
+      firstParentSha: '82b182d9d4bc2f75b213ff4eee6c9cbb3f4ac08a',
+      remoteStartSha: '9c10da6e5d15151a6fb4367f004d268c6245d71d',
+      mergeBaseSha: 'fb4a8f154b32a3337be444159c80c9183eeb4f9c',
+      pushedRef: 'refs/heads/agent/skys-limit-convex-os',
+      ungovernedCommitCount: 1,
+    },
+  ]);
   assert.doesNotMatch(graph.toString('utf8'), /\/mnt\/data\//);
   const validation = readFileSync(
     new URL(config.executionGraph.validationPath, rootUrl),
@@ -335,8 +353,11 @@ test('agent tooling discovers the shared control plane without tracked machine p
 });
 
 test('pre-push accepts only the exact integration ref and gates SQLite state', () => {
+  const root = fileURLToPath(rootUrl);
+  const reconciliationRemote =
+    '9c10da6e5d15151a6fb4367f004d268c6245d71d';
   const head = spawnSync('git', ['rev-parse', 'HEAD'], {
-    cwd: fileURLToPath(rootUrl),
+    cwd: root,
     encoding: 'utf8',
   }).stdout.trim();
   const verifier = fileURLToPath(new URL('scripts/verify-push-target.mjs', rootUrl));
@@ -344,9 +365,9 @@ test('pre-push accepts only the exact integration ref and gates SQLite state', (
     'node',
     [verifier, 'origin'],
     {
-      cwd: fileURLToPath(rootUrl),
+      cwd: root,
       encoding: 'utf8',
-      input: `HEAD ${head} refs/heads/agent/skys-limit-convex-os ${'0'.repeat(40)}\n`,
+      input: `HEAD ${head} refs/heads/agent/skys-limit-convex-os ${reconciliationRemote}\n`,
     }
   );
   assert.equal(accepted.status, 0, accepted.stderr);
@@ -355,7 +376,7 @@ test('pre-push accepts only the exact integration ref and gates SQLite state', (
     'node',
     [verifier, 'origin'],
     {
-      cwd: fileURLToPath(rootUrl),
+      cwd: root,
       encoding: 'utf8',
       input: `refs/heads/agent/audit-security-remediation ${head} refs/heads/agent/audit-security-remediation ${'0'.repeat(40)}\n`,
     }
@@ -367,7 +388,7 @@ test('pre-push accepts only the exact integration ref and gates SQLite state', (
     'node',
     [verifier, 'origin'],
     {
-      cwd: fileURLToPath(rootUrl),
+      cwd: root,
       encoding: 'utf8',
       input: `delete ${'0'.repeat(40)} refs/heads/main ${head}\n`,
     }
@@ -379,13 +400,39 @@ test('pre-push accepts only the exact integration ref and gates SQLite state', (
     'node',
     [verifier, 'origin'],
     {
-      cwd: fileURLToPath(rootUrl),
+      cwd: root,
       encoding: 'utf8',
       input: `HEAD ${head} refs/heads/agent/skys-limit-convex-os ${'f'.repeat(40)}\n`,
     }
   );
   assert.equal(nonFastForward.status, 1);
   assert.match(nonFastForward.stderr, /not a fast-forward/);
+
+  const exactReconciliation = spawnSync(
+    'node',
+    [verifier, 'origin'],
+    {
+      cwd: root,
+      encoding: 'utf8',
+      input: `HEAD ${head} refs/heads/agent/skys-limit-convex-os ${reconciliationRemote}\n`,
+    }
+  );
+  assert.equal(exactReconciliation.status, 0, exactReconciliation.stderr);
+
+  const wrongReconciliationRemote = spawnSync(
+    'node',
+    [verifier, 'origin'],
+    {
+      cwd: root,
+      encoding: 'utf8',
+      input: `HEAD ${head} refs/heads/agent/skys-limit-convex-os fb4a8f154b32a3337be444159c80c9183eeb4f9c\n`,
+    }
+  );
+  assert.equal(wrongReconciliationRemote.status, 1);
+  assert.match(
+    wrongReconciliationRemote.stderr,
+    /exact reconciliation remote tip and ref/
+  );
 
   const hook = readFileSync(new URL('.husky/pre-push', rootUrl), 'utf8');
   assert.match(hook, /verify-push-target\.mjs/);
@@ -429,11 +476,300 @@ test('Graphify hooks bootstrap fresh worktrees and pre-push enforces freshness',
   assert.match(stateGate, /checkpoint stage span is missing required edge/);
 });
 
-test('the lifecycle gate rejects merge commits instead of skipping their tree changes', () => {
-  const verifier = readFileSync(
-    new URL('scripts/verify-development-lifecycle.mjs', rootUrl),
-    'utf8'
+test('pre-push stops independently on lifecycle and SQLite gate failures', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'sky-pre-push-gates-'));
+  const bin = join(fixture, 'bin');
+  const log = join(fixture, 'calls.log');
+  mkdirSync(bin);
+  const shim = (name, body) => {
+    const path = join(bin, name);
+    writeFileSync(path, `#!/bin/sh\n${body}\n`);
+    chmodSync(path, 0o755);
+  };
+  shim('node', `printf 'node\\n' >> "$MOCK_GATE_LOG"; exit 0`);
+  shim(
+    'npm',
+    `printf 'npm\\n' >> "$MOCK_GATE_LOG"; exit "\${MOCK_NPM_STATUS:-0}"`
   );
-  assert.match(verifier, /merge commits are not allowed in the governed integration range/);
-  assert.doesNotMatch(verifier, /if \(parents\.length > 1\) continue/);
+  shim(
+    'python',
+    `printf 'python\\n' >> "$MOCK_GATE_LOG"; exit "\${MOCK_PYTHON_STATUS:-0}"`
+  );
+  shim('entire', `printf 'entire\\n' >> "$MOCK_GATE_LOG"; exit 0`);
+  const hook = fileURLToPath(new URL('.husky/pre-push', rootUrl));
+  const input = `HEAD ${'a'.repeat(40)} refs/heads/agent/skys-limit-convex-os ${'b'.repeat(40)}\n`;
+  const runHook = ({ npmStatus, pythonStatus }) =>
+    spawnSync('sh', [hook, 'origin'], {
+      cwd: fileURLToPath(rootUrl),
+      encoding: 'utf8',
+      input,
+      env: {
+        ...process.env,
+        PATH: `${bin}${process.platform === 'win32' ? ';' : ':'}${process.env.PATH}`,
+        MOCK_GATE_LOG: log,
+        MOCK_NPM_STATUS: String(npmStatus),
+        MOCK_PYTHON_STATUS: String(pythonStatus),
+      },
+    });
+
+  try {
+    let result = runHook({ npmStatus: 7, pythonStatus: 0 });
+    assert.equal(result.status, 7, result.stderr);
+    assert.equal(readFileSync(log, 'utf8'), 'node\nnpm\n');
+
+    writeFileSync(log, '');
+    result = runHook({ npmStatus: 0, pythonStatus: 9 });
+    assert.equal(result.status, 9, result.stderr);
+    assert.equal(readFileSync(log, 'utf8'), 'node\nnpm\npython\n');
+
+    writeFileSync(log, '');
+    result = runHook({ npmStatus: 0, pythonStatus: 0 });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(readFileSync(log, 'utf8'), 'node\nnpm\npython\nentire\n');
+  } finally {
+    rmSync(fixture, { force: true, recursive: true });
+  }
+});
+
+test('per-commit path inspection catches a transient forbidden file', () => {
+  const outputs = new Map([
+    ['commit-add', 'dev/graphify.db\nsrc/app/page.tsx'],
+    ['commit-remove', 'dev/graphify.db'],
+  ]);
+  const paths = collectCommitPaths(
+    [...outputs.keys()],
+    (args) => outputs.get(args.at(-2))
+  );
+  assert.deepEqual(findForbiddenPaths(paths), ['dev/graphify.db']);
+});
+
+test('the lifecycle gate permits only an exact bounded reconciled remote merge', () => {
+  const baseline = 'a'.repeat(40);
+  const governedHead = 'b'.repeat(40);
+  const localParent = 'c'.repeat(40);
+  const remoteStart = 'd'.repeat(40);
+  const merge = 'e'.repeat(40);
+  const config = {
+    enforceAfter: baseline,
+    integrationBranch: 'agent/integration',
+    remoteStartReconciliations: [
+      {
+        mergeCommitSha: merge,
+        mergeTreeSha: 'f'.repeat(40),
+        evidenceSha256: '1'.repeat(64),
+        firstParentSha: localParent,
+        remoteStartSha: remoteStart,
+        mergeBaseSha: governedHead,
+        pushedRef: 'refs/heads/agent/integration',
+        ungovernedCommitCount: 1,
+      },
+    ],
+  };
+  const receipt = {
+    baseHeadSha: localParent,
+    remoteStartReconciliation: {
+      commitSha: remoteStart,
+      fromGovernedHead: governedHead,
+      pushedRef: 'refs/heads/agent/integration',
+      ungovernedCommitCount: 1,
+    },
+  };
+  const ancestorPairs = new Set([
+    `${baseline}:${governedHead}`,
+    `${governedHead}:${localParent}`,
+    `${governedHead}:${remoteStart}`,
+  ]);
+  const gitRun = (args) => {
+    if (args[0] === 'merge-base') {
+      if (args.length === 3) return governedHead;
+      if (!ancestorPairs.has(`${args[2]}:${args[3]}`)) throw new Error('not ancestor');
+      return '';
+    }
+    if (args[0] === 'rev-list') return remoteStart;
+    if (args[0] === 'show' && args.includes('--format=%T')) return 'f'.repeat(40);
+    if (args[0] === 'show' && args.at(-1) === remoteStart) return governedHead;
+    throw new Error(`unexpected git probe: ${args.join(' ')}`);
+  };
+
+  assert.deepEqual(
+    validateRemoteMergeReconciliation({
+      commit: merge,
+      parents: [localParent, remoteStart],
+      receipt,
+      receiptSha256: '1'.repeat(64),
+      config,
+      gitRun,
+    }),
+    { errors: [], reconciledCommits: [remoteStart] }
+  );
+
+  for (const invalidReceipt of [
+    null,
+    {
+      remoteStartReconciliation: {
+        ...receipt.remoteStartReconciliation,
+        pushedRef: 'refs/heads/main',
+      },
+    },
+    {
+      remoteStartReconciliation: {
+        ...receipt.remoteStartReconciliation,
+        ungovernedCommitCount: 9,
+      },
+    },
+    {
+      ...receipt,
+      baseHeadSha: '2'.repeat(40),
+    },
+    {
+      remoteStartReconciliation: receipt.remoteStartReconciliation,
+    },
+  ]) {
+    assert.notEqual(
+      validateRemoteMergeReconciliation({
+        commit: merge,
+        parents: [localParent, remoteStart],
+        receipt: invalidReceipt,
+        receiptSha256: '1'.repeat(64),
+        config,
+        gitRun,
+      }).errors.length,
+      0
+    );
+  }
+
+  assert.notEqual(
+    validateRemoteMergeReconciliation({
+      commit: merge,
+      parents: [remoteStart, localParent],
+      receipt,
+      receiptSha256: '1'.repeat(64),
+      config,
+      gitRun,
+    }).errors.length,
+    0
+  );
+
+  for (const mutation of [
+    { receiptSha256: '2'.repeat(64) },
+    {
+      config: {
+        ...config,
+        remoteStartReconciliations: [
+          {
+            ...config.remoteStartReconciliations[0],
+            mergeTreeSha: '2'.repeat(40),
+          },
+        ],
+      },
+    },
+    { commit: '2'.repeat(40) },
+    {
+      commit: merge.slice(0, 12),
+      config: {
+        ...config,
+        remoteStartReconciliations: [
+          {
+            ...config.remoteStartReconciliations[0],
+            mergeCommitSha: merge.slice(0, 12),
+          },
+        ],
+      },
+    },
+  ]) {
+    assert.notEqual(
+      validateRemoteMergeReconciliation({
+        commit: merge,
+        parents: [localParent, remoteStart],
+        receipt,
+        receiptSha256: '1'.repeat(64),
+        config,
+        gitRun,
+        ...mutation,
+      }).errors.length,
+      0
+    );
+  }
+
+  const sideCommit = '3'.repeat(40);
+  const sideHistoryGit = (args) => {
+    if (args[0] === 'rev-list' && !args.includes('--first-parent')) {
+      return `${remoteStart}\n${sideCommit}`;
+    }
+    return gitRun(args);
+  };
+  assert.match(
+    validateRemoteMergeReconciliation({
+      commit: merge,
+      parents: [localParent, remoteStart],
+      receipt,
+      receiptSha256: '1'.repeat(64),
+      config,
+      gitRun: sideHistoryGit,
+    }).errors.join('\n'),
+    /side history/
+  );
+
+  const nestedMergeGit = (args) => {
+    if (
+      args[0] === 'show' &&
+      args.includes('--format=%P') &&
+      args.at(-1) === remoteStart
+    ) {
+      return `${governedHead} ${sideCommit}`;
+    }
+    return gitRun(args);
+  };
+  assert.match(
+    validateRemoteMergeReconciliation({
+      commit: merge,
+      parents: [localParent, remoteStart],
+      receipt,
+      receiptSha256: '1'.repeat(64),
+      config,
+      gitRun: nestedMergeGit,
+    }).errors.join('\n'),
+    /contains a merge commit/
+  );
+
+  const wrongBaseGit = (args) => {
+    if (args[0] === 'merge-base' && args.length === 3) {
+      return '4'.repeat(40);
+    }
+    return gitRun(args);
+  };
+  assert.match(
+    validateRemoteMergeReconciliation({
+      commit: merge,
+      parents: [localParent, remoteStart],
+      receipt,
+      receiptSha256: '1'.repeat(64),
+      config,
+      gitRun: wrongBaseGit,
+    }).errors.join('\n'),
+    /exact merge base/
+  );
+});
+
+test('the exact committed reconciliation passes against real Git topology', () => {
+  const result = spawnSync(
+    'node',
+    [
+      fileURLToPath(
+        new URL('scripts/verify-development-lifecycle.mjs', rootUrl)
+      ),
+      '--head',
+      '1693afff2c3e44f08baa5debf87ba81238227cc2',
+      '--json',
+    ],
+    {
+      cwd: fileURLToPath(rootUrl),
+      encoding: 'utf8',
+    }
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.ok, true);
+  assert.equal(report.reconciliationsChecked, 1);
+  assert.equal(report.reconciledCommitsChecked, 1);
 });

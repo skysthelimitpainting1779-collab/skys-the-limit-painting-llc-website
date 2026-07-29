@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import {
   findForbiddenPaths,
@@ -18,6 +19,7 @@ function git(args) {
   return execFileSync('git', args, {
     cwd: root,
     encoding: 'utf8',
+    env: { ...process.env, GIT_NO_REPLACE_OBJECTS: '1' },
     stdio: ['ignore', 'pipe', 'pipe'],
     windowsHide: true,
   }).trim();
@@ -26,6 +28,7 @@ function git(args) {
 function gitBuffer(args) {
   return execFileSync('git', args, {
     cwd: root,
+    env: { ...process.env, GIT_NO_REPLACE_OBJECTS: '1' },
     stdio: ['ignore', 'pipe', 'pipe'],
     windowsHide: true,
   });
@@ -48,14 +51,17 @@ function readJson(path, errors) {
   }
 }
 
-function verifyCommitEvidence(commit, message, config, executionGraph, errors) {
+function readCommitEvidence(commit, message, config, executionGraph, errors) {
+  const errorCount = errors.length;
   const values = parseLifecycleTrailers(message);
   const evidenceSha256 = values.get('Evidence-SHA256');
-  if (!/^[a-f0-9]{64}$/.test(evidenceSha256 || '')) return;
+  if (!/^[a-f0-9]{64}$/.test(evidenceSha256 || '')) {
+    return { valid: false, receipt: null, receiptSha256: null };
+  }
   const directory = config.evidenceReceipts?.directory;
   if (!directory) {
     errors.push('evidenceReceipts.directory is required');
-    return;
+    return { valid: false, receipt: null, receiptSha256: null };
   }
   const receiptPath = `${directory.replace(/\/+$/, '')}/${evidenceSha256}.json`;
   let bytes;
@@ -63,7 +69,7 @@ function verifyCommitEvidence(commit, message, config, executionGraph, errors) {
     bytes = gitBuffer(['show', `${commit}:${receiptPath}`]);
   } catch {
     errors.push(`${commit}: missing committed evidence receipt ${receiptPath}`);
-    return;
+    return { valid: false, receipt: null, receiptSha256: null };
   }
   const digest = sha256Bytes(bytes);
   let receipt;
@@ -71,7 +77,7 @@ function verifyCommitEvidence(commit, message, config, executionGraph, errors) {
     receipt = JSON.parse(bytes.toString('utf8'));
   } catch (error) {
     errors.push(`${commit}: invalid evidence receipt JSON: ${error.message}`);
-    return;
+    return { valid: false, receipt: null, receiptSha256: digest };
   }
   for (const detail of validateEvidenceReceipt({
     message,
@@ -82,6 +88,204 @@ function verifyCommitEvidence(commit, message, config, executionGraph, errors) {
   })) {
     errors.push(`${commit}: ${detail}`);
   }
+  return {
+    valid: errors.length === errorCount,
+    receipt,
+    receiptSha256: digest,
+  };
+}
+
+export function validateRemoteMergeReconciliation({
+  commit,
+  parents,
+  receipt,
+  receiptSha256,
+  config,
+  gitRun,
+}) {
+  const errors = [];
+  const policies = Array.isArray(config.remoteStartReconciliations)
+    ? config.remoteStartReconciliations
+    : [];
+  const matchingPolicies = policies.filter(
+    (candidate) => candidate?.mergeCommitSha === commit
+  );
+  if (matchingPolicies.length !== 1) {
+    errors.push(`${commit}: merge is not authorized by one exact reconciliation policy`);
+    return { errors, reconciledCommits: [] };
+  }
+  const policy = matchingPolicies[0];
+  const reconciliation = receipt?.remoteStartReconciliation;
+  if (parents.length !== 2) {
+    errors.push(`${commit}: reconciled merge must have exactly two parents`);
+    return { errors, reconciledCommits: [] };
+  }
+  if (!reconciliation || typeof reconciliation !== 'object') {
+    errors.push(`${commit}: merge commit lacks remote-start reconciliation evidence`);
+    return { errors, reconciledCommits: [] };
+  }
+
+  const exactShaFields = [
+    'mergeCommitSha',
+    'mergeTreeSha',
+    'firstParentSha',
+    'remoteStartSha',
+    'mergeBaseSha',
+  ];
+  for (const field of exactShaFields) {
+    if (!/^[a-f0-9]{40}$/.test(policy[field] || '')) {
+      errors.push(`${commit}: reconciliation policy ${field} is invalid`);
+    }
+  }
+  if (!/^[a-f0-9]{64}$/.test(policy.evidenceSha256 || '')) {
+    errors.push(`${commit}: reconciliation policy evidenceSha256 is invalid`);
+  }
+  if (policy.pushedRef !== `refs/heads/${config.integrationBranch}`) {
+    errors.push(`${commit}: reconciliation policy does not target the integration branch`);
+  }
+  if (
+    !Number.isSafeInteger(policy.ungovernedCommitCount) ||
+    policy.ungovernedCommitCount < 1
+  ) {
+    errors.push(`${commit}: reconciliation policy commit count is invalid`);
+  }
+  if (receiptSha256 !== policy.evidenceSha256) {
+    errors.push(`${commit}: reconciliation evidence is not the allowlisted receipt`);
+  }
+  if (receipt.baseHeadSha !== policy.firstParentSha) {
+    errors.push(`${commit}: reconciliation receipt base head is not the merge first parent`);
+  }
+  if (parents[0] !== policy.firstParentSha || parents[1] !== policy.remoteStartSha) {
+    errors.push(`${commit}: reconciliation parent order does not match policy`);
+  }
+
+  const {
+    commitSha: remoteStart,
+    fromGovernedHead,
+    pushedRef,
+    ungovernedCommitCount,
+  } = reconciliation;
+  if (!/^[a-f0-9]{40}$/.test(remoteStart || '')) {
+    errors.push(`${commit}: reconciliation remote start is invalid`);
+  }
+  if (!/^[a-f0-9]{40}$/.test(fromGovernedHead || '')) {
+    errors.push(`${commit}: reconciliation governed head is invalid`);
+  }
+  if (
+    remoteStart !== policy.remoteStartSha ||
+    fromGovernedHead !== policy.mergeBaseSha ||
+    pushedRef !== policy.pushedRef ||
+    ungovernedCommitCount !== policy.ungovernedCommitCount
+  ) {
+    errors.push(`${commit}: reconciliation receipt does not match exact policy`);
+  }
+  if (errors.length) return { errors, reconciledCommits: [] };
+
+  const probe = (args, description) => {
+    try {
+      return gitRun(args);
+    } catch {
+      errors.push(`${commit}: unable to verify ${description}`);
+      return null;
+    }
+  };
+  const isAncestor = (ancestor, descendant) => {
+    try {
+      gitRun(['merge-base', '--is-ancestor', ancestor, descendant]);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  if (!isAncestor(config.enforceAfter, policy.mergeBaseSha)) {
+    errors.push(`${commit}: reconciled governed head predates the audited baseline`);
+  }
+  if (!isAncestor(policy.mergeBaseSha, policy.firstParentSha)) {
+    errors.push(`${commit}: reconciled governed head is not on the local parent history`);
+  }
+  if (!isAncestor(policy.mergeBaseSha, policy.remoteStartSha)) {
+    errors.push(`${commit}: reconciled governed head is not on the remote history`);
+  }
+  if (isAncestor(policy.remoteStartSha, policy.firstParentSha)) {
+    errors.push(`${commit}: reconciled remote start is already on the local parent history`);
+  }
+  if (errors.length) return { errors, reconciledCommits: [] };
+
+  const mergeBase = probe(
+    ['merge-base', policy.firstParentSha, policy.remoteStartSha],
+    'the exact merge base'
+  );
+  if (mergeBase !== policy.mergeBaseSha) {
+    errors.push(`${commit}: reconciliation policy does not name the exact merge base`);
+  }
+  const mergeTree = probe(
+    ['show', '-s', '--format=%T', commit],
+    'the allowlisted merge tree'
+  );
+  if (mergeTree !== policy.mergeTreeSha) {
+    errors.push(`${commit}: reconciliation merge tree does not match policy`);
+  }
+  if (errors.length) return { errors, reconciledCommits: [] };
+
+  const firstParentHistory = probe(
+    ['rev-list', '--first-parent', `${policy.mergeBaseSha}..${policy.remoteStartSha}`],
+    'the remote first-parent range'
+  ) || '';
+  const firstParentCommits = firstParentHistory
+    .split(/\r?\n/)
+    .filter(Boolean);
+  const fullHistory = probe(
+    ['rev-list', `${policy.mergeBaseSha}..${policy.remoteStartSha}`],
+    'the full remote range'
+  ) || '';
+  const fullCommits = fullHistory
+    .split(/\r?\n/)
+    .filter(Boolean);
+  if (
+    firstParentCommits.length !== policy.ungovernedCommitCount ||
+    firstParentCommits[0] !== policy.remoteStartSha
+  ) {
+    errors.push(`${commit}: reconciliation count does not match remote first-parent history`);
+  }
+  if (
+    fullCommits.length !== firstParentCommits.length ||
+    fullCommits.some((candidate, index) => candidate !== firstParentCommits[index])
+  ) {
+    errors.push(`${commit}: reconciled remote range contains side history`);
+  }
+  for (const candidate of firstParentCommits) {
+    const candidateParentText = probe(
+      ['show', '-s', '--format=%P', candidate],
+      `the parents of reconciled commit ${candidate}`
+    ) || '';
+    const candidateParents = candidateParentText
+      .split(/\s+/)
+      .filter(Boolean);
+    if (candidateParents.length > 1) {
+      errors.push(`${commit}: reconciled remote range contains a merge commit`);
+    }
+  }
+  return {
+    errors,
+    reconciledCommits: errors.length ? [] : firstParentCommits,
+  };
+}
+
+export function collectCommitPaths(commits, gitRun) {
+  return commits.flatMap((commit) =>
+    gitRun([
+      'diff-tree',
+      '--root',
+      '--no-commit-id',
+      '--name-only',
+      '-r',
+      '--diff-merges=first-parent',
+      commit,
+      '--',
+    ])
+      .split(/\r?\n/)
+      .filter(Boolean)
+  );
 }
 
 function verifyCommits(config, executionGraph, errors, { head, requireClean }) {
@@ -91,30 +295,84 @@ function verifyCommits(config, executionGraph, errors, { head, requireClean }) {
     git(['merge-base', '--is-ancestor', config.enforceAfter, head]);
   } catch {
     errors.push(`audited baseline ${config.enforceAfter} is not an ancestor of ${head}`);
-    return { commitsChecked: 0, pathsChecked: 0 };
+    return {
+      commitsChecked: 0,
+      reconciledCommitsChecked: 0,
+      reconciliationsChecked: 0,
+      pathsChecked: 0,
+    };
   }
 
   const commits = git(['rev-list', '--reverse', `${config.enforceAfter}..${head}`])
     .split(/\r?\n/)
     .filter(Boolean);
+  const metadata = new Map(
+    commits.map((commit) => [
+      commit,
+      {
+        message: git(['show', '-s', '--format=%B', commit]),
+        parents: git(['show', '-s', '--format=%P', commit])
+          .split(/\s+/)
+          .filter(Boolean),
+      },
+    ])
+  );
+  const reconciledCommits = new Set();
+  const validatedMerges = new Set();
   let commitsChecked = 0;
-  for (const commit of commits) {
-    const parents = git(['show', '-s', '--format=%P', commit]).split(/\s+/).filter(Boolean);
+  let reconciliationsChecked = 0;
+  for (const [commit, { message, parents }] of metadata) {
     if (parents.length > 1) {
-      errors.push(`${commit}: merge commits are not allowed in the governed integration range`);
-      continue;
+      commitsChecked += 1;
+      reconciliationsChecked += 1;
+      validatedMerges.add(commit);
+      for (const detail of validateGovernedCommit(message)) {
+        errors.push(`${commit}: ${detail}`);
+      }
+      const evidence = readCommitEvidence(
+        commit,
+        message,
+        config,
+        executionGraph,
+        errors
+      );
+      const reconciliation = validateRemoteMergeReconciliation({
+        commit,
+        parents,
+        receipt: evidence.receipt,
+        receiptSha256: evidence.valid ? evidence.receiptSha256 : null,
+        config,
+        gitRun: git,
+      });
+      for (const detail of reconciliation.errors) errors.push(detail);
+      for (const candidate of reconciliation.reconciledCommits) {
+        if (!metadata.has(candidate)) {
+          errors.push(`${commit}: reconciled remote commit is outside the governed range`);
+        } else {
+          reconciledCommits.add(candidate);
+        }
+      }
     }
+  }
+  for (const [commit, { message }] of metadata) {
+    if (validatedMerges.has(commit) || reconciledCommits.has(commit)) continue;
     commitsChecked += 1;
-    const message = git(['show', '-s', '--format=%B', commit]);
     for (const detail of validateGovernedCommit(message)) {
       errors.push(`${commit}: ${detail}`);
     }
-    verifyCommitEvidence(commit, message, config, executionGraph, errors);
+    const evidence = readCommitEvidence(
+      commit,
+      message,
+      config,
+      executionGraph,
+      errors
+    );
+    if (evidence.receipt?.remoteStartReconciliation) {
+      errors.push(`${commit}: reconciliation evidence is allowed only on its exact merge`);
+    }
   }
 
-  const tracked = git(['diff', '--name-only', config.enforceAfter, head, '--'])
-    .split(/\r?\n/)
-    .filter(Boolean);
+  const tracked = collectCommitPaths(commits, git);
   const localHead = git(['rev-parse', 'HEAD']);
   const untracked =
     head === localHead
@@ -127,7 +385,12 @@ function verifyCommits(config, executionGraph, errors, { head, requireClean }) {
   if (requireClean && git(['status', '--porcelain=v1', '--untracked-files=all'])) {
     errors.push('worktree must be clean for this lifecycle gate');
   }
-  return { commitsChecked, pathsChecked: paths.length };
+  return {
+    commitsChecked,
+    reconciledCommitsChecked: reconciledCommits.size,
+    reconciliationsChecked,
+    pathsChecked: paths.length,
+  };
 }
 
 function verifyExecutionGraph(config, errors) {
@@ -232,7 +495,12 @@ export function verifyDevelopmentLifecycle(options = {}) {
     options.requireClean === true || process.argv.includes('--require-clean');
   const gitState = executionGraph
     ? verifyCommits(config, executionGraph, errors, { head, requireClean })
-    : { commitsChecked: 0, pathsChecked: 0 };
+    : {
+        commitsChecked: 0,
+        reconciledCommitsChecked: 0,
+        reconciliationsChecked: 0,
+        pathsChecked: 0,
+      };
   return {
     ok: errors.length === 0,
     programId: config.programId,
@@ -244,13 +512,18 @@ export function verifyDevelopmentLifecycle(options = {}) {
   };
 }
 
-const result = verifyDevelopmentLifecycle();
-if (process.argv.includes('--json') || !result.ok) {
-  console.log(JSON.stringify(result, null, 2));
-} else {
-  console.log(
-    `[Lifecycle] OK: ${result.programId}; ${result.commitsChecked} governed commit(s); ` +
-      `graph ${result.executionGraph.sha256.slice(0, 12)}`
-  );
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))
+) {
+  const result = verifyDevelopmentLifecycle();
+  if (process.argv.includes('--json') || !result.ok) {
+    console.log(JSON.stringify(result, null, 2));
+  } else {
+    console.log(
+      `[Lifecycle] OK: ${result.programId}; ${result.commitsChecked} governed commit(s); ` +
+        `graph ${result.executionGraph.sha256.slice(0, 12)}`
+    );
+  }
+  if (!result.ok) process.exitCode = 1;
 }
-if (!result.ok) process.exitCode = 1;

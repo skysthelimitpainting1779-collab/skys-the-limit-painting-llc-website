@@ -8,6 +8,18 @@
   "evidenceReceipts": {
     "directory": ".agents/execution/evidence"
   },
+  "remoteStartReconciliations": [
+    {
+      "mergeCommitSha": "1693afff2c3e44f08baa5debf87ba81238227cc2",
+      "mergeTreeSha": "ac5be24f851515642249b8f210250e9098471b0f",
+      "evidenceSha256": "f02ef467a4f161e62e9b5fb1a70735612b5bc6d58bba85018367c2e38e890bf1",
+      "firstParentSha": "82b182d9d4bc2f75b213ff4eee6c9cbb3f4ac08a",
+      "remoteStartSha": "9c10da6e5d15151a6fb4367f004d268c6245d71d",
+      "mergeBaseSha": "fb4a8f154b32a3337be444159c80c9183eeb4f9c",
+      "pushedRef": "refs/heads/agent/skys-limit-convex-os",
+      "ungovernedCommitCount": 1
+    }
+  ],
   "executionGraph": {
     "authoritative": true,
     "path": ".agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl",
