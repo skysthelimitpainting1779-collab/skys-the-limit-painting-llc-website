@@ -270,3 +270,29 @@ Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CA
 - Archive: n/a
 - Healable: false
 
+
+## [ERR-20260729-9be3] Synthetic failure dedupe-test-1785350670724
+
+**Logged**: 2026-07-29T18:44:30.755Z
+**Fingerprint**: `1e2b896ba6d5d60e`
+**Category**: general
+**Severity**: medium
+**Status**: open
+**Area**: test
+**Count**: 1
+
+### Summary
+Synthetic failure dedupe-test-1785350670724 — `node -e "process.exit(1)"`
+
+### Error (snippet)
+```text
+unique-marker-dedupe-test-1785350670724 boom
+```
+
+### Prevention
+Reproduce with the exact command, fix root cause (see .agents/governance/ROOT_CAUSE.md), add a regression test when durable, then re-run verify chain.
+
+### Metadata
+- Archive: n/a
+- Healable: false
+
