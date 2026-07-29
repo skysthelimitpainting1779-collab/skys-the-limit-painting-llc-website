@@ -424,6 +424,8 @@ test('Graphify hooks bootstrap fresh worktrees and pre-push enforces freshness',
   assert.match(stateGate, /source terminal stage/);
   assert.match(stateGate, /next sequential rank/);
   assert.match(stateGate, /handoff destination dependency is incomplete/);
+  assert.doesNotMatch(stateGate, /if node_id not in dependencies/);
+  assert.match(stateGate, /historical_complete_do_not_replay/);
   assert.match(stateGate, /checkpoint stage span is missing required edge/);
 });
 

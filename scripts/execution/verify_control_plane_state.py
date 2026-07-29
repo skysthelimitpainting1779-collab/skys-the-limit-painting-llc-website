@@ -186,9 +186,9 @@ def transition_error(
         (graph_id, next_node),
     ).fetchall()
     dependencies = [str(row["depends_on_node_id"]) for row in dependency_rows]
-    if node_id not in dependencies:
-        return "handoff destination node does not depend on the completed node"
     for dependency in dependencies:
+        if dependency == node_id:
+            continue
         completed_dependency = connection.execute(
             """
             SELECT 1
@@ -201,7 +201,21 @@ def transition_error(
             (graph_id, dependency, checkpoint_sequence),
         ).fetchone()
         if completed_dependency is None:
-            return f"handoff destination dependency is incomplete: {dependency}"
+            dependency_node = connection.execute(
+                """
+                SELECT status
+                FROM execution_nodes
+                WHERE graph_id = ? AND node_id = ?
+                """,
+                (graph_id, dependency),
+            ).fetchone()
+            historical_complete = (
+                dependency_node is not None
+                and str(dependency_node["status"])
+                in {"complete", "completed", "historical_complete_do_not_replay"}
+            )
+            if not historical_complete:
+                return f"handoff destination dependency is incomplete: {dependency}"
 
     first_stage = connection.execute(
         """

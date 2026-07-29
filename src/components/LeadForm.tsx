@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, ShieldCheck, Upload, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { buildEstimateMailto } from '../lib/contact';
 import { readUtmParams, trackEvent } from '../lib/analytics';
 import { ENV } from '../lib/env';
@@ -26,6 +26,7 @@ const fieldClass = 'w-full border border-white/10 bg-white/5 p-4 text-white outl
 const selectButtonClass = 'border p-3.5 text-center text-xs font-black transition-[color,background-color,border-color,box-shadow] duration-200 cursor-pointer rounded-none';
 
 export default function LeadForm({ source, defaultMarket = 'Residential', compact = false }: LeadFormProps) {
+  const prefersReducedMotion = useReducedMotion();
   const idempotencyKeyRef = useRef('');
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
@@ -429,23 +430,25 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
 
   const slideVariants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 40 : -40,
-      opacity: 0,
+      x: prefersReducedMotion ? 0 : dir > 0 ? 40 : -40,
+      opacity: prefersReducedMotion ? 1 : 0,
     }),
     center: {
       x: 0,
       opacity: 1,
     },
     exit: (dir: number) => ({
-      x: dir < 0 ? 40 : -40,
-      opacity: 0,
+      x: prefersReducedMotion ? 0 : dir < 0 ? 40 : -40,
+      opacity: prefersReducedMotion ? 1 : 0,
     }),
   };
 
-  const slideTransition = {
-    x: { type: 'spring' as const, stiffness: 380, damping: 30 },
-    opacity: { duration: 0.2 },
-  };
+  const slideTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : {
+        x: { type: 'spring' as const, stiffness: 380, damping: 30 },
+        opacity: { duration: 0.2 },
+      };
 
   return (
     <form className="space-y-6 relative rounded-none" onSubmit={handleSubmit} onKeyDown={handleKeyDown} aria-busy={status === 'submitting'}>
@@ -467,7 +470,7 @@ export default function LeadForm({ source, defaultMarket = 'Residential', compac
       </div>
 
       {/* Dynamic Animated Core Panel */}
-      <motion.div layout className="overflow-hidden bg-white/[0.02] border border-white/5 p-6 space-y-6 relative">
+      <motion.div layout={!prefersReducedMotion} className="overflow-hidden bg-white/[0.02] border border-white/5 p-6 space-y-6 relative">
         <AnimatePresence mode="popLayout" initial={false} custom={direction}>
           <motion.div
             key={currentStep}

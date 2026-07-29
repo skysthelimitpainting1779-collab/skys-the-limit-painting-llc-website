@@ -136,6 +136,16 @@ npx vercel promote <deployment-url>
 - Measured Craft UI: semantic geometry · `#FF5A00` on charcoal · **no emojis** in product source
 - Root cause only · public claims verifiable
 
+## UI execution
+
+- Route every non-trivial interface change through
+  `.agents/skills/award-winning-ui-orchestration/SKILL.md`.
+- Use the official shadcn MCP for component discovery and source-owned
+  customization. Keep the modules in `registry.json` independently installable.
+- Pair one UI executor with one independent verifier for every UI execution node.
+- Preserve the existing Convex/Clerk provider and query ownership boundaries;
+  UI work must not create a parallel provider or data layer.
+
 ---
 
 ## Context

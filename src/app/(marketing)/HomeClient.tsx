@@ -38,7 +38,7 @@ export default function HomeClient() {
           <div className="flex flex-col justify-between px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
             <div>
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">Twin Cities / Residential painting scope desk</p>
-              <h1 id="home-title" className="mt-6 max-w-4xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-white sm:text-7xl lg:text-8xl">
+              <h1 id="home-title" className="mt-6 max-w-4xl text-4xl font-black uppercase leading-[0.9] tracking-normal text-white sm:text-6xl lg:text-7xl">
                 Residential detail. Commercial discipline. <span className="text-[#FF5A00]">Preps</span> first.
               </h1>
               <p className="mt-8 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
@@ -99,7 +99,7 @@ export default function HomeClient() {
           <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
             <div>
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">01 / Scope ledger</p>
-              <h2 id="scope-ledger" className="mt-4 text-4xl font-black uppercase leading-none tracking-[-0.05em] text-white sm:text-5xl">What gets priced.</h2>
+              <h2 id="scope-ledger" className="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white sm:text-5xl">What gets priced.</h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-zinc-400">The estimate follows the actual site conditions. Each line item exists to make preparation and execution visible before scheduling.</p>
             </div>
             <dl className="border-t border-zinc-700">
@@ -124,7 +124,7 @@ export default function HomeClient() {
           </div>
           <div className="px-6 py-16 sm:px-8 lg:px-12">
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">03 / Operational controls</p>
-            <h2 id="proof" className="mt-4 text-4xl font-black uppercase leading-none tracking-[-0.05em] text-white sm:text-5xl">A contractor record you can inspect.</h2>
+            <h2 id="proof" className="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white sm:text-5xl">A contractor record you can inspect.</h2>
             <ul className="mt-10 divide-y divide-zinc-800 border-y border-zinc-800">
               {[
                 [ShieldCheck, 'MN ID: IR816596', 'registered Minnesota Specialty Contractor (Painting)'],
@@ -146,7 +146,7 @@ export default function HomeClient() {
           <div className="grid gap-8 lg:grid-cols-[0.6fr_1.4fr] lg:gap-16 lg:items-center">
             <div>
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">Client record</p>
-              <h2 className="mt-4 text-4xl font-black uppercase leading-none tracking-[-0.05em] text-white sm:text-5xl">Word from the field.</h2>
+              <h2 className="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white sm:text-5xl">Word from the field.</h2>
               <a
                 href="https://g.page/r/skysthelimitpainting/review"
                 target="_blank"
@@ -167,7 +167,7 @@ export default function HomeClient() {
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:px-12 lg:py-20">
           <aside className="border-t-2 border-[#FF5A00] pt-6">
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A00]">04 / Request a written scope</p>
-            <h2 id="request-scope" className="mt-4 text-4xl font-black uppercase leading-none tracking-[-0.05em] text-white sm:text-5xl">Send the job data.</h2>
+            <h2 id="request-scope" className="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white sm:text-5xl">Send the job data.</h2>
             <p className="mt-6 max-w-md text-sm leading-7 text-zinc-400">Tell us the property type, city, surfaces, timeline, and preparation needs. The final step asks how Anthony should reach you.</p>
             <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.15em] text-zinc-500">Service area / Minneapolis · St. Paul · Twin Cities metro</p>
           </aside>
