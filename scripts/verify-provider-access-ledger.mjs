@@ -19,6 +19,7 @@ const expectedProviderIds = [
   'turso',
   'vercel',
 ];
+const expectedProgramId = 'stl-post-g20-sequential-tdd-v1';
 
 const secretValuePatterns = [
   /(?:sk|pk)_(?:live|test)_[A-Za-z0-9]+/,
@@ -141,8 +142,15 @@ function schemaErrors(ledger) {
 function inspectProductionAuthorization(provider, path, errors) {
   if (Array.isArray(provider.environments)) {
     provider.environments.forEach((environment, index) => {
+      const rawName = String(environment?.name || '');
+      const normalizedName = rawName.trim().toLowerCase();
+      if (rawName !== normalizedName || !/^[a-z][a-z0-9-]*$/.test(rawName)) {
+        errors.push(
+          `${path}.environments[${index}] environment name must be canonical`,
+        );
+      }
       if (
-        /^(?:production|live)$/i.test(String(environment?.name || '')) &&
+        /^(?:prod|production|live)$/i.test(normalizedName) &&
         environment?.verificationStatus !== 'blocked'
       ) {
         errors.push(
@@ -187,6 +195,9 @@ export function validateProviderAccessLedger(ledger) {
     inspectSecretMaterial(ledger, '', errors);
     return errors;
   }
+  if (ledger.programId !== expectedProgramId) {
+    errors.push(`programId must be ${expectedProgramId}`);
+  }
 
   const providerIds = ledger.providers.map((provider) => provider?.providerId);
   if (JSON.stringify(providerIds) !== JSON.stringify(expectedProviderIds)) {
@@ -215,8 +226,8 @@ function main() {
   let ledger;
   try {
     ledger = JSON.parse(readFileSync(path, 'utf8'));
-  } catch (error) {
-    console.error(`[Provider Access Ledger] ${error.message}`);
+  } catch {
+    console.error('[Provider Access Ledger] unable to read or parse ledger');
     process.exitCode = 1;
     return;
   }

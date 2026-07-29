@@ -31,6 +31,7 @@
     "lifecycle:verify": "node scripts/verify-development-lifecycle.mjs",
     "lifecycle:evidence": "node scripts/execution/write_evidence_receipt.mjs",
     "ledgers:query": "node scripts/execution/control-plane-ledgers.mjs query --program stl-post-g20-sequential-tdd-v1",
+    "providers:preflight": "node scripts/provider-access-preflight.mjs",
     "providers:verify": "node scripts/verify-provider-access-ledger.mjs",
     "arch:decisions": "node scripts/verify-architecture-decisions.mjs",
     "goal": "node scripts/goal.mjs",
