@@ -33,6 +33,7 @@
     "ledgers:query": "node scripts/execution/control-plane-ledgers.mjs query --program stl-post-g20-sequential-tdd-v1",
     "providers:preflight": "node scripts/provider-access-preflight.mjs",
     "providers:verify": "node scripts/verify-provider-access-ledger.mjs",
+    "telemetry:gate": "node scripts/node-telemetry-gate.mjs",
     "arch:decisions": "node scripts/verify-architecture-decisions.mjs",
     "goal": "node scripts/goal.mjs",
     "goal:verify": "node scripts/goal.mjs verify",

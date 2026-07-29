@@ -93,6 +93,7 @@ Skill: `ship-loop` (`.agents/skills/ship-loop/`).
 - Call `execution_graph_preflight` before selecting work.
 - Read `execution_graph_cursor` and `execution_graph_node`, then acquire one writer lease with `lifecycle_checkpoint_begin`.
 - Use one task branch and worktree per active writer. Never mutate `main` directly.
+- Before checkpoint completion, write a secret-free per-node telemetry request and run `npm run telemetry:gate -- --input <absolute-request-path>`. Stop on any nonzero exit, append the passing result at the exact committed head with `lifecycle_record_telemetry_decision`, and include the decision hashes in evidence.
 - Complete the checkpoint only after a clean commit and passing evidence. Cross-node completion supplies the terminal `completed_stage`; `lifecycle_checkpoint_complete` creates the graph-validated handoff.
 - Every governed commit after `5eb385d33976503cdac81e982ed74fbbc7f6839c` requires `Execution-Program`, `Execution-Node`, `Checkpoint-ID`, and `Evidence-SHA256` trailers.
 - The authoritative execution plan is `.agents/execution/skys-limit-sequential-tdd-execution-graph-audited.jsonl`. `.graph/` is planning history only.
