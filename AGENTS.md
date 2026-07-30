@@ -18,7 +18,7 @@ npm install && npm run dev
 node --test tests/branch-policy.test.mjs
 npm run ci:contract
 npm run lifecycle:verify
-npm run telemetry:gate
+npm run telemetry:gate -- --input <absolute-request-path>
 npm run lint:ci
 npm test
 npm run build
@@ -159,8 +159,9 @@ goal
 - The main checkout remains read-only.
 - Maximum implementation attempts for the same root cause: two. Then stop and replan.
 - Complete a checkpoint only from a clean committed revision with passing evidence.
-- Before checkpoint completion, run `npm run telemetry:gate` and persist the secret-free
-  decision with `lifecycle_record_telemetry_decision`.
+- Before checkpoint completion, run
+  `npm run telemetry:gate -- --input <absolute-request-path>` and persist the secret-free
+  decision with `lifecycle_record_telemetry_decision`. Stop on any nonzero exit.
 - Every governed commit after `5eb385d33976503cdac81e982ed74fbbc7f6839c`
   requires `Execution-Program`, `Execution-Node`, `Checkpoint-ID`, and
   `Evidence-SHA256` trailers.
@@ -247,7 +248,6 @@ The minimum delivery gate is:
 node --test tests/branch-policy.test.mjs
 npm run ci:contract
 npm run lifecycle:verify
-npm run telemetry:gate
 npm run lint:ci
 npm test
 npm run build
