@@ -136,3 +136,30 @@ test('approval, lifecycle, normalization, and operator docs use the dev branch m
   assert.doesNotMatch(workflowGuide, /main and staging/);
   assert.doesNotMatch(workflowGuide, /Exactly these three YAML files/);
 });
+
+test('dev bootstrap uses checks that run before governance reaches the default branch', () => {
+  const devRuleset = JSON.parse(read('.github/rulesets/dev.json'));
+  const requiredRule = devRuleset.rules.find((rule) => rule.type === 'required_status_checks');
+  const contexts = requiredRule.parameters.required_status_checks
+    .map((check) => check.context)
+    .sort();
+
+  assert.deepEqual(contexts, [
+    'CodeQL JavaScript and TypeScript',
+    'Production Dependency Audit',
+    'Repository Quality',
+    'Vercel – website',
+  ]);
+
+  const ci = read('.github/workflows/ci.yml');
+  assert.match(ci, /Validate current pull request branch flow/);
+  assert.match(ci, /node scripts\/branch-policy\.mjs check-pr/);
+  assert.match(ci, /BASE_REF: \$\{\{ github\.event\.pull_request\.base\.ref \}\}/);
+  assert.match(ci, /HEAD_REF: \$\{\{ github\.event\.pull_request\.head\.ref \}\}/);
+
+  const settings = read('docs/SETTINGS_CHECKLIST.md');
+  assert.match(
+    settings,
+    /Do not require `Validate Branch Flow` or `Independent PR Approval` on `dev` until/
+  );
+});
