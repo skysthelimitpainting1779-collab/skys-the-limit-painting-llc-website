@@ -12,9 +12,9 @@ Vercel deployment, verify its exact commit and canonical project, and smoke-test
 
 | Workflow | Trigger | Responsibility |
 |---|---|---|
-| `branch-policy.yml` | pull requests to `main` or `dev` | validate allowed base/head edge using trusted base code |
-| `pr-approval.yml` | pull-request and review events | require independent approval of the exact head |
-| `ci.yml` | pull requests and pushes for `main` and `dev` | branch contract, lifecycle, lint, types, and tests |
+| `branch-policy.yml` | `pull_request_target` after the workflow exists on default `main` | validate allowed base/head edge using trusted default-branch code |
+| `pr-approval.yml` | pull-request and review events after the workflow exists on default `main` | require independent approval of the exact head |
+| `ci.yml` | pull requests and pushes for `main` and `dev` | validate the live base/head edge, lifecycle, lint, types, and tests |
 | `security.yml` | pull requests, pushes, schedule, manual dispatch | CodeQL, dependency review, production dependency audit |
 | `deployment-verification.yml` | Vercel deployment events | verify canonical project, exact SHA, READY state, and routes |
 
@@ -85,17 +85,22 @@ production domain.
 
 ## Required checks
 
-Protect both `dev` and `main` with:
+Protect `dev` immediately with:
 
-- `Validate Branch Flow`
-- `Repository Quality`
-- `CodeQL JavaScript and TypeScript`
-- `Production Dependency Audit`
-- `Independent PR Approval`
-- `Vercel – website`
+- `Repository Quality`, which includes the live base/head branch-policy check;
+- `CodeQL JavaScript and TypeScript`;
+- `Production Dependency Audit`;
+- `Vercel – website`;
+- the native pull-request, Code Owner, and approval rules in `.github/rulesets/dev.json`.
 
-`Dependency Review` is also required for dependency-changing pull requests. The ruleset
-desired-state manifests live in `.github/rulesets/`.
+Do not require `Validate Branch Flow` or `Independent PR Approval` on `dev` until their
+`pull_request_target` workflow definitions exist on default `main` and have emitted those
+exact checks. GitHub takes `pull_request_target` workflow code from the default branch, so
+requiring a not-yet-emitted context would leave the branch permanently pending.
+
+The `main` desired-state ruleset may require the two trusted custom checks only after this
+foundation reaches the default branch and their live context names are verified.
+`Dependency Review` is also required for dependency-changing pull requests.
 
 ## Failure routing
 

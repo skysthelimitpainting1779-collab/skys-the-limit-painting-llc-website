@@ -74,22 +74,25 @@ Additional approved prefixes are listed in the policy manifest.
 
 ## Required checks
 
-The desired rulesets require:
+The `dev` ruleset requires checks that are available before the foundation reaches the
+default branch:
 
-- `Validate Branch Flow`
-- `Repository Quality`
-- `CodeQL JavaScript and TypeScript`
-- `Production Dependency Audit`
-- `Independent PR Approval`
-- `Vercel – website`
+- `Repository Quality`, including the live base/head branch-policy validation;
+- `CodeQL JavaScript and TypeScript`;
+- `Production Dependency Audit`;
+- `Vercel – website`;
+- native pull-request, Code Owner, and approval rules.
 
-`Dependency Review` must also pass whenever dependencies change. Deployment verification
-and route smoke tests must pass for runtime or release work.
+The `main` desired-state ruleset additionally requires `Validate Branch Flow` and
+`Independent PR Approval`, but it must not be activated until those
+`pull_request_target` workflows exist on default `main` and have emitted their exact
+context names. `Dependency Review` must also pass whenever dependencies change.
+Deployment verification and route smoke tests must pass for runtime or release work.
 
-The JSON desired-state manifests are stored in `.github/rulesets/`. Apply them only after
-confirming exact status-context names. If the governed release process uses exact-head
-non-force fast-forward integration, configure a narrowly scoped release-manager bypass;
-never configure a force-push bypass.
+The JSON desired-state manifests are stored in `.github/rulesets/`. Apply each manifest
+only after confirming every required context is live on its target branch. If the governed
+release process uses exact-head non-force fast-forward integration, configure a narrowly
+scoped release-manager bypass; never configure a force-push bypass.
 
 ## Merge and provenance
 

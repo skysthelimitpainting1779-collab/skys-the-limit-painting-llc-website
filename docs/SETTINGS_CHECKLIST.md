@@ -13,14 +13,22 @@ repository commits. Apply them against the exact desired state below, then recor
   resolved conversations.
 - Block deletion and force pushes.
 - Require strict current-branch status checks.
+- Require `Repository Quality`, `CodeQL JavaScript and TypeScript`,
+  `Production Dependency Audit`, and canonical `Vercel – website`.
+- Do not require `Validate Branch Flow` or `Independent PR Approval` on `dev` until
+  their `pull_request_target` workflow definitions exist on the default branch and have
+  emitted those exact checks. During bootstrap, `Repository Quality` validates the live
+  base/head edge and the native ruleset review requirement is the approval gate.
 - Add no broad bypass. If exact-head non-force fast-forward integration is required, grant
   only the named release manager a narrow bypass and document every use.
 
 ### Protect `main`
 
-- Create or import `.github/rulesets/main.json`.
+- Do not activate `.github/rulesets/main.json` until the foundation workflows exist on
+  the default branch and their exact status contexts have been observed.
 - Accept normal release pull requests only from `dev`.
-- Require the same quality/security checks and canonical `Vercel – website`.
+- Require the quality/security checks and canonical `Vercel – website` named by the
+  manifest.
 - Block deletion and force pushes.
 - Require a named production approver and rollback evidence.
 

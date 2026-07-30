@@ -43,6 +43,13 @@ jobs:
       - name: Verify branch and deployment policy contract
         run: node --test tests/branch-policy.test.mjs
 
+      - name: Validate current pull request branch flow
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: node scripts/branch-policy.mjs check-pr
+
       - name: Install dependencies
         run: npm ci
 
