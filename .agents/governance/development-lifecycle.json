@@ -4,7 +4,10 @@
   "programId": "stl-post-g20-sequential-tdd-v1",
   "enforceAfter": "5eb385d33976503cdac81e982ed74fbbc7f6839c",
   "integrationBranch": "agent/skys-limit-convex-os",
+  "integrationBranchRole": "historical_reconciliation_anchor",
+  "operationalIntegrationBranch": "dev",
   "productionBranch": "main",
+  "branchPolicyPath": "config/platform-foundation.json",
   "evidenceReceipts": {
     "directory": ".agents/execution/evidence"
   },
