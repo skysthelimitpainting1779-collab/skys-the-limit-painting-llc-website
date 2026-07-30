@@ -18,8 +18,9 @@ function workflowText() {
     .join('\n');
 }
 
-test('repository has only the four governed workflows', () => {
+test('repository has only the five governed workflows', () => {
   assert.deepEqual(workflowNames(), [
+    'branch-policy.yml',
     'ci.yml',
     'deployment-verification.yml',
     'pr-approval.yml',
