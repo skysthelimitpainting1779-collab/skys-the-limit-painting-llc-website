@@ -106,3 +106,33 @@ test('Dependabot, rulesets, agents, and deployment verification agree with the b
   assert.match(deployment, /team_bseTA2AuCO6A2fCOVY9ubrJo/);
   assert.match(deployment, /website-\*\.vercel\.app/);
 });
+
+test('approval, lifecycle, normalization, and operator docs use the dev branch model', async () => {
+  const approval = read('.github/workflows/pr-approval.yml');
+  const approvalBranches = [...approval.matchAll(/branches:\s*\[([^\]]+)\]/g)].map(
+    (match) => match[1].replaceAll(' ', '')
+  );
+  assert.ok(
+    approvalBranches.some((value) => value === 'main,dev'),
+    '.github/workflows/pr-approval.yml must target main and dev'
+  );
+  assert.doesNotMatch(approval, /\bstaging\b/);
+
+  const lifecycle = JSON.parse(read('.agents/governance/development-lifecycle.json'));
+  assert.equal(lifecycle.operationalIntegrationBranch, 'dev');
+  assert.equal(lifecycle.productionBranch, 'main');
+  assert.equal(lifecycle.branchPolicyPath, 'config/platform-foundation.json');
+
+  const normalizeSource = read('scripts/normalize-branch.mjs');
+  assert.match(normalizeSource, /config\/platform-foundation\.json/);
+  assert.doesNotMatch(normalizeSource, /['"]staging['"]/);
+
+  const decisions = read('.agents/CURRENT_DECISIONS.md');
+  assert.match(decisions, /Clerk proves identity/);
+  assert.match(decisions, /team_bseTA2AuCO6A2fCOVY9ubrJo/);
+  assert.match(decisions, /prj_L3ZMoQ79YLx9G2o6Lg9OubqO9H8m/);
+
+  const workflowGuide = read('.github/WORKFLOW_TROUBLESHOOTING.md');
+  assert.doesNotMatch(workflowGuide, /main and staging/);
+  assert.doesNotMatch(workflowGuide, /Exactly these three YAML files/);
+});
