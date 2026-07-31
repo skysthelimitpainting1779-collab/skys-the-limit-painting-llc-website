@@ -2,7 +2,7 @@ name: PR Approval
 
 on:
   pull_request_target:
-    branches: [main, staging]
+    branches: [main, dev]
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
   pull_request_review:
     types: [submitted, edited, dismissed]
@@ -18,7 +18,7 @@ concurrency:
 jobs:
   approval:
     name: Independent PR Approval
-    if: github.event.pull_request.base.ref == 'main' || github.event.pull_request.base.ref == 'staging'
+    if: github.event.pull_request.base.ref == 'main' || github.event.pull_request.base.ref == 'dev'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
